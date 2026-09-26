@@ -5,6 +5,15 @@
 Newest first.
 
 <details>
+<summary><b>Sep 26, 2026:</b> Life Hub's Figma library doesn't change</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the Life Hub theme matches the Figma library exactly: all 112 colors including Sunflower Medley, every semantic mapping, spacing, radius, and all 16 text styles under their Figma names. A test checks this on every pull request.
+- **Why:** the first version dropped Sunflower Medley and two text styles, renamed the text styles, and mapped one area accent wrong. The test caught the last one.
+
+</details>
+
+<details>
 <summary><b>Sep 26, 2026:</b> Code is the source of truth for tokens</summary>
 
 - **Decided by:** Sharon

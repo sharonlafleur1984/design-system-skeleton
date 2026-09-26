@@ -1,5 +1,9 @@
 {
   "radius": {
+    "number": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
     "xs": {
       "$type": "dimension",
       "$value": "4px"

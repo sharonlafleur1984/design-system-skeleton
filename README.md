@@ -13,10 +13,11 @@ Fix something in the base once, and every product gets it.
 
 ## How it stays honest
 
-Two automatic checks run on every pull request:
+Three automatic checks run on every pull request:
 
 - **The contract:** every theme defines every shared token name, so any component works in any theme.
 - **Readability:** every text color meets WCAG 2.2 AA contrast (4.5:1) on the surfaces it sits on.
+- **Life Hub stays true to Figma:** every Life Hub color, mapping, spacing, radius and text style must match the Figma library exactly (`tests/life-hub-figma.json`).
 
 ## Try it
 

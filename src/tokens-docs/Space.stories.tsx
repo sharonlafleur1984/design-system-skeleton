@@ -4,7 +4,7 @@ import { namesWith } from './tokens';
 const meta: Meta = { title: 'Foundations/Space, radius and shadow' };
 export default meta;
 
-const label = { fontFamily: 'var(--font-family-data)', fontSize: 'var(--type-body-s-size)', color: 'var(--color-ink-secondary)' };
+const label = { fontFamily: 'var(--font-family-data)', fontSize: 'var(--type-body-small-size)', color: 'var(--color-ink-secondary)' };
 
 /** A 4-point spacing scale, shared by every theme. */
 export const Space: StoryObj = {

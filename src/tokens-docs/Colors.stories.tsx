@@ -41,3 +41,24 @@ export const ThisThemeOnly: Story = {
     );
   },
 };
+
+/** Every color in the current theme's palette, grouped by family. For Life Hub, these are the Figma library's colors, unchanged. */
+export const Palette: Story = {
+  render: (_args, { globals }) => {
+    const theme = (globals.theme as string) ?? 'after-graduation';
+    const names = namesWith('palette-', theme);
+    // Numbered shades (sea-nymph-100) group by everything before the number; named ones (paper-off-white) by the first word.
+    const family = (n: string) => {
+      const rest = n.replace(/^palette-/, '');
+      return /-\d+$/.test(rest) ? rest.replace(/-\d+$/, '') : rest.split('-')[0];
+    };
+    const families = [...new Set(names.map(family))];
+    return (
+      <>
+        {families.map((f) => (
+          <SwatchGroup key={f} title={f.replace(/-/g, ' ')} names={names.filter((n) => family(n) === f)} />
+        ))}
+      </>
+    );
+  },
+};

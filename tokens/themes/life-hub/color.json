@@ -304,6 +304,52 @@
         "$value": "#303d24"
       }
     },
+    "sunflower-medley": {
+      "50": {
+        "$type": "color",
+        "$value": "#fdfbe9"
+      },
+      "100": {
+        "$type": "color",
+        "$value": "#fcf7c5"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#faee8e"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#f7dd4d"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#f2c60f"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#e3b00f"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#c4890a"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#9c620c"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#814e12"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#6e4015"
+      },
+      "950": {
+        "$type": "color",
+        "$value": "#402008"
+      }
+    },
     "paper": {
       "off-white": {
         "$type": "color",
@@ -536,7 +582,7 @@
         },
         "accent": {
           "$type": "color",
-          "$value": "{palette.nocturnal-navy.500}"
+          "$value": "{palette.nocturnal-navy.600}"
         },
         "accent-strong": {
           "$type": "color",

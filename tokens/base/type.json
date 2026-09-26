@@ -16,6 +16,28 @@
     }
   },
   "type": {
+    "display-cover": {
+      "size": {
+        "$type": "dimension",
+        "$value": "112px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.02
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.012em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
     "display-xl": {
       "size": {
         "$type": "dimension",
@@ -82,7 +104,7 @@
         "$value": "{font.family.display}"
       }
     },
-    "title": {
+    "heading-title": {
       "size": {
         "$type": "dimension",
         "$value": "28px"
@@ -104,7 +126,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "heading": {
+    "heading-heading": {
       "size": {
         "$type": "dimension",
         "$value": "21px"
@@ -126,7 +148,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "subheading": {
+    "heading-subheading": {
       "size": {
         "$type": "dimension",
         "$value": "17px"
@@ -148,7 +170,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "body-l": {
+    "body-large": {
       "size": {
         "$type": "dimension",
         "$value": "16px"
@@ -170,7 +192,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "body": {
+    "body-default": {
       "size": {
         "$type": "dimension",
         "$value": "15px"
@@ -192,7 +214,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "body-s": {
+    "body-small": {
       "size": {
         "$type": "dimension",
         "$value": "13px"
@@ -214,7 +236,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "body-xs": {
+    "body-micro": {
       "size": {
         "$type": "dimension",
         "$value": "11px"
@@ -236,7 +258,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "label": {
+    "label-caps": {
       "size": {
         "$type": "dimension",
         "$value": "13px"
@@ -258,7 +280,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "label-s": {
+    "label-banner": {
       "size": {
         "$type": "dimension",
         "$value": "11px"
@@ -280,7 +302,7 @@
         "$value": "{font.family.body}"
       }
     },
-    "data": {
+    "data-default": {
       "size": {
         "$type": "dimension",
         "$value": "15px"
@@ -302,7 +324,7 @@
         "$value": "{font.family.data}"
       }
     },
-    "data-s": {
+    "data-small": {
       "size": {
         "$type": "dimension",
         "$value": "13px"
@@ -318,6 +340,28 @@
       "weight": {
         "$type": "fontWeight",
         "$value": "{font.weight.regular}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.data}"
+      }
+    },
+    "data-micro": {
+      "size": {
+        "$type": "dimension",
+        "$value": "11px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.medium}"
       },
       "family": {
         "$type": "fontFamily",

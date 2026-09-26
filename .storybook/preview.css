@@ -2,6 +2,6 @@ html, body {
   background: var(--color-surface-page);
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
-  font-size: var(--type-body-size);
-  line-height: var(--type-body-line-height);
+  font-size: var(--type-body-default-size);
+  line-height: var(--type-body-default-line-height);
 }
