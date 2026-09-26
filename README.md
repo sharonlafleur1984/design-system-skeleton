@@ -21,6 +21,10 @@ Three automatic checks run on every pull request:
 
 ## Try it
 
+**[See it in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes in the toolbar.
+
+Or run it yourself:
+
 ```bash
 npm install
 npm run storybook   # opens Storybook; switch themes in the toolbar
