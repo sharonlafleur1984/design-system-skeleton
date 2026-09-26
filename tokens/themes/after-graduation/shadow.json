@@ -16,10 +16,17 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(60,20,30,0.10)",
+          "color": "rgba(29,26,24,0.06)",
           "offsetX": "0px",
-          "offsetY": "8px",
-          "blur": "20px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(29,26,24,0.06)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "12px",
           "spread": "0px"
         }
       ]
@@ -28,10 +35,17 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(60,20,30,0.10)",
+          "color": "rgba(29,26,24,0.08)",
           "offsetX": "0px",
-          "offsetY": "8px",
-          "blur": "20px",
+          "offsetY": "2px",
+          "blur": "4px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(29,26,24,0.10)",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "24px",
           "spread": "0px"
         }
       ]
@@ -40,10 +54,10 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(224,32,58,0.13)",
+          "color": "rgba(29,26,24,0.16)",
           "offsetX": "0px",
-          "offsetY": "10px",
-          "blur": "28px",
+          "offsetY": "16px",
+          "blur": "40px",
           "spread": "0px"
         }
       ]

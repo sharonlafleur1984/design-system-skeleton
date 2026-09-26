@@ -29,7 +29,7 @@ export const Status: Story = {
   ),
 };
 
-/** Colors only one product has: Life Hub's seven areas, or After Graduation's categories. */
+/** Colors only one product has, like Life Hub's seven areas. */
 export const ThisThemeOnly: Story = {
   name: 'This theme only',
   render: (_args, { globals }) => {
@@ -37,7 +37,7 @@ export const ThisThemeOnly: Story = {
     return theme === 'life-hub' ? (
       <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
     ) : (
-      <SwatchGroup title="After Graduation categories" names={namesWith('color-category-', 'after-graduation')} />
+      <p>After Graduation has no extra colors. Paths and categories use icons and labels instead.</p>
     );
   },
 };

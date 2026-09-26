@@ -31,6 +31,7 @@ npm test            # contract and contrast checks
 
 - `tokens/base/`: the shared base
 - `tokens/themes/<product>/`: each product's colors, fonts and shadows
+- After Graduation's color rules: [Decisions](../../wiki/Decisions)
 - `scripts/build-tokens.mjs`: turns the tokens into CSS variables, one file per theme
 - `src/tokens-docs/`: the Storybook pages for colors, type, space, radius and shadow
 - [Wiki](../../wiki): the Dashboard, Roadmap and Decisions

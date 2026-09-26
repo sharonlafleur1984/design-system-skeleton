@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Sep 26, 2026:</b> After Graduation is quiet by default: color only communicates</summary>
+
+- **Decided by:** Sharon
+- **Decision:** neutral screens. Cherry red (#d03656) marks the one next step: the main button, the current step, focus. Gold marks a real win. Status colors mean status, always with an icon and a label. Everything else is neutral. Paths and categories use icons and labels, not colors. Cards sit on shadows instead of borders.
+- **Why:** the product already has lots of graphics, so the system stays simple. The prototype had 98 colors, and a screen with seven colors gave no clear place to look.
+- **How it was chosen:** 6 color directions built with color theory (OKLCH ramps, contrast checked). The race-car red stayed, softened toward cherry for an anime feel, which also moves it a little further from the error red.
+- **Other options:** red with teal, sky, mint or lavender support colors; berry and indigo; a teal-led palette.
+
+</details>
+
+<details>
 <summary><b>Sep 26, 2026:</b> Life Hub's Figma library doesn't change</summary>
 
 - **Decided by:** Sharon

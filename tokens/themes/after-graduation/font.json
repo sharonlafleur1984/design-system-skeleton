@@ -25,7 +25,7 @@
           "system-ui",
           "sans-serif"
         ],
-        "$description": "The prototype has no data font; uses the body font for now."
+        "$description": "No data font yet; uses the body font."
       }
     }
   }
