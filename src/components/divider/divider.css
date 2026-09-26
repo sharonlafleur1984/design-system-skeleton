@@ -1,0 +1,16 @@
+/* Divider. Use sparingly: spacing and grouping separate things first. */
+.ds-divider {
+  flex: none;
+  margin: 0;
+  border: 0;
+  background: var(--color-border-default);
+}
+.ds-divider--horizontal {
+  inline-size: 100%;
+  block-size: 1px;
+}
+.ds-divider--vertical {
+  align-self: stretch;
+  inline-size: 1px;
+  block-size: auto;
+}

@@ -1,0 +1,39 @@
+/* ProgressMeter. A thin bar showing how much is done. */
+.ds-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  inline-size: 100%;
+}
+
+.ds-progress__text {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-ink-secondary);
+  font-size: var(--type-body-small-size);
+}
+.ds-progress__value {
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.ds-progress__track {
+  block-size: var(--control-meter);
+  overflow: hidden;
+  border-radius: var(--radius-chip);
+  background: var(--color-surface-sunken); /* Figma uses surface/page, which disappears on a page background */
+}
+
+.ds-progress__fill {
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--color-accent-base);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-progress__fill {
+    transition: inline-size 0.5s ease;
+  }
+}

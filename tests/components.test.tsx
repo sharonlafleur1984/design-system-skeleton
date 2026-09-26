@@ -1,0 +1,126 @@
+// @vitest-environment jsdom
+import { describe, it, expect, afterEach } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import axe from 'axe-core';
+import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider } from '../src/components';
+
+afterEach(cleanup);
+
+// Structure and naming checks only (jsdom has no layout, so contrast is covered by the token tests).
+async function expectNoAxeViolations(container: HTMLElement) {
+  const result = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } });
+  expect(result.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+}
+
+describe('Button', () => {
+  it('is a real button that runs its action', async () => {
+    let clicks = 0;
+    render(<Button onClick={() => clicks++}>Add school</Button>);
+    await userEvent.click(screen.getByRole('button', { name: 'Add school' }));
+    expect(clicks).toBe(1);
+  });
+
+  it('does not run while disabled or loading', async () => {
+    let clicks = 0;
+    render(
+      <>
+        <Button disabled onClick={() => clicks++}>Off</Button>
+        <Button loading onClick={() => clicks++}>Busy</Button>
+      </>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Off' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Busy' }));
+    expect(clicks).toBe(0);
+    expect(screen.getByRole('button', { name: 'Busy' })).toHaveProperty('ariaBusy', 'true');
+  });
+
+  it('defaults to type="button" so it never submits a form by accident', () => {
+    render(<Button>Save</Button>);
+    expect(screen.getByRole('button').getAttribute('type')).toBe('button');
+  });
+
+  it('passes an accessibility scan in every style', async () => {
+    const { container } = render(
+      <>
+        <Button>Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="tertiary">Tertiary</Button>
+        <Button destructive>Delete</Button>
+      </>,
+    );
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Card', () => {
+  it('renders the element asked for', () => {
+    render(<Card as="section" aria-label="This week">Hi</Card>);
+    expect(screen.getByRole('region', { name: 'This week' }).className).toContain('ds-card--translucent');
+  });
+});
+
+describe('Callout', () => {
+  it('says what the tone means in words, not just color', () => {
+    render(<Callout tone="overdue" title="2 days late">Recommendation letter.</Callout>);
+    expect(screen.getByText(/Overdue:/)).toBeTruthy();
+  });
+
+  it('passes an accessibility scan', async () => {
+    const { container } = render(<Callout tone="due">Fee due Friday.</Callout>);
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('ProgressMeter', () => {
+  it('exposes its label and value to screen readers', () => {
+    render(<ProgressMeter value={3} max={5} label="Checklist" />);
+    const bar = screen.getByRole('progressbar', { name: 'Checklist' });
+    expect(bar.getAttribute('aria-valuenow')).toBe('3');
+    expect(bar.getAttribute('aria-valuetext')).toBe('3 of 5');
+  });
+
+  it('keeps the value between 0 and max', () => {
+    render(<ProgressMeter value={9} max={5} label="Too much" />);
+    expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe('5');
+  });
+});
+
+describe('Checkbox', () => {
+  it('toggles from its label', async () => {
+    render(<Checkbox label="Ask for a fee waiver" />);
+    const box = screen.getByRole('checkbox', { name: 'Ask for a fee waiver' });
+    await userEvent.click(screen.getByText('Ask for a fee waiver'));
+    expect((box as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('passes an accessibility scan', async () => {
+    const { container } = render(<Checkbox label="Done" defaultChecked />);
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Switch', () => {
+  it('follows the switch pattern and toggles with the keyboard', async () => {
+    let last: boolean | undefined;
+    render(<Switch label="Email reminders" onChange={(v) => (last = v)} />);
+    const sw = screen.getByRole('switch', { name: 'Email reminders' });
+    expect(sw.getAttribute('aria-checked')).toBe('false');
+    sw.focus();
+    await userEvent.keyboard(' ');
+    expect(sw.getAttribute('aria-checked')).toBe('true');
+    expect(last).toBe(true);
+  });
+
+  it('passes an accessibility scan', async () => {
+    const { container } = render(<Switch label="Email reminders" defaultChecked />);
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Divider', () => {
+  it('is announced as a separator', () => {
+    render(<Divider />);
+    expect(screen.getByRole('separator')).toBeTruthy();
+  });
+});

@@ -1,0 +1,70 @@
+/* Callout. A short message inside a page, tinted by what it means. */
+.ds-callout {
+  --_tone: var(--color-status-info-accent-strong);
+  --_body: var(--color-ink-secondary);
+  --_fill: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-card));
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--callout-gap);
+  padding-block: var(--space-3);
+  padding-inline: var(--callout-padding-inline);
+  border: 1px solid color-mix(in srgb, var(--_tone) 20%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--_fill);
+  box-shadow: var(--shadow-rest);
+}
+
+.ds-callout--due {
+  --_tone: var(--color-status-warning-accent-strong);
+}
+.ds-callout--settled {
+  --_tone: var(--color-status-success-accent-strong);
+}
+.ds-callout--overdue {
+  --_tone: var(--color-status-error-accent-strong);
+}
+.ds-callout--quiet {
+  --_tone: var(--color-ink-muted);
+  --_body: var(--color-ink-primary);
+  --_fill: var(--color-surface-card);
+}
+
+.ds-callout__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: var(--callout-icon);
+  block-size: var(--callout-icon);
+  margin-block-start: 1px;
+  border-radius: var(--radius-pill);
+  background: var(--_tone);
+  color: var(--color-ink-inverse);
+  font-family: var(--font-family-body);
+  font-size: var(--type-body-micro-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.ds-callout__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.ds-callout__title,
+.ds-callout__body {
+  margin: 0;
+}
+.ds-callout__title {
+  color: var(--color-ink-primary);
+  font-size: var(--control-font-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.1;
+}
+.ds-callout__body {
+  color: var(--_body);
+  font-size: var(--type-body-small-size);
+  line-height: 1.4;
+}

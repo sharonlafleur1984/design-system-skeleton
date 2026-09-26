@@ -1,0 +1,161 @@
+/* Button. Values come from tokens only, so each product theme restyles it.
+   data-state="hover|pressed" forces a state for Storybook's state gallery. */
+.ds-button {
+  --_bg: transparent;
+  --_ink: var(--color-accent-text);
+  --_ring: transparent;
+  --_shadow: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-block-size: var(--control-height-medium);
+  padding-block: var(--space-1);
+  padding-inline: var(--control-padding-inline-medium);
+  border: 1px solid var(--_ring);
+  border-radius: var(--radius-button);
+  background: var(--_bg);
+  box-shadow: var(--_shadow);
+  color: var(--_ink);
+  font-family: var(--font-family-body);
+  font-size: var(--control-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ds-button:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Sizes (Figma: Small 24, Medium 32, Large 48) */
+.ds-button--small {
+  min-block-size: var(--control-height-small);
+  padding-block: 0;
+  padding-inline: var(--control-padding-inline-small);
+  font-size: var(--type-body-small-size);
+}
+.ds-button--large {
+  min-block-size: var(--control-height-large);
+  padding-inline: var(--control-padding-inline-large);
+  font-size: var(--type-body-large-size);
+}
+
+/* Primary: solid accent, the one main action */
+.ds-button--primary {
+  --_bg: var(--color-accent-base);
+  --_ink: var(--color-accent-ink);
+  --_shadow: var(--shadow-rest), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
+}
+.ds-button--primary:hover:not(:disabled),
+.ds-button--primary[data-state='hover'] {
+  --_bg: var(--color-accent-hover);
+  --_shadow: var(--shadow-hover), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
+}
+.ds-button--primary:active:not(:disabled),
+.ds-button--primary[data-state='pressed'] {
+  --_bg: var(--color-accent-hover);
+  --_shadow: none;
+}
+
+/* Secondary: light surface, for other choices */
+.ds-button--secondary {
+  --_bg: var(--color-surface-card);
+  --_ring: var(--color-border-default);
+  --_shadow: var(--shadow-rest);
+}
+.ds-button--secondary:hover:not(:disabled),
+.ds-button--secondary[data-state='hover'] {
+  --_bg: var(--color-surface-raised);
+  --_shadow: var(--shadow-hover);
+}
+.ds-button--secondary:active:not(:disabled),
+.ds-button--secondary[data-state='pressed'] {
+  --_bg: var(--color-surface-sunken);
+  --_shadow: none;
+}
+
+/* Tertiary: text only, for side trips */
+.ds-button--tertiary {
+  padding-inline: var(--space-1);
+}
+.ds-button--tertiary:hover:not(:disabled),
+.ds-button--tertiary[data-state='hover'] {
+  --_ink: var(--color-accent-text-hover);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.ds-button--tertiary:active:not(:disabled),
+.ds-button--tertiary[data-state='pressed'] {
+  transform: translateY(1px);
+}
+
+/* Destructive: status error colors, never color alone (the label names the action) */
+.ds-button--destructive.ds-button--primary {
+  --_bg: var(--color-status-error-accent-strong);
+  --_ink: var(--color-ink-inverse);
+}
+.ds-button--destructive.ds-button--primary:hover:not(:disabled),
+.ds-button--destructive.ds-button--primary[data-state='hover'],
+.ds-button--destructive.ds-button--primary:active:not(:disabled),
+.ds-button--destructive.ds-button--primary[data-state='pressed'] {
+  --_bg: var(--color-status-error-ink);
+}
+.ds-button--destructive.ds-button--secondary,
+.ds-button--destructive.ds-button--tertiary {
+  --_ink: var(--color-status-error-ink);
+}
+
+/* Disabled (Figma: Is Enabled = False) */
+.ds-button:disabled {
+  --_bg: var(--color-surface-sunken);
+  --_ink: var(--color-ink-disabled);
+  --_ring: transparent;
+  --_shadow: none;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+.ds-button--tertiary:disabled {
+  --_bg: transparent;
+}
+.ds-button[aria-busy='true'] {
+  cursor: progress;
+}
+
+.ds-button__icon {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--control-icon);
+  block-size: var(--control-icon);
+}
+.ds-button__icon svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.ds-button__spinner {
+  inline-size: 1em;
+  block-size: 1em;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: var(--radius-pill);
+  animation: ds-spin 0.8s linear infinite;
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-button__spinner {
+    animation-duration: 2.4s;
+  }
+  .ds-button--tertiary:active:not(:disabled) {
+    transform: none;
+  }
+}
