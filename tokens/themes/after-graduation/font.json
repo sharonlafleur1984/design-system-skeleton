@@ -1,0 +1,32 @@
+{
+  "font": {
+    "family": {
+      "display": {
+        "$type": "fontFamily",
+        "$value": [
+          "Mochiy Pop One",
+          "Lexend",
+          "system-ui",
+          "sans-serif"
+        ]
+      },
+      "body": {
+        "$type": "fontFamily",
+        "$value": [
+          "Lexend",
+          "system-ui",
+          "sans-serif"
+        ]
+      },
+      "data": {
+        "$type": "fontFamily",
+        "$value": [
+          "Lexend",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$description": "The prototype has no data font; uses the body font for now."
+      }
+    }
+  }
+}

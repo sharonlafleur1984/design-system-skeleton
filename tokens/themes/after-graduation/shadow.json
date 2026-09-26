@@ -1,0 +1,52 @@
+{
+  "shadow": {
+    "edge": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(0,0,0,0)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "rest": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(60,20,30,0.10)",
+          "offsetX": "0px",
+          "offsetY": "8px",
+          "blur": "20px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "hover": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(60,20,30,0.10)",
+          "offsetX": "0px",
+          "offsetY": "8px",
+          "blur": "20px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "float": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(224,32,58,0.13)",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "28px",
+          "spread": "0px"
+        }
+      ]
+    }
+  }
+}
