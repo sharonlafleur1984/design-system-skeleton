@@ -1,0 +1,30 @@
+{
+  "font": {
+    "family": {
+      "display": {
+        "$type": "fontFamily",
+        "$value": [
+          "Newsreader",
+          "Georgia",
+          "serif"
+        ]
+      },
+      "body": {
+        "$type": "fontFamily",
+        "$value": [
+          "Archivo",
+          "system-ui",
+          "sans-serif"
+        ]
+      },
+      "data": {
+        "$type": "fontFamily",
+        "$value": [
+          "JetBrains Mono",
+          "ui-monospace",
+          "monospace"
+        ]
+      }
+    }
+  }
+}

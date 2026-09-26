@@ -1,0 +1,25 @@
+# Publishes everything in docs/wiki/ to the GitHub wiki tab.
+# Runs when a change to those pages is merged into main.
+# Edit wiki pages here, in pull requests, not in the wiki tab directly:
+# edits made in the wiki tab are overwritten on the next publish.
+name: Publish wiki
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/wiki/**
+      - .github/workflows/publish-wiki.yml
+  workflow_dispatch:
+concurrency:
+  group: publish-wiki
+  cancel-in-progress: true
+permissions:
+  contents: write
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: docs/wiki/

@@ -1,0 +1,96 @@
+{
+  "color": {
+    "status": {
+      "error": {
+        "surface": {
+          "$type": "color",
+          "$value": "#fce8e5"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#cc584d"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#b34039"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#963130"
+        }
+      },
+      "warning": {
+        "surface": {
+          "$type": "color",
+          "$value": "#fdf5e2"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#dba034"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#855919"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#6b4815"
+        }
+      },
+      "success": {
+        "surface": {
+          "$type": "color",
+          "$value": "#e8f4ec"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#44a06d"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#286d45"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#215838"
+        }
+      },
+      "info": {
+        "surface": {
+          "$type": "color",
+          "$value": "#ebf0fa"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#5173b8"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#405d96"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#364c78"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$type": "color",
+          "$value": "#f1efef"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#a39996"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#716764"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#5f5755"
+        }
+      }
+    }
+  }
+}

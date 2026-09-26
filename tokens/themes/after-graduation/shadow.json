@@ -1,0 +1,66 @@
+{
+  "shadow": {
+    "edge": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(0,0,0,0)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "rest": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(29,26,24,0.06)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(29,26,24,0.06)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "12px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "hover": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(29,26,24,0.08)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "4px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(29,26,24,0.10)",
+          "offsetX": "0px",
+          "offsetY": "10px",
+          "blur": "24px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "float": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(29,26,24,0.16)",
+          "offsetX": "0px",
+          "offsetY": "16px",
+          "blur": "40px",
+          "spread": "0px"
+        }
+      ]
+    }
+  }
+}
