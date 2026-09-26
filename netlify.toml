@@ -1,0 +1,8 @@
+# Netlify builds and hosts Storybook from this repo.
+# Every pull request also gets its own preview link.
+[build]
+  command = "npm run build-storybook"
+  publish = "storybook-static"
+
+[build.environment]
+  NODE_VERSION = "22"

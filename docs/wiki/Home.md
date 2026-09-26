@@ -30,4 +30,4 @@ Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Deci
 |---|---|
 | Code repository | [sharonlafleur1984/design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton) |
 | Life Hub's original design (private) | [Figma, Life Hub Library](https://www.figma.com/design/gVTJl0ARMijPyuMpeprg5c/Life-Hub-Library) |
-| Storybook | Not published yet. Run `npm run storybook`. |
+| Storybook | Hosted on Netlify once it's connected. Locally: `npm run storybook`. |
