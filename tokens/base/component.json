@@ -1,11 +1,17 @@
 {
   "callout": {
     "$description": "Exact sizes from the Figma Callout component.",
-    "gap": { "$type": "dimension", "$value": "10px" },
-    "padding-inline": { "$type": "dimension", "$value": "14px" },
-    "icon": { "$type": "dimension", "$value": "18px" }
-  },
-  "card": {
-    "blur": { "$type": "dimension", "$value": "4px", "$description": "Glass blur behind cards (Figma glass effect radius)." }
+    "gap": {
+      "$type": "dimension",
+      "$value": "10px"
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "14px"
+    },
+    "icon": {
+      "$type": "dimension",
+      "$value": "18px"
+    }
   }
 }

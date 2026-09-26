@@ -33,7 +33,7 @@
   block-size: var(--control-switch-knob);
   border-radius: var(--radius-pill);
   background: var(--color-surface-card);
-  box-shadow: var(--shadow-rest);
+  box-shadow: var(--shadow-rest), var(--shadow-glass);
   transform: translateY(-50%);
 }
 .ds-switch__track[aria-checked='true'] .ds-switch__knob {

@@ -1,4 +1,5 @@
-/* Card. Three levels of emphasis (Figma: transparent 12%, translucent 50%, opaque 100%).
+/* Card. Liquid glass in Life Hub, solid in After Graduation (set by the theme's material tokens).
+   Three levels of emphasis (Figma: transparent 12%, translucent 50%, opaque 100%).
    On a textured page (Life Hub) the lower levels let the texture show through.
    On a plain page (After Graduation) they read as quieter cards. Shadows, not borders, lift them. */
 .ds-card {
@@ -10,14 +11,14 @@
   border: 1px solid color-mix(in srgb, var(--color-surface-card) 60%, transparent);
   border-radius: var(--radius-card);
   background: color-mix(in srgb, var(--color-surface-card) var(--_fill), transparent);
-  box-shadow: var(--shadow-rest), var(--shadow-edge);
-  backdrop-filter: blur(var(--card-blur));
+  box-shadow: var(--shadow-rest), var(--shadow-glass), var(--shadow-edge);
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
   color: var(--color-ink-primary);
 }
 
 .ds-card--transparent {
   --_fill: 12%;
-  box-shadow: var(--shadow-edge);
+  box-shadow: var(--shadow-glass), var(--shadow-edge);
 }
 .ds-card--opaque {
   --_fill: 100%;
@@ -28,7 +29,7 @@
 }
 .ds-card--interactive:hover,
 .ds-card--interactive[data-state='hover'] {
-  box-shadow: var(--shadow-hover), var(--shadow-edge);
+  box-shadow: var(--shadow-hover), var(--shadow-glass), var(--shadow-edge);
 }
 .ds-card--interactive:focus-within {
   outline: 2px solid var(--color-border-focus);

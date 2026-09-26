@@ -48,12 +48,12 @@
 .ds-button--primary {
   --_bg: var(--color-accent-base);
   --_ink: var(--color-accent-ink);
-  --_shadow: var(--shadow-rest), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
+  --_shadow: var(--shadow-rest), var(--shadow-glass), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
 }
 .ds-button--primary:hover:not(:disabled),
 .ds-button--primary[data-state='hover'] {
   --_bg: var(--color-accent-hover);
-  --_shadow: var(--shadow-hover), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
+  --_shadow: var(--shadow-hover), var(--shadow-glass), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
 }
 .ds-button--primary:active:not(:disabled),
 .ds-button--primary[data-state='pressed'] {
@@ -61,16 +61,17 @@
   --_shadow: none;
 }
 
-/* Secondary: light surface, for other choices */
+/* Secondary: glass in Life Hub, a plain light surface in After Graduation. For other choices. */
 .ds-button--secondary {
-  --_bg: var(--color-surface-card);
+  --_bg: var(--color-surface-glass);
   --_ring: var(--color-border-default);
-  --_shadow: var(--shadow-rest);
+  --_shadow: var(--shadow-rest), var(--shadow-glass);
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
 }
 .ds-button--secondary:hover:not(:disabled),
 .ds-button--secondary[data-state='hover'] {
-  --_bg: var(--color-surface-raised);
-  --_shadow: var(--shadow-hover);
+  --_bg: var(--color-surface-glass-strong);
+  --_shadow: var(--shadow-hover), var(--shadow-glass);
 }
 .ds-button--secondary:active:not(:disabled),
 .ds-button--secondary[data-state='pressed'] {

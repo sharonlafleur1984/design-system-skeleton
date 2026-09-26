@@ -23,6 +23,13 @@ const caption: CSSProperties = {
   textTransform: 'uppercase',
 };
 
+// Life Hub pages sit on a marbled texture (Figma: Background Texture, sage-cream for the Dashboard).
+// A small preview image, stretched; the real files are 6000 x 4000.
+const backgrounds: Record<string, string> = {
+  'life-hub': "url('texture-sage-cream.jpg') center / cover, var(--color-surface-page)",
+  'after-graduation': 'var(--color-surface-page)',
+};
+
 /** Shows the same content in every product theme, side by side. */
 export function BothThemes({ children }: { children: ReactNode }) {
   return (
@@ -31,7 +38,7 @@ export function BothThemes({ children }: { children: ReactNode }) {
         ['life-hub', 'Life Hub'],
         ['after-graduation', 'After Graduation'],
       ].map(([theme, name]) => (
-        <section key={theme} data-theme={theme} style={panel} aria-label={name}>
+        <section key={theme} data-theme={theme} style={{ ...panel, background: backgrounds[theme] }} aria-label={name}>
           <p style={caption}>{name}</p>
           {children}
         </section>
