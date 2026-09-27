@@ -8,6 +8,7 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
   /**
    * How much the card stands out.
    * transparent: ambient, context. translucent: the default. opaque: primary, focused content.
+   * Never glass: glass is only for controls.
    */
   variant?: CardVariant;
   /** Lifts on hover. Use only when the whole card is a link or button inside. */

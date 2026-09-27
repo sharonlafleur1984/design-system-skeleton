@@ -1,8 +1,8 @@
-/* Callout. A short message inside a page, tinted by what it means. */
+/* Callout. A short message inside a page, tinted by what it means. Content, so solid, never glass. */
 .ds-callout {
   --_tone: var(--color-status-info-accent-strong);
   --_body: var(--color-ink-secondary);
-  --_fill: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-glass));
+  --_fill: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-card));
 
   display: flex;
   align-items: flex-start;
@@ -12,8 +12,7 @@
   border: 1px solid color-mix(in srgb, var(--_tone) 20%, transparent);
   border-radius: var(--radius-lg);
   background: var(--_fill);
-  box-shadow: var(--shadow-rest), var(--shadow-glass);
-  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+  box-shadow: var(--shadow-rest);
 }
 
 .ds-callout--due {
@@ -28,7 +27,7 @@
 .ds-callout--quiet {
   --_tone: var(--color-ink-muted);
   --_body: var(--color-ink-primary);
-  --_fill: var(--color-surface-glass);
+  --_fill: var(--color-surface-card);
 }
 
 .ds-callout__icon {

@@ -1,6 +1,6 @@
 {
   "material": {
-    "$description": "How surfaces are made. Life Hub is liquid glass over a texture; After Graduation is solid and quiet.",
+    "$description": "Glass is for controls only (buttons, top bar, navigation, pills), never content. Life Hub controls are liquid glass over a texture; After Graduation controls are solid and quiet.",
     "blur": {
       "$type": "dimension",
       "$value": "0px"

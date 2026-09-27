@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card } from './card';
+import { Button } from '../button/button';
 import { BothThemes } from '../story-helpers';
 
 const meta: Meta<typeof Card> = {
@@ -16,6 +17,8 @@ const meta: Meta<typeof Card> = {
           '**When to use:** Opaque for the main, focused content. Translucent for most cards. Transparent for background context.',
           '',
           '**When not to:** To box a single line of text, or to nest cards inside cards.',
+          '',
+          '**Glass:** cards are content, so they are never glass. Glass is only for controls (buttons, navigation, pills), which keeps glass off glass.',
           '',
           '**Do:** Let shadows lift cards; no borders needed. **Don\'t:** Make a card interactive unless the whole card does one thing.',
           '',
@@ -54,6 +57,20 @@ export const States: Story = {
     <BothThemes>
       <Card variant="opaque" interactive><Content title="Rest" /></Card>
       <Card variant="opaque" interactive data-state="hover"><Content title="Hover" /></Card>
+    </BothThemes>
+  ),
+};
+
+export const WithControls: Story = {
+  render: () => (
+    <BothThemes>
+      <Card variant="translucent">
+        <Content title="Solid card, glass controls" />
+        <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
+          <Button size="small">Open</Button>
+          <Button size="small" variant="secondary">Later</Button>
+        </div>
+      </Card>
     </BothThemes>
   ),
 };

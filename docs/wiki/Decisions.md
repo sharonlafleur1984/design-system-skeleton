@@ -1,8 +1,19 @@
 # Decisions
 
-**Last updated:** September 26, 2026
+**Last updated:** September 27, 2026
 
 Newest first.
+
+<details>
+<summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
+
+- **Decided by:** Sharon
+- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere.
+- **Why:** closest to Apple's Liquid Glass guidance (glass is the layer that floats above content) and easiest to read.
+- **Other options:** glass everywhere as in the Figma file, with a solid fallback; or both.
+- **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [CSS-Tricks](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/)
+
+</details>
 
 <details>
 <summary><b>Sep 26, 2026:</b> After Graduation is quiet by default: color only communicates</summary>
