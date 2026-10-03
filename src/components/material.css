@@ -1,0 +1,19 @@
+/* Glass falls back to solid for people who ask for it, the way Apple's Liquid Glass does:
+   Reduce Transparency (prefers-reduced-transparency) and Increase Contrast (prefers-contrast: more).
+   The doubled attribute selector outranks each theme's [data-theme="..."] tokens, whatever order the CSS loads in. */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  [data-theme][data-theme] {
+    --material-blur: 0;
+    --material-saturate: 1;
+    --color-surface-glass: var(--color-surface-card);
+    --color-surface-glass-strong: var(--color-surface-raised);
+    --shadow-glass: inset 0 0 0 0 transparent;
+  }
+}
+
+/* Increase Contrast also gets firmer edges on controls. */
+@media (prefers-contrast: more) {
+  [data-theme][data-theme] {
+    --color-border-default: var(--color-border-strong);
+  }
+}

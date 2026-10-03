@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import type { InputHTMLAttributes, ReactNode } from 'react';
+import '../material.css';
 import './checkbox.css';
 
 // Mirrors the Figma "Checkbox" set: checked (true, false) and state (rest, hover, focus, disabled).

@@ -1,5 +1,6 @@
 import { useId, useState } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import '../material.css';
 import './switch.css';
 
 // Mirrors the Figma "Switch" set: checked (true, false).

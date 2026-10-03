@@ -1,4 +1,5 @@
 import './shared.css';
+import './material.css';
 
 export { Button } from './button/button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './button/button';

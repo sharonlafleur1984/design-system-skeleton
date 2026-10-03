@@ -25,6 +25,8 @@ const meta: Meta<typeof Button> = {
           '',
           '**Do:** Start the label with a verb that says what happens ("Add school"). **Don\'t:** Use "Submit" or "Click here".',
           '',
+          '**Glass:** in Life Hub, buttons are liquid glass. People who turn on Reduce Transparency or Increase Contrast get solid buttons instead.',
+          '',
           '**Accessibility:** A real `<button>`. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading sets `aria-busy`.',
         ].join('\n'),
       },
