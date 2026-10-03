@@ -1,4 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import '../material.css';
 import './button.css';
 
 // Mirrors the Figma "Button" component set: Style, Size, Destructive, Is Enabled, Show Icon.

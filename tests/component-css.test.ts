@@ -35,3 +35,15 @@ describe('component CSS uses tokens only', () => {
     });
   }
 });
+
+describe('glass falls back to solid when people ask for it', () => {
+  const css = readFileSync('src/components/material.css', 'utf8');
+  it('honors Reduce Transparency and Increase Contrast', () => {
+    expect(css).toContain('prefers-reduced-transparency: reduce');
+    expect(css).toContain('prefers-contrast: more');
+  });
+  it('turns off blur and uses the solid card color', () => {
+    expect(css).toMatch(/--material-blur:\s*0;/);
+    expect(css).toContain('--color-surface-glass: var(--color-surface-card)');
+  });
+});
