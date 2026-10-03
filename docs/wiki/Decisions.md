@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 3, 2026:</b> Storybook is the source of truth, guarded by a token lock and visual tests</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Figma is for ideas; the exact rules live in code and Storybook. Two checks guard against drift: a token lock (every token value saved in the repo, any change shown and approved in the pull request) and visual tests (every story screenshotted at phone, tablet and desktop, compared with approved screenshots). The Life Hub Figma export test is retired; the token lock replaces it and covers both themes.
+- **Why:** the Figma test only covered Life Hub, and checked a frozen export instead of the system itself. After Graduation had no guard at all.
+- **Other options:** Chromatic for visual tests (nicer review screen, but another account to manage).
+- **Replaces:** Sep 26, "Life Hub's Figma library doesn't change." Figma now follows the code.
+
+</details>
+
+<details>
 <summary><b>Oct 3, 2026:</b> Each theme sets its own text sizes, and headings shrink on phones</summary>
 
 - **Decided by:** Sharon

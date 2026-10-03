@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/react-vite';
 import '../build/css/life-hub.css';
 import '../build/css/after-graduation.css';
+import './fonts.css';
 import './preview.css';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
