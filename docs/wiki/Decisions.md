@@ -1,8 +1,18 @@
 # Decisions
 
-**Last updated:** September 27, 2026
+**Last updated:** October 3, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 3, 2026:</b> After Graduation display type is tuned for Mochiy Pop One</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's display styles use regular weight, looser lines (1.15 to 1.25), no negative letter spacing, and sizes that shrink on phones: 40 to 64px down to 26 to 32px. The title heading is 22 to 26px so it always sits below the display sizes. Life Hub doesn't change.
+- **Why:** the display styles were copied from Life Hub's serif. Mochiy Pop One has one weight and tall letters, so the browser faked a bold, lines collided, and 112px text didn't fit on a phone. The prototype never set Mochiy headings above 24px.
+- **How it's kept:** a test checks the weight, line height, letter spacing and that every heading level stays bigger than the next at 320, 768, 1280 and 1920px wide.
+
+</details>
 
 <details>
 <summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
