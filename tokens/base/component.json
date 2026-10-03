@@ -1,0 +1,17 @@
+{
+  "callout": {
+    "$description": "Exact sizes from the Figma Callout component.",
+    "gap": {
+      "$type": "dimension",
+      "$value": "10px"
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "14px"
+    },
+    "icon": {
+      "$type": "dimension",
+      "$value": "18px"
+    }
+  }
+}

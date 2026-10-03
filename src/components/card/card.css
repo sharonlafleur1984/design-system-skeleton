@@ -1,0 +1,41 @@
+/* Card. Content, so never glass: glass is only for controls (Sharon's decision, Sep 27 2026, following Apple's
+   Liquid Glass guidance). Cards are solid or lightly translucent, with no blur, so a glass button inside a card
+   is never glass on glass. Three levels of emphasis; shadows, not borders, lift them. */
+.ds-card {
+  --_fill: 88%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--color-surface-card) 60%, transparent);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-surface-card) var(--_fill), transparent);
+  box-shadow: var(--shadow-rest), var(--shadow-edge);
+  color: var(--color-ink-primary);
+}
+
+.ds-card--transparent {
+  --_fill: 70%;
+  box-shadow: var(--shadow-edge);
+}
+.ds-card--opaque {
+  --_fill: 100%;
+}
+
+.ds-card--interactive {
+  cursor: pointer;
+}
+.ds-card--interactive:hover,
+.ds-card--interactive[data-state='hover'] {
+  box-shadow: var(--shadow-hover), var(--shadow-edge);
+}
+.ds-card--interactive:focus-within {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-card--interactive {
+    transition: box-shadow 0.2s ease;
+  }
+}

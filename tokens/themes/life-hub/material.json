@@ -1,0 +1,51 @@
+{
+  "material": {
+    "$description": "Glass is for controls only (buttons, top bar, navigation, pills), never content. Life Hub controls are liquid glass over a texture; After Graduation controls are solid and quiet.",
+    "blur": {
+      "$type": "dimension",
+      "$value": "6px"
+    },
+    "saturate": {
+      "$type": "number",
+      "$value": 1.4
+    }
+  },
+  "color": {
+    "surface": {
+      "glass": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.35)",
+        "$description": "Fill for glass controls and cards."
+      },
+      "glass-strong": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.55)",
+        "$description": "Glass fill on hover."
+      }
+    }
+  },
+  "shadow": {
+    "glass": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(255,255,255,0.70)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        },
+        {
+          "color": "rgba(255,255,255,0.25)",
+          "offsetX": "0px",
+          "offsetY": "-1px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "Inner light along the edges of a glass surface."
+    }
+  }
+}

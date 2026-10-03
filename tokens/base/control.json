@@ -1,0 +1,71 @@
+{
+  "control": {
+    "$description": "Sizes for interactive controls, from the Life Hub Design System Figma components (Button, Checkbox, Switch).",
+    "height": {
+      "small": {
+        "$type": "dimension",
+        "$value": "24px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "32px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "48px"
+      }
+    },
+    "padding-inline": {
+      "small": {
+        "$type": "dimension",
+        "$value": "10px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "16px"
+      }
+    },
+    "font-size": {
+      "$type": "dimension",
+      "$value": "14px",
+      "$description": "Button and form control labels (Figma: 14px, medium weight)."
+    },
+    "icon": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "box": {
+      "$type": "dimension",
+      "$value": "20px",
+      "$description": "Checkbox square."
+    },
+    "switch": {
+      "width": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "24px"
+      },
+      "knob": {
+        "$type": "dimension",
+        "$value": "18px"
+      }
+    },
+    "meter": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "ProgressMeter track height."
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "Space between a control and its label (Figma: 10px)."
+    }
+  }
+}
