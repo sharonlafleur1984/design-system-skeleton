@@ -27,6 +27,17 @@ const preview: Preview = {
       return <Story />;
     },
   ],
-  parameters: { a11y: { test: 'error' }, layout: 'padded' },
+  parameters: {
+    a11y: { test: 'error' },
+    layout: 'padded',
+    // Material 3 screen classes. Pick one in the toolbar to see the tokens change.
+    viewport: {
+      options: {
+        compact: { name: 'Phone (compact)', styles: { width: '390px', height: '844px' }, type: 'mobile' },
+        medium: { name: 'Tablet (medium)', styles: { width: '768px', height: '1024px' }, type: 'tablet' },
+        expanded: { name: 'Desktop (expanded)', styles: { width: '1280px', height: '800px' }, type: 'desktop' },
+      },
+    },
+  },
 };
 export default preview;

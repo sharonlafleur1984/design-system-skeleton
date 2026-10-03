@@ -6,7 +6,7 @@ One design system for all my products: a shared base, with a theme for each prod
 
 **The fix:** one system underneath, a different look on top.
 
-- **The shared base:** structure and naming, spacing and type scales, radius, one status color set (error, warning, success, info, neutral), and accessibility rules.
+- **The shared base:** structure and naming, the spacing scale, type line heights and weights, radius, one status color set (error, warning, success, info, neutral), and accessibility rules.
 - **A theme per product:** Life Hub, After Graduation and, later, my designer toolkit each bring their own colors, fonts and personality.
 
 Fix something in the base once, and every product gets it.

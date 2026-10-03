@@ -1,0 +1,131 @@
+{
+  "type": {
+    "display-cover": {
+      "size": {
+        "$type": "dimension",
+        "$value": "112px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "56px",
+            "medium": "80px"
+          }
+        }
+      }
+    },
+    "display-xl": {
+      "size": {
+        "$type": "dimension",
+        "$value": "72px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "40px",
+            "medium": "56px"
+          }
+        }
+      }
+    },
+    "display-l": {
+      "size": {
+        "$type": "dimension",
+        "$value": "52px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "34px",
+            "medium": "42px"
+          }
+        }
+      }
+    },
+    "display-m": {
+      "size": {
+        "$type": "dimension",
+        "$value": "38px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "28px",
+            "medium": "32px"
+          }
+        }
+      }
+    },
+    "heading-title": {
+      "size": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "24px",
+            "medium": "26px"
+          }
+        }
+      }
+    },
+    "heading-heading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "21px"
+      }
+    },
+    "heading-subheading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "17px"
+      }
+    },
+    "body-large": {
+      "size": {
+        "$type": "dimension",
+        "$value": "16px"
+      }
+    },
+    "body-default": {
+      "size": {
+        "$type": "dimension",
+        "$value": "15px"
+      }
+    },
+    "body-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "13px"
+      }
+    },
+    "body-micro": {
+      "size": {
+        "$type": "dimension",
+        "$value": "11px"
+      }
+    },
+    "label-caps": {
+      "size": {
+        "$type": "dimension",
+        "$value": "13px"
+      }
+    },
+    "label-banner": {
+      "size": {
+        "$type": "dimension",
+        "$value": "11px"
+      }
+    },
+    "data-default": {
+      "size": {
+        "$type": "dimension",
+        "$value": "15px"
+      }
+    },
+    "data-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "13px"
+      }
+    },
+    "data-micro": {
+      "size": {
+        "$type": "dimension",
+        "$value": "11px"
+      }
+    },
+    "$description": "Sizes from the Life Hub Figma library (Sep 26, 2026). Phone and tablet sizes added Oct 3, 2026."
+  }
+}

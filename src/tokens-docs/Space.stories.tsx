@@ -20,6 +20,20 @@ export const Space: StoryObj = {
   ),
 };
 
+/** Page spacing that changes by screen class. Switch the viewport to see it change. */
+export const Layout: StoryObj = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
+      {namesWith('layout-').map((n) => (
+        <div key={n} style={{ display: 'grid', gridTemplateColumns: '140px 1fr', alignItems: 'center', gap: 'var(--space-4)' }}>
+          <code style={label}>--{n}</code>
+          <div style={{ height: 12, width: `var(--${n})`, background: 'var(--color-accent-base)', borderRadius: 'var(--radius-xs)' }} />
+        </div>
+      ))}
+    </div>
+  ),
+};
+
 const Box = ({ style, name }: { style: React.CSSProperties; name: string }) => (
   <figure style={{ margin: 0, display: 'grid', gap: 'var(--space-2)' }}>
     <div style={{ height: 88, background: 'var(--color-surface-card)', border: '1px solid var(--color-border-default)', ...style }} />

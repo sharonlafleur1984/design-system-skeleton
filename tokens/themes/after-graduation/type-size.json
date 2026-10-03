@@ -1,0 +1,131 @@
+{
+  "type": {
+    "display-cover": {
+      "size": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "30px",
+            "medium": "40px"
+          }
+        }
+      }
+    },
+    "display-xl": {
+      "size": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "28px",
+            "medium": "34px"
+          }
+        }
+      }
+    },
+    "display-l": {
+      "size": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "24px",
+            "medium": "28px"
+          }
+        }
+      }
+    },
+    "display-m": {
+      "size": {
+        "$type": "dimension",
+        "$value": "26px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "22px",
+            "medium": "24px"
+          }
+        }
+      }
+    },
+    "heading-title": {
+      "size": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "18px",
+            "medium": "20px"
+          }
+        }
+      }
+    },
+    "heading-heading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "17px"
+      }
+    },
+    "heading-subheading": {
+      "size": {
+        "$type": "dimension",
+        "$value": "15px"
+      }
+    },
+    "body-large": {
+      "size": {
+        "$type": "dimension",
+        "$value": "17px"
+      }
+    },
+    "body-default": {
+      "size": {
+        "$type": "dimension",
+        "$value": "15px"
+      }
+    },
+    "body-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "14px"
+      }
+    },
+    "body-micro": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      }
+    },
+    "label-caps": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      }
+    },
+    "label-banner": {
+      "size": {
+        "$type": "dimension",
+        "$value": "11px"
+      }
+    },
+    "data-default": {
+      "size": {
+        "$type": "dimension",
+        "$value": "15px"
+      }
+    },
+    "data-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "14px"
+      }
+    },
+    "data-micro": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      }
+    },
+    "$description": "Sizes measured from the After Graduation site at desktop width (Oct 3, 2026). Phone and tablet sizes added the same day."
+  }
+}
