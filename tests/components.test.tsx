@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider } from '../src/components';
+import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton } from '../src/components';
 
 afterEach(cleanup);
 
@@ -122,5 +122,46 @@ describe('Divider', () => {
   it('is announced as a separator', () => {
     render(<Divider />);
     expect(screen.getByRole('separator')).toBeTruthy();
+  });
+});
+
+describe('Link', () => {
+  it('is a real link with its level as a class', () => {
+    render(<Link href="/dates">Important Dates</Link>);
+    const a = screen.getByRole('link', { name: 'Important Dates' });
+    expect(a.getAttribute('href')).toBe('/dates');
+    expect(a.className).toContain('ds-link--inline');
+  });
+
+  it('quiet level', () => {
+    render(<Link level="quiet" href="#">View task</Link>);
+    expect(screen.getByRole('link', { name: 'View task' }).className).toContain('ds-link--quiet');
+  });
+
+  it('outside links open safely in a new tab and say so', () => {
+    render(<Link href="https://studentaid.gov" external>Federal Student Aid</Link>);
+    const a = screen.getByRole('link', { name: /^Federal Student Aid\s*\(opens in a new tab\)$/ });
+    expect(a.getAttribute('target')).toBe('_blank');
+    expect(a.getAttribute('rel')).toBe('noopener noreferrer');
+  });
+
+  it('LinkButton is a real button that runs its action, quiet by default', async () => {
+    let clicks = 0;
+    render(<LinkButton onClick={() => clicks++}>Show full year</LinkButton>);
+    const b = screen.getByRole('button', { name: 'Show full year' });
+    await userEvent.click(b);
+    expect(clicks).toBe(1);
+    expect(b.getAttribute('type')).toBe('button');
+    expect(b.className).toContain('ds-link--quiet');
+  });
+
+  it('has no accessibility problems', async () => {
+    const { container } = render(
+      <p>
+        See <Link href="#">Important Dates</Link>, <Link level="quiet" href="https://x.org" external>source</Link>,{' '}
+        <LinkButton>Show full year</LinkButton>
+      </p>,
+    );
+    await expectNoAxeViolations(container);
   });
 });
