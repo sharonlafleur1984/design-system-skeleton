@@ -5,9 +5,9 @@
     "expanded": "24px"
   },
   "layout-section": {
-    "compact": "32px",
-    "medium": "40px",
-    "expanded": "48px"
+    "compact": "24px",
+    "medium": "32px",
+    "expanded": "40px"
   },
   "layout-title-gap": {
     "compact": "16px",

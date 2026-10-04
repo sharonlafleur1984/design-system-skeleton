@@ -1,6 +1,6 @@
 {
   "layout": {
-    "$description": "Page layout spacing that changes by screen class: compact under 600px, medium 600 to 839px, expanded 840px and up (Material 3 window size classes). Rule: big spaces shrink to about two thirds on phones; small spacing inside components never changes.",
+    "$description": "Page layout spacing that changes by screen class: compact under 600px, medium 600 to 839px, expanded 840px and up (Material 3 window size classes). Rules (tested): every value is a step on the space scale, and a smaller screen never gets more space. Big spaces shrink on phones; spacing inside components never changes.",
     "gutter": {
       "$type": "dimension",
       "$value": "24px",
@@ -14,12 +14,12 @@
     },
     "section": {
       "$type": "dimension",
-      "$value": "48px",
+      "$value": "40px",
       "$description": "Space between major sections of a page.",
       "$extensions": {
         "com.sharon.screen-class": {
-          "compact": "32px",
-          "medium": "40px"
+          "compact": "24px",
+          "medium": "32px"
         }
       }
     },
