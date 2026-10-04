@@ -92,7 +92,6 @@
   "color-border-default": "#ddd5cc",
   "color-border-strong": "#bab2af",
   "color-border-focus": "#5f7642",
-  "color-border-glass-on-art": "rgba(255, 255, 255, 0.7)",
   "color-accent-base": "#5f7642",
   "color-accent-hover": "#4c6037",
   "color-accent-surface": "#ebf0e5",
@@ -316,8 +315,11 @@
   "material-saturate": 1.4,
   "material-blur-on-art": "6px",
   "shadow-glass": "inset 0px 1px 0px 0px rgba(255,255,255,0.70), inset 0px -1px 0px 0px rgba(255,255,255,0.25)",
+  "shadow-glass-on-art": "inset 0px 0px 12px 0px rgba(255,255,255,0.06), 0px 6px 18px 0px rgba(29,26,24,0.18)",
   "shadow-edge": "inset 0px 1px 0px 0px rgba(255,250,241,0.90)",
   "shadow-rest": "0px 1px 2px 0px rgba(6,48,44,0.05)",
   "shadow-hover": "-1px 2px 4px 0px rgba(6,48,44,0.06), -1px 8px 18px -10px rgba(6,48,44,0.16)",
-  "shadow-float": "-2px 4px 10px 0px rgba(6,48,44,0.07), -2px 24px 48px -20px rgba(6,48,44,0.26)"
+  "shadow-float": "-2px 4px 10px 0px rgba(6,48,44,0.07), -2px 24px 48px -20px rgba(6,48,44,0.26)",
+  "glass-rim-width": "1px",
+  "glass-rim-color": "rgba(255, 255, 255, 0.7)"
 }

@@ -9,7 +9,8 @@ Newest first.
 
 - **Decided by:** Sharon
 - **Decision:** After Graduation controls that float on artwork are glass, so the art shows through: the header episode buttons, the school tags on the race lanes, and the bottom navigation bar. Controls on a plain page stay solid, and cards and other content are never glass. This updates the Sep 27 rule that After Graduation stays solid everywhere.
-- **Tokens:** `color.surface.glass-on-art`, `color.surface.glass-on-art-selected`, `color.border.glass-on-art`, `material.blur-on-art`. Life Hub maps them to its own glass.
+- **Tokens:** `color.surface.glass-on-art` (nearly clear, 5% white), `color.surface.glass-on-art-selected`, `material.blur-on-art` (2px), `glass.rim.width` (1px) and `glass.rim.color`, and `shadow.glass-on-art`. Life Hub maps them to its own glass.
+- **Look (Sharon picked it from iOS folder glass):** no border. A 1px rim lit at the top-right and bottom-left that eases in and out, a faint inner glow and a soft shadow. The rim is adapted from [react-glass-rim](https://github.com/royroki/react-glass-rim) (MIT). Small labels on clear glass get a faint text shadow to stay readable.
 - **Readability:** the selected control is white at 88% with no blur, so the rays show faintly (Sharon picked 88 over 65, 75 and 82, which looked too pink). Its text uses the deepest red, which stays at 4.5:1 or better over the brightest ray. With Reduce Transparency on, glass turns solid.
 - **Why:** it fits the anime look over the illustrations, and keeping it to small controls on art keeps text readable.
 - **Other options:** stay solid everywhere; or glass on every control.

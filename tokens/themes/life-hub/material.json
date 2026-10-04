@@ -12,7 +12,7 @@
     "blur-on-art": {
       "$type": "dimension",
       "$value": "6px",
-      "$description": "Blur behind a control that floats on artwork."
+      "$description": "Light blur behind a control on artwork, so the art still reads clearly through it."
     }
   },
   "color": {
@@ -38,13 +38,7 @@
         "$description": "Selected control on artwork. Same as glass on hover."
       }
     },
-    "border": {
-      "glass-on-art": {
-        "$type": "color",
-        "$value": "rgba(255,255,255,0.70)",
-        "$description": "Light edge around a control on artwork."
-      }
-    }
+    "border": {}
   },
   "shadow": {
     "glass": {
@@ -68,6 +62,41 @@
         }
       ],
       "$description": "Inner light along the edges of a glass surface."
+    },
+    "glass-on-art": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(255,255,255,0.06)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "12px",
+          "spread": "0px",
+          "inset": true
+        },
+        {
+          "color": "rgba(29,26,24,0.18)",
+          "offsetX": "0px",
+          "offsetY": "6px",
+          "blur": "18px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Faint inner glow plus a soft shadow under glass on artwork, so it lifts off busy art."
+    }
+  },
+  "glass": {
+    "rim": {
+      "$description": "The lit edge of glass on artwork, instead of a border. Light enters at the top-right and leaves at the bottom-left, easing in and out; the other corners stay dark. Drawn as a conic gradient masked to the rim, adapted from react-glass-rim (MIT). Measured from iOS folder glass.",
+      "width": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.7)",
+        "$description": "Brightest point of the rim."
+      }
     }
   }
 }

@@ -11,8 +11,8 @@
     },
     "blur-on-art": {
       "$type": "dimension",
-      "$value": "8px",
-      "$description": "Blur behind a control that floats on artwork."
+      "$value": "2px",
+      "$description": "Light blur behind a control on artwork, so the art still reads clearly through it."
     }
   },
   "color": {
@@ -29,8 +29,8 @@
       },
       "glass-on-art": {
         "$type": "color",
-        "$value": "rgba(255,255,255,0.14)",
-        "$description": "Fill for a control floating on artwork, so the art shows through."
+        "$value": "rgba(255,255,255,0.05)",
+        "$description": "Nearly clear fill for a control on artwork, like iOS folder glass: the art shows through almost unchanged."
       },
       "glass-on-art-selected": {
         "$type": "color",
@@ -38,13 +38,7 @@
         "$description": "Selected control on artwork: mostly solid white with no blur, so the art's rays show faintly. Text on it uses the deepest red, which stays at 4.5:1 or better."
       }
     },
-    "border": {
-      "glass-on-art": {
-        "$type": "color",
-        "$value": "rgba(255,255,255,0.45)",
-        "$description": "Light edge around a control on artwork."
-      }
-    }
+    "border": {}
   },
   "shadow": {
     "glass": {
@@ -60,6 +54,41 @@
         }
       ],
       "$description": "Inner light along the edges of a glass surface."
+    },
+    "glass-on-art": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(255,255,255,0.06)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "12px",
+          "spread": "0px",
+          "inset": true
+        },
+        {
+          "color": "rgba(60,0,15,0.28)",
+          "offsetX": "0px",
+          "offsetY": "6px",
+          "blur": "18px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Faint inner glow plus a soft shadow under glass on artwork, so it lifts off busy art."
+    }
+  },
+  "glass": {
+    "rim": {
+      "$description": "The lit edge of glass on artwork, instead of a border. Light enters at the top-right and leaves at the bottom-left, easing in and out; the other corners stay dark. Drawn as a conic gradient masked to the rim, adapted from react-glass-rim (MIT). Measured from iOS folder glass.",
+      "width": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.8)",
+        "$description": "Brightest point of the rim."
+      }
     }
   }
 }
