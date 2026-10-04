@@ -17,10 +17,6 @@
   },
   "type": {
     "display-cover": {
-      "size": {
-        "$type": "dimension",
-        "$value": "112px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.02
@@ -39,10 +35,6 @@
       }
     },
     "display-xl": {
-      "size": {
-        "$type": "dimension",
-        "$value": "72px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.02
@@ -61,10 +53,6 @@
       }
     },
     "display-l": {
-      "size": {
-        "$type": "dimension",
-        "$value": "52px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.02
@@ -83,10 +71,6 @@
       }
     },
     "display-m": {
-      "size": {
-        "$type": "dimension",
-        "$value": "38px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -105,10 +89,6 @@
       }
     },
     "heading-title": {
-      "size": {
-        "$type": "dimension",
-        "$value": "28px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -127,10 +107,6 @@
       }
     },
     "heading-heading": {
-      "size": {
-        "$type": "dimension",
-        "$value": "21px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -149,10 +125,6 @@
       }
     },
     "heading-subheading": {
-      "size": {
-        "$type": "dimension",
-        "$value": "17px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -171,10 +143,6 @@
       }
     },
     "body-large": {
-      "size": {
-        "$type": "dimension",
-        "$value": "16px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -193,10 +161,6 @@
       }
     },
     "body-default": {
-      "size": {
-        "$type": "dimension",
-        "$value": "15px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -215,10 +179,6 @@
       }
     },
     "body-small": {
-      "size": {
-        "$type": "dimension",
-        "$value": "13px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -237,10 +197,6 @@
       }
     },
     "body-micro": {
-      "size": {
-        "$type": "dimension",
-        "$value": "11px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -259,10 +215,6 @@
       }
     },
     "label-caps": {
-      "size": {
-        "$type": "dimension",
-        "$value": "13px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -281,10 +233,6 @@
       }
     },
     "label-banner": {
-      "size": {
-        "$type": "dimension",
-        "$value": "11px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.18
@@ -303,10 +251,6 @@
       }
     },
     "data-default": {
-      "size": {
-        "$type": "dimension",
-        "$value": "15px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -325,10 +269,6 @@
       }
     },
     "data-small": {
-      "size": {
-        "$type": "dimension",
-        "$value": "13px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5
@@ -347,10 +287,6 @@
       }
     },
     "data-micro": {
-      "size": {
-        "$type": "dimension",
-        "$value": "11px"
-      },
       "line-height": {
         "$type": "number",
         "$value": 1.5

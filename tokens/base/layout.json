@@ -1,0 +1,27 @@
+{
+  "layout": {
+    "$description": "Page layout spacing that changes by screen class: compact under 600px, medium 600 to 839px, expanded 840px and up (Material 3 window size classes).",
+    "gutter": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Space between the page edge and content.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "16px",
+          "medium": "24px"
+        }
+      }
+    },
+    "section": {
+      "$type": "dimension",
+      "$value": "64px",
+      "$description": "Space between major sections of a page.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "32px",
+          "medium": "48px"
+        }
+      }
+    }
+  }
+}
