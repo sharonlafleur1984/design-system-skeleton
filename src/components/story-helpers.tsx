@@ -17,7 +17,7 @@ const panel: CSSProperties = {
 const caption: CSSProperties = {
   margin: 0,
   color: 'var(--color-ink-tertiary)',
-  fontSize: 'var(--type-label-caps-size)',
+  fontSize: 'var(--type-label-size)',
   fontWeight: 'var(--font-weight-semibold)' as CSSProperties['fontWeight'],
   letterSpacing: '0.06em',
   textTransform: 'uppercase',

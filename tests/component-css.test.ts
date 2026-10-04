@@ -29,6 +29,13 @@ describe('component CSS uses tokens only', () => {
       expect(colors).toEqual([]);
     });
 
+    it(`${file}: no raw font weights (weights come from type styles and font-weight tokens)`, () => {
+      const weights = [...css.matchAll(/font-weight\s*:\s*([^;}]+)/g)]
+        .map((m) => m[1].trim())
+        .filter((v) => !v.startsWith('var(') && v !== 'inherit');
+      expect(weights).toEqual([]);
+    });
+
     it(`${file}: no raw sizes except 1px and 2px hairlines`, () => {
       const sizes = (css.match(/\b\d+(?:\.\d+)?px\b/g) ?? []).filter((v) => v !== '1px' && v !== '2px');
       expect(sizes).toEqual([]);
