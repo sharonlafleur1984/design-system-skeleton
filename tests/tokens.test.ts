@@ -14,7 +14,7 @@ const load = (t: string): Record<string, string> =>
 
 // Theme-only extras (a product's own palette, Life Hub areas, After Graduation categories)
 // are allowed to differ. Everything else is the shared contract.
-const themeOnly = /^(palette|color-area|color-category)-/;
+const themeOnly = /^(palette|color-area|color-category|shell)-/;
 const contract = (t: string) => Object.keys(load(t)).filter((k) => !themeOnly.test(k)).sort();
 
 describe('contract', () => {
@@ -72,7 +72,8 @@ const px = (v: string) => Number.parseFloat(v);
 describe('screen classes', () => {
   for (const t of themes) {
     it(`${t} changes the same tokens as ${themes[0]}`, () => {
-      expect(Object.keys(screenClasses(t)).sort()).toEqual(Object.keys(screenClasses(themes[0])).sort());
+      const shared = (x: string) => Object.keys(screenClasses(x)).filter((k) => !themeOnly.test(k)).sort();
+      expect(shared(t)).toEqual(shared(themes[0]));
     });
     for (const [name, s] of Object.entries(screenClasses(t))) {
       it(`${t}: ${name} goes phone ≤ tablet ≤ desktop`, () => {

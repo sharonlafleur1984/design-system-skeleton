@@ -220,5 +220,9 @@
   "shadow-edge": "0px 0px 0px 0px rgba(0,0,0,0)",
   "shadow-rest": "0px 1px 2px 0px rgba(29,26,24,0.06), 0px 4px 12px 0px rgba(29,26,24,0.06)",
   "shadow-hover": "0px 2px 4px 0px rgba(29,26,24,0.08), 0px 10px 24px 0px rgba(29,26,24,0.10)",
-  "shadow-float": "0px 16px 40px 0px rgba(29,26,24,0.16)"
+  "shadow-float": "0px 16px 40px 0px rgba(29,26,24,0.16)",
+  "shell-sheet-inset": "16px",
+  "shell-sheet-overlap": "40px",
+  "shell-sheet-radius": "24px",
+  "shell-frame": "#6e0f20"
 }
