@@ -5,6 +5,19 @@
 Newest first.
 
 <details>
+<summary><b>Oct 4, 2026:</b> After Graduation's React rebuild uses React Aria Components</summary>
+
+- **Decided by:** Sharon
+- **Decision:** interactive components in the After Graduation rebuild (accordion rows, tabs, bottom navigation, dialogs, date pickers) are built on React Aria Components and styled with our tokens. One library everywhere; no mixing.
+- **Why:** the planner is built around dates, and some students have an IEP or 504 plan. React Aria handles focus, keyboard and screen reader behavior and tests it with real screen readers every release, including date pickers. AI can write UI fast, but it often misses these basics, and automated tests catch only part of them.
+- **Other options:** Base UI (newest, strongest shadcn and AI-prototyping ecosystem, but no date components and focus is left to us); Base UI plus React Aria only for dates (two styles of code); Base UI with dates built ourselves (most code to own, highest accessibility risk). Radix was ruled out: updates slowed after WorkOS bought it.
+- **Not decided yet:** whether this design system's own components (Button, Checkbox, Switch and others) move onto React Aria too.
+- **Details:** [After Graduation #34](https://github.com/sharonlafleur1984/after-graduation/issues/34)
+- **Sources:** [Untitled UI, Base UI vs React Aria](https://www.untitledui.com/blog/base-ui-vs-react-aria), [React Aria AI tools](https://react-aria.adobe.com/ai), [Web4All 2025 on AI-generated UI](https://dl.acm.org/doi/10.1145/3800424.3800430)
+
+</details>
+
+<details>
 <summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
 
 - **Decided by:** Sharon
