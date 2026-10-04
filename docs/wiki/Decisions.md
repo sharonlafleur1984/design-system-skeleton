@@ -5,6 +5,13 @@
 Newest first.
 
 <details>
+<summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
+
+- **Decided by:** Sharon
+- **Decision:** `label-caps` is renamed `label` (introduces a section, like NEXT STEPS). New `label-meta` describes an item: every date and short piece of metadata, in capitals, gray, at a new light weight (300), one step lighter than body text. Never below 300. `label-banner` is removed: it did the same job as `label` and nothing used it. Styles are named by what they're for, not how they look. Pick a style, never a weight: a test fails if a component sets a raw font weight.
+- **Why:** dates were using the bold section-label style, so they competed with the task name. "caps" described a look that every label shares.
+- **Other options:** `label-caps` and `label-caps-meta`; dates in `data-small` (sentence case, no new style).
+- **Figma:** rename "Label/Caps" to "Label" and remove "Label/Banner" in the Life Hub library next time it's open.
 <summary><b>Oct 3, 2026:</b> Two link levels, set in the skeleton, colored by each theme</summary>
 
 - **Decided by:** Sharon

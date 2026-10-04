@@ -4,7 +4,7 @@ import { screenClasses, themes } from './tokens';
 const meta: Meta = { title: 'Foundations/Type' };
 export default meta;
 
-const roles = ['display-cover', 'display-xl', 'display-l', 'display-m', 'heading-title', 'heading-heading', 'heading-subheading', 'body-large', 'body-default', 'body-small', 'body-micro', 'label-caps', 'label-banner', 'data-default', 'data-small', 'data-micro'];
+const roles = ['display-cover', 'display-xl', 'display-l', 'display-m', 'heading-title', 'heading-heading', 'heading-subheading', 'body-large', 'body-default', 'body-small', 'body-micro', 'label', 'label-meta', 'data-default', 'data-small', 'data-micro'];
 
 const code = { fontFamily: 'var(--font-family-data)', fontSize: 'var(--type-body-small-size)', color: 'var(--color-ink-tertiary)' };
 const sample = (r: string, size = `var(--type-${r}-size)`): React.CSSProperties => ({
@@ -14,7 +14,7 @@ const sample = (r: string, size = `var(--type-${r}-size)`): React.CSSProperties 
   lineHeight: `var(--type-${r}-line-height)`,
   letterSpacing: `var(--type-${r}-letter-spacing)`,
   fontWeight: `var(--type-${r}-weight)` as never,
-  textTransform: r.startsWith('label') ? 'uppercase' : undefined,
+  textTransform: r.startsWith('label') ? 'uppercase' : undefined, // every label style is shown in capitals
 });
 
 /**

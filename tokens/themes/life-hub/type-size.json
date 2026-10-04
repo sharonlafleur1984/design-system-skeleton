@@ -96,16 +96,16 @@
         "$value": "11px"
       }
     },
-    "label-caps": {
+    "label": {
       "size": {
         "$type": "dimension",
         "$value": "13px"
       }
     },
-    "label-banner": {
+    "label-meta": {
       "size": {
         "$type": "dimension",
-        "$value": "11px"
+        "$value": "12px"
       }
     },
     "data-default": {
