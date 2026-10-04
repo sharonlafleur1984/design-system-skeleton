@@ -1,6 +1,6 @@
 {
   "layout": {
-    "$description": "Page layout spacing that changes by screen class: compact under 600px, medium 600 to 839px, expanded 840px and up (Material 3 window size classes).",
+    "$description": "Page layout spacing that changes by screen class: compact under 600px, medium 600 to 839px, expanded 840px and up (Material 3 window size classes). Rules (tested): every value is a step on the space scale, and a smaller screen never gets more space. Big spaces shrink on phones; spacing inside components never changes.",
     "gutter": {
       "$type": "dimension",
       "$value": "24px",
@@ -14,12 +14,23 @@
     },
     "section": {
       "$type": "dimension",
-      "$value": "64px",
+      "$value": "40px",
       "$description": "Space between major sections of a page.",
       "$extensions": {
         "com.sharon.screen-class": {
-          "compact": "32px",
-          "medium": "48px"
+          "compact": "24px",
+          "medium": "32px"
+        }
+      }
+    },
+    "title-gap": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Space under a page title, before the page's first content.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "16px",
+          "medium": "20px"
         }
       }
     }
