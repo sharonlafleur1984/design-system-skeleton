@@ -10,9 +10,9 @@
     "expanded": "64px"
   },
   "type-display-cover-line-height": {
-    "compact": "32px",
-    "medium": "56px",
-    "expanded": "60px"
+    "compact": 1.14286,
+    "medium": 1.16667,
+    "expanded": 1.15385
   },
   "type-display-cover-size": {
     "compact": "28px",
@@ -20,9 +20,9 @@
     "expanded": "52px"
   },
   "type-display-xl-line-height": {
-    "compact": "32px",
-    "medium": "48px",
-    "expanded": "56px"
+    "compact": 1.14286,
+    "medium": 1.2,
+    "expanded": 1.16667
   },
   "type-display-xl-size": {
     "compact": "28px",
@@ -30,9 +30,9 @@
     "expanded": "48px"
   },
   "type-display-l-line-height": {
-    "compact": "32px",
-    "medium": "36px",
-    "expanded": "40px"
+    "compact": 1.33333,
+    "medium": 1.28571,
+    "expanded": 1.25
   },
   "type-display-l-size": {
     "compact": "24px",
@@ -40,9 +40,9 @@
     "expanded": "32px"
   },
   "type-display-m-line-height": {
-    "compact": "28px",
-    "medium": "32px",
-    "expanded": "36px"
+    "compact": 1.4,
+    "medium": 1.33333,
+    "expanded": 1.28571
   },
   "type-display-m-size": {
     "compact": "20px",
@@ -50,9 +50,9 @@
     "expanded": "28px"
   },
   "type-heading-title-line-height": {
-    "compact": "28px",
-    "medium": "28px",
-    "expanded": "28px"
+    "compact": 1.4,
+    "medium": 1.4,
+    "expanded": 1.4
   },
   "type-heading-title-size": {
     "compact": "20px",

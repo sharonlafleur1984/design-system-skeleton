@@ -12,12 +12,12 @@
         }
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "60px",
+        "$type": "number",
+        "$value": 1.15385,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "32px",
-            "medium": "56px"
+            "compact": 1.14286,
+            "medium": 1.16667
           }
         }
       }
@@ -34,12 +34,12 @@
         }
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "56px",
+        "$type": "number",
+        "$value": 1.16667,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "32px",
-            "medium": "48px"
+            "compact": 1.14286,
+            "medium": 1.2
           }
         }
       }
@@ -56,12 +56,12 @@
         }
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "40px",
+        "$type": "number",
+        "$value": 1.25,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "32px",
-            "medium": "36px"
+            "compact": 1.33333,
+            "medium": 1.28571
           }
         }
       }
@@ -78,12 +78,12 @@
         }
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "36px",
+        "$type": "number",
+        "$value": 1.28571,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "28px",
-            "medium": "32px"
+            "compact": 1.4,
+            "medium": 1.33333
           }
         }
       }
@@ -100,12 +100,12 @@
         }
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "28px",
+        "$type": "number",
+        "$value": 1.4,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "28px",
-            "medium": "28px"
+            "compact": 1.4,
+            "medium": 1.4
           }
         }
       }
@@ -116,8 +116,8 @@
         "$value": "16px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "24px"
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "heading-subheading": {
@@ -126,8 +126,8 @@
         "$value": "14px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "20px"
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "body-large": {
@@ -136,8 +136,8 @@
         "$value": "20px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "28px"
+        "$type": "number",
+        "$value": 1.4
       }
     },
     "body-default": {
@@ -146,8 +146,8 @@
         "$value": "16px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "24px"
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "body-small": {
@@ -156,8 +156,8 @@
         "$value": "14px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "20px"
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "body-micro": {
@@ -166,8 +166,8 @@
         "$value": "12px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "16px"
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "label": {
@@ -176,8 +176,8 @@
         "$value": "12px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "16px"
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "label-meta": {
@@ -186,8 +186,8 @@
         "$value": "12px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "16px"
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "data-default": {
@@ -196,8 +196,8 @@
         "$value": "16px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "24px"
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "data-small": {
@@ -206,8 +206,8 @@
         "$value": "14px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "20px"
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "data-micro": {
@@ -216,10 +216,10 @@
         "$value": "12px"
       },
       "line-height": {
-        "$type": "dimension",
-        "$value": "16px"
+        "$type": "number",
+        "$value": 1.33333
       }
     },
-    "$description": "After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Every line height is a multiple of 4, so text and spacing share one rhythm. 14px is the one size off the grid, for small UI text."
+    "$description": "After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are ratios (the W3C tokens format), each picked so size times ratio lands on a multiple of 4. 14px is the one size off the grid, for small UI text."
   }
 }

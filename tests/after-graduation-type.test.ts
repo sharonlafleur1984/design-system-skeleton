@@ -30,9 +30,9 @@ describe('After Graduation type', () => {
     });
     it(`${role}: lines never collide at any screen size`, () => {
       const s = sizes(`type-${role}-size`);
-      const lh = sizes(`type-${role}-line-height`);
+      const ratio = sizes(`type-${role}-line-height`);
       const min = /^(body|data)-/.test(role) ? 1.3 : 1.1;
-      s.forEach((size, i) => expect(lh[i] / size).toBeGreaterThanOrEqual(min));
+      s.forEach((_, i) => expect(ratio[i] ?? ratio[0]).toBeGreaterThanOrEqual(min));
     });
     it(`${role}: no negative letter spacing`, () => {
       expect(String(tokens[`type-${role}-letter-spacing`] ?? '0')).not.toMatch(/^-/);
