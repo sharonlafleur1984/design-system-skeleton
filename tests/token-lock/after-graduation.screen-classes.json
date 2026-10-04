@@ -42,12 +42,12 @@
   "type-display-m-line-height": {
     "compact": 1.4,
     "medium": 1.33333,
-    "expanded": 1.28571
+    "expanded": 1.33333
   },
   "type-display-m-size": {
     "compact": "20px",
     "medium": "24px",
-    "expanded": "28px"
+    "expanded": "24px"
   },
   "type-heading-title-line-height": {
     "compact": 1.4,
