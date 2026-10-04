@@ -15,10 +15,10 @@ const EXT = 'com.sharon.screen-class';
 const BASE_PX = 16;
 const BREAKPOINTS = { medium: 839, compact: 599 }; // max-width in px; order matters (compact wins)
 
-// Tokens that follow the reader's text size: type sizes, the spacing scale and layout spacing.
+// Tokens that follow the reader's text size: type and link sizes, the spacing scale and layout spacing.
 // Borders, outlines and radius stay in px on purpose.
 const scales = (token) =>
-  (token.path[0] === 'type' && token.path.at(-1) === 'size') || token.path[0] === 'space' || token.path[0] === 'layout';
+  ((token.path[0] === 'type' || token.path[0] === 'link') && token.path.at(-1) === 'size') || token.path[0] === 'space' || token.path[0] === 'layout';
 
 const toRem = (v) => {
   const m = /^(-?\d*\.?\d+)px$/.exec(String(v));

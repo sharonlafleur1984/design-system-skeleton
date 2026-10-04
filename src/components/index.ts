@@ -14,3 +14,5 @@ export { Switch } from './switch/switch';
 export type { SwitchProps } from './switch/switch';
 export { Divider } from './divider/divider';
 export type { DividerProps } from './divider/divider';
+export { Link, LinkButton } from './link/link';
+export type { LinkProps, LinkButtonProps, LinkLevel } from './link/link';

@@ -5,6 +5,16 @@
 Newest first.
 
 <details>
+<summary><b>Oct 3, 2026:</b> Two link levels, set in the skeleton, colored by each theme</summary>
+
+- **Decided by:** Sharon
+- **Decision:** links have two levels. Inline: inside a sentence, at its size. Quiet: side trips and small controls (View task, Show full year, sources), one step smaller and gray. The skeleton sets the names, underline and behavior; each theme sets colors and the quiet size. Links never bold. Page actions that look like links (Show full year) are buttons: `LinkButton`.
+- **Why:** Chase's site had grown 4 link styles, and the least important link (View task) was the loudest. The design system had no link style because the Life Hub Figma library didn't have one.
+- **Other options:** links as a typography style only, with no component (loses focus, tap area and the link-or-button rule).
+
+</details>
+
+<details>
 <summary><b>Oct 3, 2026:</b> Storybook is the source of truth, guarded by a token lock and visual tests</summary>
 
 - **Decided by:** Sharon
