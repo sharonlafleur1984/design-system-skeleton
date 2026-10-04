@@ -87,7 +87,7 @@
   "color-surface-glass": "#ffffff",
   "color-surface-glass-strong": "#f4f1f0",
   "color-surface-glass-on-art": "rgba(255, 255, 255, 0.05)",
-  "color-surface-glass-on-art-selected": "rgba(255, 255, 255, 0.88)",
+  "color-surface-glass-on-art-selected": "rgba(255, 255, 255, 0.24)",
   "color-border-subtle": "#f4f1f0",
   "color-border-default": "#e7e4e3",
   "color-border-strong": "#a8a3a2",

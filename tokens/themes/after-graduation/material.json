@@ -34,8 +34,8 @@
       },
       "glass-on-art-selected": {
         "$type": "color",
-        "$value": "rgba(255,255,255,0.88)",
-        "$description": "Selected control on artwork: mostly solid white with no blur, so the art's rays show faintly. Text on it uses the deepest red, which stays at 4.5:1 or better."
+        "$value": "rgba(255,255,255,0.24)",
+        "$description": "Selected control on artwork: the same glass, brighter, so every control reads as one material. White text with a faint shadow; turns solid white with deep red text when Reduce Transparency is on."
       }
     },
     "border": {}
