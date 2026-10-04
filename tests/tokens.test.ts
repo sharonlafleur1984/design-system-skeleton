@@ -14,7 +14,7 @@ const load = (t: string): Record<string, string> =>
 
 // Theme-only extras (a product's own palette, Life Hub areas, After Graduation categories)
 // are allowed to differ. Everything else is the shared contract.
-const themeOnly = /^(palette|color-area|color-category)-/;
+const themeOnly = /^(palette|color-area|color-category|shell)-/;
 const contract = (t: string) => Object.keys(load(t)).filter((k) => !themeOnly.test(k)).sort();
 
 describe('contract', () => {
@@ -72,7 +72,7 @@ const px = (v: string) => Number.parseFloat(v);
 describe('screen classes', () => {
   for (const t of themes) {
     // Sizes and layout must change in every theme alike. Line-height ratios by screen class are each theme's choice.
-    const shared = (x: string) => Object.keys(screenClasses(x)).filter((k) => !k.endsWith('-line-height')).sort();
+    const shared = (x: string) => Object.keys(screenClasses(x)).filter((k) => !k.endsWith('-line-height') && !themeOnly.test(k)).sort();
     it(`${t} changes the same tokens as ${themes[0]}`, () => {
       expect(shared(t)).toEqual(shared(themes[0]));
     });
@@ -114,7 +114,7 @@ const spaceSteps = (t: string) => new Set(Object.entries(load(t)).filter(([k]) =
 
 describe('layout uses the space scale', () => {
   for (const t of themes) {
-    for (const [name, s] of Object.entries(screenClasses(t)).filter(([n]) => n.startsWith('layout-'))) {
+    for (const [name, s] of Object.entries(screenClasses(t)).filter(([n]) => n.startsWith('layout-') || /^shell-sheet-(inset|overlap)$/.test(n))) {
       it(`${t}: ${name} is on the space scale at every screen size`, () => {
         const steps = spaceSteps(t);
         for (const v of [s.compact, s.medium, s.expanded]) expect(steps.has(px(v)), `${v} is not a space step`).toBe(true);

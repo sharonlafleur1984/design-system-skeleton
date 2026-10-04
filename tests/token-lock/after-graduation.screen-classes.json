@@ -63,5 +63,15 @@
     "compact": "20px",
     "medium": "20px",
     "expanded": "20px"
+  },
+  "shell-sheet-inset": {
+    "compact": "0px",
+    "medium": "0px",
+    "expanded": "16px"
+  },
+  "shell-sheet-overlap": {
+    "compact": "24px",
+    "medium": "32px",
+    "expanded": "40px"
   }
 }

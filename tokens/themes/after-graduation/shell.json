@@ -1,0 +1,27 @@
+{
+  "shell": {
+    "$description": "After Graduation's page shell: the header runs edge to edge and the page is a sheet that rises over its bottom edge. On desktop the sheet sits in from the screen sides, so the header's red frames the page. Theme-only: Life Hub has no shell yet.",
+    "sheet-inset": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Space between the screen side and the page sheet, so the header color shows around it. Desktop only.",
+      "$extensions": { "com.sharon.screen-class": { "compact": "0px", "medium": "0px" } }
+    },
+    "sheet-overlap": {
+      "$type": "dimension",
+      "$value": "40px",
+      "$description": "How far the page sheet rises over the bottom of the header.",
+      "$extensions": { "com.sharon.screen-class": { "compact": "24px", "medium": "32px" } }
+    },
+    "sheet-radius": {
+      "$type": "dimension",
+      "$value": "{radius.panel}",
+      "$description": "Rounded top corners of the page sheet."
+    },
+    "frame": {
+      "$type": "color",
+      "$value": "#6e0f20",
+      "$description": "The deep red the header fades to at its bottom, shown around the sheet on desktop."
+    }
+  }
+}

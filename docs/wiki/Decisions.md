@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 4, 2026:</b> After Graduation page shell: the page is a sheet rising out of the header</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the header runs edge to edge and the page is a sheet that rises over its bottom edge. On desktop the sheet sits 16px in from the screen sides, so the header's red frames the page all the way down. On tablet and phone the sheet runs edge to edge.
+- **Why:** the header card floated on its own and didn't feel connected to the page. On wide screens the content is capped at 920px, so the frame uses space that was empty anyway; on narrow screens a frame would squeeze the content.
+- **Tokens (After Graduation only):** `shell.sheet-inset` 0 / 0 / 16, `shell.sheet-overlap` 24 / 32 / 40, `shell.sheet-radius` (radius-panel), `shell.frame`. All spacing is on the space scale, checked by a test.
+- **Other options:** keep the floating card and let its light spill onto the page (subtler, but the header still floats); a sheet with the frame on every screen size.
+
+</details>
+
+<details>
 <summary><b>Oct 4, 2026:</b> After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next</summary>
 
 - **Decided by:** Sharon
