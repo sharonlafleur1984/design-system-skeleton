@@ -17,6 +17,15 @@
       "semibold": {
         "$type": "fontWeight",
         "$value": 600
+      },
+      "bold": {
+        "$type": "fontWeight",
+        "$value": 700
+      },
+      "extrabold": {
+        "$type": "fontWeight",
+        "$value": 800,
+        "$description": "Only for a display font whose design needs it, like Cinzel in After Graduation's title."
       }
     }
   },

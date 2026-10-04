@@ -1,6 +1,6 @@
 # Decisions
 
-**Last updated:** October 3, 2026
+**Last updated:** October 4, 2026
 
 Newest first.
 
@@ -12,6 +12,47 @@ Newest first.
 - **Why:** the header card floated on its own and didn't feel connected to the page. On wide screens the content is capped at 920px, so the frame uses space that was empty anyway; on narrow screens a frame would squeeze the content.
 - **Tokens (After Graduation only):** `shell.sheet-inset` 0 / 0 / 16, `shell.sheet-overlap` 24 / 32 / 40, `shell.sheet-radius` (radius-panel), `shell.frame`. All spacing is on the space scale, checked by a test.
 - **Other options:** keep the floating card and let its light spill onto the page (subtler, but the header still floats); a sheet with the frame on every screen size.
+
+</details>
+
+<details>
+<summary><b>Oct 4, 2026:</b> After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's sizes follow a modular scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are stored as ratios, the W3C tokens standard, each picked so size times ratio is a multiple of 4, the way Carbon does it (14px is the one size off the grid, for small UI text). Cinzel is only for the main title (display-cover), like a logo. Every other heading and all text use Atkinson Hyperlegible Next. Section titles are bold so they stand out from bold labels.
+- **Sizes (phone / tablet / desktop):** title 28 / 48 / 52 (`display-cover`); section titles 24 / 28 / 32 (`display-l`); the header subtitle 20 / 24 / 24 (`display-m`); card titles 20; body 16 on 24; labels 12 on 16. Sharon picked a 52px title over 64 (64 broke the golden header) and a 28px subtitle over 32, 24 and 20, then took it to 24 once the header's contrast improved.
+- **Layout:** the header uses golden-ratio proportions: the title fits the left 61.8%, the art sits in the right 38.2%. Spacing stays on the 4-point tokens.
+- **Why:** the Oct 3 sizes were measured from the prototype, not designed, so steps were uneven and section titles got lost on phones. Mochiy Pop One felt childish and hard to scan. A typography rule of thumb: two families at most, contrast from structure (a serif title, a sans for the rest), hierarchy from size and weight.
+- **Other options:** Lexend for the rest (felt too young); Saira, Archivo or Barlow for headings (a third family, harder to read); a Fibonacci type scale (1.618 is too steep for an app).
+- **Replaces:** Oct 3, "After Graduation gets sizes measured from its site," and the Mochiy Pop One display rules.
+- **Sources:** [Design Tokens Format 2025.10](https://designtokens.org/TR/2025.10/format/), [MDN line-height](https://developer.mozilla.org/en-US/docs/Web/CSS/line-height), [Carbon type sets](https://carbondesignsystem.com/elements/typography/type-sets/), [Tim Brown, More Meaningful Typography](https://alistapart.com/article/more-meaningful-typography/), [Cloud Four, responsive type sizing](https://cloudfour.com/?p=4059), [Material 3 type scale](https://m3.material.io/styles/typography/type-scale-tokens), [Google Fonts, pairing within a family](https://fonts.google.com/knowledge/choosing_type/pairing_typefaces_within_a_family_superfamily), [Cinzel and Mushoku Tensei's title style](https://madegooddesigns.com/?p=10586), [WCAG 1.4.12 text spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+
+</details>
+
+<details>
+<summary><b>Oct 4, 2026:</b> After Graduation uses glass for controls on artwork</summary>
+
+- **Decided by:** Sharon
+- **Decision:** controls that float on artwork (header episode buttons, lane school tags, bottom navigation) are glass. Page controls and content stay solid. This updates the Sep 27 rule that After Graduation stays solid everywhere.
+- **One light source:** every effect follows the light where the header's rays start. The art darkens smoothly with distance from it, rays fade as they travel, and each glass rim is brightest on the side facing it, with a faint glint opposite. Highlights with no light source (glows, blobs) are not allowed.
+- **Unselected glass:** perfectly clear, no fill, no blur. Lines behind it bend near the edge like real glass (an SVG displacement on a live copy of the art, so it works in Safari; profile after [kube.io](https://kube.io/blog/liquid-glass-css-svg/)). The light falloff keeps white text at 4.5:1 or better.
+- **Selected glass:** frosted white with deep red text, the art behind blurred so every episode looks the same, and lit by its own star: a soft pool of light around the ✦, and one wave of light from the star when picked that fades out completely.
+- **Rim:** 1px, eased in and out, adapted from [react-glass-rim](https://github.com/royroki/react-glass-rim) (MIT).
+- **Tokens:** `color.surface.glass-on-art` (clear), `color.surface.glass-on-art-selected`, `material.blur-on-art`, `material.blur-on-art-selected`, `material.refraction-band`, `material.refraction-max`, `glass.rim.width`, `glass.rim.color`, `shadow.glass-on-art`. Life Hub maps them to its own glass.
+- **Reduce Transparency:** the art copy is hidden; buttons turn solid.
+- **Why:** Sharon wanted the look of iOS folder glass, with light that behaves naturally.
+- **Other options:** a sliding glass lens or a power-up aura for the selected state (previewed, not picked); white-tinted glass (looked milky, and white text failed contrast).
+- **Sources:** [Apple HIG, Materials](https://developer.apple.com/design/human-interface-guidelines/materials), [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [WCAG 2.2 contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+</details>
+
+<details>
+<summary><b>Oct 4, 2026:</b> Big spaces shrink to about two thirds on phones; new layout-title-gap</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the rule for responsive tokens: the bigger something is, the more it shrinks on a phone, to about two thirds of desktop. Page edges, section spacing and big headings change by screen class. Body text, small headings and spacing inside components never do. `layout-section` is now 24 / 32 / 40px (was 32 / 48 / 64; Sharon then took it one step smaller than the first proposal, 32 / 40 / 48, because it felt like too much space). Every layout value must be a step on the space scale, checked by a test. New `layout-title-gap` is the space under a page title: 16 / 20 / 24px.
+- **Why:** Chase's site had made-up spacing that was the same on phone and desktop, and there was no token for the space under a page title.
+- **Sources:** [GOV.UK spacing](https://design-system.service.gov.uk/styles/spacing), [GOV.UK type scale](https://design-system.service.gov.uk/styles/type-scale), [Carbon type sets](https://carbondesignsystem.com/elements/typography/type-sets/), [Material window size classes (SAP Fiori)](https://www.sap.com/design-system/fiori-design-android/foundations/layout)
 
 </details>
 
@@ -59,7 +100,7 @@ Newest first.
 <summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
 
 - **Decided by:** Sharon
-- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere.
+- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere (updated Oct 4: glass for controls on artwork).
 - **Why:** closest to Apple's Liquid Glass guidance (glass is the layer that floats above content) and easiest to read.
 - **Other options:** glass everywhere as in the Figma file, with a solid fallback; or both.
 - **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [CSS-Tricks](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/)

@@ -1,6 +1,6 @@
 {
   "material": {
-    "$description": "Glass is for controls only (buttons, top bar, navigation, pills), never content. Life Hub controls are liquid glass over a texture; After Graduation controls are solid and quiet.",
+    "$description": "Two kinds of glass, both for controls only, never content. 'glass' is a control on a page. 'glass-on-art' is a control floating on artwork (a header illustration, a race lane). Life Hub uses glass for both; After Graduation keeps page controls solid and uses glass only over artwork.",
     "blur": {
       "$type": "dimension",
       "$value": "6px"
@@ -8,6 +8,26 @@
     "saturate": {
       "$type": "number",
       "$value": 1.4
+    },
+    "blur-on-art": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "Light blur behind a control on artwork, so the art still reads clearly through it."
+    },
+    "blur-on-art-selected": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "Frosted glass scatters what is behind it."
+    },
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "How far in from the edge the glass bends the art behind it."
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "The most a line behind the glass shifts at the edge."
     }
   },
   "color": {
@@ -21,8 +41,19 @@
         "$type": "color",
         "$value": "rgba(255,255,255,0.55)",
         "$description": "Glass fill on hover."
+      },
+      "glass-on-art": {
+        "$type": "color",
+        "$value": "{color.surface.glass}",
+        "$description": "Fill for a control floating on artwork, so the art shows through."
+      },
+      "glass-on-art-selected": {
+        "$type": "color",
+        "$value": "{color.surface.glass-strong}",
+        "$description": "Selected control on artwork. Same as glass on hover."
       }
-    }
+    },
+    "border": {}
   },
   "shadow": {
     "glass": {
@@ -46,6 +77,33 @@
         }
       ],
       "$description": "Inner light along the edges of a glass surface."
+    },
+    "glass-on-art": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(29,26,24,0.18)",
+          "offsetX": "0px",
+          "offsetY": "6px",
+          "blur": "18px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Faint inner glow plus a soft shadow under glass on artwork, so it lifts off busy art."
+    }
+  },
+  "glass": {
+    "rim": {
+      "$description": "The lit edge of glass on artwork, instead of a border. Light enters at the top-right and leaves at the bottom-left, easing in and out; the other corners stay dark. Drawn as a conic gradient masked to the rim, adapted from react-glass-rim (MIT). Measured from iOS folder glass.",
+      "width": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.7)",
+        "$description": "Brightest point of the rim."
+      }
     }
   }
 }
