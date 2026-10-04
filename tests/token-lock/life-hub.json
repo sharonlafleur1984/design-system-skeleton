@@ -87,6 +87,8 @@
   "color-surface-inverse": "#2a2625",
   "color-surface-glass": "rgba(255, 255, 255, 0.35)",
   "color-surface-glass-strong": "rgba(255, 255, 255, 0.55)",
+  "color-surface-glass-on-art": "rgba(255, 255, 255, 0.35)",
+  "color-surface-glass-on-art-selected": "rgba(255, 255, 255, 0.55)",
   "color-border-subtle": "#e8e2db",
   "color-border-default": "#ddd5cc",
   "color-border-strong": "#bab2af",
@@ -312,9 +314,16 @@
   "palette-ink-inverse": "#faf7f1",
   "material-blur": "6px",
   "material-saturate": 1.4,
+  "material-blur-on-art": "6px",
+  "material-blur-on-art-selected": "10px",
+  "material-refraction-band": "16px",
+  "material-refraction-max": "12px",
   "shadow-glass": "inset 0px 1px 0px 0px rgba(255,255,255,0.70), inset 0px -1px 0px 0px rgba(255,255,255,0.25)",
+  "shadow-glass-on-art": "0px 6px 18px 0px rgba(29,26,24,0.18)",
   "shadow-edge": "inset 0px 1px 0px 0px rgba(255,250,241,0.90)",
   "shadow-rest": "0px 1px 2px 0px rgba(6,48,44,0.05)",
   "shadow-hover": "-1px 2px 4px 0px rgba(6,48,44,0.06), -1px 8px 18px -10px rgba(6,48,44,0.16)",
-  "shadow-float": "-2px 4px 10px 0px rgba(6,48,44,0.07), -2px 24px 48px -20px rgba(6,48,44,0.26)"
+  "shadow-float": "-2px 4px 10px 0px rgba(6,48,44,0.07), -2px 24px 48px -20px rgba(6,48,44,0.26)",
+  "glass-rim-width": "1px",
+  "glass-rim-color": "rgba(255, 255, 255, 0.7)"
 }
