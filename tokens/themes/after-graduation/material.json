@@ -34,8 +34,8 @@
       },
       "glass-on-art-selected": {
         "$type": "color",
-        "$value": "rgba(255,255,255,0.88)",
-        "$description": "Selected control on artwork. Mostly solid so its text stays readable (4.5:1), with the art still faintly showing."
+        "$value": "rgba(255,255,255,0.65)",
+        "$description": "Selected control on artwork: clear glass with no blur, so the art's rays still show. Text on it uses the deepest red, which stays at 4.5:1 or better over the brightest ray."
       }
     },
     "border": {
