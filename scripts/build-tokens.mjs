@@ -18,13 +18,14 @@ const BREAKPOINTS = { medium: 839, compact: 599 }; // max-width in px; order mat
 // Tokens that follow the reader's text size: type and link sizes, the spacing scale and layout spacing.
 // Borders, outlines and radius stay in px on purpose.
 const scales = (token) =>
-  ((token.path[0] === 'type' || token.path[0] === 'link') && token.path.at(-1) === 'size') || token.path[0] === 'space' || token.path[0] === 'layout';
+  ((token.path[0] === 'type' || token.path[0] === 'link') && token.path.at(-1) === 'size') || token.path[0] === 'space' || token.path[0] === 'layout' ||
+  (token.path[0] === 'shell' && token.$type === 'dimension' && token.path[1] !== 'sheet-radius');
 
 const toRem = (v) => {
   const m = /^(-?\d*\.?\d+)px$/.exec(String(v));
   if (!m) return v;
   const n = Number(m[1]);
-  return n === 0 ? '0' : `${+(n / BASE_PX).toFixed(4)}rem`;
+  return n === 0 ? '0rem' : `${+(n / BASE_PX).toFixed(4)}rem`; // a unit on zero, so it still works inside calc()
 };
 
 StyleDictionary.registerTransform({

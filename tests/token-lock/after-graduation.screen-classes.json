@@ -5,33 +5,73 @@
     "expanded": "24px"
   },
   "layout-section": {
-    "compact": "32px",
-    "medium": "48px",
-    "expanded": "64px"
+    "compact": "24px",
+    "medium": "32px",
+    "expanded": "40px"
+  },
+  "layout-title-gap": {
+    "compact": "16px",
+    "medium": "20px",
+    "expanded": "24px"
+  },
+  "type-display-cover-line-height": {
+    "compact": 1.14286,
+    "medium": 1.16667,
+    "expanded": 1.15385
   },
   "type-display-cover-size": {
-    "compact": "30px",
-    "medium": "40px",
-    "expanded": "48px"
+    "compact": "28px",
+    "medium": "48px",
+    "expanded": "52px"
+  },
+  "type-display-xl-line-height": {
+    "compact": 1.14286,
+    "medium": 1.2,
+    "expanded": 1.16667
   },
   "type-display-xl-size": {
     "compact": "28px",
-    "medium": "34px",
-    "expanded": "40px"
+    "medium": "40px",
+    "expanded": "48px"
+  },
+  "type-display-l-line-height": {
+    "compact": 1.33333,
+    "medium": 1.28571,
+    "expanded": 1.25
   },
   "type-display-l-size": {
     "compact": "24px",
     "medium": "28px",
     "expanded": "32px"
   },
+  "type-display-m-line-height": {
+    "compact": 1.4,
+    "medium": 1.33333,
+    "expanded": 1.33333
+  },
   "type-display-m-size": {
-    "compact": "22px",
+    "compact": "20px",
     "medium": "24px",
-    "expanded": "26px"
+    "expanded": "24px"
+  },
+  "type-heading-title-line-height": {
+    "compact": 1.4,
+    "medium": 1.4,
+    "expanded": 1.4
   },
   "type-heading-title-size": {
-    "compact": "18px",
+    "compact": "20px",
     "medium": "20px",
     "expanded": "20px"
+  },
+  "shell-sheet-inset": {
+    "compact": "0px",
+    "medium": "0px",
+    "expanded": "16px"
+  },
+  "shell-sheet-overlap": {
+    "compact": "24px",
+    "medium": "32px",
+    "expanded": "40px"
   }
 }

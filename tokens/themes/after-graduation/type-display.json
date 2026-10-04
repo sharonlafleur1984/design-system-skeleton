@@ -1,63 +1,66 @@
 {
   "type": {
     "display-cover": {
-      "$description": "After Graduation: Mochiy Pop One has one weight and tall letters, so regular weight (no fake bold), looser lines and no negative tracking. Sizes live in type-size.json.",
-      "line-height": {
-        "$type": "number",
-        "$value": 1.15
-      },
+      "$description": "After Graduation's main title: Cinzel, used once per page like a logo. Line heights live in type-size.json.",
       "letter-spacing": {
         "$type": "dimension",
-        "$value": "0em"
+        "$value": "0.01em"
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
+        "$value": "{font.weight.extrabold}"
       }
     },
     "display-xl": {
-      "$description": "After Graduation: Mochiy Pop One has one weight and tall letters, so regular weight (no fake bold), looser lines and no negative tracking. Sizes live in type-size.json.",
-      "line-height": {
-        "$type": "number",
-        "$value": 1.15
-      },
+      "$description": "After Graduation section titles and big headings: the body font in bold, so they stand out from bold labels. Line heights live in type-size.json.",
       "letter-spacing": {
         "$type": "dimension",
         "$value": "0em"
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
+        "$value": "{font.weight.bold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
       }
     },
     "display-l": {
-      "$description": "After Graduation: Mochiy Pop One has one weight and tall letters, so regular weight (no fake bold), looser lines and no negative tracking. Sizes live in type-size.json.",
-      "line-height": {
-        "$type": "number",
-        "$value": 1.25
-      },
+      "$description": "After Graduation section titles and big headings: the body font in bold, so they stand out from bold labels. Line heights live in type-size.json.",
       "letter-spacing": {
         "$type": "dimension",
         "$value": "0em"
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
+        "$value": "{font.weight.bold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
       }
     },
     "display-m": {
-      "$description": "After Graduation: Mochiy Pop One has one weight and tall letters, so regular weight (no fake bold), looser lines and no negative tracking. Sizes live in type-size.json.",
-      "line-height": {
-        "$type": "number",
-        "$value": 1.25
-      },
+      "$description": "After Graduation section titles and big headings: the body font in bold, so they stand out from bold labels. Line heights live in type-size.json.",
       "letter-spacing": {
         "$type": "dimension",
         "$value": "0em"
       },
       "weight": {
         "$type": "fontWeight",
-        "$value": "{font.weight.regular}"
+        "$value": "{font.weight.bold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.body}"
+      }
+    },
+    "heading-title": {
+      "$description": "After Graduation: no negative tracking, so Atkinson stays easy to read.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0em"
       }
     }
   }
