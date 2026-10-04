@@ -8,6 +8,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Lets the update-screenshots job rerun this check on its own commit.
+  workflow_dispatch:
 jobs:
   visual:
     runs-on: ubuntu-latest

@@ -1,0 +1,22 @@
+{
+  "link": {
+    "$description": "Two link levels, shared by every product. Inline: a link inside a sentence, at the sentence's size. Quiet: a side trip or a small control (View task, Show full year, sources), one step smaller and gray. Each theme sets the colors and the quiet size.",
+    "underline": {
+      "thickness": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "Underline thickness for every link."
+      },
+      "offset": {
+        "$type": "dimension",
+        "$value": "0.2em",
+        "$description": "Space between text and underline, so descenders stay readable."
+      },
+      "strength": {
+        "$type": "number",
+        "$value": 35,
+        "$description": "Underline opacity at rest, as a percent of the link color. Full strength on hover."
+      }
+    }
+  }
+}

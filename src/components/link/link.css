@@ -1,0 +1,60 @@
+/* Links: two levels. Sizes and colors come from link tokens; the underline is soft at rest. */
+.ds-link {
+  position: relative;
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--link-inline-color);
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--link-underline-thickness);
+  text-underline-offset: var(--link-underline-offset);
+  text-decoration-color: color-mix(in srgb, currentColor calc(var(--link-underline-strength) * 1%), transparent);
+  border-radius: var(--radius-xs);
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.ds-link--quiet {
+  color: var(--link-quiet-color);
+  font-size: var(--link-quiet-size);
+  font-weight: var(--font-weight-regular);
+}
+
+.ds-link:hover,
+.ds-link:focus-visible {
+  color: var(--link-inline-color-hover);
+  text-decoration-color: currentColor;
+}
+
+.ds-link--quiet:hover,
+.ds-link--quiet:focus-visible {
+  color: var(--link-quiet-color-hover);
+}
+
+.ds-link:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Bigger tap area than the text, so small links are easy to hit (WCAG 2.5.8). */
+.ds-link--quiet::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-2)) calc(-1 * var(--space-1));
+}
+
+.ds-link__external {
+  display: inline-block;
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  margin-inline-start: 0.2em;
+  vertical-align: baseline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-link {
+    transition: none;
+  }
+}

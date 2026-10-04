@@ -1,6 +1,6 @@
 # Approves new screenshots. Add the "update-screenshots" label to a pull request and
 # this takes fresh screenshots of every story, commits them to the pull request's
-# branch, and removes the label. Review the new images in the pull request's
+# branch, reruns the checks on that commit, and removes the label. Review the new images in the pull request's
 # "Files changed" tab before merging.
 name: Update screenshots
 on:
@@ -9,6 +9,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 jobs:
   update:
     if: github.event.label.name == 'update-screenshots'
@@ -36,6 +37,16 @@ jobs:
           git diff --cached --quiet && echo "No screenshot changes." && exit 0
           git commit -m "Approve new screenshots"
           git push
+      # A commit pushed by this job doesn't start other checks on its own (GitHub's rule),
+      # so start them here. Otherwise required checks would wait forever.
+      - name: Rerun the checks on the new commit
+        run: |
+          for wf in ci.yml visual-tests.yml; do
+            curl -fsS -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/$wf/dispatches" \
+              -d '{"ref":"${{ github.event.pull_request.head.ref }}"}'
+          done
       - name: Remove the label
         if: always()
         run: |
