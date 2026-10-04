@@ -5,9 +5,14 @@
     "expanded": "24px"
   },
   "layout-section": {
-    "compact": "32px",
-    "medium": "48px",
-    "expanded": "64px"
+    "compact": "24px",
+    "medium": "32px",
+    "expanded": "40px"
+  },
+  "layout-title-gap": {
+    "compact": "16px",
+    "medium": "20px",
+    "expanded": "24px"
   },
   "type-display-cover-size": {
     "compact": "56px",
