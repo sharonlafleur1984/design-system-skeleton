@@ -108,3 +108,17 @@ describe('after-graduation type on the 4-point grid', () => {
     });
   }
 });
+
+// Layout spacing: every value is a step on the shared space scale, so spacing never drifts off the grid.
+const spaceSteps = (t: string) => new Set(Object.entries(load(t)).filter(([k]) => /^space-\d+$/.test(k)).map(([, v]) => px(v)));
+
+describe('layout uses the space scale', () => {
+  for (const t of themes) {
+    for (const [name, s] of Object.entries(screenClasses(t)).filter(([n]) => n.startsWith('layout-'))) {
+      it(`${t}: ${name} is on the space scale at every screen size`, () => {
+        const steps = spaceSteps(t);
+        for (const v of [s.compact, s.medium, s.expanded]) expect(steps.has(px(v)), `${v} is not a space step`).toBe(true);
+      });
+    }
+  }
+});

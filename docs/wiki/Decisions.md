@@ -19,6 +19,33 @@ Newest first.
 </details>
 
 <details>
+<summary><b>Oct 4, 2026:</b> After Graduation uses glass for controls on artwork</summary>
+
+- **Decided by:** Sharon
+- **Decision:** controls that float on artwork (header episode buttons, lane school tags, bottom navigation) are glass. Page controls and content stay solid. This updates the Sep 27 rule that After Graduation stays solid everywhere.
+- **One light source:** every effect follows the light where the header's rays start. The art darkens smoothly with distance from it, rays fade as they travel, and each glass rim is brightest on the side facing it, with a faint glint opposite. Highlights with no light source (glows, blobs) are not allowed.
+- **Unselected glass:** perfectly clear, no fill, no blur. Lines behind it bend near the edge like real glass (an SVG displacement on a live copy of the art, so it works in Safari; profile after [kube.io](https://kube.io/blog/liquid-glass-css-svg/)). The light falloff keeps white text at 4.5:1 or better.
+- **Selected glass:** frosted white with deep red text, the art behind blurred so every episode looks the same, and lit by its own star: a soft pool of light around the ✦, and one wave of light from the star when picked that fades out completely.
+- **Rim:** 1px, eased in and out, adapted from [react-glass-rim](https://github.com/royroki/react-glass-rim) (MIT).
+- **Tokens:** `color.surface.glass-on-art` (clear), `color.surface.glass-on-art-selected`, `material.blur-on-art`, `material.blur-on-art-selected`, `material.refraction-band`, `material.refraction-max`, `glass.rim.width`, `glass.rim.color`, `shadow.glass-on-art`. Life Hub maps them to its own glass.
+- **Reduce Transparency:** the art copy is hidden; buttons turn solid.
+- **Why:** Sharon wanted the look of iOS folder glass, with light that behaves naturally.
+- **Other options:** a sliding glass lens or a power-up aura for the selected state (previewed, not picked); white-tinted glass (looked milky, and white text failed contrast).
+- **Sources:** [Apple HIG, Materials](https://developer.apple.com/design/human-interface-guidelines/materials), [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [WCAG 2.2 contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+</details>
+
+<details>
+<summary><b>Oct 4, 2026:</b> Big spaces shrink to about two thirds on phones; new layout-title-gap</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the rule for responsive tokens: the bigger something is, the more it shrinks on a phone, to about two thirds of desktop. Page edges, section spacing and big headings change by screen class. Body text, small headings and spacing inside components never do. `layout-section` is now 24 / 32 / 40px (was 32 / 48 / 64; Sharon then took it one step smaller than the first proposal, 32 / 40 / 48, because it felt like too much space). Every layout value must be a step on the space scale, checked by a test. New `layout-title-gap` is the space under a page title: 16 / 20 / 24px.
+- **Why:** Chase's site had made-up spacing that was the same on phone and desktop, and there was no token for the space under a page title.
+- **Sources:** [GOV.UK spacing](https://design-system.service.gov.uk/styles/spacing), [GOV.UK type scale](https://design-system.service.gov.uk/styles/type-scale), [Carbon type sets](https://carbondesignsystem.com/elements/typography/type-sets/), [Material window size classes (SAP Fiori)](https://www.sap.com/design-system/fiori-design-android/foundations/layout)
+
+</details>
+
+<details>
 <summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
 
 - **Decided by:** Sharon
@@ -62,7 +89,7 @@ Newest first.
 <summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
 
 - **Decided by:** Sharon
-- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere.
+- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere (updated Oct 4: glass for controls on artwork).
 - **Why:** closest to Apple's Liquid Glass guidance (glass is the layer that floats above content) and easiest to read.
 - **Other options:** glass everywhere as in the Figma file, with a solid fallback; or both.
 - **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [CSS-Tricks](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/)
