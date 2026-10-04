@@ -10,7 +10,7 @@ Newest first.
 - **Decided by:** Sharon
 - **Decision:** After Graduation controls that float on artwork are glass, so the art shows through: the header episode buttons, the school tags on the race lanes, and the bottom navigation bar. Controls on a plain page stay solid, and cards and other content are never glass. This updates the Sep 27 rule that After Graduation stays solid everywhere.
 - **Tokens:** `color.surface.glass-on-art`, `color.surface.glass-on-art-selected`, `color.border.glass-on-art`, `material.blur-on-art`. Life Hub maps them to its own glass.
-- **Readability:** the selected control is white at 65% with no blur, so the rays still show through. Its text uses the deepest red, which stays at 4.5:1 or better over the brightest ray. With Reduce Transparency on, glass turns solid.
+- **Readability:** the selected control is white at 88% with no blur, so the rays show faintly (Sharon picked 88 over 65, 75 and 82, which looked too pink). Its text uses the deepest red, which stays at 4.5:1 or better over the brightest ray. With Reduce Transparency on, glass turns solid.
 - **Why:** it fits the anime look over the illustrations, and keeping it to small controls on art keeps text readable.
 - **Other options:** stay solid everywhere; or glass on every control.
 - **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [WCAG 2.2 contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [prefers-reduced-transparency, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency)
