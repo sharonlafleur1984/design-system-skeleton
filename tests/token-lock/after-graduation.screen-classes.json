@@ -12,12 +12,12 @@
   "type-display-cover-line-height": {
     "compact": "32px",
     "medium": "56px",
-    "expanded": "72px"
+    "expanded": "60px"
   },
   "type-display-cover-size": {
     "compact": "28px",
     "medium": "48px",
-    "expanded": "64px"
+    "expanded": "52px"
   },
   "type-display-xl-line-height": {
     "compact": "32px",
@@ -31,23 +31,23 @@
   },
   "type-display-l-line-height": {
     "compact": "32px",
-    "medium": "40px",
-    "expanded": "48px"
-  },
-  "type-display-l-size": {
-    "compact": "24px",
-    "medium": "32px",
-    "expanded": "40px"
-  },
-  "type-display-m-line-height": {
-    "compact": "32px",
     "medium": "36px",
     "expanded": "40px"
   },
-  "type-display-m-size": {
+  "type-display-l-size": {
     "compact": "24px",
     "medium": "28px",
     "expanded": "32px"
+  },
+  "type-display-m-line-height": {
+    "compact": "28px",
+    "medium": "32px",
+    "expanded": "36px"
+  },
+  "type-display-m-size": {
+    "compact": "20px",
+    "medium": "24px",
+    "expanded": "28px"
   },
   "type-heading-title-line-height": {
     "compact": "28px",
