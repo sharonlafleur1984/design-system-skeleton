@@ -11,8 +11,23 @@
     },
     "blur-on-art": {
       "$type": "dimension",
-      "$value": "2px",
-      "$description": "Light blur behind a control on artwork, so the art still reads clearly through it."
+      "$value": "0px",
+      "$description": "Unselected glass on artwork is perfectly clear; the art shows through sharp and bends at the edges."
+    },
+    "blur-on-art-selected": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "Frosted glass scatters what is behind it, so selected controls all look the same."
+    },
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "How far in from the edge the glass bends the art behind it (convex squircle profile, after kube.io)."
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "The most a line behind the glass shifts at the very edge."
     }
   },
   "color": {
@@ -29,13 +44,13 @@
       },
       "glass-on-art": {
         "$type": "color",
-        "$value": "rgba(255,255,255,0.05)",
-        "$description": "Nearly clear fill for a control on artwork, like iOS folder glass: the art shows through almost unchanged."
+        "$value": "rgba(255,255,255,0)",
+        "$description": "Clear glass on artwork: no fill. Readability comes from the art's light falloff, not from tinting the glass."
       },
       "glass-on-art-selected": {
         "$type": "color",
-        "$value": "rgba(255,255,255,0.24)",
-        "$description": "Selected control on artwork: the same glass, brighter, so every control reads as one material. White text with a faint shadow; turns solid white with deep red text when Reduce Transparency is on."
+        "$value": "rgba(255,255,255,0.82)",
+        "$description": "Selected control on artwork: frosted white (the art behind is blurred), deep red text, with a soft light pooled around its star. Looks the same on every control."
       }
     },
     "border": {}
@@ -59,14 +74,6 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(255,255,255,0.06)",
-          "offsetX": "0px",
-          "offsetY": "0px",
-          "blur": "12px",
-          "spread": "0px",
-          "inset": true
-        },
-        {
           "color": "rgba(60,0,15,0.28)",
           "offsetX": "0px",
           "offsetY": "6px",
@@ -74,12 +81,12 @@
           "spread": "0px"
         }
       ],
-      "$description": "Faint inner glow plus a soft shadow under glass on artwork, so it lifts off busy art."
+      "$description": "Soft shadow under glass on artwork. No inner glow: every highlight needs a light source."
     }
   },
   "glass": {
     "rim": {
-      "$description": "The lit edge of glass on artwork, instead of a border. Light enters at the top-right and leaves at the bottom-left, easing in and out; the other corners stay dark. Drawn as a conic gradient masked to the rim, adapted from react-glass-rim (MIT). Measured from iOS folder glass.",
+      "$description": "The lit edge of glass on artwork. Unselected: the brightest edge faces the scene's light source, with a faint glint on the opposite edge. Selected: lit by its own star in the top-right corner. Eased in and out, 1px.",
       "width": {
         "$type": "dimension",
         "$value": "1px"

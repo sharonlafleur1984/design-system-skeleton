@@ -13,6 +13,21 @@
       "$type": "dimension",
       "$value": "6px",
       "$description": "Light blur behind a control on artwork, so the art still reads clearly through it."
+    },
+    "blur-on-art-selected": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "Frosted glass scatters what is behind it."
+    },
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "How far in from the edge the glass bends the art behind it."
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "The most a line behind the glass shifts at the edge."
     }
   },
   "color": {
@@ -66,14 +81,6 @@
     "glass-on-art": {
       "$type": "shadow",
       "$value": [
-        {
-          "color": "rgba(255,255,255,0.06)",
-          "offsetX": "0px",
-          "offsetY": "0px",
-          "blur": "12px",
-          "spread": "0px",
-          "inset": true
-        },
         {
           "color": "rgba(29,26,24,0.18)",
           "offsetX": "0px",
