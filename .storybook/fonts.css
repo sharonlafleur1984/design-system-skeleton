@@ -2,6 +2,7 @@
  * Fonts are served from this repo, not from Google Fonts, so Storybook looks the same
  * offline, in CI and on every machine. That keeps the visual tests stable.
  */
+@import '@fontsource/archivo/300.css';
 @import '@fontsource/archivo/400.css';
 @import '@fontsource/archivo/500.css';
 @import '@fontsource/archivo/600.css';
