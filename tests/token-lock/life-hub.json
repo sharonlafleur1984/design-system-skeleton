@@ -131,6 +131,8 @@
   "font-weight-regular": 400,
   "font-weight-medium": 500,
   "font-weight-semibold": 600,
+  "font-weight-bold": 700,
+  "font-weight-extrabold": 800,
   "font-family-display": "Newsreader, Georgia, serif",
   "font-family-body": "Archivo, system-ui, sans-serif",
   "font-family-data": "'JetBrains Mono', ui-monospace, monospace",

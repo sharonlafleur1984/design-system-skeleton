@@ -1,8 +1,22 @@
 # Decisions
 
-**Last updated:** October 3, 2026
+**Last updated:** October 4, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 4, 2026:</b> After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's sizes follow a modular scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Every line height is a multiple of 4 (14px is the one size off the grid, for small UI text). Cinzel is only for the main title (display-cover), like a logo. Every other heading and all text use Atkinson Hyperlegible Next. Section titles are bold so they stand out from bold labels.
+- **Sizes (phone / tablet / desktop):** title 28 / 48 / 64; section titles 24 / 28 / 32; card titles 20; body 16 on 24; labels 12 on 16.
+- **Layout:** the header uses golden-ratio proportions: the title fits the left 61.8%, the art sits in the right 38.2%. Spacing stays on the 4-point tokens.
+- **Why:** the Oct 3 sizes were measured from the prototype, not designed, so steps were uneven and section titles got lost on phones. Mochiy Pop One felt childish and hard to scan. A typography rule of thumb: two families at most, contrast from structure (a serif title, a sans for the rest), hierarchy from size and weight.
+- **Other options:** Lexend for the rest (felt too young); Saira, Archivo or Barlow for headings (a third family, harder to read); a Fibonacci type scale (1.618 is too steep for an app).
+- **Replaces:** Oct 3, "After Graduation gets sizes measured from its site," and the Mochiy Pop One display rules.
+- **Sources:** [Tim Brown, More Meaningful Typography](https://alistapart.com/article/more-meaningful-typography/), [Cloud Four, responsive type sizing](https://cloudfour.com/?p=4059), [Material 3 type scale](https://m3.material.io/styles/typography/type-scale-tokens), [Google Fonts, pairing within a family](https://fonts.google.com/knowledge/choosing_type/pairing_typefaces_within_a_family_superfamily), [Cinzel and Mushoku Tensei's title style](https://madegooddesigns.com/?p=10586), [WCAG 1.4.12 text spacing](https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html)
+
+</details>
 
 <details>
 <summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>

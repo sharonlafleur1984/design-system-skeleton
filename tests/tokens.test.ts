@@ -71,8 +71,11 @@ const px = (v: string) => Number.parseFloat(v);
 
 describe('screen classes', () => {
   for (const t of themes) {
+    // Sizes and layout must change in every theme alike. Line heights are each theme's choice
+    // (After Graduation sets them in px on the 4-point grid; Life Hub uses ratios).
+    const shared = (x: string) => Object.keys(screenClasses(x)).filter((k) => !k.endsWith('-line-height')).sort();
     it(`${t} changes the same tokens as ${themes[0]}`, () => {
-      expect(Object.keys(screenClasses(t)).sort()).toEqual(Object.keys(screenClasses(themes[0])).sort());
+      expect(shared(t)).toEqual(shared(themes[0]));
     });
     for (const [name, s] of Object.entries(screenClasses(t))) {
       it(`${t}: ${name} goes phone ≤ tablet ≤ desktop`, () => {
@@ -80,5 +83,21 @@ describe('screen classes', () => {
         expect(px(s.medium)).toBeLessThanOrEqual(px(s.expanded));
       });
     }
+  }
+});
+
+// After Graduation's type sits on the 4-point grid: every line height is a multiple of 4,
+// and every size is too, except 14px for small UI text.
+describe('after-graduation type on the 4-point grid', () => {
+  const tk = load('after-graduation');
+  const sc = screenClasses('after-graduation');
+  const all = (name: string) => (sc[name] ? [sc[name].compact, sc[name].medium, sc[name].expanded] : [tk[name]]).map(px);
+  for (const name of Object.keys(tk).filter((k) => /^type-.*-(size|line-height)$/.test(k) && !k.startsWith('type-link'))) {
+    it(`${name} is on the grid`, () => {
+      for (const v of all(name)) {
+        const ok = v % 4 === 0 || (name.endsWith('-size') && v === 14);
+        expect(ok, `${v}px`).toBe(true);
+      }
+    });
   }
 });

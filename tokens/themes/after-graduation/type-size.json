@@ -3,11 +3,21 @@
     "display-cover": {
       "size": {
         "$type": "dimension",
-        "$value": "48px",
+        "$value": "64px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "30px",
-            "medium": "40px"
+            "compact": "28px",
+            "medium": "48px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "72px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "32px",
+            "medium": "56px"
           }
         }
       }
@@ -15,16 +25,48 @@
     "display-xl": {
       "size": {
         "$type": "dimension",
-        "$value": "40px",
+        "$value": "48px",
         "$extensions": {
           "com.sharon.screen-class": {
             "compact": "28px",
-            "medium": "34px"
+            "medium": "40px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "56px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "32px",
+            "medium": "48px"
           }
         }
       }
     },
     "display-l": {
+      "size": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "24px",
+            "medium": "32px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "32px",
+            "medium": "40px"
+          }
+        }
+      }
+    },
+    "display-m": {
       "size": {
         "$type": "dimension",
         "$value": "32px",
@@ -34,16 +76,14 @@
             "medium": "28px"
           }
         }
-      }
-    },
-    "display-m": {
-      "size": {
+      },
+      "line-height": {
         "$type": "dimension",
-        "$value": "26px",
+        "$value": "40px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "22px",
-            "medium": "24px"
+            "compact": "32px",
+            "medium": "36px"
           }
         }
       }
@@ -54,8 +94,18 @@
         "$value": "20px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "18px",
+            "compact": "20px",
             "medium": "20px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "28px",
+            "medium": "28px"
           }
         }
       }
@@ -63,69 +113,113 @@
     "heading-heading": {
       "size": {
         "$type": "dimension",
-        "$value": "17px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "24px"
       }
     },
     "heading-subheading": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "14px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "20px"
       }
     },
     "body-large": {
       "size": {
         "$type": "dimension",
-        "$value": "17px"
+        "$value": "20px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "28px"
       }
     },
     "body-default": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "24px"
       }
     },
     "body-small": {
       "size": {
         "$type": "dimension",
         "$value": "14px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "20px"
       }
     },
     "body-micro": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "16px"
       }
     },
     "label": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "16px"
       }
     },
     "label-meta": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "16px"
       }
     },
     "data-default": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "24px"
       }
     },
     "data-small": {
       "size": {
         "$type": "dimension",
         "$value": "14px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "20px"
       }
     },
     "data-micro": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "16px"
       }
     },
-    "$description": "Sizes measured from the After Graduation site at desktop width (Oct 3, 2026). Phone and tablet sizes added the same day."
+    "$description": "After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Every line height is a multiple of 4, so text and spacing share one rhythm. 14px is the one size off the grid, for small UI text."
   }
 }
