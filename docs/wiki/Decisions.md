@@ -1,8 +1,21 @@
 # Decisions
 
-**Last updated:** October 3, 2026
+**Last updated:** October 4, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 4, 2026:</b> After Graduation uses glass for controls on artwork</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation controls that float on artwork are glass, so the art shows through: the header episode buttons, the school tags on the race lanes, and the bottom navigation bar. Controls on a plain page stay solid, and cards and other content are never glass. This updates the Sep 27 rule that After Graduation stays solid everywhere.
+- **Tokens:** `color.surface.glass-on-art`, `color.surface.glass-on-art-selected`, `color.border.glass-on-art`, `material.blur-on-art`. Life Hub maps them to its own glass.
+- **Readability:** the selected control is white at 88%, the lowest that keeps its red text at 4.5:1 over the header art. With Reduce Transparency on, glass turns solid.
+- **Why:** it fits the anime look over the illustrations, and keeping it to small controls on art keeps text readable.
+- **Other options:** stay solid everywhere; or glass on every control.
+- **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [WCAG 2.2 contrast minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [prefers-reduced-transparency, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency)
+
+</details>
 
 <details>
 <summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
@@ -48,7 +61,7 @@ Newest first.
 <summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
 
 - **Decided by:** Sharon
-- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere.
+- **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere (updated Oct 4: glass for controls on artwork).
 - **Why:** closest to Apple's Liquid Glass guidance (glass is the layer that floats above content) and easiest to read.
 - **Other options:** glass everywhere as in the Figma file, with a solid fallback; or both.
 - **Sources:** [Meet Liquid Glass, WWDC25](https://developer.apple.com/videos/play/wwdc2025/219/), [CSS-Tricks](https://css-tricks.com/getting-clarity-on-apples-liquid-glass/)

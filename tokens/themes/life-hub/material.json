@@ -1,6 +1,6 @@
 {
   "material": {
-    "$description": "Glass is for controls only (buttons, top bar, navigation, pills), never content. Life Hub controls are liquid glass over a texture; After Graduation controls are solid and quiet.",
+    "$description": "Two kinds of glass, both for controls only, never content. 'glass' is a control on a page. 'glass-on-art' is a control floating on artwork (a header illustration, a race lane). Life Hub uses glass for both; After Graduation keeps page controls solid and uses glass only over artwork.",
     "blur": {
       "$type": "dimension",
       "$value": "6px"
@@ -8,6 +8,11 @@
     "saturate": {
       "$type": "number",
       "$value": 1.4
+    },
+    "blur-on-art": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "Blur behind a control that floats on artwork."
     }
   },
   "color": {
@@ -21,6 +26,23 @@
         "$type": "color",
         "$value": "rgba(255,255,255,0.55)",
         "$description": "Glass fill on hover."
+      },
+      "glass-on-art": {
+        "$type": "color",
+        "$value": "{color.surface.glass}",
+        "$description": "Fill for a control floating on artwork, so the art shows through."
+      },
+      "glass-on-art-selected": {
+        "$type": "color",
+        "$value": "{color.surface.glass-strong}",
+        "$description": "Selected control on artwork. Same as glass on hover."
+      }
+    },
+    "border": {
+      "glass-on-art": {
+        "$type": "color",
+        "$value": "rgba(255,255,255,0.70)",
+        "$description": "Light edge around a control on artwork."
       }
     }
   },
