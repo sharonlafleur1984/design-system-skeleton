@@ -3,11 +3,21 @@
     "display-cover": {
       "size": {
         "$type": "dimension",
-        "$value": "48px",
+        "$value": "52px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "30px",
-            "medium": "40px"
+            "compact": "28px",
+            "medium": "48px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.15385,
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": 1.14286,
+            "medium": 1.16667
           }
         }
       }
@@ -15,11 +25,21 @@
     "display-xl": {
       "size": {
         "$type": "dimension",
-        "$value": "40px",
+        "$value": "48px",
         "$extensions": {
           "com.sharon.screen-class": {
             "compact": "28px",
-            "medium": "34px"
+            "medium": "40px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.16667,
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": 1.14286,
+            "medium": 1.2
           }
         }
       }
@@ -34,16 +54,36 @@
             "medium": "28px"
           }
         }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.25,
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": 1.33333,
+            "medium": 1.28571
+          }
+        }
       }
     },
     "display-m": {
       "size": {
         "$type": "dimension",
-        "$value": "26px",
+        "$value": "24px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "22px",
+            "compact": "20px",
             "medium": "24px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333,
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": 1.4,
+            "medium": 1.33333
           }
         }
       }
@@ -54,8 +94,18 @@
         "$value": "20px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "18px",
+            "compact": "20px",
             "medium": "20px"
+          }
+        }
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.4,
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": 1.4,
+            "medium": 1.4
           }
         }
       }
@@ -63,69 +113,113 @@
     "heading-heading": {
       "size": {
         "$type": "dimension",
-        "$value": "17px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "heading-subheading": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "14px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "body-large": {
       "size": {
         "$type": "dimension",
-        "$value": "17px"
+        "$value": "20px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.4
       }
     },
     "body-default": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "body-small": {
       "size": {
         "$type": "dimension",
         "$value": "14px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "body-micro": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "label": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "label-meta": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "data-default": {
       "size": {
         "$type": "dimension",
-        "$value": "15px"
+        "$value": "16px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
       }
     },
     "data-small": {
       "size": {
         "$type": "dimension",
         "$value": "14px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.42857
       }
     },
     "data-micro": {
       "size": {
         "$type": "dimension",
         "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
-    "$description": "Sizes measured from the After Graduation site at desktop width (Oct 3, 2026). Phone and tablet sizes added the same day."
+    "$description": "After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are ratios (the W3C tokens format), each picked so size times ratio lands on a multiple of 4. 14px is the one size off the grid, for small UI text."
   }
 }

@@ -8,11 +8,12 @@
 @import '@fontsource/archivo/600.css';
 @import '@fontsource/jetbrains-mono/400.css';
 @import '@fontsource/jetbrains-mono/500.css';
-@import '@fontsource/lexend/300.css';
-@import '@fontsource/lexend/400.css';
-@import '@fontsource/lexend/500.css';
-@import '@fontsource/lexend/600.css';
-@import '@fontsource/mochiy-pop-one/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/300.css';
+@import '@fontsource/atkinson-hyperlegible-next/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/500.css';
+@import '@fontsource/atkinson-hyperlegible-next/600.css';
+@import '@fontsource/atkinson-hyperlegible-next/700.css';
+@import '@fontsource/cinzel/800.css';
 
 /* Newsreader with optical sizing, under the name the tokens use. */
 @font-face {

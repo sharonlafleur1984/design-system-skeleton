@@ -4,24 +4,25 @@
       "display": {
         "$type": "fontFamily",
         "$value": [
-          "Mochiy Pop One",
-          "Lexend",
-          "system-ui",
-          "sans-serif"
-        ]
+          "Cinzel",
+          "Georgia",
+          "serif"
+        ],
+        "$description": "Only for the main title (display-cover). Carved Roman capitals, for the dark-fantasy anime mood."
       },
       "body": {
         "$type": "fontFamily",
         "$value": [
-          "Lexend",
+          "Atkinson Hyperlegible Next",
           "system-ui",
           "sans-serif"
-        ]
+        ],
+        "$description": "Every heading and all text. Made by the Braille Institute for legibility."
       },
       "data": {
         "$type": "fontFamily",
         "$value": [
-          "Lexend",
+          "Atkinson Hyperlegible Next",
           "system-ui",
           "sans-serif"
         ],

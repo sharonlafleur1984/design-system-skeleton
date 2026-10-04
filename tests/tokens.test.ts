@@ -71,15 +71,41 @@ const px = (v: string) => Number.parseFloat(v);
 
 describe('screen classes', () => {
   for (const t of themes) {
+    // Sizes and layout must change in every theme alike. Line-height ratios by screen class are each theme's choice.
+    const shared = (x: string) => Object.keys(screenClasses(x)).filter((k) => !k.endsWith('-line-height')).sort();
     it(`${t} changes the same tokens as ${themes[0]}`, () => {
-      expect(Object.keys(screenClasses(t)).sort()).toEqual(Object.keys(screenClasses(themes[0])).sort());
+      expect(shared(t)).toEqual(shared(themes[0]));
     });
-    for (const [name, s] of Object.entries(screenClasses(t))) {
+    for (const [name, s] of Object.entries(screenClasses(t)).filter(([n]) => !n.endsWith('-line-height'))) {
       it(`${t}: ${name} goes phone ≤ tablet ≤ desktop`, () => {
         expect(px(s.compact)).toBeLessThanOrEqual(px(s.medium));
         expect(px(s.medium)).toBeLessThanOrEqual(px(s.expanded));
       });
     }
+  }
+});
+
+// After Graduation's type sits on the 4-point grid: every size is a multiple of 4 (except 14px for
+// small UI text), and every line height (size times its ratio) is a multiple of 4.
+describe('after-graduation type on the 4-point grid', () => {
+  const tk = load('after-graduation');
+  const sc = screenClasses('after-graduation');
+  const vals = (name: string) => (sc[name] ? [sc[name].compact, sc[name].medium, sc[name].expanded] : [tk[name]]).map((v) => Number.parseFloat(String(v)));
+  const roles = Object.keys(tk).filter((k) => /^type-.*-size$/.test(k)).map((k) => k.replace(/-size$/, ''));
+  for (const role of roles) {
+    it(`${role}: size on the grid`, () => {
+      for (const v of vals(`${role}-size`)) expect(v % 4 === 0 || v === 14, `${v}px`).toBe(true);
+    });
+    if (!tk[`${role}-line-height`]) continue;
+    it(`${role}: line height (size x ratio) on the grid`, () => {
+      const sizes = vals(`${role}-size`);
+      const ratios = vals(`${role}-line-height`);
+      sizes.forEach((size, i) => {
+        const lh = size * (ratios[i] ?? ratios[0]);
+        const off = Math.abs(lh - Math.round(lh / 4) * 4);
+        expect(off, `${size}px x ${ratios[i] ?? ratios[0]} = ${lh.toFixed(2)}px`).toBeLessThan(0.01);
+      });
+    });
   }
 });
 
