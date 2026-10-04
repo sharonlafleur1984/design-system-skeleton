@@ -1,0 +1,32 @@
+# Visual tests: screenshots every Storybook story at phone, tablet and desktop and
+# compares them with the approved screenshots in tests/visual/__screenshots__.
+# If something looks different, this check fails. Download the "visual-report" file
+# from the run to see before, after and the difference.
+# Meant the change? Add the "update-screenshots" label to the pull request to approve it.
+name: Visual tests
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    # The same browser and fonts every time, so screenshots only change when the design does.
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build-storybook
+      - run: npx playwright test
+        env:
+          HOME: /root
+      - if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-report
+          path: playwright-report/
+          retention-days: 14

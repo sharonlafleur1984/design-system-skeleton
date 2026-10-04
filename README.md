@@ -13,11 +13,12 @@ Fix something in the base once, and every product gets it.
 
 ## How it stays honest
 
-Three automatic checks run on every pull request:
+Four automatic checks run on every pull request:
 
 - **The contract:** every theme defines every shared token name, so any component works in any theme.
 - **Readability:** every text color meets WCAG 2.2 AA contrast (4.5:1) on the surfaces it sits on.
-- **Life Hub stays true to Figma:** every Life Hub color, mapping, spacing, radius and text style must match the Figma library exactly (`tests/life-hub-figma.json`).
+- **The token lock:** every token value for every theme is saved in `tests/token-lock/`. Any change shows up in the pull request as a before and after, and fails until it's approved with `npm run test:update`.
+- **Visual tests:** every Storybook story is screenshotted at phone, tablet and desktop and compared with the approved screenshots. To approve a change on purpose, add the `update-screenshots` label to the pull request.
 
 ## Try it
 
@@ -28,7 +29,8 @@ Or run it yourself:
 ```bash
 npm install
 npm run storybook   # opens Storybook; switch themes in the toolbar
-npm test            # contract and contrast checks
+npm test            # contract, contrast and token lock
+npm run build-storybook && npm run test:visual   # visual tests
 ```
 
 ## Where things are

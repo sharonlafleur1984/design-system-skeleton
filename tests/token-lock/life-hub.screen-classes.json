@@ -1,0 +1,37 @@
+{
+  "layout-gutter": {
+    "compact": "16px",
+    "medium": "24px",
+    "expanded": "24px"
+  },
+  "layout-section": {
+    "compact": "32px",
+    "medium": "48px",
+    "expanded": "64px"
+  },
+  "type-display-cover-size": {
+    "compact": "56px",
+    "medium": "80px",
+    "expanded": "112px"
+  },
+  "type-display-xl-size": {
+    "compact": "40px",
+    "medium": "56px",
+    "expanded": "72px"
+  },
+  "type-display-l-size": {
+    "compact": "34px",
+    "medium": "42px",
+    "expanded": "52px"
+  },
+  "type-display-m-size": {
+    "compact": "28px",
+    "medium": "32px",
+    "expanded": "38px"
+  },
+  "type-heading-title-size": {
+    "compact": "24px",
+    "medium": "26px",
+    "expanded": "28px"
+  }
+}

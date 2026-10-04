@@ -13,7 +13,7 @@ Design system: one shared base (structure, naming, scales, status colors, access
 - **Every fact needs a source link,** or a label saying it's an estimate.
 - **Ask before changing or deleting anything.** A recommendation is not approval.
 - **Wiki pages are edited in `docs/wiki/`,** never in the GitHub Wiki tab.
-- **Code is the source of truth** for tokens. Figma follows the code, not the other way around.
+- **Code and Storybook are the source of truth.** Figma is for ideas and follows the code. A token change must update the token lock (`npm run test:update`); a visual change needs the `update-screenshots` label. Both are reviewed in the pull request.
 - **Base or theme?** A value every product shares goes in `tokens/base/`. A product's look goes in `tokens/themes/<product>/`. A new shared name must be added to every theme, or the contract test fails.
 - **Never color alone:** status colors always come with an icon or a label.
 
