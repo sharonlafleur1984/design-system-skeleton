@@ -6,8 +6,13 @@
   },
   "layout-section": {
     "compact": "32px",
-    "medium": "48px",
-    "expanded": "64px"
+    "medium": "40px",
+    "expanded": "48px"
+  },
+  "layout-title-gap": {
+    "compact": "16px",
+    "medium": "20px",
+    "expanded": "24px"
   },
   "type-display-cover-size": {
     "compact": "56px",
