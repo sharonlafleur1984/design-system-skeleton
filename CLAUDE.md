@@ -31,7 +31,7 @@ Start with [`docs/wiki/Documents.md`](docs/wiki/Documents.md): every document in
 
 ## AI tools for component work
 
-Interactive components are built on [React Aria Components](https://react-aria.adobe.com/) and styled with our tokens only (see Decisions, Oct 4). Two helpers are set up in `.mcp.json` (an MCP server is a plug-in that gives an AI agent extra tools):
+Interactive components are built on [React Aria Components](https://react-aria.adobe.com/) and styled with our tokens only (see Decisions, Oct 4). Adobe's React Aria skill lives in `.claude/skills/react-aria` (refresh it with `npx skills update`). Two helpers are set up in `.mcp.json` (an MCP server is a plug-in that gives an AI agent extra tools):
 
 - **react-aria:** looks up React Aria's docs and examples. Check it before building or changing an interactive component.
 - **storybook:** reads this Storybook and writes and tests stories. It only works while `npm run storybook` is running.
