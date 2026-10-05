@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { singleTheme } from '../components/story-helpers';
 import { SwatchGroup } from './Swatch';
 import { namesWith } from './tokens';
 
@@ -33,7 +34,7 @@ export const Status: Story = {
 export const ThisThemeOnly: Story = {
   name: 'This theme only',
   render: (_args, { globals }) => {
-    const theme = (globals.theme as string) ?? 'after-graduation';
+    const theme = singleTheme(globals.theme);
     return theme === 'life-hub' ? (
       <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
     ) : (
@@ -45,7 +46,7 @@ export const ThisThemeOnly: Story = {
 /** Every color in the current theme's palette, grouped by family. For Life Hub, these are the Figma library's colors, unchanged. */
 export const Palette: Story = {
   render: (_args, { globals }) => {
-    const theme = (globals.theme as string) ?? 'after-graduation';
+    const theme = singleTheme(globals.theme);
     const names = namesWith('palette-', theme);
     // Numbered shades (sea-nymph-100) group by everything before the number; named ones (paper-off-white) by the first word.
     const family = (n: string) => {

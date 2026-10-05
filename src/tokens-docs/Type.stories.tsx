@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { singleTheme } from '../components/story-helpers';
 import { screenClasses, themes } from './tokens';
 
 const meta: Meta = { title: 'Foundations/Type' };
@@ -39,7 +40,7 @@ const rem = (px: string) => `${Number.parseFloat(px) / 16}rem`;
 /** Every size at once: phone (under 600px), tablet (600 to 839px) and desktop (840px and up). */
 export const ScreenClasses: StoryObj = {
   render: (_args, { globals }) => {
-    const theme = (globals.theme as string) ?? 'after-graduation';
+    const theme = singleTheme(globals.theme);
     const sizes = screenClasses[theme];
     const flat = themes[theme];
     const th: React.CSSProperties = { ...code, textAlign: 'left', padding: 'var(--space-2) var(--space-3)', borderBottom: '1px solid var(--color-border-default)' };

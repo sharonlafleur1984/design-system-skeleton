@@ -3,8 +3,10 @@ import '../build/css/life-hub.css';
 import '../build/css/after-graduation.css';
 import './fonts.css';
 import './preview.css';
+import { ThemeContext, singleTheme, type ThemeChoice } from '../src/components/story-helpers';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
+// Stories show one product at a time; "Both" shows them side by side for comparing.
 const preview: Preview = {
   globalTypes: {
     theme: {
@@ -15,6 +17,7 @@ const preview: Preview = {
         items: [
           { value: 'after-graduation', title: 'After Graduation' },
           { value: 'life-hub', title: 'Life Hub' },
+          { value: 'both', title: 'Both, side by side' },
         ],
         dynamicTitle: true,
       },
@@ -23,9 +26,13 @@ const preview: Preview = {
   initialGlobals: { theme: 'after-graduation' },
   decorators: [
     (Story, context) => {
-      const theme = context.globals.theme ?? 'after-graduation';
-      document.documentElement.setAttribute('data-theme', theme);
-      return <Story />;
+      const choice = (context.globals.theme ?? 'after-graduation') as ThemeChoice;
+      document.documentElement.setAttribute('data-theme', singleTheme(choice));
+      return (
+        <ThemeContext.Provider value={choice}>
+          <Story />
+        </ThemeContext.Provider>
+      );
     },
   ],
   parameters: {
