@@ -1,0 +1,24 @@
+/* Glass falls back to solid for people who ask for it, the way Apple's Liquid Glass does:
+   Reduce Transparency (prefers-reduced-transparency) and Increase Contrast (prefers-contrast: more).
+   The doubled attribute selector outranks each theme's [data-theme="..."] tokens, whatever order the CSS loads in.
+   Carried over from #4, which was closed so this could ship with the React Aria rebuild. */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  [data-theme][data-theme] {
+    --material-blur: 0;
+    --material-blur-on-art: 0;
+    --material-blur-on-art-selected: 0;
+    --material-saturate: 1;
+    --color-surface-glass: var(--color-surface-card);
+    --color-surface-glass-strong: var(--color-surface-raised);
+    --color-surface-glass-on-art: var(--color-surface-card);
+    --color-surface-glass-on-art-selected: var(--color-surface-card);
+    --shadow-glass: inset 0 0 0 0 transparent;
+  }
+}
+
+/* Increase Contrast also gets firmer edges on controls. */
+@media (prefers-contrast: more) {
+  [data-theme][data-theme] {
+    --color-border-default: var(--color-border-strong);
+  }
+}

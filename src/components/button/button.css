@@ -1,5 +1,6 @@
 /* Button. Values come from tokens only, so each product theme restyles it.
-   data-state="hover|pressed" forces a state for Storybook's state gallery. */
+   React Aria sets the state attributes: data-hovered, data-pressed, data-focus-visible,
+   data-disabled and data-pending. data-state="hover|pressed" forces a state for Storybook's gallery. */
 .ds-button {
   --_bg: transparent;
   --_ink: var(--color-accent-text);
@@ -26,7 +27,7 @@
   text-decoration: none;
 }
 
-.ds-button:focus-visible {
+.ds-button[data-focus-visible] {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
@@ -50,12 +51,12 @@
   --_ink: var(--color-accent-ink);
   --_shadow: var(--shadow-rest), var(--shadow-glass), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
 }
-.ds-button--primary:hover:not(:disabled),
+.ds-button--primary[data-hovered],
 .ds-button--primary[data-state='hover'] {
   --_bg: var(--color-accent-hover);
   --_shadow: var(--shadow-hover), var(--shadow-glass), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
 }
-.ds-button--primary:active:not(:disabled),
+.ds-button--primary[data-pressed],
 .ds-button--primary[data-state='pressed'] {
   --_bg: var(--color-accent-hover);
   --_shadow: none;
@@ -68,12 +69,12 @@
   --_shadow: var(--shadow-rest), var(--shadow-glass);
   backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
 }
-.ds-button--secondary:hover:not(:disabled),
+.ds-button--secondary[data-hovered],
 .ds-button--secondary[data-state='hover'] {
   --_bg: var(--color-surface-glass-strong);
   --_shadow: var(--shadow-hover), var(--shadow-glass);
 }
-.ds-button--secondary:active:not(:disabled),
+.ds-button--secondary[data-pressed],
 .ds-button--secondary[data-state='pressed'] {
   --_bg: var(--color-surface-sunken);
   --_shadow: none;
@@ -83,13 +84,13 @@
 .ds-button--tertiary {
   padding-inline: var(--space-1);
 }
-.ds-button--tertiary:hover:not(:disabled),
+.ds-button--tertiary[data-hovered],
 .ds-button--tertiary[data-state='hover'] {
   --_ink: var(--color-accent-text-hover);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
-.ds-button--tertiary:active:not(:disabled),
+.ds-button--tertiary[data-pressed],
 .ds-button--tertiary[data-state='pressed'] {
   transform: translateY(1px);
 }
@@ -99,9 +100,9 @@
   --_bg: var(--color-status-error-accent-strong);
   --_ink: var(--color-ink-inverse);
 }
-.ds-button--destructive.ds-button--primary:hover:not(:disabled),
+.ds-button--destructive.ds-button--primary[data-hovered],
 .ds-button--destructive.ds-button--primary[data-state='hover'],
-.ds-button--destructive.ds-button--primary:active:not(:disabled),
+.ds-button--destructive.ds-button--primary[data-pressed],
 .ds-button--destructive.ds-button--primary[data-state='pressed'] {
   --_bg: var(--color-status-error-ink);
 }
@@ -110,8 +111,9 @@
   --_ink: var(--color-status-error-ink);
 }
 
-/* Disabled (Figma: Is Enabled = False) */
-.ds-button:disabled {
+/* Disabled (Figma: Is Enabled = False). Loading looks the same but stays focusable. */
+.ds-button[data-disabled],
+.ds-button[data-pending] {
   --_bg: var(--color-surface-sunken);
   --_ink: var(--color-ink-disabled);
   --_ring: transparent;
@@ -119,10 +121,11 @@
   cursor: not-allowed;
   text-decoration: none;
 }
-.ds-button--tertiary:disabled {
+.ds-button--tertiary[data-disabled],
+.ds-button--tertiary[data-pending] {
   --_bg: transparent;
 }
-.ds-button[aria-busy='true'] {
+.ds-button[data-pending] {
   cursor: progress;
 }
 
@@ -156,7 +159,7 @@
   .ds-button__spinner {
     animation-duration: 2.4s;
   }
-  .ds-button--tertiary:active:not(:disabled) {
+  .ds-button--tertiary[data-pressed] {
     transform: none;
   }
 }
