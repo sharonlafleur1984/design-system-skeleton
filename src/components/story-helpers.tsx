@@ -1,6 +1,15 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
 
 // Storybook-only helpers. Not exported from the component library.
+
+/** The toolbar's Theme picker: one product, or 'both' to compare them side by side. */
+export type ThemeChoice = 'after-graduation' | 'life-hub' | 'both';
+export const ThemeContext = createContext<ThemeChoice>('after-graduation');
+
+/** The theme to use when a story can only show one. 'Both' falls back to After Graduation. */
+export function singleTheme(choice: unknown): 'after-graduation' | 'life-hub' {
+  return choice === 'life-hub' ? 'life-hub' : 'after-graduation';
+}
 
 const panel: CSSProperties = {
   flex: '1 1 320px',
@@ -30,16 +39,20 @@ const backgrounds: Record<string, string> = {
   'after-graduation': 'var(--color-surface-page)',
 };
 
-/** Shows the same content in every product theme, side by side. */
+const themeNames = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub' } as const;
+
+/**
+ * Shows the content in the theme picked in the toolbar. Pick "Both" to see
+ * every product side by side; otherwise only one product shows at a time.
+ */
 export function BothThemes({ children }: { children: ReactNode }) {
+  const choice = useContext(ThemeContext);
+  const shown = choice === 'both' ? (['life-hub', 'after-graduation'] as const) : [singleTheme(choice)];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-      {[
-        ['life-hub', 'Life Hub'],
-        ['after-graduation', 'After Graduation'],
-      ].map(([theme, name]) => (
-        <section key={theme} data-theme={theme} style={{ ...panel, background: backgrounds[theme] }} aria-label={name}>
-          <p style={caption}>{name}</p>
+      {shown.map((theme) => (
+        <section key={theme} data-theme={theme} style={{ ...panel, background: backgrounds[theme] }} aria-label={themeNames[theme]}>
+          {shown.length > 1 && <p style={caption}>{themeNames[theme]}</p>}
           {children}
         </section>
       ))}
