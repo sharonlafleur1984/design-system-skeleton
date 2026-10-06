@@ -85,18 +85,17 @@ describe('screen classes', () => {
   }
 });
 
-// After Graduation's type sits on the 4-point grid: every size is a multiple of 4 (except 14px for
+// Every theme's type sits on the 4-point grid: every size is a multiple of 4 (except 14px for
 // small UI text), and every line height (size times its ratio) is a multiple of 4.
-describe('after-graduation type on the 4-point grid', () => {
-  const tk = load('after-graduation');
-  const sc = screenClasses('after-graduation');
+describe.each(themes)('%s type on the 4-point grid', (t) => {
+  const tk = load(t);
+  const sc = screenClasses(t);
   const vals = (name: string) => (sc[name] ? [sc[name].compact, sc[name].medium, sc[name].expanded] : [tk[name]]).map((v) => Number.parseFloat(String(v)));
   const roles = Object.keys(tk).filter((k) => /^type-.*-size$/.test(k)).map((k) => k.replace(/-size$/, ''));
   for (const role of roles) {
     it(`${role}: size on the grid`, () => {
       for (const v of vals(`${role}-size`)) expect(v % 4 === 0 || v === 14, `${v}px`).toBe(true);
     });
-    if (!tk[`${role}-line-height`]) continue;
     it(`${role}: line height (size x ratio) on the grid`, () => {
       const sizes = vals(`${role}-size`);
       const ratios = vals(`${role}-line-height`);
