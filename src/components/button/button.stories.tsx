@@ -25,7 +25,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**Do:** Start the label with a verb that says what happens ("Add school"). **Don\'t:** Use "Submit" or "Click here".',
           '',
-          '**Accessibility:** A real `<button>`. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading sets `aria-busy`.',
+          '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on.',
         ].join('\n'),
       },
     },
