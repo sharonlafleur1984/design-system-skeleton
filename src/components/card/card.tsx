@@ -1,4 +1,5 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
+import '../material.css';
 import './card.css';
 
 // Mirrors the Figma "Card" set: variant (transparent, translucent, opaque) and state (rest, hover).

@@ -32,7 +32,25 @@ describe('Button', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Off' }));
     await userEvent.click(screen.getByRole('button', { name: 'Busy' }));
     expect(clicks).toBe(0);
-    expect(screen.getByRole('button', { name: 'Busy' })).toHaveProperty('ariaBusy', 'true');
+    // React Aria marks a loading button as unavailable but keeps it focusable, and announces the change.
+    const busy = screen.getByRole('button', { name: 'Busy' });
+    expect(busy.getAttribute('aria-disabled')).toBe('true');
+    expect(busy.hasAttribute('data-pending')).toBe(true);
+    expect(busy.tabIndex).toBe(0);
+  });
+
+  it('works from the keyboard', async () => {
+    let clicks = 0;
+    render(<Button onPress={() => clicks++}>Add school</Button>);
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    await userEvent.keyboard(' ');
+    expect(clicks).toBe(2);
+  });
+
+  it('passes data-state through for the Storybook state gallery', () => {
+    render(<Button data-state="hover">Hover</Button>);
+    expect(screen.getByRole('button').getAttribute('data-state')).toBe('hover');
   });
 
   it('defaults to type="button" so it never submits a form by accident', () => {
