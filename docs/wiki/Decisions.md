@@ -1,8 +1,20 @@
 # Decisions
 
-**Last updated:** October 4, 2026
+**Last updated:** October 6, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 6, 2026:</b> Life Hub follows the same type rule as After Graduation</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Life Hub's type follows the Oct 4 After Graduation rule. Sizes follow a modular scale rounded to the 4-point grid, and line heights are ratios picked so size times ratio is a multiple of 4. Life Hub keeps its own fonts and its own sizes within that rule.
+- **Why:** both products share one foundation, and each theme picks its own values within it. Code leads and Figma follows, so some of Life Hub's 16 Figma sizes will move to fit the scale.
+- **Other options:** keep Life Hub's Figma sizes and snap only line heights to the grid (keeps the Figma match, but makes Life Hub an exception to the shared rule).
+- **Note:** Sharon made this call earlier, but it wasn't logged, so a later status note listed it as open.
+- **Sources:** [Material 3 type scale tokens](https://m3.material.io/styles/typography/type-scale-tokens), [Carbon type sets](https://carbondesignsystem.com/elements/typography/type-sets/)
+
+</details>
 
 <details>
 <summary><b>Oct 4, 2026:</b> After Graduation's React rebuild uses React Aria Components</summary>
