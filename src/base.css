@@ -1,0 +1,23 @@
+/*
+ * The page itself: background, text color and body type, all from the theme's tokens.
+ * Apps load this once; set the theme with <html data-theme="...">.
+ * Storybook loads the same file, so components are shown on the same page apps use.
+ */
+html,
+body {
+  background: var(--color-surface-page);
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--type-body-default-size);
+  line-height: var(--type-body-default-line-height);
+}
+
+html {
+  /* Stops phones from enlarging text on their own when the screen turns. */
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}

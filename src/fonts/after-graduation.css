@@ -1,0 +1,12 @@
+/*
+ * After Graduation's fonts, served from this package, not from Google Fonts, so every app
+ * and Storybook look the same offline, in CI and on every machine.
+ * Only the weights the type tokens use; any other weight makes the browser fake it.
+ * Latin characters only (which covers English and Spanish), to keep the download small.
+ */
+@import '@fontsource/atkinson-hyperlegible-next/latin-300.css';
+@import '@fontsource/atkinson-hyperlegible-next/latin-400.css';
+@import '@fontsource/atkinson-hyperlegible-next/latin-500.css';
+@import '@fontsource/atkinson-hyperlegible-next/latin-600.css';
+@import '@fontsource/atkinson-hyperlegible-next/latin-700.css';
+@import '@fontsource/cinzel/latin-800.css';

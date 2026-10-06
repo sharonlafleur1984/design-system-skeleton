@@ -1,0 +1,19 @@
+/*
+ * Life Hub's fonts, served from this package, not from Google Fonts, so every app
+ * and Storybook look the same offline, in CI and on every machine.
+ */
+@import '@fontsource/archivo/latin-300.css';
+@import '@fontsource/archivo/latin-400.css';
+@import '@fontsource/archivo/latin-500.css';
+@import '@fontsource/archivo/latin-600.css';
+@import '@fontsource/jetbrains-mono/latin-400.css';
+@import '@fontsource/jetbrains-mono/latin-500.css';
+
+/* Newsreader with optical sizing, under the name the tokens use. */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2') format('woff2-variations');
+}

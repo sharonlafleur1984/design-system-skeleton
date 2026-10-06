@@ -10,7 +10,7 @@ const sc = JSON.parse(readFileSync('build/json/after-graduation.screen-classes.j
 const px = (v: string | number) => Number.parseFloat(String(v));
 const sizes = (name: string) => (sc[name] ? [sc[name].compact, sc[name].medium, sc[name].expanded] : [tokens[name]]).map(px);
 
-// Weights that have a real font file (see .storybook/fonts.css). Any other weight makes the browser fake it.
+// Weights that have a real font file (see src/fonts/after-graduation.css). Any other weight makes the browser fake it.
 const loaded: Record<string, number[]> = {
   Cinzel: [800],
   'Atkinson Hyperlegible Next': [300, 400, 500, 600, 700],
