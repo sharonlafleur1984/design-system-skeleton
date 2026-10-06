@@ -1,19 +1,20 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Builds the package other repos install: the components as JavaScript, one CSS file for
-// their styles, and one font file per theme. Storybook doesn't use this; it reads src directly.
+// Builds the package other repos install: the components as JavaScript with one CSS file for
+// their styles, the page's base styles, and one font file per theme. Storybook doesn't use this; it reads src directly.
 export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     copyPublicDir: false,
-    // One CSS file per entry: the components' styles, and each theme's fonts.
+    // One CSS file per entry: the components' styles, the base styles, and each theme's fonts.
     cssCodeSplit: true,
     lib: {
       entry: {
         index: 'src/components/index.ts',
+        base: 'src/base.css',
         'fonts-after-graduation': 'src/fonts/after-graduation.css',
         'fonts-life-hub': 'src/fonts/life-hub.css',
       },

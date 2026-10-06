@@ -54,6 +54,7 @@
       "types": "./dist/types/components/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./base.css": "./dist/base.css",
     "./components.css": "./dist/index.css",
     "./themes/*.css": "./build/css/*.css",
     "./fonts/after-graduation.css": "./dist/fonts-after-graduation.css",

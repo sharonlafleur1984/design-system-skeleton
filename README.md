@@ -41,11 +41,12 @@ Apps install a tagged version straight from GitHub, so an update only arrives wh
 npm install github:sharonlafleur1984/design-system-skeleton#v0.2.0
 ```
 
-Then load the theme, its fonts and the component styles once, set the theme on the page, and import components:
+Then load the theme, its fonts, the base page styles and the component styles once, set the theme on the page, and import components:
 
 ```ts
 import 'design-system-skeleton/themes/after-graduation.css';
 import 'design-system-skeleton/fonts/after-graduation.css';
+import 'design-system-skeleton/base.css';
 import 'design-system-skeleton/components.css';
 import { Button } from 'design-system-skeleton';
 // <html data-theme="after-graduation">
@@ -61,6 +62,7 @@ Installing runs `npm run build:lib`, which turns `src/components` into the packa
 - `scripts/build-tokens.mjs`: turns the tokens into CSS variables, one file per theme
 - `src/components/`: the components, each with its Storybook page
 - `src/fonts/`: each theme's fonts
+- `src/base.css`: the page's background, text color and body type
 - `src/tokens-docs/`: the Storybook pages for colors, type, space, radius and shadow
 - [Wiki](../../wiki): the Dashboard, Roadmap and Decisions
 
