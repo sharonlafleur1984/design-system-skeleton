@@ -6,7 +6,8 @@
   gap: var(--control-gap);
   min-block-size: var(--control-height-small);
   color: var(--color-ink-secondary);
-  font-size: var(--control-font-size);
+  font-size: var(--control-type-medium-size);
+  line-height: var(--control-type-medium-line-height);
   cursor: pointer;
 }
 

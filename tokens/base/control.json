@@ -12,7 +12,8 @@
       },
       "large": {
         "$type": "dimension",
-        "$value": "48px"
+        "$value": "40px",
+        "$description": "Oct 6: 40px, down from Figma 48. 48 is a call-to-action size, too big for a regular option."
       }
     },
     "padding-inline": {
@@ -28,11 +29,6 @@
         "$type": "dimension",
         "$value": "16px"
       }
-    },
-    "font-size": {
-      "$type": "dimension",
-      "$value": "14px",
-      "$description": "Button and form control labels (Figma: 14px, medium weight)."
     },
     "icon": {
       "$type": "dimension",

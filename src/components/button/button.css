@@ -20,9 +20,9 @@
   box-shadow: var(--_shadow);
   color: var(--_ink);
   font-family: var(--font-family-body);
-  font-size: var(--control-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
+  font-size: var(--control-type-medium-size);
+  font-weight: var(--control-type-medium-weight);
+  line-height: var(--control-type-medium-line-height);
   cursor: pointer;
   text-decoration: none;
 }
@@ -32,17 +32,21 @@
   outline-offset: 2px;
 }
 
-/* Sizes (Figma: Small 24, Medium 32, Large 48) */
+/* Sizes: Small 24, Medium 32, Large 40 tall. Each size has its own control type style. */
 .ds-button--small {
   min-block-size: var(--control-height-small);
   padding-block: 0;
   padding-inline: var(--control-padding-inline-small);
-  font-size: var(--type-body-small-size);
+  font-size: var(--control-type-small-size);
+  font-weight: var(--control-type-small-weight);
+  line-height: var(--control-type-small-line-height);
 }
 .ds-button--large {
   min-block-size: var(--control-height-large);
   padding-inline: var(--control-padding-inline-large);
-  font-size: var(--type-body-large-size);
+  font-size: var(--control-type-large-size);
+  font-weight: var(--control-type-large-weight);
+  line-height: var(--control-type-large-line-height);
 }
 
 /* Primary: solid accent, the one main action */

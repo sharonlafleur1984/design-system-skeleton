@@ -4,7 +4,8 @@
   align-items: center;
   gap: var(--control-gap);
   color: var(--color-ink-secondary);
-  font-size: var(--control-font-size);
+  font-size: var(--control-type-medium-size);
+  line-height: var(--control-type-medium-line-height);
 }
 
 .ds-switch__track {
