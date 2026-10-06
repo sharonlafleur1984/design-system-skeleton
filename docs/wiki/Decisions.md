@@ -5,6 +5,18 @@
 Newest first.
 
 <details>
+<summary><b>Oct 6, 2026:</b> Controls get their own type style; Large buttons are 40px tall</summary>
+
+- **Decided by:** Sharon
+- **Decision:** each theme sets a size, line height and weight for Small, Medium and Large controls. For now both themes use the same values: 12 on 16, 14 on 20 and 16 on 24, medium weight. Large buttons are 40px tall instead of 48. Checkbox and Switch labels use Medium.
+- **Why:** the fonts already make each product's buttons look different, so different sizes or weights would add difference for its own sake. 48px is a call-to-action size and felt too big as a regular option. 14px button labels with 16px body text is the standard pairing.
+- **Other options:** bigger, semibold After Graduation buttons (14 / 16 / 20); a third font just for buttons (breaks the two-families rule); keeping Large at 48.
+- **Details:** [#23](https://github.com/sharonlafleur1984/design-system-skeleton/pull/23)
+- **Sources:** [Material 3 type scale tokens](https://m3.material.io/styles/typography/type-scale-tokens), [WCAG 2.5.8 target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), [Apple accessibility guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility)
+
+</details>
+
+<details>
 <summary><b>Oct 6, 2026:</b> Life Hub follows the same type rule as After Graduation</summary>
 
 - **Decided by:** Sharon
