@@ -1,7 +1,8 @@
 import type { Preview } from '@storybook/react-vite';
 import '../build/css/life-hub.css';
 import '../build/css/after-graduation.css';
-import './fonts.css';
+import '../src/fonts/life-hub.css';
+import '../src/fonts/after-graduation.css';
 import './preview.css';
 import { ThemeContext, singleTheme, type ThemeChoice } from '../src/components/story-helpers';
 

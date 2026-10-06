@@ -1,11 +1,13 @@
 {
   "name": "design-system-skeleton",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "One design system for all of Sharon's products: a shared base with a theme for each product.",
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
+    "build:lib": "vite build -c vite.lib.config.ts && tsc -p tsconfig.build.json",
+    "prepare": "npm run tokens && npm run build:lib",
     "test": "npm run tokens && vitest run",
     "storybook": "npm run tokens && storybook dev -p 6006",
     "build-storybook": "npm run tokens && storybook build -o storybook-static",
@@ -46,5 +48,26 @@
   },
   "dependencies": {
     "react-aria-components": "^1.21.1"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./components.css": "./dist/index.css",
+    "./themes/*.css": "./build/css/*.css",
+    "./fonts/after-graduation.css": "./dist/fonts-after-graduation.css",
+    "./fonts/life-hub.css": "./dist/fonts-life-hub.css"
+  },
+  "files": [
+    "dist",
+    "build/css"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

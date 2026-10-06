@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 6, 2026:</b> Apps install the design system from GitHub, pinned to a version</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation (and later Life Hub) installs this design system straight from GitHub, pinned to a version tag. Updating the design system is a deliberate pull request in the app. Every component is built here first, on React Aria, with a Storybook page; apps only arrange components on a page and own the data.
+- **Why:** it builds the same on a laptop, in CI and on Netlify, and an app always knows exactly which version it was built on, which makes the Important Dates rebuild a fair test of the system.
+- **Other options:** pointing the app at the folder next door (instant, but only works on one laptop); publishing to npm (a release step for every change, too much while the system changes daily).
+- **Sources:** [npm, installing from GitHub](https://docs.npmjs.com/cli/v11/commands/npm-install), [npm prepare script](https://docs.npmjs.com/cli/v11/using-npm/scripts#life-cycle-scripts), [Vite library mode](https://vite.dev/guide/build#library-mode)
+
+</details>
+
+<details>
 <summary><b>Oct 6, 2026:</b> Controls get their own type style; Large buttons are 40px tall</summary>
 
 - **Decided by:** Sharon
