@@ -59,7 +59,7 @@
 }
 .ds-callout__title {
   color: var(--color-ink-primary);
-  font-size: var(--control-font-size);
+  font-size: var(--type-body-small-size);
   font-weight: var(--font-weight-semibold);
   line-height: 1.1;
 }

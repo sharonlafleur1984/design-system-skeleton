@@ -121,3 +121,17 @@ describe('layout uses the space scale', () => {
     }
   }
 });
+
+// Control text: each size's line height lands on the 4-point grid and fits inside its control,
+// leaving room for the 4px padding above and below plus a 1px border.
+describe.each(themes)('%s control type fits its control', (t) => {
+  const tk = load(t);
+  for (const size of ['small', 'medium', 'large']) {
+    it(`${size}: line height on the grid and inside the control height`, () => {
+      const lh = px(String(tk[`control-type-${size}-size`])) * Number(tk[`control-type-${size}-line-height`]);
+      expect(Math.abs(lh - Math.round(lh / 4) * 4), `${lh.toFixed(2)}px`).toBeLessThan(0.01);
+      const padding = size === 'small' ? 0 : 8;
+      expect(lh + padding + 2).toBeLessThanOrEqual(px(String(tk[`control-height-${size}`])));
+    });
+  }
+});

@@ -1,0 +1,49 @@
+{
+  "control": {
+    "type": {
+      "$description": "Text for controls (Button, Checkbox, Switch), one style per control size. Each theme sets its own; Oct 6 both themes use the same values. Every line height lands on the 4-point grid and fits inside its control height.",
+      "small": {
+        "size": {
+          "$type": "dimension",
+          "$value": "12px"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": 1.33333
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        }
+      },
+      "medium": {
+        "size": {
+          "$type": "dimension",
+          "$value": "14px"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": 1.42857
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        }
+      },
+      "large": {
+        "size": {
+          "$type": "dimension",
+          "$value": "16px"
+        },
+        "line-height": {
+          "$type": "number",
+          "$value": 1.5
+        },
+        "weight": {
+          "$type": "fontWeight",
+          "$value": "{font.weight.medium}"
+        }
+      }
+    }
+  }
+}
