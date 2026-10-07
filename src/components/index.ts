@@ -16,3 +16,5 @@ export { Divider } from './divider/divider';
 export type { DividerProps } from './divider/divider';
 export { Link, LinkButton } from './link/link';
 export type { LinkProps, LinkButtonProps, LinkLevel } from './link/link';
+export { Chip, ChipGroup } from './chip/chip';
+export type { ChipProps, ChipGroupProps } from './chip/chip';

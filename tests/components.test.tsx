@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton } from '../src/components';
+import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton, Chip, ChipGroup } from '../src/components';
 
 afterEach(cleanup);
 
@@ -186,6 +186,45 @@ describe('Link', () => {
         See <Link href="#">Important Dates</Link>, <Link level="quiet" href="https://x.org" external>source</Link>,{' '}
         <LinkButton>Show full year</LinkButton>
       </p>,
+    );
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Chip', () => {
+  it('selects with a click and shows a check mark, not only a color', async () => {
+    render(
+      <ChipGroup label="Show" selectionMode="multiple">
+        <Chip id="due">Due this week</Chip>
+        <Chip id="done">Done</Chip>
+      </ChipGroup>,
+    );
+    const due = screen.getByRole('row', { name: 'Due this week' });
+    await userEvent.click(due);
+    expect(due.getAttribute('aria-selected')).toBe('true');
+    expect(due.querySelector('.ds-chip__check')).toBeTruthy();
+  });
+
+  it('removes with the remove button and with Delete', async () => {
+    const removed: string[] = [];
+    render(
+      <ChipGroup label="Topics" onRemove={(keys) => removed.push(...([...keys] as string[]))}>
+        <Chip id="fafsa">FAFSA</Chip>
+        <Chip id="housing">Housing</Chip>
+      </ChipGroup>,
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Remove FAFSA' }));
+    screen.getByRole('row', { name: 'Housing' }).focus();
+    await userEvent.keyboard('{Delete}');
+    expect(removed).toEqual(['fafsa', 'housing']);
+  });
+
+  it('has no accessibility problems', async () => {
+    const { container } = render(
+      <ChipGroup label="Show" selectionMode="multiple" defaultSelectedKeys={['due']}>
+        <Chip id="due">Due this week</Chip>
+        <Chip id="done">Done</Chip>
+      </ChipGroup>,
     );
     await expectNoAxeViolations(container);
   });
