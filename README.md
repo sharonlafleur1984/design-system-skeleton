@@ -38,7 +38,7 @@ npm run build-storybook && npm run test:visual   # visual tests
 Apps install a tagged version straight from GitHub, so an update only arrives when the app chooses it:
 
 ```bash
-npm install github:sharonlafleur1984/design-system-skeleton#v0.2.0
+npm install github:sharonlafleur1984/design-system-skeleton#v0.3.0
 ```
 
 Then load the theme, its fonts, the base page styles and the component styles once, set the theme on the page, and import components:
