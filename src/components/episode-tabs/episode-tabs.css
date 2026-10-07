@@ -1,0 +1,104 @@
+/* Episode tabs. React Aria sets data-selected, data-hovered, data-focus-visible and data-disabled.
+   data-state="hover|focus" forces a look for Storybook. */
+.ds-episodes {
+  display: contents;
+}
+
+/* Three across when there's room, stacked on phones. A container query, so it follows the space the
+   list actually has, not the screen. */
+.ds-episodes__frame {
+  container-type: inline-size;
+}
+.ds-episodes__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+@container (inline-size < 36rem) {
+  .ds-episodes__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+.ds-episode {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-block-size: var(--control-height-large);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4) var(--space-7);
+  border: var(--glass-rim-width) solid var(--glass-rim-color);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-glass-on-art);
+  box-shadow: var(--shadow-glass-on-art);
+  color: var(--color-ink-inverse);
+  font-family: var(--font-family-body);
+  text-align: start;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ds-episode__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-letter-spacing);
+  text-transform: uppercase;
+}
+.ds-episode__title {
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
+  letter-spacing: var(--type-heading-title-letter-spacing);
+}
+.ds-episode__description {
+  font-family: var(--type-body-small-family);
+  font-size: var(--type-body-small-size);
+  font-weight: var(--type-body-small-weight);
+  line-height: var(--type-body-small-line-height);
+  letter-spacing: var(--type-body-small-letter-spacing);
+}
+
+/* Hover underlines the title; the glass itself stays clear until chosen. */
+.ds-episode[data-hovered]:not([data-selected]) .ds-episode__title,
+.ds-episode[data-state='hover'] .ds-episode__title {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+/* Chosen: frosted white, deep red text, and the star. The star and the fill change together,
+   so color is never the only signal. */
+.ds-episode[data-selected] {
+  background: var(--color-surface-glass-on-art-selected);
+  backdrop-filter: blur(var(--material-blur-on-art-selected));
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  color: var(--color-accent-contrast);
+}
+.ds-episode__star {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-4);
+  font-size: var(--type-heading-title-size);
+  line-height: 1;
+  visibility: hidden;
+}
+.ds-episode[data-selected] .ds-episode__star {
+  visibility: visible;
+}
+
+.ds-episode[data-focus-visible],
+.ds-episode[data-state='focus'] {
+  outline: 2px solid var(--color-ink-inverse);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-episode {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}

@@ -22,3 +22,7 @@ export { Tabs, TabList, Tab, TabPanel } from './tabs/tabs';
 export type { TabsProps, TabListProps, TabProps, TabPanelProps } from './tabs/tabs';
 export { SegmentedControl, Segment } from './segmented-control/segmented-control';
 export type { SegmentedControlProps, SegmentProps } from './segmented-control/segmented-control';
+export { PageShell } from './page-shell/page-shell';
+export type { PageShellProps } from './page-shell/page-shell';
+export { EpisodeTabs, EpisodeTabList, EpisodeTab } from './episode-tabs/episode-tabs';
+export type { EpisodeTabsProps, EpisodeTabListProps, EpisodeTabProps } from './episode-tabs/episode-tabs';

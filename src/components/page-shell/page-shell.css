@@ -1,0 +1,59 @@
+/* Page shell. Every space is a layout or shell token, so phone, tablet and desktop each get their
+   own values without media queries here. The shell's background is the header's deepest red, so on
+   desktop it shows down both sides of the sheet. */
+.ds-shell {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+  background: var(--shell-frame);
+}
+
+.ds-shell__inner {
+  inline-size: 100%;
+  max-inline-size: var(--shell-content-max);
+  margin-inline: auto;
+}
+
+/* The header fades from the accent red down to the frame red the sheet sits on. */
+.ds-shell__header {
+  padding-block-start: var(--layout-section);
+  padding-block-end: calc(var(--layout-section) + var(--shell-sheet-overlap));
+  padding-inline: var(--layout-gutter);
+  background: linear-gradient(var(--color-accent-base), var(--shell-frame));
+  color: var(--color-ink-inverse);
+}
+
+.ds-shell__title {
+  margin: 0;
+  font-family: var(--type-display-cover-family);
+  font-size: var(--type-display-cover-size);
+  font-weight: var(--type-display-cover-weight);
+  line-height: var(--type-display-cover-line-height);
+  letter-spacing: var(--type-display-cover-letter-spacing);
+}
+
+.ds-shell__subtitle {
+  margin-block: var(--space-2) 0;
+  font-family: var(--type-display-m-family);
+  font-size: var(--type-display-m-size);
+  font-weight: var(--type-display-m-weight);
+  line-height: var(--type-display-m-line-height);
+  letter-spacing: var(--type-display-m-letter-spacing);
+}
+
+.ds-shell__nav {
+  margin-block-start: var(--layout-title-gap);
+}
+
+/* The sheet rises over the header's bottom edge by sheet-overlap. */
+.ds-shell__sheet {
+  flex: 1;
+  margin-block-start: calc(-1 * var(--shell-sheet-overlap));
+  margin-inline: var(--shell-sheet-inset);
+  padding-block: var(--layout-section);
+  padding-inline: var(--layout-gutter);
+  border-start-start-radius: var(--shell-sheet-radius);
+  border-start-end-radius: var(--shell-sheet-radius);
+  background: var(--color-surface-page);
+  color: var(--color-ink-primary);
+}

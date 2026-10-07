@@ -5,13 +5,23 @@
       "$type": "dimension",
       "$value": "16px",
       "$description": "Space between the screen side and the page sheet, so the header color shows around it. Desktop only.",
-      "$extensions": { "com.sharon.screen-class": { "compact": "0px", "medium": "0px" } }
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "0px",
+          "medium": "0px"
+        }
+      }
     },
     "sheet-overlap": {
       "$type": "dimension",
       "$value": "40px",
       "$description": "How far the page sheet rises over the bottom of the header.",
-      "$extensions": { "com.sharon.screen-class": { "compact": "24px", "medium": "32px" } }
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "24px",
+          "medium": "32px"
+        }
+      }
     },
     "sheet-radius": {
       "$type": "dimension",
@@ -22,6 +32,11 @@
       "$type": "color",
       "$value": "#6e0f20",
       "$description": "The deep red the header fades to at its bottom, shown around the sheet on desktop."
+    },
+    "content-max": {
+      "$type": "dimension",
+      "$value": "920px",
+      "$description": "Widest the page's content gets, in the header and the sheet. Wider screens get more frame, not longer lines."
     }
   }
 }
