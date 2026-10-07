@@ -33,9 +33,11 @@ const caption: CSSProperties = {
 };
 
 // Life Hub pages sit on a marbled texture (Figma: Background Texture, sage-cream for the Dashboard).
-// A small preview image, stretched; the real files are 6000 x 4000.
+// A small preview image, stretched; the real files are 6000 x 4000. In dark mode the Dashboard's
+// night layer covers it (transparent in light mode).
 const backgrounds: Record<string, string> = {
-  'life-hub': "url('texture-sage-cream.jpg') center / cover, var(--color-surface-page)",
+  'life-hub':
+    "linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page)",
   'after-graduation': 'var(--color-surface-page)',
 };
 

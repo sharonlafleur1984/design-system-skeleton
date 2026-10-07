@@ -1,0 +1,20 @@
+{
+  "button": {
+    "kiss": {
+      "$value": "rgba(253,251,241,0.35)",
+      "$type": "color",
+      "$description": "A thin line of light on the top edge, just before the top-right curve."
+    },
+    "tertiary-decoration": {
+      "$value": "underline",
+      "$description": "Text buttons are underlined so they read as tappable without color."
+    },
+    "shadow-primary": {
+      "$value": "-0.8px 0.8px 2px 0px rgb(42 38 37 / 0.08)",
+      "$description": "About half the card's light: one faint contact shadow away from the sun."
+    },
+    "shadow-secondary": {
+      "$value": "-0.8px 0.8px 2px 0px rgb(42 38 37 / 0.08)"
+    }
+  }
+}

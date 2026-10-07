@@ -27,6 +27,29 @@
   text-decoration: none;
 }
 
+/* A thin line of light on the top edge, just before the top-right curve: the sun in the header kissing
+   the button. Transparent in themes without it. It stops short of the corner so the curve never swells. */
+.ds-button--primary,
+.ds-button--secondary {
+  position: relative;
+}
+.ds-button--primary::before,
+.ds-button--secondary::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 35% var(--radius-button);
+  block-size: 1px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--button-kiss) 80%, color-mix(in srgb, var(--button-kiss) 60%, transparent));
+}
+.ds-button[data-disabled]::before,
+.ds-button[data-pending]::before,
+.ds-button[data-pressed]::before {
+  display: none;
+}
+
 .ds-button[data-focus-visible] {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
@@ -53,7 +76,7 @@
 .ds-button--primary {
   --_bg: var(--color-accent-base);
   --_ink: var(--color-accent-ink);
-  --_shadow: var(--shadow-rest), var(--shadow-glass), inset 0 1px 0 color-mix(in srgb, var(--color-ink-inverse) 25%, transparent);
+  --_shadow: var(--button-shadow-primary);
 }
 .ds-button--primary[data-hovered],
 .ds-button--primary[data-state='hover'] {
@@ -70,7 +93,7 @@
 .ds-button--secondary {
   --_bg: var(--color-surface-glass);
   --_ring: var(--color-border-default);
-  --_shadow: var(--shadow-rest), var(--shadow-glass);
+  --_shadow: var(--button-shadow-secondary);
   backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
 }
 .ds-button--secondary[data-hovered],
@@ -84,9 +107,12 @@
   --_shadow: none;
 }
 
-/* Tertiary: text only, for side trips */
+/* Tertiary: text only, for side trips. Life Hub underlines it so it reads as tappable without color. */
 .ds-button--tertiary {
   padding-inline: var(--space-1);
+  text-decoration: var(--button-tertiary-decoration);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
 }
 .ds-button--tertiary[data-hovered],
 .ds-button--tertiary[data-state='hover'] {

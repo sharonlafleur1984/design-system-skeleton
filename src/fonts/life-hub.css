@@ -1,19 +1,24 @@
 /*
  * Life Hub's fonts, served from this package, not from Google Fonts, so every app
  * and Storybook look the same offline, in CI and on every machine.
+ * Titles: Fraunces with its Soft axis at full (rounded, poured-ink letter endings).
+ * Everything else, numbers included: Figtree.
  */
-@import '@fontsource/archivo/latin-300.css';
-@import '@fontsource/archivo/latin-400.css';
-@import '@fontsource/archivo/latin-500.css';
-@import '@fontsource/archivo/latin-600.css';
-@import '@fontsource/jetbrains-mono/latin-400.css';
-@import '@fontsource/jetbrains-mono/latin-500.css';
+@import '@fontsource/figtree/latin-400.css';
+@import '@fontsource/figtree/latin-500.css';
+@import '@fontsource/figtree/latin-600.css';
 
-/* Newsreader with optical sizing, under the name the tokens use. */
+/* Fraunces with every axis, under the name the tokens use. */
 @font-face {
-  font-family: 'Newsreader';
+  font-family: 'Fraunces';
   font-style: normal;
   font-display: swap;
-  font-weight: 200 800;
-  src: url('../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-opsz-normal.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2') format('woff2-variations');
+}
+
+/* The Soft axis has to be set where the text is drawn. Fonts without that axis ignore it. */
+[data-theme='life-hub'],
+[data-theme='life-hub'] * {
+  font-variation-settings: 'SOFT' 100;
 }

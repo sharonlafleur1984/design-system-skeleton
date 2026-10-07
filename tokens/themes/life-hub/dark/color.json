@@ -1,0 +1,222 @@
+{
+  "color": {
+    "ink": {
+      "primary": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      },
+      "secondary": {
+        "$value": "#e8e2db",
+        "$type": "color"
+      },
+      "tertiary": {
+        "$value": "#d6cec7",
+        "$type": "color"
+      },
+      "muted": {
+        "$value": "#a39996",
+        "$type": "color"
+      },
+      "disabled": {
+        "$value": "#6d6560",
+        "$type": "color"
+      },
+      "inverse": {
+        "$value": "#2a2625",
+        "$type": "color"
+      }
+    },
+    "surface": {
+      "page": {
+        "$value": "#2a2625",
+        "$type": "color",
+        "$description": "Under the marble and its night layer."
+      },
+      "card": {
+        "$value": "#342e2c",
+        "$type": "color"
+      },
+      "raised": {
+        "$value": "#3a3432",
+        "$type": "color"
+      },
+      "sunken": {
+        "$value": "#221e1d",
+        "$type": "color"
+      },
+      "hover": {
+        "$value": "#433c3a",
+        "$type": "color"
+      },
+      "overlay": {
+        "$value": "#4a4341",
+        "$type": "color"
+      },
+      "inverse": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      },
+      "glass": {
+        "$value": "rgba(253,251,241,0.08)",
+        "$type": "color"
+      },
+      "glass-strong": {
+        "$value": "rgba(253,251,241,0.14)",
+        "$type": "color"
+      },
+      "glass-on-art": {
+        "$value": "rgba(253,251,241,0.08)",
+        "$type": "color"
+      },
+      "glass-on-art-selected": {
+        "$value": "rgba(253,251,241,0.14)",
+        "$type": "color"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "rgba(253,251,241,0.08)",
+        "$type": "color"
+      },
+      "default": {
+        "$value": "rgba(253,251,241,0.16)",
+        "$type": "color"
+      },
+      "strong": {
+        "$value": "#8a817c",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      }
+    },
+    "accent": {
+      "base": {
+        "$value": "#e8e2db",
+        "$type": "color",
+        "$description": "One shade below the text, so labels stay the brightest thing."
+      },
+      "hover": {
+        "$value": "#ddd5cc",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "#3a3432",
+        "$type": "color"
+      },
+      "soft": {
+        "$value": "#433c3a",
+        "$type": "color"
+      },
+      "ink": {
+        "$value": "#2a2625",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      },
+      "text-hover": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      },
+      "contrast": {
+        "$value": "#faf7f1",
+        "$type": "color"
+      }
+    },
+    "status": {
+      "error": {
+        "surface": {
+          "$value": "#3a1d1a",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#e57c70",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#f09a90",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#f4b6ad",
+          "$type": "color"
+        }
+      },
+      "warning": {
+        "surface": {
+          "$value": "#352810",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#dba034",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#dba034",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#f2d08a",
+          "$type": "color"
+        }
+      },
+      "success": {
+        "surface": {
+          "$value": "#16301f",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#55b582",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#7cc99d",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#a3dbb6",
+          "$type": "color"
+        }
+      },
+      "info": {
+        "surface": {
+          "$value": "#1b2742",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#7c9be0",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#9db4ea",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#b8caef",
+          "$type": "color"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$value": "#342e2c",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#8a817c",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#a39996",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#d6cec7",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}
