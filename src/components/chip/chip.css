@@ -1,0 +1,123 @@
+/* Chip group and chips. React Aria sets data-selected, data-hovered, data-focus-visible, data-disabled
+   and data-allows-removing on each chip. data-state="hover|focus" forces a look for Storybook. */
+.ds-chip-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.ds-chip-group__label {
+  color: var(--color-ink-secondary);
+  font-size: var(--control-type-small-size);
+  font-weight: var(--control-type-small-weight);
+  line-height: var(--control-type-small-line-height);
+}
+.ds-chip-group__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.ds-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: var(--control-height-medium);
+  padding-inline: var(--control-padding-inline-medium);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-chip);
+  background: var(--color-surface-glass);
+  box-shadow: var(--button-shadow-secondary);
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+  color: var(--color-ink-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-medium-size);
+  font-weight: var(--control-type-medium-weight);
+  line-height: var(--control-type-medium-line-height);
+  cursor: default;
+  outline: none;
+}
+.ds-chip[data-selection-mode]:not([data-selection-mode='none']) {
+  cursor: pointer;
+}
+/* The same thin line of light as buttons, on the top edge just before the top-right curve. */
+.ds-chip::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 35% var(--radius-button);
+  block-size: 1px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--button-kiss) 80%, color-mix(in srgb, var(--button-kiss) 60%, transparent));
+}
+
+.ds-chip[data-hovered],
+.ds-chip[data-state='hover'] {
+  background: var(--color-surface-glass-strong);
+  border-color: var(--color-border-strong);
+}
+
+/* Selected: solid accent with a check mark, so it never relies on color alone. */
+.ds-chip[data-selected] {
+  border-color: var(--color-accent-base);
+  background: var(--color-accent-base);
+  color: var(--color-accent-ink);
+  box-shadow: var(--button-shadow-primary);
+}
+.ds-chip[data-selected][data-hovered] {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent-hover);
+}
+
+.ds-chip[data-focus-visible],
+.ds-chip[data-state='focus'] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.ds-chip[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ds-chip__check {
+  flex: none;
+  inline-size: var(--control-icon);
+  block-size: var(--control-icon);
+  margin-inline-start: calc(-1 * var(--space-1));
+}
+
+/* Remove: a round button inside the chip, at least 24px to tap (WCAG 2.5.8). */
+.ds-chip[data-allows-removing] {
+  padding-inline-end: var(--space-1);
+}
+.ds-chip__remove {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--control-height-small);
+  block-size: var(--control-height-small);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.ds-chip__remove svg {
+  inline-size: var(--control-icon);
+  block-size: var(--control-icon);
+}
+.ds-chip__remove[data-hovered] {
+  background: color-mix(in srgb, currentColor 12%, transparent);
+}
+.ds-chip__remove[data-focus-visible] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-chip {
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+}
