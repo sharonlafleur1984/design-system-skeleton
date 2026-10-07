@@ -1,0 +1,290 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource/figtree/400.css';
+@import '@fontsource/figtree/500.css';
+@import '@fontsource/figtree/600.css';
+
+/* Life Hub glass cards: exploration. One sun in the header (top right). Light mode shows the light as
+   shade and shadow; dark mode shows it as highlights. Light colors: sunlight #fdfbf1 (Sunflower Medley 50
+   mixed with warm paper). Shade and shadow: Life Hub ink. Values are estimates until they become tokens. */
+
+.lh-screen {
+  --sun: 253 251 241;
+  --ink: 42 38 37;
+  /* The sun's rays are parallel, so every element is lit from the same upper-right angle. */
+  --shx: -8px;
+  --shy: 8px;
+  --font-family-body: Figtree, system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  font-family: var(--font-family-body);
+  min-inline-size: 0;
+}
+
+/* Light mode: the marble, warmed near the sun and easing into shade far from it. */
+.lh-screen[data-mode='light'] {
+  /* The marble image is set inline (relative image paths only resolve there). */
+  background-color: var(--color-surface-page);
+  background-position: center;
+  background-size: cover;
+  --title: #2a2625;
+  --body: #3f3a38;
+  --meta: #524c4a;
+  --color-accent-base: #2a2625;
+  --color-accent-hover: #524c4a;
+  --color-accent-ink: #faf7f1;
+  --color-accent-text: #2a2625;
+  --color-accent-text-hover: #2a2625;
+  --kiss: 0.35;
+  --cast-blur: 26px;
+  --cast: 0.13;
+  --contact: 0.08;
+  --bevel: 0.8;
+  --shade: rgb(var(--ink) / 0.11);
+  --glint: 0.6;
+  --rim-w: 60%;
+  --rim-h: 150%;
+  --rim-base: rgb(var(--ink) / 0.1);
+}
+
+/* Dark mode: the area's layer over its marble, also falling into shade away from the sun. */
+.lh-screen[data-mode='dark'] {
+  background-color: #2a2625;
+  background-position: center;
+  background-size: cover;
+  --title: #faf7f1;
+  --body: #e8e2db;
+  --meta: #d6cec7;
+  --color-accent-base: #e8e2db;
+  --color-accent-hover: #ddd5cc;
+  --color-accent-ink: #2a2625;
+  --color-accent-text: #faf7f1;
+  --color-accent-text-hover: #faf7f1;
+  --color-surface-glass: rgb(var(--sun) / 0.08);
+  --color-surface-glass-strong: rgb(var(--sun) / 0.14);
+  --color-surface-sunken: rgb(0 0 0 / 0.25);
+  --color-border-focus: #faf7f1;
+  --kiss: 0.4;
+  --cast-blur: 22px;
+  --cast: 0.45;
+  --contact: 0.25;
+  --bevel: 0.22;
+  --shade: rgb(20 16 15 / 0.32);
+  --glint: 0.25;
+  --rim-w: 65%;
+  --rim-h: 155%;
+  --rim-base: rgb(var(--sun) / 0.03);
+}
+.lh-screen[data-mode='dark']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(140% 120% at 100% 0%, rgb(20 16 15 / 0) 35%, rgb(20 16 15 / 0.22) 100%);
+}
+.lh-filters {
+  position: absolute;
+}
+
+/* Glass card. --k (0 to 1) is the light's strength at this card, set by its distance from the sun. */
+.lh-glass {
+  --k: 1;
+  position: relative;
+  display: grid;
+}
+.lh-glass__content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  backdrop-filter: var(--lh-bend, none);
+  box-shadow:
+    var(--shx) var(--shy) var(--cast-blur) rgb(var(--ink) / calc(var(--cast) * var(--lh-shadow, 1))),
+    calc(var(--shx) * 0.2) calc(var(--shy) * 0.2) 4px rgb(var(--ink) / calc(var(--contact) * var(--lh-shadow, 1))),
+    inset calc(var(--shx) * 0.4) calc(var(--shy) * 0.4) 8px -4px rgb(var(--sun) / calc(var(--bevel) * var(--k))),
+    inset calc(var(--shx) * -0.35) calc(var(--shy) * -0.35) 7px -4px var(--shade);
+}
+/* Rim: brightest where it faces the sun (top right), a faint glint where light leaves (bottom left). */
+.lh-glass__content::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background:
+    radial-gradient(var(--rim-w) var(--rim-h) at 100% 0%, rgb(var(--sun) / var(--k)) 0, rgb(var(--sun) / calc(0.95 * var(--k))) 24%, rgb(var(--sun) / calc(0.45 * var(--k))) 50%, rgb(var(--sun) / 0) 70%),
+    radial-gradient(22% 34% at 0% 100%, rgb(var(--sun) / calc(var(--glint) * var(--k))), rgb(var(--sun) / 0) 75%),
+    linear-gradient(var(--rim-base), var(--rim-base));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+/* Light mode frost: clear edges that bend the marble, a frosted center behind the text. */
+.lh-glass__frost {
+  position: absolute;
+  inset: 1px;
+  border-radius: 15px;
+  pointer-events: none;
+  background: radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / min(calc(var(--lh-frost) + 0.08), 0.97)), rgb(253 251 249 / var(--lh-frost)) 55%, rgb(250 247 241 / var(--lh-frost)));
+  backdrop-filter: blur(12px);
+  --feather: 8px;
+  -webkit-mask:
+    linear-gradient(to right, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent) intersect,
+    linear-gradient(to bottom, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent);
+}
+.lh-glass--small .lh-glass__frost {
+  inset: 0;
+  border-radius: 16px;
+  --feather: 3px;
+}
+.lh-screen[data-mode='dark'] .lh-glass__frost {
+  display: none;
+}
+
+/* Type, on Life Hub's type sizes: title Heading 20/24, body Body small 14/20, metadata Label meta 12/16,
+   data Data small 14/20 with even numbers, small title Subheading 16/20. */
+.lh-title {
+  margin: 0;
+  font-family: 'Fraunces Variable', Georgia, serif;
+  font-variation-settings: 'SOFT' 100;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--title);
+}
+.lh-title--small {
+  margin-top: 4px;
+  font-size: 16px;
+  line-height: 20px;
+}
+.lh-body {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--body);
+}
+.lh-meta {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--meta);
+}
+.lh-glass--small .lh-meta {
+  margin: 0;
+}
+.lh-data {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+  color: var(--meta);
+}
+
+/* The warning: printed on the glass, so flat. No rim, shadow or light. */
+.lh-screen .lh-callout {
+  justify-self: start;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--_fill);
+  box-shadow: none;
+}
+.lh-screen .lh-callout .ds-callout__icon {
+  inline-size: 16px;
+  block-size: 16px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+.lh-screen .lh-callout .ds-callout__body {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+}
+.lh-screen[data-mode='light'] .lh-callout {
+  --_fill: #f7e2b4;
+  --_body: #5c3d10;
+  --_tone: #855919;
+  --color-ink-inverse: #fdf5e2;
+}
+.lh-screen[data-mode='dark'] .lh-callout {
+  --_fill: #352810;
+  --_body: #f2d08a;
+  --_tone: #dba034;
+  --color-ink-inverse: #352810;
+}
+
+/* Buttons: real React Aria buttons, at about half the card's light. Light mode: a faint contact shadow.
+   Both modes: a thin line of light kissing the top edge just before the top-right curve. */
+.lh-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.lh-screen .ds-button--primary,
+.lh-screen .ds-button--secondary {
+  position: relative;
+  backdrop-filter: none;
+  --_ring: transparent;
+}
+.lh-screen[data-mode='light'] .ds-button--primary,
+.lh-screen[data-mode='light'] .ds-button--secondary {
+  --_shadow: -0.8px 0.8px 2px rgb(var(--ink) / 0.08);
+}
+.lh-screen[data-mode='light'] .ds-button--secondary {
+  --_ring: rgb(var(--ink) / 0.1);
+}
+.lh-screen[data-mode='dark'] .ds-button--primary,
+.lh-screen[data-mode='dark'] .ds-button--secondary {
+  --_shadow: none;
+}
+.lh-screen[data-mode='dark'] .ds-button--secondary {
+  --_ring: rgb(var(--sun) / 0.16);
+}
+.lh-screen .ds-button--primary::before,
+.lh-screen .ds-button--secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 1px;
+  left: 35%;
+  right: 12px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(to right, rgb(var(--sun) / 0), rgb(var(--sun) / calc(var(--kiss) * var(--k))) 80%, rgb(var(--sun) / calc(var(--kiss) * 0.6 * var(--k))));
+}
+.lh-screen .ds-button--tertiary {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+/* Glass falls back to solid for people who ask for it (Reduce Transparency, Increase Contrast). */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .lh-glass__content {
+    backdrop-filter: none;
+  }
+  .lh-screen[data-mode='light'] .lh-glass__content {
+    background: #fdfbf9;
+  }
+  .lh-screen[data-mode='dark'] .lh-glass__content {
+    background: #2a2625;
+  }
+}
