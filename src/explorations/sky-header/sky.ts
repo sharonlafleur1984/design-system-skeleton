@@ -51,7 +51,7 @@ function labToHex([L, A, B]: Lab): string {
   const rgb = [4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s, -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s, -0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s];
   return '#' + rgb.map((c) => Math.round(Math.min(1, Math.max(0, toSrgb(c))) * 255).toString(16).padStart(2, '0')).join('');
 }
-const mixColor = (a: string, b: string, t: number) => {
+export const mixColor = (a: string, b: string, t: number) => {
   const x = hexToLab(a);
   const y = hexToLab(b);
   return labToHex([0, 1, 2].map((i) => x[i] + (y[i] - x[i]) * t) as Lab);
@@ -67,6 +67,8 @@ function luminance(hex: string) {
 }
 
 export interface Sky {
+  /** 0 to 1: how much of the sky shows. 1 is solid; glass headers let the marble through. */
+  alpha: number;
   top: string;
   bottom: string;
   glow: string;
@@ -79,17 +81,33 @@ export interface Sky {
   mode: SkyMode;
 }
 
+export interface SkyOptions {
+  /** The area's night layer (half its 900, half ink). Dark skies lean toward it, so night matches the marble below. */
+  areaNight?: string;
+  /** Glass lets the marble show through, so the header is part of the page. */
+  material?: 'sky' | 'glass';
+}
+
 /** The sky at an hour from 0 to 24 (fractions allowed: 18.5 is 6:30 pm). */
-export function skyAt(hour: number): Sky {
+export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions = {}): Sky {
   const h = ((hour % 24) + 24) % 24;
   const i = KEYS.findIndex((k) => k.hour > h);
   const a = KEYS[i - 1];
   const b = KEYS[i];
   const t = ease((h - a.hour) / (b.hour - a.hour));
-  const top = mixColor(a.top, b.top, t);
-  const bottom = mixColor(a.bottom, b.bottom, t);
+  let top = mixColor(a.top, b.top, t);
+  let bottom = mixColor(a.bottom, b.bottom, t);
+  // How dark the sky is, 0 (day) to 1 (night).
+  const dark = Math.min(1, Math.max(0, (0.6 - luminance(mixColor(top, bottom, 0.5))) / 0.5));
+  if (areaNight) {
+    // Night leans toward the area's own night layer, so the header belongs to the marble below.
+    top = mixColor(top, areaNight, dark * 0.45);
+    bottom = mixColor(bottom, areaNight, dark * 0.6);
+  }
   const mid = mixColor(top, bottom, 0.5);
   return {
+    // Glass: frosted enough by day to read on any marble, deeper at night.
+    alpha: material === 'glass' ? 0.78 + dark * 0.1 : 1,
     top,
     bottom,
     glow: mixColor(a.glow, b.glow, t),

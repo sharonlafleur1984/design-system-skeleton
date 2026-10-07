@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { Button } from '../../components/button/button';
 import { Card } from '../../components/card/card';
 import { greetingAt, makeStars, skyAt } from './sky';
@@ -17,6 +17,10 @@ export interface SkyHeaderProps {
   meta?: string;
   /** Line under the greeting. */
   prompt?: string;
+  /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
+  material?: 'sky' | 'glass';
+  /** The area's night layer, so dark skies match the marble below. */
+  areaNight?: string;
   /** Storybook only: changes are instant, for scrubbing through the day. */
   instant?: boolean;
   onStartChat?: () => void;
@@ -24,12 +28,37 @@ export interface SkyHeaderProps {
 
 const STARS = makeStars(110);
 
+// Drawn once; the sky's star strength arrives through a custom property, so they never re-render.
+const Stars = memo(function Stars() {
+  return (
+    <div className="lh-sky__stars" aria-hidden="true">
+      {STARS.map((s, i) => (
+        <span
+          key={i}
+          className={s.bright ? 'lh-sky__star lh-sky__star--bright' : 'lh-sky__star'}
+          style={
+            {
+              left: `${s.x}%`,
+              top: `${s.y}%`,
+              width: `${s.size}px`,
+              height: `${s.size}px`,
+              '--b': s.base,
+              animationDelay: `${-s.delay}s`,
+              animationDuration: `${s.duration}s`,
+            } as CSSProperties
+          }
+        />
+      ))}
+    </div>
+  );
+});
+
 function nowHour() {
   const d = new Date();
   return d.getHours() + d.getMinutes() / 60;
 }
 
-export function SkyHeader({ hour, name, meta, prompt, instant = false, onStartChat }: SkyHeaderProps) {
+export function SkyHeader({ hour, name, meta, prompt, material = 'sky', areaNight, instant = false, onStartChat }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -37,8 +66,9 @@ export function SkyHeader({ hour, name, meta, prompt, instant = false, onStartCh
     return () => window.clearInterval(id);
   }, [hour]);
   const h = hour ?? clock;
-  const sky = useMemo(() => skyAt(h), [h]);
+  const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
   const style = {
+    '--sky-a': sky.alpha.toFixed(3),
     '--sky-top': sky.top,
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
@@ -51,30 +81,12 @@ export function SkyHeader({ hour, name, meta, prompt, instant = false, onStartCh
   const greeting = greetingAt(h);
   return (
     <header
-      className={`lh-sky${instant ? ' lh-sky--instant' : ''}`}
+      className={`lh-sky lh-sky--${material}${instant ? ' lh-sky--instant' : ''}`}
       data-theme="life-hub"
       data-mode={sky.mode}
       style={style}
     >
-      <div className="lh-sky__stars" aria-hidden="true">
-        {STARS.map((s, i) => (
-          <span
-            key={i}
-            className={s.bright ? 'lh-sky__star lh-sky__star--bright' : 'lh-sky__star'}
-            style={
-              {
-                left: `${s.x}%`,
-                top: `${s.y}%`,
-                width: `${s.size}px`,
-                height: `${s.size}px`,
-                '--b': s.base,
-                animationDelay: `${-s.delay}s`,
-                animationDuration: `${s.duration}s`,
-              } as CSSProperties
-            }
-          />
-        ))}
-      </div>
+      <Stars />
       <Card className="lh-sky__card">
         {meta && <p className="lh-sky__meta">{meta}</p>}
         <h1 className="lh-sky__title">{name ? `${greeting}, ${name}` : greeting}</h1>

@@ -121,7 +121,7 @@ for (const theme of themes) {
     const css =
       `\n/* Dark mode: the device setting, unless something forces light. */\n` +
       `@media (prefers-color-scheme: dark) {\n  :root:not([data-mode="light"])${t},\n  :root:not([data-mode="light"]) ${t}:not([data-mode="light"]) {\n${rows.map((r) => '  ' + r).join('\n')}\n  }\n}\n` +
-      `\n/* Dark mode, forced (Storybook's switch). */\n[data-mode="dark"]${t},\n[data-mode="dark"] ${t},\n${t}[data-mode="dark"] {\n${rows.join('\n')}\n}\n`;
+      `\n/* Dark mode, forced (Storybook's switch). */\n[data-mode="dark"]${t},\n[data-mode="dark"] ${t}:not([data-mode="light"]),\n${t}[data-mode="dark"] {\n${rows.join('\n')}\n}\n`;
     appendFileSync(`build/css/${theme}.css`, css);
   }
 }

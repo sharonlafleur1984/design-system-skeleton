@@ -8,6 +8,7 @@
 @property --sky-glow-x { syntax: '<percentage>'; inherits: true; initial-value: 88%; }
 @property --sky-glow-y { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
 @property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
 @property --sky-stars { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --twinkle { syntax: '<number>'; inherits: false; initial-value: 1; }
 
@@ -30,12 +31,33 @@
     radial-gradient(95% 170% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent), transparent 75%),
     /* warm band along the bottom at sunrise and sunset */
     linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
-    linear-gradient(var(--sky-top), var(--sky-bottom));
+    linear-gradient(
+      color-mix(in srgb, var(--sky-top) calc(var(--sky-a) * 100%), transparent),
+      color-mix(in srgb, var(--sky-bottom) calc(var(--sky-a) * 100%), transparent)
+    );
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
   transition:
     --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
-    --sky-glow-x 60s linear, --sky-glow-y 60s linear, --sky-horizon 60s linear, --sky-stars 60s linear;
+    --sky-glow-x 60s linear, --sky-glow-y 60s linear, --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
+}
+/* Glass: the marble shows through, blurred, with a rim lit from the top right like the cards. */
+.lh-sky--glass {
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+  box-shadow: var(--card-shadow);
+}
+.lh-sky--glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: var(--card-rim);
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
 }
 .lh-sky--instant {
   transition: none;
@@ -47,6 +69,9 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* No stars behind the greeting card: the sky starts to the right of it. */
+  -webkit-mask: linear-gradient(to right, transparent 440px, black 540px);
+  mask: linear-gradient(to right, transparent 440px, black 540px);
 }
 .lh-sky__star {
   position: absolute;
@@ -54,6 +79,8 @@
   /* Starlight stays white in both modes (ink-inverse turns dark in dark mode). */
   background: var(--palette-paper-warm);
   opacity: calc(var(--sky-stars) * var(--b) * var(--twinkle));
+  /* A gentle twinkle: dimmer and a touch smaller, then back. */
+  scale: calc(0.8 + var(--twinkle) * 0.3);
   animation: lh-twinkle 6s ease-in-out infinite alternate;
 }
 .lh-sky__star--bright {
