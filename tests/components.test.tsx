@@ -3,8 +3,10 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton, Chip, ChipGroup } from '../src/components';
+import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton, Chip, ChipGroup, Tabs, TabList, Tab, TabPanel, SegmentedControl, Segment } from '../src/components';
 
+// jsdom has no Web Animations API; React Aria's sliding selection indicator asks for it.
+if (!Element.prototype.getAnimations) Element.prototype.getAnimations = () => [];
 afterEach(cleanup);
 
 // Structure and naming checks only (jsdom has no layout, so contrast is covered by the token tests).
@@ -226,6 +228,62 @@ describe('Chip', () => {
         <Chip id="done">Done</Chip>
       </ChipGroup>,
     );
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Tabs', () => {
+  const bills = () => (
+    <Tabs defaultSelectedKey="upcoming">
+      <TabList aria-label="Bills">
+        <Tab id="upcoming">Upcoming</Tab>
+        <Tab id="paid">Paid</Tab>
+      </TabList>
+      <TabPanel id="upcoming">Three due</TabPanel>
+      <TabPanel id="paid">Nine paid</TabPanel>
+    </Tabs>
+  );
+
+  it('moves with arrow keys and shows the matching panel', async () => {
+    render(bills());
+    screen.getByRole('tab', { name: 'Upcoming' }).focus();
+    await userEvent.keyboard('{ArrowRight}');
+    const paid = screen.getByRole('tab', { name: 'Paid' });
+    expect(paid.getAttribute('aria-selected')).toBe('true');
+    expect(screen.getByRole('tabpanel').textContent).toBe('Nine paid');
+    expect(paid.querySelector('.ds-tabs__indicator')).toBeTruthy();
+  });
+
+  it('has no accessibility problems', async () => {
+    const { container } = render(bills());
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('SegmentedControl', () => {
+  const showBy = (onChange?: (keys: Set<unknown>) => void) => (
+    <SegmentedControl aria-label="Show by" defaultSelectedKeys={['week']} onSelectionChange={(k) => onChange?.(k as Set<unknown>)}>
+      <Segment id="week">Week</Segment>
+      <Segment id="month">Month</Segment>
+    </SegmentedControl>
+  );
+
+  it('picks one option, shows the lens on it, and never clears', async () => {
+    const changes: unknown[][] = [];
+    render(showBy((k) => changes.push([...k])));
+    const week = screen.getByRole('radio', { name: 'Week' });
+    const month = screen.getByRole('radio', { name: 'Month' });
+    await userEvent.click(month);
+    expect(month.getAttribute('aria-checked')).toBe('true');
+    expect(month.querySelector('.ds-segmented__lens')).toBeTruthy();
+    expect(week.querySelector('.ds-segmented__lens')).toBeNull();
+    await userEvent.click(month);
+    expect(month.getAttribute('aria-checked')).toBe('true');
+    expect(changes.every((c) => c.length === 1 && c[0] === 'month')).toBe(true);
+  });
+
+  it('has no accessibility problems', async () => {
+    const { container } = render(showBy());
     await expectNoAxeViolations(container);
   });
 });

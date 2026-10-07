@@ -1,0 +1,92 @@
+/* Segmented control. React Aria sets data-selected, data-hovered, data-pressed, data-focus-visible and
+   data-disabled on each option. data-state="hover|focus" forces a look for Storybook. */
+.ds-segmented {
+  display: inline-flex;
+  align-self: flex-start;
+  inline-size: max-content;
+  gap: 2px;
+  padding: 2px;
+  max-inline-size: 100%;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+}
+
+.ds-segmented__option {
+  position: relative;
+  flex: 1 1 0;
+  display: inline-grid;
+  place-items: center;
+  min-block-size: calc(var(--control-height-medium) - 2px);
+  padding-inline: var(--control-padding-inline-medium);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-medium-size);
+  font-weight: var(--control-type-medium-weight);
+  line-height: var(--control-type-medium-line-height);
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ds-segmented__label {
+  position: relative;
+  z-index: 1;
+}
+.ds-segmented__option[data-hovered]:not([data-selected]),
+.ds-segmented__option[data-state='hover']:not([data-selected]) {
+  /* Text only: hover must never look stronger than the chosen option's lens. */
+  color: var(--color-ink-primary);
+}
+.ds-segmented__option[data-selected] {
+  color: var(--color-ink-primary);
+  font-weight: var(--font-weight-semibold);
+  cursor: default;
+}
+.ds-segmented__option[data-focus-visible],
+.ds-segmented__option[data-state='focus'] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 1px;
+}
+.ds-segmented__option[data-disabled] {
+  color: var(--color-ink-disabled);
+  cursor: not-allowed;
+}
+
+/* The lens: a glass pill over the chosen option, lit like a secondary button. */
+.ds-segmented__lens {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-border-default);
+  border-radius: inherit;
+  background: var(--color-surface-glass-strong);
+  box-shadow: var(--button-shadow-secondary);
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+}
+.ds-segmented__lens::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 35% var(--radius-button);
+  block-size: 1px;
+  border-radius: 1px;
+  pointer-events: none;
+  background: linear-gradient(to right, transparent, var(--button-kiss) 80%, color-mix(in srgb, var(--button-kiss) 60%, transparent));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-segmented__lens {
+    transition: translate 0.2s ease, width 0.2s ease;
+  }
+  .ds-segmented__option {
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .ds-segmented__lens {
+    backdrop-filter: none;
+    background: var(--color-surface-card);
+  }
+}
