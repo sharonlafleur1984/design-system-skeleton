@@ -105,6 +105,13 @@ describe('ProgressMeter', () => {
 });
 
 describe('Checkbox', () => {
+  it('reports its new value as true or false', async () => {
+    let last: boolean | undefined;
+    render(<Checkbox label="Done" onChange={(v) => (last = v)} />);
+    await userEvent.click(screen.getByText('Done'));
+    expect(last).toBe(true);
+  });
+
   it('toggles from its label', async () => {
     render(<Checkbox label="Ask for a fee waiver" />);
     const box = screen.getByRole('checkbox', { name: 'Ask for a fee waiver' });
@@ -122,11 +129,11 @@ describe('Switch', () => {
   it('follows the switch pattern and toggles with the keyboard', async () => {
     let last: boolean | undefined;
     render(<Switch label="Email reminders" onChange={(v) => (last = v)} />);
-    const sw = screen.getByRole('switch', { name: 'Email reminders' });
-    expect(sw.getAttribute('aria-checked')).toBe('false');
+    const sw = screen.getByRole('switch', { name: 'Email reminders' }) as HTMLInputElement;
+    expect(sw.checked).toBe(false);
     sw.focus();
     await userEvent.keyboard(' ');
-    expect(sw.getAttribute('aria-checked')).toBe('true');
+    expect(sw.checked).toBe(true);
     expect(last).toBe(true);
   });
 

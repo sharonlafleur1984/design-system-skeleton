@@ -1,4 +1,5 @@
-/* Links: two levels. Sizes and colors come from link tokens; the underline is soft at rest. */
+/* Links: two levels. Sizes and colors come from link tokens; the underline is soft at rest.
+   React Aria sets data-hovered and data-focus-visible on both links and link buttons. */
 .ds-link {
   position: relative;
   display: inline;
@@ -22,18 +23,18 @@
   font-weight: var(--font-weight-regular);
 }
 
-.ds-link:hover,
-.ds-link:focus-visible {
+.ds-link[data-hovered],
+.ds-link[data-focus-visible] {
   color: var(--link-inline-color-hover);
   text-decoration-color: currentColor;
 }
 
-.ds-link--quiet:hover,
-.ds-link--quiet:focus-visible {
+.ds-link--quiet[data-hovered],
+.ds-link--quiet[data-focus-visible] {
   color: var(--link-quiet-color-hover);
 }
 
-.ds-link:focus-visible {
+.ds-link[data-focus-visible] {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }

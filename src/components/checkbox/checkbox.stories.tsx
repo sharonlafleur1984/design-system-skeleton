@@ -17,7 +17,7 @@ const meta: Meta<typeof Checkbox> = {
           '',
           '**When not to:** For a setting that takes effect right away, use a Switch. For one choice from a list, use radio buttons.',
           '',
-          '**Accessibility:** A real `<input type="checkbox">` with a clickable label. Works with Space and a screen reader out of the box.',
+          '**Accessibility:** Built on React Aria: a real checkbox input inside the label. Works with Space, touch and a screen reader.',
         ].join('\n'),
       },
     },
