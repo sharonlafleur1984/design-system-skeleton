@@ -593,24 +593,6 @@
       "home": {
         "surface": {
           "$type": "color",
-          "$value": "{palette.gold-sand.100}"
-        },
-        "ink": {
-          "$type": "color",
-          "$value": "{palette.gold-sand.700}"
-        },
-        "accent": {
-          "$type": "color",
-          "$value": "{palette.gold-sand.500}"
-        },
-        "accent-strong": {
-          "$type": "color",
-          "$value": "{palette.gold-sand.800}"
-        }
-      },
-      "office": {
-        "surface": {
-          "$type": "color",
           "$value": "{palette.morning-latte.100}"
         },
         "ink": {
@@ -624,6 +606,24 @@
         "accent-strong": {
           "$type": "color",
           "$value": "{palette.morning-latte.600}"
+        }
+      },
+      "office": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.gold-sand.100}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.gold-sand.700}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.gold-sand.500}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.gold-sand.800}"
         }
       },
       "health": {

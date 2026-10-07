@@ -81,13 +81,13 @@
           "$value": "none"
         },
         "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.419), -1.6px 1.6px 4px rgb(42 38 37 / 0.233), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.19), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.41), -1.6px 1.6px 4px rgb(42 38 37 / 0.228), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.193), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
         },
         "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.865) 0, rgb(253 251 241 / 0.822) 24%, rgb(253 251 241 / 0.389) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.216), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.876) 0, rgb(253 251 241 / 0.833) 24%, rgb(253 251 241 / 0.394) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.219), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
         },
         "night": {
-          "$value": "rgba(59,50,31,0.84)",
+          "$value": "rgba(66,56,52,0.88)",
           "$type": "color"
         }
       },
@@ -96,13 +96,13 @@
           "$value": "none"
         },
         "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.41), -1.6px 1.6px 4px rgb(42 38 37 / 0.228), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.193), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.419), -1.6px 1.6px 4px rgb(42 38 37 / 0.233), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.19), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
         },
         "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.876) 0, rgb(253 251 241 / 0.833) 24%, rgb(253 251 241 / 0.394) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.219), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.865) 0, rgb(253 251 241 / 0.822) 24%, rgb(253 251 241 / 0.389) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.216), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
         },
         "night": {
-          "$value": "rgba(66,56,52,0.88)",
+          "$value": "rgba(59,50,31,0.84)",
           "$type": "color"
         }
       },

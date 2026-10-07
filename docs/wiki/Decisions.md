@@ -5,6 +5,15 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> Home and Office trade colors</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Home is now Morning Latte and Office is now Gold Sand. Each area's marble, glass tuning and dark layer moved with its colors.
+- **Details:** [#33](https://github.com/sharonlafleur1984/design-system-skeleton/pull/33)
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> After Graduation's dark mode is warm charcoal</summary>
 
 - **Decided by:** Sharon
