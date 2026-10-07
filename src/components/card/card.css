@@ -74,3 +74,8 @@
     transition: box-shadow 0.2s ease;
   }
 }
+
+/* Never glass on glass: controls inside a card drop their own blur and use the card's. */
+.ds-card :is(.ds-button, .ds-checkbox__box) {
+  backdrop-filter: none;
+}

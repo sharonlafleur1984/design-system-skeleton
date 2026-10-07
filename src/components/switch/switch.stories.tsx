@@ -17,7 +17,7 @@ const meta: Meta<typeof Switch> = {
           '',
           '**When not to:** In a form that is saved later, or for a to-do. Use a Checkbox.',
           '',
-          '**Accessibility:** Follows the W3C switch pattern: `role="switch"` with `aria-checked`, toggled by Space or Enter, named by its visible label.',
+          '**Accessibility:** Built on React Aria: a real input with `role="switch"`, toggled by Space, named by its visible label.',
         ].join('\n'),
       },
     },

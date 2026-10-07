@@ -1,15 +1,18 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { Button as AriaButton, Link as AriaLink, type ButtonProps as AriaButtonProps, type LinkProps as AriaLinkProps } from 'react-aria-components';
 import '../shared.css';
 import './link.css';
 
 // Two link levels, shared by every product (tokens/base/link.json). Each theme sets the colors.
+// Built on React Aria's Link and Button, which handle press, focus and hover the same on mouse, touch and keyboard.
 export type LinkLevel = 'inline' | 'quiet';
 
-export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface LinkProps extends Omit<AriaLinkProps, 'children' | 'className'> {
   /** inline: a link inside a sentence, at the sentence's size. quiet: a side trip, one step smaller and gray. */
   level?: LinkLevel;
   /** Opens another site in a new tab, with a marker and a hidden "(opens in a new tab)". */
   external?: boolean;
+  className?: string;
   children: ReactNode;
 }
 
@@ -20,7 +23,7 @@ const classes = (level: LinkLevel, className?: string) =>
 export function Link({ level = 'inline', external = false, className, children, ...rest }: LinkProps) {
   const outside = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
   return (
-    <a className={classes(level, className)} {...outside} {...rest}>
+    <AriaLink className={classes(level, className)} {...outside} {...rest}>
       {children}
       {external && (
         <>
@@ -30,12 +33,13 @@ export function Link({ level = 'inline', external = false, className, children, 
           <span className="ds-visually-hidden"> (opens in a new tab)</span>
         </>
       )}
-    </a>
+    </AriaLink>
   );
 }
 
-export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface LinkButtonProps extends Omit<AriaButtonProps, 'children' | 'className'> {
   level?: LinkLevel;
+  className?: string;
   children: ReactNode;
 }
 
@@ -43,10 +47,10 @@ export interface LinkButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>
  * Does something on this page (Show full year, Restore all) but looks like a link.
  * It's a real button, so keyboards and screen readers treat it as an action.
  */
-export function LinkButton({ level = 'quiet', type = 'button', className, children, ...rest }: LinkButtonProps) {
+export function LinkButton({ level = 'quiet', className, children, ...rest }: LinkButtonProps) {
   return (
-    <button type={type} className={classes(level, className)} {...rest}>
+    <AriaButton className={classes(level, className)} {...rest}>
       {children}
-    </button>
+    </AriaButton>
   );
 }

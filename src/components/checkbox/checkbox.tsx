@@ -1,25 +1,39 @@
-import { useId } from 'react';
-import type { InputHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { Checkbox as AriaCheckbox, type CheckboxProps as AriaCheckboxProps } from 'react-aria-components';
 import '../material.css';
 import './checkbox.css';
 
 // Mirrors the Figma "Checkbox" set: checked (true, false) and state (rest, hover, focus, disabled).
-// A real <input type="checkbox">, so keyboard and screen readers work without extra code.
-export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+// Built on React Aria's Checkbox: a real, visually hidden checkbox input inside the label, so keyboard,
+// touch and screen readers work the same everywhere. This file only adds the look.
+export interface CheckboxProps
+  extends Omit<AriaCheckboxProps, 'children' | 'className' | 'style' | 'isSelected' | 'defaultSelected' | 'isDisabled'> {
   /** The visible label. Clicking it toggles the box. */
   label: ReactNode;
+  /** Controlled checked state. */
+  checked?: boolean;
+  /** Starting state when uncontrolled. */
+  defaultChecked?: boolean;
+  disabled?: boolean;
+  className?: string;
+  /** Storybook only: forces a look ("hover" or "focus") for the state gallery. */
+  'data-state'?: 'hover' | 'focus';
 }
 
-export function Checkbox({ label, id, className, ...rest }: CheckboxProps) {
-  const autoId = useId();
-  const inputId = id ?? autoId;
+export function Checkbox({ label, checked, defaultChecked, disabled, className, 'data-state': state, ...rest }: CheckboxProps) {
   const classes = ['ds-checkbox'];
   if (className) classes.push(className);
   return (
-    <label className={classes.join(' ')} htmlFor={inputId}>
-      <input id={inputId} type="checkbox" className="ds-checkbox__input" {...rest} />
+    <AriaCheckbox
+      {...rest}
+      className={classes.join(' ')}
+      isSelected={checked}
+      defaultSelected={defaultChecked}
+      isDisabled={disabled}
+      data-state={state}
+    >
       <span className="ds-checkbox__box" aria-hidden="true" />
       <span className="ds-checkbox__label">{label}</span>
-    </label>
+    </AriaCheckbox>
   );
 }

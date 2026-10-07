@@ -1,6 +1,6 @@
-/* Checkbox. The native input sits on top of the drawn box, invisible but clickable and focusable. */
+/* Checkbox. React Aria hides the real input inside the label and sets data-selected, data-hovered,
+   data-focus-visible and data-disabled on the label. data-state="hover|focus" forces a look for Storybook. */
 .ds-checkbox {
-  position: relative;
   display: inline-flex;
   align-items: center;
   gap: var(--control-gap);
@@ -9,18 +9,6 @@
   font-size: var(--control-type-medium-size);
   line-height: var(--control-type-medium-line-height);
   cursor: pointer;
-}
-
-.ds-checkbox__input {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 0;
-  inline-size: var(--control-box);
-  block-size: var(--control-box);
-  margin: 0;
-  opacity: 0;
-  transform: translateY(-50%);
-  cursor: inherit;
 }
 
 .ds-checkbox__box {
@@ -37,11 +25,11 @@
 }
 
 /* Checked: tinted box with a solid mark (Figma: accent 22% fill, 35% border, solid inner square) */
-.ds-checkbox__input:checked + .ds-checkbox__box {
+.ds-checkbox[data-selected] .ds-checkbox__box {
   border-color: color-mix(in srgb, var(--color-accent-base) 35%, transparent);
   background: color-mix(in srgb, var(--color-accent-base) 22%, var(--color-surface-glass));
 }
-.ds-checkbox__input:checked + .ds-checkbox__box::after {
+.ds-checkbox[data-selected] .ds-checkbox__box::after {
   content: '';
   inline-size: 50%;
   block-size: 50%;
@@ -49,18 +37,18 @@
   background: var(--color-accent-base);
 }
 
-.ds-checkbox:hover .ds-checkbox__box,
-.ds-checkbox__input[data-state='hover'] + .ds-checkbox__box {
+.ds-checkbox[data-hovered] .ds-checkbox__box,
+.ds-checkbox[data-state='hover'] .ds-checkbox__box {
   border-color: var(--color-accent-base);
 }
 
-.ds-checkbox__input:focus-visible + .ds-checkbox__box,
-.ds-checkbox__input[data-state='focus'] + .ds-checkbox__box {
+.ds-checkbox[data-focus-visible] .ds-checkbox__box,
+.ds-checkbox[data-state='focus'] .ds-checkbox__box {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
 }
 
-.ds-checkbox:has(.ds-checkbox__input:disabled) {
+.ds-checkbox[data-disabled] {
   color: var(--color-ink-muted);
   cursor: not-allowed;
   opacity: 0.5;
