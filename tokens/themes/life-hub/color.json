@@ -193,39 +193,39 @@
     "nocturnal-navy": {
       "100": {
         "$type": "color",
-        "$value": "#eceafb"
+        "$value": "#e6ecf2"
       },
       "200": {
         "$type": "color",
-        "$value": "#d5d1f7"
+        "$value": "#b9c5d5"
       },
       "300": {
         "$type": "color",
-        "$value": "#b8b1f0"
+        "$value": "#8f9fb8"
       },
       "400": {
         "$type": "color",
-        "$value": "#9a91e5"
+        "$value": "#667b9c"
       },
       "500": {
         "$type": "color",
-        "$value": "#7c70d6"
+        "$value": "#3f5880"
       },
       "600": {
         "$type": "color",
-        "$value": "#6356c0"
+        "$value": "#374d70"
       },
       "700": {
         "$type": "color",
-        "$value": "#5043a8"
+        "$value": "#2f4260"
       },
       "800": {
         "$type": "color",
-        "$value": "#413890"
+        "$value": "#273751"
       },
       "900": {
         "$type": "color",
-        "$value": "#353077"
+        "$value": "#1f2d42"
       }
     },
     "morning-latte": {
