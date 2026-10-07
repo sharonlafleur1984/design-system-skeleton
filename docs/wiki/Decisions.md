@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> After Graduation's dark mode is warm charcoal</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's dark mode uses warm charcoal surfaces. The deep red stays on buttons and the header, so it is the one thing that stands out, and the header's red glows faintly down from the top right. Text is the theme's light page color (#fcf9f8). Red links and text use a lighter red so they pass on charcoal. Cards are glass in dark mode, lit from the header's light; light mode cards stay solid.
+- **Why:** neutral dark keeps the red meaningful. Using the light page color for text keeps every dark color in the palette.
+- **Other options:** deep wine surfaces that carry the header's red down the page (B in the review).
+- **Details:** [#29](https://github.com/sharonlafleur1984/design-system-skeleton/pull/29)
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> Life Hub's new look: glass cards, one sun, warm neutral buttons, Fraunces and Figtree</summary>
 
 - **Decided by:** Sharon
@@ -20,7 +31,7 @@ Newest first.
 <summary><b>Oct 7, 2026:</b> Dark mode follows the device, and each theme designs its own</summary>
 
 - **Decided by:** Sharon
-- **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review. After Graduation's dark mode comes later.
+- **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review.
 - **Why:** four looks (two themes, light and dark) without new names for components to learn. Following the device is what people expect and needs nothing to build.
 - **Other options:** a switch in each product; one shared dark palette for every theme; neutral charcoal surfaces (lost each area's marble).
 - **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28)

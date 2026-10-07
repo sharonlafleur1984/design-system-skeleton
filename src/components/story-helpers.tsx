@@ -38,7 +38,8 @@ const caption: CSSProperties = {
 const backgrounds: Record<string, string> = {
   'life-hub':
     "linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page)",
-  'after-graduation': 'var(--color-surface-page)',
+  // In dark mode the header's red glows down from the top right (transparent in light mode).
+  'after-graduation': 'radial-gradient(90% 70% at 100% 0%, var(--shell-glow), transparent 70%), var(--color-surface-page)',
 };
 
 const themeNames = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub' } as const;

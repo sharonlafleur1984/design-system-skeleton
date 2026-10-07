@@ -30,7 +30,7 @@ const preview: Preview = {
         icon: 'contrast',
         items: [
           { value: 'light', title: 'Light' },
-          { value: 'dark', title: 'Dark (Life Hub only so far)' },
+          { value: 'dark', title: 'Dark' },
         ],
         dynamicTitle: true,
       },
