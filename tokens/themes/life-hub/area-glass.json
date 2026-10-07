@@ -1,0 +1,142 @@
+{
+  "color": {
+    "area": {
+      "dashboard": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.91), rgb(253 251 249 / 0.83) 55%, rgb(250 247 241 / 0.83))",
+          "$description": "Per-area glass, tuned so every marble shows through, lifts and catches light about the same. An area page sets --card-frost, --card-shadow and --card-rim from these."
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.137), -1.6px 1.6px 4px rgb(42 38 37 / 0.084), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "time": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.97), rgb(253 251 249 / 0.9) 55%, rgb(250 247 241 / 0.9))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.135), -1.6px 1.6px 4px rgb(42 38 37 / 0.083), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "finance": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.88), rgb(253 251 249 / 0.8) 55%, rgb(250 247 241 / 0.8))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.142), -1.6px 1.6px 4px rgb(42 38 37 / 0.087), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "parenting": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.92), rgb(253 251 249 / 0.84) 55%, rgb(250 247 241 / 0.84))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.22), -1.6px 1.6px 4px rgb(42 38 37 / 0.135), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "health": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.97), rgb(253 251 249 / 0.89) 55%, rgb(250 247 241 / 0.89))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.088), -1.6px 1.6px 4px rgb(42 38 37 / 0.054), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "home": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.95), rgb(253 251 249 / 0.87) 55%, rgb(250 247 241 / 0.87))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.114), -1.6px 1.6px 4px rgb(42 38 37 / 0.07), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "office": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.86), rgb(253 251 249 / 0.78) 55%, rgb(250 247 241 / 0.78))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.123), -1.6px 1.6px 4px rgb(42 38 37 / 0.076), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "professional": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.87), rgb(253 251 249 / 0.79) 55%, rgb(250 247 241 / 0.79))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.152), -1.6px 1.6px 4px rgb(42 38 37 / 0.094), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      },
+      "growth": {
+        "card-frost": {
+          "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.97), rgb(253 251 249 / 0.95) 55%, rgb(250 247 241 / 0.95))"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 26px rgb(42 38 37 / 0.101), -1.6px 1.6px 4px rgb(42 38 37 / 0.062), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))"
+        },
+        "night": {
+          "$value": "transparent",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

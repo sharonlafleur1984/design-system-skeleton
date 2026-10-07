@@ -1,0 +1,9 @@
+{
+  "shell": {
+    "glow": {
+      "$type": "color",
+      "$value": "rgba(110,15,32,0)",
+      "$description": "The header's deep red, glowing down from the top right in dark mode only, so dark pages still feel lit by the header."
+    }
+  }
+}

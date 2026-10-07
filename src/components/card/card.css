@@ -1,17 +1,52 @@
-/* Card. Content, so never glass: glass is only for controls (Sharon's decision, Sep 27 2026, following Apple's
-   Liquid Glass guidance). Cards are solid or lightly translucent, with no blur, so a glass button inside a card
-   is never glass on glass. Three levels of emphasis; shadows, not borders, lift them. */
+/* Card. Each theme decides through tokens: After Graduation's cards are solid or lightly translucent;
+   Life Hub's are glass (Oct 7 2026, replacing the Sep 27 "cards are never glass" rule). Buttons inside
+   a glass card have no blur of their own, so it is never glass on glass. Three levels of emphasis. */
 .ds-card {
   --_fill: 88%;
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  border: 1px solid color-mix(in srgb, var(--color-surface-card) 60%, transparent);
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--color-surface-card) var(--_fill), transparent);
-  box-shadow: var(--shadow-rest), var(--shadow-edge);
+  background: color-mix(in srgb, var(--card-surface) var(--_fill), transparent);
+  box-shadow: var(--card-shadow);
   color: var(--color-ink-primary);
+}
+
+/* Glass cards (Life Hub). A frosted fill behind the content that fades at the edges, so a thin clear band
+   of glass shows at the rim, and a rim lit from the sun. Themes without glass set both to none.
+   An area page can pass its own tuning: --card-frost, --card-shadow and --card-rim (tokens color.area.*). */
+.ds-card::before,
+.ds-card::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.ds-card::after {
+  z-index: -1;
+  inset: 0;
+  background: var(--card-frost);
+  backdrop-filter: var(--card-backdrop);
+  -webkit-backdrop-filter: var(--card-backdrop);
+  -webkit-mask:
+    linear-gradient(to right, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent),
+    linear-gradient(to bottom, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent) intersect,
+    linear-gradient(to bottom, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent);
+}
+.ds-card::before {
+  inset: -1px;
+  padding: 1px;
+  background: var(--card-rim);
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
 }
 
 .ds-card--transparent {

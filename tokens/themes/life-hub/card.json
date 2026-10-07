@@ -1,0 +1,34 @@
+{
+  "card": {
+    "surface": {
+      "$value": "transparent",
+      "$type": "color",
+      "$description": "Under the frost. Life Hub cards are glass, so nothing solid."
+    },
+    "frost": {
+      "$value": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.91), rgb(253 251 249 / 0.83) 55%, rgb(250 247 241 / 0.83))",
+      "$description": "Light mode glass: a frosted fill, brightest toward the sun (top right). Dashboard by default."
+    },
+    "backdrop": {
+      "$value": "blur(12px)",
+      "$description": "Blurs the marble behind the frost."
+    },
+    "frost-feather": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Soft edge where the frost fades, so a thin clear band of glass shows at the rim."
+    },
+    "border": {
+      "$value": "transparent",
+      "$type": "color"
+    },
+    "rim": {
+      "$value": "radial-gradient(60% 150% at 100% 0%, rgb(253 251 241 / 1) 0, rgb(253 251 241 / 0.95) 24%, rgb(253 251 241 / 0.45) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.6), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(42 38 37 / 0.1), rgb(42 38 37 / 0.1))",
+      "$description": "One sun in the header, top right: the rim is brightest facing it, with a faint glint where light leaves (bottom left)."
+    },
+    "shadow": {
+      "$value": "-8px 8px 26px rgb(42 38 37 / 0.137), -1.6px 1.6px 4px rgb(42 38 37 / 0.084), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.8), inset 2.8px -2.8px 7px -4px rgb(42 38 37 / 0.11)",
+      "$description": "Cast and contact shadow away from the sun, a bevel glow on the sunlit edges and a faint shade on the far ones."
+    }
+  }
+}

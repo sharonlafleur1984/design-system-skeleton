@@ -1,0 +1,30 @@
+{
+  "type": {
+    "heading-title": {
+      "family": {
+        "$value": "{font.family.display}",
+        "$description": "Life Hub titles use the display face (Fraunces)."
+      }
+    },
+    "heading-heading": {
+      "family": {
+        "$value": "{font.family.display}"
+      }
+    },
+    "heading-subheading": {
+      "family": {
+        "$value": "{font.family.display}"
+      }
+    },
+    "label-meta": {
+      "weight": {
+        "$value": "{font.weight.regular}",
+        "$description": "Regular, not light: thin strokes blur on glass."
+      },
+      "letter-spacing": {
+        "$value": "0em",
+        "$description": "No added spacing: Figtree is already open."
+      }
+    }
+  }
+}

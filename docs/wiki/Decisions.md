@@ -1,8 +1,42 @@
 # Decisions
 
-**Last updated:** October 6, 2026
+**Last updated:** October 7, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 7, 2026:</b> After Graduation's dark mode is warm charcoal</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's dark mode uses warm charcoal surfaces. The deep red stays on buttons and the header, so it is the one thing that stands out, and the header's red glows faintly down from the top right. Text is the theme's light page color (#fcf9f8). Red links and text use a lighter red so they pass on charcoal. Cards are glass in dark mode, lit from the header's light; light mode cards stay solid.
+- **Why:** neutral dark keeps the red meaningful. Using the light page color for text keeps every dark color in the palette.
+- **Other options:** deep wine surfaces that carry the header's red down the page (B in the review).
+- **Details:** [#29](https://github.com/sharonlafleur1984/design-system-skeleton/pull/29)
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Life Hub's new look: glass cards, one sun, warm neutral buttons, Fraunces and Figtree</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Life Hub cards are glass on each area's marble. One sun in the header (top right) lights everything: rims are brightest facing it, shadows fall away from it, and light weakens with distance. Light mode shows the light as shade and shadow; dark mode as highlights. Buttons are warm neutral (ink in light, light warm gray in dark) with a thin line of light on the top edge, at about half the card's light. Color is kept for meaning (status) and place (the marble). Titles use Fraunces with its Soft axis; everything else, numbers included, uses Figtree.
+- **Why:** glass on marble is Life Hub's signature. Area-colored buttons borrowed status meanings (berry read as Delete, gold as a warning), and a green button fought half the marbles. The serif-on-cream look felt like every AI product; Fraunces's soft endings feel poured, like marbling.
+- **Replaces:** Sep 27, "Life Hub glass is for controls only." Buttons inside a glass card have no blur of their own, so it is still never glass on glass.
+- **Other options:** solid cards with glass controls (the old rule); area-colored or gold buttons; Newsreader and Archivo; a monospace data font.
+- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28), exploration in [#27](https://github.com/sharonlafleur1984/design-system-skeleton/pull/27). Per-area values are estimates from the Oct 6 to 7 review.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Dark mode follows the device, and each theme designs its own</summary>
+
+- **Decided by:** Sharon
+- **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review.
+- **Why:** four looks (two themes, light and dark) without new names for components to learn. Following the device is what people expect and needs nothing to build.
+- **Other options:** a switch in each product; one shared dark palette for every theme; neutral charcoal surfaces (lost each area's marble).
+- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28)
+
+</details>
 
 <details>
 <summary><b>Oct 6, 2026:</b> Apps install the design system from GitHub, pinned to a version</summary>

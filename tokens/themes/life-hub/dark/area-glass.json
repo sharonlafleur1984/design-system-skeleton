@@ -1,0 +1,141 @@
+{
+  "color": {
+    "area": {
+      "dashboard": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.522), -1.6px 1.6px 4px rgb(42 38 37 / 0.29), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.192), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.873) 0, rgb(253 251 241 / 0.829) 24%, rgb(253 251 241 / 0.393) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.218), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(45,50,36,0.82)",
+          "$type": "color"
+        }
+      },
+      "time": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.45), -1.6px 1.6px 4px rgb(42 38 37 / 0.25), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.189), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.859) 0, rgb(253 251 241 / 0.816) 24%, rgb(253 251 241 / 0.386) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.215), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(29,57,72,0.85)",
+          "$type": "color"
+        }
+      },
+      "finance": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.562), -1.6px 1.6px 4px rgb(42 38 37 / 0.312), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.183), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.833) 0, rgb(253 251 241 / 0.792) 24%, rgb(253 251 241 / 0.375) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.208), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(40,48,46,0.83)",
+          "$type": "color"
+        }
+      },
+      "parenting": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.81), -1.6px 1.6px 4px rgb(42 38 37 / 0.45), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.172), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.783) 0, rgb(253 251 241 / 0.744) 24%, rgb(253 251 241 / 0.352) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.196), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(58,47,52,0.91)",
+          "$type": "color"
+        }
+      },
+      "health": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.306), -1.6px 1.6px 4px rgb(42 38 37 / 0.17), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.194), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.88) 0, rgb(253 251 241 / 0.836) 24%, rgb(253 251 241 / 0.396) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.22), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(77,42,46,0.82)",
+          "$type": "color"
+        }
+      },
+      "home": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.419), -1.6px 1.6px 4px rgb(42 38 37 / 0.233), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.19), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.865) 0, rgb(253 251 241 / 0.822) 24%, rgb(253 251 241 / 0.389) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.216), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(59,50,31,0.84)",
+          "$type": "color"
+        }
+      },
+      "office": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.41), -1.6px 1.6px 4px rgb(42 38 37 / 0.228), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.193), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.876) 0, rgb(253 251 241 / 0.833) 24%, rgb(253 251 241 / 0.394) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.219), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(66,56,52,0.88)",
+          "$type": "color"
+        }
+      },
+      "professional": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.729), -1.6px 1.6px 4px rgb(42 38 37 / 0.405), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.176), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.801) 0, rgb(253 251 241 / 0.761) 24%, rgb(253 251 241 / 0.36) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.2), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(36,42,52,0.86)",
+          "$type": "color"
+        }
+      },
+      "growth": {
+        "card-frost": {
+          "$value": "none"
+        },
+        "card-shadow": {
+          "$value": "-8px 8px 22px rgb(42 38 37 / 0.338), -1.6px 1.6px 4px rgb(42 38 37 / 0.188), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.192), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+        },
+        "card-rim": {
+          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.873) 0, rgb(253 251 241 / 0.829) 24%, rgb(253 251 241 / 0.393) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.218), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+        },
+        "night": {
+          "$value": "rgba(76,51,29,0.87)",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

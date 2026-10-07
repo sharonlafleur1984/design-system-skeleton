@@ -9,7 +9,7 @@
 //    The CSS adds media queries: medium under 840px, compact under 600px.
 import StyleDictionary from 'style-dictionary';
 import { formattedVariables } from 'style-dictionary/utils';
-import { readdirSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs';
 
 const EXT = 'com.sharon.screen-class';
 const BASE_PX = 16;
@@ -72,7 +72,8 @@ const themes = readdirSync('tokens/themes');
 for (const theme of themes) {
   const sd = new StyleDictionary({
     usesDtcg: true,
-    source: ['tokens/base/**/*.json', `tokens/themes/${theme}/**/*.json`],
+    // A theme's dark folder holds dark mode overrides; it is built separately below.
+    source: ['tokens/base/**/*.json', `tokens/themes/${theme}/!(dark)/**/*.json`, `tokens/themes/${theme}/*.json`],
     log: { verbosity: 'default' },
     platforms: {
       css: {
@@ -96,5 +97,32 @@ for (const theme of themes) {
     },
   });
   await sd.buildAllPlatforms();
+
+  // Dark mode: tokens/themes/<theme>/dark only overrides values of names the theme already has.
+  // Every value that differs from light is written after the light variables, under two selectors:
+  // the device setting (unless a page or Storybook forces light) and data-mode="dark" (Storybook's switch).
+  const darkDir = `tokens/themes/${theme}/dark`;
+  if (existsSync(darkDir)) {
+    const dark = new StyleDictionary({
+      usesDtcg: true,
+      source: ['tokens/base/**/*.json', `tokens/themes/${theme}/*.json`, `${darkDir}/**/*.json`],
+      log: { verbosity: 'silent', warnings: 'disabled' },
+      platforms: {
+        json: { transformGroup: 'css', buildPath: 'build/json-dark/', files: [{ destination: `${theme}.json`, format: 'json/flat' }] },
+      },
+    });
+    await dark.buildAllPlatforms();
+    const light = JSON.parse(readFileSync(`build/json/${theme}.json`, 'utf8'));
+    const darkTokens = JSON.parse(readFileSync(`build/json-dark/${theme}.json`, 'utf8'));
+    const rows = Object.entries(darkTokens)
+      .filter(([name, value]) => light[name] !== value)
+      .map(([name, value]) => `  --${name}: ${value};`);
+    const t = `[data-theme="${theme}"]`;
+    const css =
+      `\n/* Dark mode: the device setting, unless something forces light. */\n` +
+      `@media (prefers-color-scheme: dark) {\n  :root:not([data-mode="light"])${t},\n  :root:not([data-mode="light"]) ${t}:not([data-mode="light"]) {\n${rows.map((r) => '  ' + r).join('\n')}\n  }\n}\n` +
+      `\n/* Dark mode, forced (Storybook's switch). */\n[data-mode="dark"]${t},\n[data-mode="dark"] ${t},\n${t}[data-mode="dark"] {\n${rows.join('\n')}\n}\n`;
+    appendFileSync(`build/css/${theme}.css`, css);
+  }
 }
 console.log(`Built themes: ${themes.join(', ')}`);

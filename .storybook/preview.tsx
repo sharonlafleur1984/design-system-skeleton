@@ -23,12 +23,26 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    mode: {
+      description: 'Light or dark mode. Products follow the device setting; this switch is for review.',
+      toolbar: {
+        title: 'Mode',
+        icon: 'contrast',
+        items: [
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
-  initialGlobals: { theme: 'after-graduation' },
+  initialGlobals: { theme: 'after-graduation', mode: 'light' },
   decorators: [
     (Story, context) => {
       const choice = (context.globals.theme ?? 'after-graduation') as ThemeChoice;
       document.documentElement.setAttribute('data-theme', singleTheme(choice));
+      // Always set, so screenshots don't change with the test machine's own light or dark setting.
+      document.documentElement.setAttribute('data-mode', context.globals.mode === 'dark' ? 'dark' : 'light');
       return (
         <ThemeContext.Provider value={choice}>
           <Story />

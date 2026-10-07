@@ -2,28 +2,31 @@
   "font": {
     "family": {
       "display": {
-        "$type": "fontFamily",
         "$value": [
-          "Newsreader",
+          "Fraunces",
           "Georgia",
           "serif"
-        ]
+        ],
+        "$type": "fontFamily",
+        "$description": "Card and page titles. Fraunces with its Soft axis at full, set in src/fonts/life-hub.css."
       },
       "body": {
-        "$type": "fontFamily",
         "$value": [
-          "Archivo",
+          "Figtree",
           "system-ui",
           "sans-serif"
-        ]
+        ],
+        "$type": "fontFamily",
+        "$description": "All other text, buttons and labels."
       },
       "data": {
-        "$type": "fontFamily",
         "$value": [
-          "JetBrains Mono",
-          "ui-monospace",
-          "monospace"
-        ]
+          "Figtree",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$type": "fontFamily",
+        "$description": "Numbers and dates use the body font with even-width numbers, so there is no third typeface."
       }
     }
   }

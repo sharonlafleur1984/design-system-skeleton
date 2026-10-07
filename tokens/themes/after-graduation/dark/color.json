@@ -1,0 +1,220 @@
+{
+  "color": {
+    "ink": {
+      "primary": {
+        "$value": "#fcf9f8",
+        "$type": "color",
+        "$description": "After Graduation's light page color, so dark text comes from the palette."
+      },
+      "secondary": {
+        "$value": "#d9d3d1",
+        "$type": "color"
+      },
+      "tertiary": {
+        "$value": "#b7b0ae",
+        "$type": "color"
+      },
+      "muted": {
+        "$value": "#958e8c",
+        "$type": "color"
+      },
+      "disabled": {
+        "$value": "#6e6766",
+        "$type": "color"
+      },
+      "inverse": {
+        "$value": "#171413",
+        "$type": "color"
+      }
+    },
+    "surface": {
+      "page": {
+        "$value": "#171413",
+        "$type": "color",
+        "$description": "Warm charcoal (direction A, Oct 7). The deep red stays on buttons and the header, so it is the one thing that stands out."
+      },
+      "card": {
+        "$value": "#201c1b",
+        "$type": "color"
+      },
+      "raised": {
+        "$value": "#292524",
+        "$type": "color"
+      },
+      "sunken": {
+        "$value": "#110f0e",
+        "$type": "color"
+      },
+      "hover": {
+        "$value": "#332e2d",
+        "$type": "color"
+      },
+      "overlay": {
+        "$value": "#3c3736",
+        "$type": "color"
+      },
+      "inverse": {
+        "$value": "#fcf9f8",
+        "$type": "color"
+      },
+      "glass": {
+        "$value": "rgba(252,249,248,0.08)",
+        "$type": "color"
+      },
+      "glass-strong": {
+        "$value": "rgba(252,249,248,0.14)",
+        "$type": "color"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "#2c2827",
+        "$type": "color"
+      },
+      "default": {
+        "$value": "#3c3736",
+        "$type": "color"
+      },
+      "strong": {
+        "$value": "#6e6766",
+        "$type": "color"
+      },
+      "focus": {
+        "$value": "#ff8d9a",
+        "$type": "color"
+      }
+    },
+    "accent": {
+      "base": {
+        "$value": "#d03656",
+        "$type": "color",
+        "$description": "Same red as light mode: white text on it passes."
+      },
+      "hover": {
+        "$value": "#a92141",
+        "$type": "color"
+      },
+      "surface": {
+        "$value": "#3a1820",
+        "$type": "color"
+      },
+      "soft": {
+        "$value": "#4a1d27",
+        "$type": "color"
+      },
+      "ink": {
+        "$value": "#ffffff",
+        "$type": "color"
+      },
+      "text": {
+        "$value": "#ff8d9a",
+        "$type": "color",
+        "$description": "A lighter red for links and red text, so it passes on charcoal."
+      },
+      "text-hover": {
+        "$value": "#febdc2",
+        "$type": "color"
+      },
+      "contrast": {
+        "$value": "#ffdfe1",
+        "$type": "color"
+      },
+      "secondary": {
+        "$value": "#e7a552",
+        "$type": "color"
+      }
+    },
+    "status": {
+      "error": {
+        "surface": {
+          "$value": "#3a1d1a",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#e57c70",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#f09a90",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#f4b6ad",
+          "$type": "color"
+        }
+      },
+      "warning": {
+        "surface": {
+          "$value": "#352810",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#dba034",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#dba034",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#f2d08a",
+          "$type": "color"
+        }
+      },
+      "success": {
+        "surface": {
+          "$value": "#16301f",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#55b582",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#7cc99d",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#a3dbb6",
+          "$type": "color"
+        }
+      },
+      "info": {
+        "surface": {
+          "$value": "#1b2742",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#7c9be0",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#9db4ea",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#b8caef",
+          "$type": "color"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$value": "#292524",
+          "$type": "color"
+        },
+        "accent": {
+          "$value": "#6e6766",
+          "$type": "color"
+        },
+        "accent-strong": {
+          "$value": "#958e8c",
+          "$type": "color"
+        },
+        "ink": {
+          "$value": "#d9d3d1",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

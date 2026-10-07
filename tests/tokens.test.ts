@@ -1,7 +1,7 @@
 // Two promises every theme has to keep:
 // 1. The contract: every theme defines every shared token name, so components work in any theme.
 // 2. Readability: text colors meet WCAG 2.2 AA contrast (4.5:1) on the surfaces they sit on.
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 // @ts-expect-error: the package ships no types
 import { hex } from 'wcag-contrast';
@@ -50,6 +50,26 @@ const pairs: [string, string][] = [
     (s) => [`color-status-${s}-ink`, `color-status-${s}-surface`] as [string, string],
   ),
 ];
+
+// Dark mode: a theme's dark folder may only change values of names the theme already has,
+// and the same text pairs must stay readable.
+const darkThemes = existsSync('build/json-dark') ? readdirSync('build/json-dark').map((f) => f.replace('.json', '')) : [];
+const loadDark = (t: string): Record<string, string> => JSON.parse(readFileSync(`build/json-dark/${t}.json`, 'utf8'));
+
+describe('dark mode', () => {
+  for (const t of darkThemes) {
+    it(`${t} dark mode only overrides existing names`, () => {
+      expect(Object.keys(loadDark(t)).sort()).toEqual(Object.keys(load(t)).sort());
+    });
+    const tokens = loadDark(t);
+    for (const [fg, bg] of pairs) {
+      it(`${t} dark: ${fg} on ${bg}`, () => {
+        const ratio = hex(tokens[fg], tokens[bg]);
+        expect(ratio, `${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+      });
+    }
+  }
+});
 
 describe('contrast (WCAG 2.2 AA, 4.5:1)', () => {
   for (const t of themes) {

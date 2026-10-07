@@ -1,0 +1,17 @@
+{
+  "card": {
+    "frost": {
+      "$value": "none",
+      "$description": "Dark cards are clear glass: the night layer already quiets the marble."
+    },
+    "backdrop": {
+      "$value": "none"
+    },
+    "rim": {
+      "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.873) 0, rgb(253 251 241 / 0.829) 24%, rgb(253 251 241 / 0.393) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.218), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
+    },
+    "shadow": {
+      "$value": "-8px 8px 22px rgb(42 38 37 / 0.522), -1.6px 1.6px 4px rgb(42 38 37 / 0.29), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.192), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
+    }
+  }
+}

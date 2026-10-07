@@ -475,25 +475,26 @@
       },
       "focus": {
         "$type": "color",
-        "$value": "{palette.earth-moss.600}"
+        "$value": "{palette.ink.primary}"
       }
     },
     "accent": {
       "base": {
         "$type": "color",
-        "$value": "{palette.earth-moss.600}"
+        "$value": "{palette.ink.primary}",
+        "$description": "Warm neutral: ink, so color stays for meaning (status) and place (each area's marble)."
       },
       "hover": {
         "$type": "color",
-        "$value": "{palette.earth-moss.700}"
+        "$value": "{palette.ink.secondary}"
       },
       "surface": {
         "$type": "color",
-        "$value": "{palette.earth-moss.100}"
+        "$value": "{palette.paper.muted}"
       },
       "soft": {
         "$type": "color",
-        "$value": "{palette.earth-moss.200}"
+        "$value": "{palette.paper.tinted}"
       },
       "ink": {
         "$type": "color",
@@ -501,15 +502,15 @@
       },
       "text": {
         "$type": "color",
-        "$value": "{palette.earth-moss.700}"
+        "$value": "{palette.ink.primary}"
       },
       "text-hover": {
         "$type": "color",
-        "$value": "{palette.earth-moss.800}"
+        "$value": "{palette.ink.primary}"
       },
       "contrast": {
         "$type": "color",
-        "$value": "{palette.earth-moss.900}"
+        "$value": "{palette.ink.primary}"
       },
       "secondary": {
         "$type": "color",

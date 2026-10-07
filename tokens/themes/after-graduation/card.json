@@ -1,0 +1,30 @@
+{
+  "card": {
+    "surface": {
+      "$value": "{color.surface.card}",
+      "$type": "color"
+    },
+    "frost": {
+      "$value": "none"
+    },
+    "backdrop": {
+      "$value": "none"
+    },
+    "frost-feather": {
+      "$value": "0px",
+      "$type": "dimension"
+    },
+    "border": {
+      "$value": "rgba(255,255,255,0.6)",
+      "$type": "color",
+      "$description": "Same as before: the card color at 60%."
+    },
+    "rim": {
+      "$value": "none"
+    },
+    "shadow": {
+      "$value": "0px 1px 2px 0px rgba(29,26,24,0.06), 0px 4px 12px 0px rgba(29,26,24,0.06), 0px 0px 0px 0px rgba(0,0,0,0)",
+      "$description": "Same as before: shadow.rest plus shadow.edge."
+    }
+  }
+}

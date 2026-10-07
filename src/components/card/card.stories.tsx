@@ -18,7 +18,7 @@ const meta: Meta<typeof Card> = {
           '',
           '**When not to:** To box a single line of text, or to nest cards inside cards.',
           '',
-          '**Glass:** cards are content, so they are never glass. Glass is only for controls (buttons, navigation, pills), which keeps glass off glass.',
+          '**Glass:** each theme decides. Life Hub cards are glass, lit by one sun in the header (top right); After Graduation cards are solid. Buttons inside a card get no blur of their own, so it is never glass on glass.',
           '',
           '**Do:** Let shadows lift cards; no borders needed. **Don\'t:** Make a card interactive unless the whole card does one thing.',
           '',
@@ -65,7 +65,7 @@ export const WithControls: Story = {
   render: () => (
     <BothThemes>
       <Card variant="translucent">
-        <Content title="Solid card, glass controls" />
+        <Content title="Card with controls" />
         <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
           <Button size="small">Open</Button>
           <Button size="small" variant="secondary">Later</Button>

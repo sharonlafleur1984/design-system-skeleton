@@ -1,0 +1,14 @@
+{
+  "button": {
+    "kiss": {
+      "$value": "rgba(253,251,241,0.4)",
+      "$type": "color"
+    },
+    "shadow-primary": {
+      "$value": "0px 0px 0px 0px transparent"
+    },
+    "shadow-secondary": {
+      "$value": "0px 0px 0px 0px transparent"
+    }
+  }
+}
