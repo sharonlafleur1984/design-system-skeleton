@@ -18,3 +18,7 @@ export { Link, LinkButton } from './link/link';
 export type { LinkProps, LinkButtonProps, LinkLevel } from './link/link';
 export { Chip, ChipGroup } from './chip/chip';
 export type { ChipProps, ChipGroupProps } from './chip/chip';
+export { Tabs, TabList, Tab, TabPanel } from './tabs/tabs';
+export type { TabsProps, TabListProps, TabProps, TabPanelProps } from './tabs/tabs';
+export { SegmentedControl, Segment } from './segmented-control/segmented-control';
+export type { SegmentedControlProps, SegmentProps } from './segmented-control/segmented-control';

@@ -76,6 +76,6 @@
 }
 
 /* Never glass on glass: controls inside a card drop their own blur and use the card's. */
-.ds-card :is(.ds-button, .ds-checkbox__box, .ds-chip) {
+.ds-card :is(.ds-button, .ds-checkbox__box, .ds-chip, .ds-segmented__lens) {
   backdrop-filter: none;
 }
