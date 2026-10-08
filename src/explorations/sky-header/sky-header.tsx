@@ -2,6 +2,7 @@ import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { Button } from '../../components/button/button';
 import { Card } from '../../components/card/card';
 import { greetingAt, makeStars, skyAt } from './sky';
+import { skyHourFor, sunTimes } from './sun';
 import './sky-header.css';
 
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
@@ -9,7 +10,7 @@ import './sky-header.css';
 // The light stays in the top right all day, so the header's light still lights every glass card below it.
 
 export interface SkyHeaderProps {
-  /** Hour from 0 to 24 (18.5 is 6:30 pm). Leave out to follow the real clock. */
+  /** The sky's hour from 0 to 24 (18.5 is sunset). Leave out to follow the real clock and today's real sunset. */
   hour?: number;
   /** First name for the greeting. */
   name?: string;
@@ -17,6 +18,8 @@ export interface SkyHeaderProps {
   meta?: string;
   /** Line under the greeting. */
   prompt?: string;
+  /** The real clock hour for the greeting, when hour is a sky hour that differs from it. */
+  greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
   material?: 'sky' | 'glass';
   /** The area's night layer, so dark skies match the marble below. */
@@ -53,12 +56,13 @@ const Stars = memo(function Stars() {
   );
 });
 
+/** The sky's hour right now: the real clock, lined up with today's real sunrise and sunset. */
 function nowHour() {
   const d = new Date();
-  return d.getHours() + d.getMinutes() / 60;
+  return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({ hour, name, meta, prompt, material = 'sky', areaNight, instant = false, onStartChat }: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', areaNight, instant = false, onStartChat }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -69,6 +73,7 @@ export function SkyHeader({ hour, name, meta, prompt, material = 'sky', areaNigh
   const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
   const style = {
     '--sky-a': sky.alpha.toFixed(3),
+    '--sky-veil': `color-mix(in srgb, ${sky.veil} ${(sky.veilAlpha * 100).toFixed(1)}%, transparent)`,
     '--sky-top': sky.top,
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
@@ -78,7 +83,7 @@ export function SkyHeader({ hour, name, meta, prompt, material = 'sky', areaNigh
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;
-  const greeting = greetingAt(h);
+  const greeting = greetingAt(greetingHour ?? h);
   return (
     <header
       className={`lh-sky lh-sky--${material}${instant ? ' lh-sky--instant' : ''}`}

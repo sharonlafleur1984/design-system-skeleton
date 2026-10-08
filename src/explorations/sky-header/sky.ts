@@ -77,9 +77,20 @@ export interface Sky {
   glowY: number;
   horizon: number;
   stars: number;
-  /** Light or dark glass and text, picked from how bright the sky is. */
+  /** Light or dark glass and text, whichever needs less help to read. */
   mode: SkyMode;
+  /** A veil behind the greeting and button: just enough ink (dark) or paper (light) to keep text readable. */
+  veil: string;
+  veilAlpha: number;
 }
+
+// Text must reach 4.5:1 (WCAG 1.4.3). Light text (ink-inverse) needs a backing at or under this luminance,
+// dark text (ink) at or over the other. Between them, at twilight, neither works, so the veil fills the gap.
+// Both include a small safety margin.
+const LIGHT_TEXT_MAX = 0.13;
+const DARK_TEXT_MIN = 0.3;
+const INK = '#2a2625';
+const PAPER = '#faf7f1';
 
 export interface SkyOptions {
   /** The area's night layer (half its 900, half ink). Dark skies lean toward it, so night matches the marble below. */
@@ -104,10 +115,19 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     top = mixColor(top, areaNight, dark * 0.45);
     bottom = mixColor(bottom, areaNight, dark * 0.6);
   }
-  const mid = mixColor(top, bottom, 0.5);
+  const alpha = material === 'glass' ? 0.78 + dark * 0.1 : 1;
+  // What sits behind the text, at its brightest and darkest: the sky, plus whatever marble shows through.
+  const skyLums = [luminance(top), luminance(bottom)];
+  const brightest = Math.max(...skyLums) * alpha + 0.85 * (1 - alpha);
+  const darkest = Math.min(...skyLums) * alpha + 0.02 * (1 - alpha);
+  const inkL = luminance(INK);
+  const paperL = luminance(PAPER);
+  const needDark = Math.max(0, (brightest - LIGHT_TEXT_MAX) / (brightest - inkL));
+  const needLight = Math.max(0, (DARK_TEXT_MIN - darkest) / (paperL - darkest));
+  const mode: SkyMode = needDark < needLight ? 'dark' : 'light';
   return {
     // Glass: frosted enough by day to read on any marble, deeper at night.
-    alpha: material === 'glass' ? 0.78 + dark * 0.1 : 1,
+    alpha,
     top,
     bottom,
     glow: mixColor(a.glow, b.glow, t),
@@ -116,7 +136,9 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     glowY: mix(a.glowY, b.glowY, t),
     horizon: mix(a.horizon, b.horizon, t),
     stars: mix(a.stars, b.stars, t),
-    mode: luminance(mid) < 0.3 ? 'dark' : 'light',
+    mode,
+    veil: mode === 'dark' ? INK : PAPER,
+    veilAlpha: Math.min(0.9, mode === 'dark' ? needDark : needLight),
   };
 }
 

@@ -91,10 +91,15 @@
   to { --twinkle: 0.35; }
 }
 
-/* The greeting: a glass card lit by the sky's light, light or dark glass to suit the sky. */
+/* The greeting: a glass card lit by the sky's light, light or dark glass to suit the sky. At twilight a
+   veil (computed in sky.ts) deepens or lightens it just enough for the text to stay readable. */
 .lh-sky__card {
   flex: 0 1 380px;
   min-inline-size: 0;
+}
+.lh-sky .lh-sky__card,
+.lh-sky .lh-sky__chat {
+  background-image: linear-gradient(var(--sky-veil, transparent), var(--sky-veil, transparent));
 }
 .lh-sky__meta {
   margin: 0;
@@ -125,4 +130,11 @@
   .lh-sky__star {
     animation: none;
   }
+}
+
+/* The page's light and dark crossfade (Follow the sun): slow, easing in and out like dimming light. */
+html.lh-mode-fade::view-transition-old(root),
+html.lh-mode-fade::view-transition-new(root) {
+  animation-duration: 4s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
 }
