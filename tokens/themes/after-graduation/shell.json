@@ -69,6 +69,29 @@
         "$value": "50s",
         "$description": "One slow turn of the magic circle. It never stops, unless reduced motion is on."
       }
+    },
+    "art": {
+      "$description": "The header's art. The magic wheel sits low on the right and is the header's one light source: rays start at its center, and glass in the header is lit from it.",
+      "ray": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.12)",
+        "$description": "The rays from the wheel's center."
+      },
+      "wheel": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.22)",
+        "$description": "The wheel's lines: faint, so it reads as light, not a picture."
+      },
+      "wheel-min": {
+        "$type": "dimension",
+        "$value": "420px",
+        "$description": "Smallest the wheel gets, on phones."
+      },
+      "wheel-max": {
+        "$type": "dimension",
+        "$value": "920px",
+        "$description": "Largest the wheel gets, on wide screens."
+      }
     }
   }
 }

@@ -1,0 +1,160 @@
+/* Action tile. React Aria sets data-selected (switch tiles), data-hovered, data-pressed,
+   data-focus-visible and data-disabled. data-state forces a look for Storybook.
+   Light: a container with a light source (the page shell's wheel) sets --light-x, --light-y, --light-k
+   and --glass-bend on each tile. Without one, the light comes from the top right. */
+.ds-tile-switch {
+  display: contents;
+}
+
+.ds-tiles {
+  container-type: inline-size;
+}
+.ds-tiles__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+@container (inline-size < 36rem) {
+  .ds-tiles__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+.ds-tile {
+  --light-x: 100%;
+  --light-y: 0%;
+  --light-k: 1;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-block-size: var(--control-height-large);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4) var(--space-7);
+  border: none;
+  border-radius: var(--radius-card);
+  background: transparent;
+  box-shadow: var(--shadow-glass-on-art);
+  color: var(--color-ink-inverse);
+  font-family: var(--font-family-body);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The glass itself: a clear tint that bends the art behind it at its edges. */
+.ds-tile__glass {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--color-surface-glass-on-art);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+}
+
+/* The rim: brightest where it faces the light, fading around the tile, a faint line elsewhere.
+   Same idea as Life Hub's glass cards, so every glass piece is lit by one light. */
+.ds-tile__glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--glass-rim-width);
+  pointer-events: none;
+  background:
+    radial-gradient(70% 140% at var(--light-x) var(--light-y),
+      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 100%), transparent) 0,
+      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 45%), transparent) 45%,
+      transparent 75%),
+    linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint));
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
+}
+
+.ds-tile__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-letter-spacing);
+  text-transform: uppercase;
+}
+.ds-tile__title {
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
+  letter-spacing: var(--type-heading-title-letter-spacing);
+}
+.ds-tile__description {
+  font-family: var(--type-body-small-family);
+  font-size: var(--type-body-small-size);
+  font-weight: var(--type-body-small-weight);
+  line-height: var(--type-body-small-line-height);
+  letter-spacing: var(--type-body-small-letter-spacing);
+}
+
+/* Hover: the rim catches the full light and the title underlines. The fill stays clear, so white
+   text keeps its contrast. */
+.ds-tile[data-hovered]:not([data-selected]),
+.ds-tile[data-state='hover'] {
+  --light-k: 1;
+}
+.ds-tile[data-hovered]:not([data-selected]) .ds-tile__title,
+.ds-tile[data-state='hover'] .ds-tile__title {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.ds-tile[data-pressed] {
+  scale: 0.985;
+}
+
+/* Chosen (switch tiles): frosted white, deep red text, and the star. The star and the fill change
+   together, so color is never the only signal. */
+.ds-tile[data-selected],
+.ds-tile[data-state='chosen'] {
+  color: var(--color-accent-contrast);
+}
+.ds-tile[data-selected] .ds-tile__glass,
+.ds-tile[data-state='chosen'] .ds-tile__glass {
+  background: var(--color-surface-glass-on-art-selected);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art-selected));
+}
+.ds-tile__star {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-4);
+  font-size: var(--type-heading-title-size);
+  line-height: 1;
+  visibility: hidden;
+}
+.ds-tile[data-selected] .ds-tile__star,
+.ds-tile[data-state='chosen'] .ds-tile__star {
+  visibility: visible;
+}
+
+.ds-tile[data-focus-visible],
+.ds-tile[data-state='focus'] {
+  outline: 2px solid var(--color-ink-inverse);
+  outline-offset: 2px;
+}
+.ds-tile[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-tile {
+    transition: color var(--motion-duration-fast) var(--motion-easing-out), scale var(--motion-duration-instant) var(--motion-easing-out);
+  }
+  .ds-tile__glass {
+    transition: background-color var(--motion-duration-fast) var(--motion-easing-out);
+  }
+}

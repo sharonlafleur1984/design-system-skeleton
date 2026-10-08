@@ -103,6 +103,11 @@
         "$type": "color",
         "$value": "rgba(255,255,255,0.7)",
         "$description": "Brightest point of the rim."
+      },
+      "faint": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.18)",
+        "$description": "The rim where it faces away from the light: a faint line, so the glass edge never disappears."
       }
     }
   }

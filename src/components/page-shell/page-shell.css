@@ -21,10 +21,74 @@
   padding-inline: var(--layout-gutter);
   background: linear-gradient(var(--color-accent-base), var(--shell-frame));
   color: var(--color-ink-inverse);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Rays from the wheel's center, the header's one light source. */
+.ds-shell__header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform-origin: var(--shell-light-x) var(--shell-light-y);
+  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 2deg, transparent 2deg 7deg);
+}
+
+/* The magic wheel: large and faint, centered on the header's bottom edge, so the sheet covers its lower half. */
+.ds-shell__wheel {
+  position: absolute;
+  inset-inline-start: var(--shell-light-x);
+  inset-block-start: var(--shell-light-y);
+  z-index: -1;
+  inline-size: clamp(var(--shell-art-wheel-min), 48%, var(--shell-art-wheel-max));
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  color: var(--shell-art-wheel);
+}
+
+/* The entrance (shell-entrance tokens): the title slams in, the rays burst out from the wheel,
+   the subtitle fades down, and the wheel turns slowly. Reduced motion only fades. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-shell__header::before {
+    animation: ds-shell-burst var(--shell-entrance-burst-duration) var(--motion-easing-out) both;
+  }
+  .ds-shell__title {
+    animation: ds-shell-slam var(--shell-entrance-title-duration) var(--shell-entrance-title-easing) both;
+  }
+  .ds-shell__subtitle {
+    animation: ds-shell-fade-down var(--shell-entrance-subtitle-duration) var(--motion-easing-out) var(--shell-entrance-subtitle-delay) both;
+  }
+  .ds-shell__wheel {
+    animation: ds-shell-turn var(--shell-entrance-circle-turn) linear infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-shell__title,
+  .ds-shell__subtitle {
+    animation: ds-shell-fade var(--motion-duration-slow) var(--motion-easing-out) both;
+  }
+}
+@keyframes ds-shell-slam {
+  from { transform: scale(1.5) rotate(-4deg); opacity: 0; }
+}
+@keyframes ds-shell-burst {
+  from { transform: scale(0.4); opacity: 0; }
+}
+@keyframes ds-shell-fade-down {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--space-2))); }
+}
+@keyframes ds-shell-fade {
+  from { opacity: 0; }
+}
+@keyframes ds-shell-turn {
+  to { rotate: 360deg; }
 }
 
 .ds-shell__title {
   margin: 0;
+  transform-origin: left center;
   font-family: var(--type-display-cover-family);
   font-size: var(--type-display-cover-size);
   font-weight: var(--type-display-cover-weight);
@@ -47,6 +111,7 @@
 
 /* The sheet rises over the header's bottom edge by sheet-overlap. */
 .ds-shell__sheet {
+  position: relative;
   flex: 1;
   margin-block-start: calc(-1 * var(--shell-sheet-overlap));
   margin-inline: var(--shell-sheet-inset);

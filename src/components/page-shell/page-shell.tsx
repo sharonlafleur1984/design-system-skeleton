@@ -1,27 +1,51 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
+import { useGlassLight } from '../glass-light/glass-light';
 import './page-shell.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
 // sheet that rises over its bottom edge. On desktop the sheet sits in from the screen sides so the
-// header's red frames the page. All spacing comes from the layout and shell tokens, which change by
-// screen size on their own.
+// header's red frames the page. All spacing comes from the layout and shell tokens.
+//
+// The header's art: a magic wheel, low on the right, is the header's one light source. Rays start at
+// its center, and every glass tile in the header is lit from it: rims brightest facing the wheel,
+// edges bending the rays behind them. When the page opens, the title slams in, the rays burst, the
+// subtitle fades down and the wheel keeps turning (the shell-entrance tokens).
+
+/** Where the wheel's center sits in the header, as fractions: the light source for everything in it. */
+const LIGHT = { x: 0.78, y: 1 };
 
 export interface PageShellProps {
   /** The product name. The page's only h1. */
   title: ReactNode;
   /** One line under the title, like a greeting. */
   subtitle?: ReactNode;
-  /** Navigation that sits in the header, like EpisodeTabList. */
+  /** Navigation that sits in the header, like an ActionTileGroup. */
   navigation?: ReactNode;
   /** The page itself, shown on the sheet. */
   children: ReactNode;
   className?: string;
 }
 
+const Wheel = () => (
+  <svg className="ds-shell__wheel" viewBox="0 0 200 200" aria-hidden="true" focusable="false" fill="none" stroke="currentColor">
+    <circle cx="100" cy="100" r="96" strokeWidth="1.5" />
+    <circle cx="100" cy="100" r="84" strokeWidth="1" strokeDasharray="3 5" />
+    <circle cx="100" cy="100" r="58" strokeWidth="1.5" />
+    <polygon points="100,16 173,142 27,142" strokeWidth="1" />
+    <polygon points="100,184 27,58 173,58" strokeWidth="1" />
+    <circle cx="100" cy="100" r="20" strokeWidth="1.5" />
+    <circle cx="100" cy="100" r="6" fill="currentColor" />
+    <path strokeWidth="1.5" d="M100 4v10M100 186v10M4 100h10M186 100h10M32 32l7 7M161 161l7 7M168 32l-7 7M39 161l-7 7" />
+  </svg>
+);
+
 export function PageShell({ title, subtitle, navigation, children, className }: PageShellProps) {
+  const header = useRef<HTMLElement>(null);
+  useGlassLight(header, { light: LIGHT, selector: '.ds-tile' });
   return (
     <div className={className ? `ds-shell ${className}` : 'ds-shell'}>
-      <header className="ds-shell__header">
+      <header ref={header} className="ds-shell__header" style={{ '--shell-light-x': `${LIGHT.x * 100}%`, '--shell-light-y': `${LIGHT.y * 100}%` } as React.CSSProperties}>
+        <Wheel />
         <div className="ds-shell__inner">
           <h1 className="ds-shell__title">{title}</h1>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}

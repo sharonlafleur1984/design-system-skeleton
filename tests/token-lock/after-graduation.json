@@ -277,6 +277,7 @@
   "shadow-float": "0px 16px 40px 0px rgba(29,26,24,0.16)",
   "glass-rim-width": "1px",
   "glass-rim-color": "rgba(255, 255, 255, 0.8)",
+  "glass-rim-faint": "rgba(255, 255, 255, 0.18)",
   "shell-glow": "rgba(110, 15, 32, 0)",
   "shell-sheet-inset": "16px",
   "shell-sheet-overlap": "40px",
@@ -288,5 +289,9 @@
   "shell-entrance-burst-duration": "1400ms",
   "shell-entrance-subtitle-duration": "1000ms",
   "shell-entrance-subtitle-delay": "560ms",
-  "shell-entrance-circle-turn": "50s"
+  "shell-entrance-circle-turn": "50s",
+  "shell-art-ray": "rgba(255, 255, 255, 0.12)",
+  "shell-art-wheel": "rgba(255, 255, 255, 0.22)",
+  "shell-art-wheel-min": "420px",
+  "shell-art-wheel-max": "920px"
 }

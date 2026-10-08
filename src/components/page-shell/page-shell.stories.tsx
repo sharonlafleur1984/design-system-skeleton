@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageShell } from './page-shell';
-import { EpisodeTab, EpisodeTabList, EpisodeTabs } from '../episode-tabs/episode-tabs';
-import { TabPanel } from '../tabs/tabs';
+import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '../action-tile/action-tile';
 import { Card } from '../card/card';
 
 const meta: Meta<typeof PageShell> = {
@@ -38,30 +37,30 @@ const episodes = [
   { id: 'dates', label: 'Episode 3', title: 'Important Dates', description: "What's next, step by step" },
 ];
 
-/** The shell with the episode tabs, as After Graduation uses it. Pick an episode to switch pages. */
+/** The shell with the episodes as action tiles, as After Graduation uses it. Pick an episode to switch pages. Replays its entrance each time the story opens. */
 export const WithEpisodes: Story = {
   render: () => (
-    <EpisodeTabs defaultSelectedKey="dates">
+    <ActionTileSwitch defaultSelectedKey="explore">
       <PageShell
         title="After Graduation"
         subtitle="Alex, get ready for Season 2"
         navigation={
-          <EpisodeTabList aria-label="Episodes">
+          <ActionTileGroup aria-label="Episodes" behavior="switch">
             {episodes.map((e) => (
-              <EpisodeTab key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
+              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
             ))}
-          </EpisodeTabList>
+          </ActionTileGroup>
         }
       >
         {episodes.map((e) => (
-          <TabPanel key={e.id} id={e.id}>
+          <ActionTilePanel key={e.id} id={e.id}>
             <Card>
               <p style={{ margin: 0 }}>{e.title} goes here.</p>
             </Card>
-          </TabPanel>
+          </ActionTilePanel>
         ))}
       </PageShell>
-    </EpisodeTabs>
+    </ActionTileSwitch>
   ),
 };
 
