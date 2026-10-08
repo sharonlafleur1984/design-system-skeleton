@@ -2,35 +2,137 @@
   "motion": {
     "$description": "Timing shared by every product. Controls (press, hover, toggles, tabs) always use the duration and easing steps, so they feel the same on every page. Arrivals and celebrations use a mood: calm or energetic. Each theme picks its default mood, any page can switch with data-motion, and reduced motion always gets calm with no movement. Durations and easings come from the Life Hub Figma Glass, Motion, Sizing page.",
     "duration": {
-      "instant": { "$type": "duration", "$value": "80ms", "$description": "Press: a slight shrink, no color change." },
-      "fast": { "$type": "duration", "$value": "140ms", "$description": "Hover and small state changes: color, a 1px lift, a switch thumb." },
-      "base": { "$type": "duration", "$value": "220ms", "$description": "Something moving into place: a tab indicator, a card's shadow, a panel settling." },
-      "slow": { "$type": "duration", "$value": "380ms", "$description": "Fading in, and a progress bar filling." }
+      "instant": {
+        "$type": "duration",
+        "$value": "80ms",
+        "$description": "Press: a slight shrink, no color change."
+      },
+      "fast": {
+        "$type": "duration",
+        "$value": "140ms",
+        "$description": "Hover and small state changes: color, a 1px lift, a switch thumb."
+      },
+      "base": {
+        "$type": "duration",
+        "$value": "220ms",
+        "$description": "Something moving into place: a tab indicator, a card's shadow, a panel settling."
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "380ms",
+        "$description": "Fading in, and a progress bar filling."
+      }
     },
     "easing": {
-      "out": { "$type": "cubicBezier", "$value": [0.22, 1, 0.36, 1], "$description": "Entering and hover. Fast start, soft landing." },
-      "in-out": { "$type": "cubicBezier", "$value": [0.65, 0, 0.35, 1], "$description": "Reversible changes that go both ways, like a toggle or a tab." }
+      "out": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.22,
+          1,
+          0.36,
+          1
+        ],
+        "$description": "Entering and hover. Fast start, soft landing."
+      },
+      "in-out": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.65,
+          0,
+          0.35,
+          1
+        ],
+        "$description": "Reversible changes that go both ways, like a toggle or a tab."
+      }
     },
-    "stagger": { "$type": "duration", "$value": "60ms", "$description": "Step between items in a list as they arrive one after another." },
+    "stagger": {
+      "$type": "duration",
+      "$value": "60ms",
+      "$description": "Step between items in a list as they arrive one after another."
+    },
     "mood": {
       "calm": {
         "$description": "Things arrive quietly: they settle into place and never bounce.",
-        "arrive-duration": { "$type": "duration", "$value": "380ms" },
-        "arrive-easing": { "$type": "cubicBezier", "$value": [0.22, 1, 0.36, 1] },
-        "arrive-distance": { "$type": "dimension", "$value": "8px", "$description": "How far something travels as it arrives." },
-        "celebrate-duration": { "$type": "duration", "$value": "380ms" },
-        "celebrate-easing": { "$type": "cubicBezier", "$value": [0.22, 1, 0.36, 1] },
-        "celebrate-scale": { "$type": "number", "$value": 1.04, "$description": "How big a win grows at its peak before settling." }
+        "arrive-duration": {
+          "$type": "duration",
+          "$value": "380ms"
+        },
+        "arrive-easing": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.22,
+            1,
+            0.36,
+            1
+          ]
+        },
+        "arrive-distance": {
+          "$type": "dimension",
+          "$value": "8px",
+          "$description": "How far something travels as it arrives."
+        },
+        "celebrate-duration": {
+          "$type": "duration",
+          "$value": "380ms"
+        },
+        "celebrate-easing": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.22,
+            1,
+            0.36,
+            1
+          ]
+        },
+        "celebrate-scale": {
+          "$type": "number",
+          "$value": 1.04,
+          "$description": "How big a win grows at its peak before settling."
+        }
       },
       "energetic": {
         "$description": "Anime energy for earned moments: things snap in, overshoot and settle. Save it for arrivals and wins, never for controls.",
-        "arrive-duration": { "$type": "duration", "$value": "480ms" },
-        "arrive-easing": { "$type": "cubicBezier", "$value": [0.34, 1.56, 0.64, 1], "$description": "Overshoots its target a little, then settles back." },
-        "arrive-distance": { "$type": "dimension", "$value": "24px" },
-        "celebrate-duration": { "$type": "duration", "$value": "560ms" },
-        "celebrate-easing": { "$type": "cubicBezier", "$value": [0.34, 1.8, 0.64, 1] },
-        "celebrate-scale": { "$type": "number", "$value": 1.16 }
+        "arrive-duration": {
+          "$type": "duration",
+          "$value": "480ms"
+        },
+        "arrive-easing": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.34,
+            1.56,
+            0.64,
+            1
+          ],
+          "$description": "Overshoots its target a little, then settles back."
+        },
+        "arrive-distance": {
+          "$type": "dimension",
+          "$value": "24px"
+        },
+        "celebrate-duration": {
+          "$type": "duration",
+          "$value": "560ms"
+        },
+        "celebrate-easing": {
+          "$type": "cubicBezier",
+          "$value": [
+            0.34,
+            1.8,
+            0.64,
+            1
+          ]
+        },
+        "celebrate-scale": {
+          "$type": "number",
+          "$value": 1.16
+        }
       }
+    },
+    "lift": {
+      "$type": "dimension",
+      "$value": "2px",
+      "$description": "How far a tile or card rises on hover. Chosen ones settle back down."
     }
   }
 }
