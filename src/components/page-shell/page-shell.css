@@ -1,11 +1,37 @@
 /* Page shell. Every space is a layout or shell token, so phone, tablet and desktop each get their
-   own values without media queries here. The shell's background is the header's deepest red, so on
-   desktop it shows down both sides of the sheet. */
+   own values without media queries here.
+   The art (light, rays and wheel) runs behind the whole shell, so on desktop it continues down the
+   frame on both sides of the sheet. The wheel is the one light source: the red is lightest there and
+   deepens with distance, and the rays fade as they travel. */
 .ds-shell {
+  --shell-light-x: 78%;
+  --shell-light-y: var(--shell-art-light-top);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   min-block-size: 100dvh;
-  background: var(--shell-frame);
+  background: radial-gradient(
+    circle farthest-corner at var(--shell-light-x) var(--shell-light-y),
+    var(--color-accent-base) 0,
+    var(--color-accent-hover) 35%,
+    var(--shell-frame) 75%
+  );
+}
+
+/* Rays from the wheel's center. They start just outside the center, so they never crowd together
+   at the source, then fade as they travel away from it. */
+.ds-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transform-origin: var(--shell-light-x) var(--shell-light-y);
+  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 2deg, transparent 2deg 7deg);
+  -webkit-mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
+  mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
 }
 
 .ds-shell__inner {
@@ -14,29 +40,16 @@
   margin-inline: auto;
 }
 
-/* The header fades from the accent red down to the frame red the sheet sits on. */
+/* The header is see-through: the art behind the shell shows through it. */
 .ds-shell__header {
   padding-block-start: var(--layout-section);
   padding-block-end: calc(var(--layout-section) + var(--shell-sheet-overlap));
   padding-inline: var(--layout-gutter);
-  background: linear-gradient(var(--color-accent-base), var(--shell-frame));
   color: var(--color-ink-on-art);
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
 }
 
-/* Rays from the wheel's center, the header's one light source. */
-.ds-shell__header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  transform-origin: var(--shell-light-x) var(--shell-light-y);
-  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 2deg, transparent 2deg 7deg);
-}
-
-/* The magic wheel: large and faint, centered on the header's bottom edge, so the sheet covers its lower half. */
+/* The magic wheel: large and faint, at a fixed spot near the top right, so it stays put whatever the
+   header holds. The sheet covers whatever falls below the header. */
 .ds-shell__wheel {
   position: absolute;
   inset-inline-start: var(--shell-light-x);
@@ -46,12 +59,13 @@
   aspect-ratio: 1;
   translate: -50% -50%;
   color: var(--shell-art-wheel);
+  pointer-events: none;
 }
 
 /* The entrance (shell-entrance tokens): the title slams in, the rays burst out from the wheel,
    the subtitle fades down, and the wheel turns slowly. Reduced motion only fades. */
 @media (prefers-reduced-motion: no-preference) {
-  .ds-shell__header::before {
+  .ds-shell::before {
     animation: ds-shell-burst var(--shell-entrance-burst-duration) var(--motion-easing-out) both;
   }
   .ds-shell__title {

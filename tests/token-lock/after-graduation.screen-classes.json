@@ -73,5 +73,10 @@
     "compact": "24px",
     "medium": "32px",
     "expanded": "40px"
+  },
+  "shell-art-light-top": {
+    "compact": "240px",
+    "medium": "288px",
+    "expanded": "320px"
   }
 }

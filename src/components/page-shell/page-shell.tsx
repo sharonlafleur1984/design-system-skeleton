@@ -6,13 +6,12 @@ import './page-shell.css';
 // sheet that rises over its bottom edge. On desktop the sheet sits in from the screen sides so the
 // header's red frames the page. All spacing comes from the layout and shell tokens.
 //
-// The header's art: a magic wheel, low on the right, is the header's one light source. Rays start at
-// its center, and every glass tile in the header is lit from it: rims brightest facing the wheel,
-// edges bending the rays behind them. When the page opens, the title slams in, the rays burst, the
-// subtitle fades down and the wheel keeps turning (the shell-entrance tokens).
-
-/** Where the wheel's center sits in the header, as fractions: the light source for everything in it. */
-const LIGHT = { x: 0.78, y: 1 };
+// The art: a magic wheel on the right is the page's one light source. It sits a fixed distance from
+// the top (shell-art-light-top), so it stays put whatever the header holds. The art runs behind the
+// whole page, so the rays also show in the side frame on desktop. The red is lightest at the wheel
+// and deepens with distance, rays fade as they travel, and every glass tile is lit from the wheel:
+// rims brightest facing it, edges bending the rays behind them. When the page opens, the title slams
+// in, the rays burst, the subtitle fades down and the wheel keeps turning (shell-entrance tokens).
 
 export interface PageShellProps {
   /** The product name. The page's only h1. */
@@ -40,12 +39,12 @@ const Wheel = () => (
 );
 
 export function PageShell({ title, subtitle, navigation, children, className }: PageShellProps) {
-  const header = useRef<HTMLElement>(null);
-  useGlassLight(header, { light: LIGHT, selector: '.ds-tile' });
+  const shell = useRef<HTMLDivElement>(null);
+  useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-tile' });
   return (
-    <div className={className ? `ds-shell ${className}` : 'ds-shell'}>
-      <header ref={header} className="ds-shell__header" style={{ '--shell-light-x': `${LIGHT.x * 100}%`, '--shell-light-y': `${LIGHT.y * 100}%` } as React.CSSProperties}>
-        <Wheel />
+    <div ref={shell} className={className ? `ds-shell ${className}` : 'ds-shell'}>
+      <Wheel />
+      <header className="ds-shell__header">
         <div className="ds-shell__inner">
           <h1 className="ds-shell__title">{title}</h1>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}

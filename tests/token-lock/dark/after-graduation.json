@@ -298,9 +298,10 @@
   "shell-entrance-burst-duration": "1400ms",
   "shell-entrance-subtitle-duration": "1000ms",
   "shell-entrance-subtitle-delay": "560ms",
-  "shell-entrance-circle-turn": "50s",
-  "shell-art-ray": "rgba(255, 255, 255, 0.12)",
+  "shell-entrance-circle-turn": "100s",
+  "shell-art-ray": "rgba(255, 255, 255, 0.18)",
   "shell-art-wheel": "rgba(255, 255, 255, 0.22)",
   "shell-art-wheel-min": "420px",
-  "shell-art-wheel-max": "920px"
+  "shell-art-wheel-max": "920px",
+  "shell-art-light-top": "320px"
 }

@@ -66,16 +66,16 @@
       },
       "circle-turn": {
         "$type": "duration",
-        "$value": "50s",
-        "$description": "One slow turn of the magic circle. It never stops, unless reduced motion is on."
+        "$value": "100s",
+        "$description": "One slow turn of the magic wheel (Oct 7: halved from 50s, which felt too fast). It never stops, unless reduced motion is on."
       }
     },
     "art": {
       "$description": "The header's art. The magic wheel sits low on the right and is the header's one light source: rays start at its center, and glass in the header is lit from it.",
       "ray": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.12)",
-        "$description": "The rays from the wheel's center."
+        "$value": "rgba(255, 255, 255, 0.18)",
+        "$description": "The rays from the wheel's center, at their strongest. They fade with distance from the wheel."
       },
       "wheel": {
         "$type": "color",
@@ -91,6 +91,17 @@
         "$type": "dimension",
         "$value": "920px",
         "$description": "Largest the wheel gets, on wide screens."
+      },
+      "light-top": {
+        "$type": "dimension",
+        "$value": "320px",
+        "$description": "How far down from the top of the page the wheel's center sits. Fixed, so the wheel stays in the same place whatever the header holds.",
+        "$extensions": {
+          "com.sharon.screen-class": {
+            "compact": "240px",
+            "medium": "288px"
+          }
+        }
       }
     }
   }

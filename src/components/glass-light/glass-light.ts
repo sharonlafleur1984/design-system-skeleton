@@ -47,7 +47,9 @@ function bendMap(w: number, h: number, band: number, r: number) {
 
 export interface GlassLightOptions {
   /** Where the light is, as fractions of the container: 0 is left or top, 1 is right or bottom. */
-  light: { x: number; y: number };
+  light?: { x: number; y: number };
+  /** Or: an element inside the container whose center is the light, like the page shell's wheel. Wins over light. */
+  source?: string;
   /** Which glass pieces to light. */
   selector: string;
   /** How far in from the edge the glass bends, in px. Defaults to the theme's --material-refraction-band. */
@@ -63,7 +65,7 @@ export interface GlassLightOptions {
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
-export function useGlassLight(root: RefObject<HTMLElement | null>, { light, selector, band: bandOption, bend: bendOption, radius = 16 }: GlassLightOptions) {
+export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x: 1, y: 0 }, source, selector, band: bandOption, bend: bendOption, radius = 16 }: GlassLightOptions) {
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -80,9 +82,10 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sele
       const band = bandOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-band')) || 16);
       const bend = bendOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-max')) || 4);
       const r = el.getBoundingClientRect();
-      const lx = r.left + r.width * light.x;
-      const ly = r.top + r.height * light.y;
-      const reach = Math.max(r.width, r.height) * 0.9;
+      const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
+      const lx = src ? src.left + src.width / 2 : r.left + r.width * light.x;
+      const ly = src ? src.top + src.height / 2 : r.top + r.height * light.y;
+      const reach = Math.min(Math.max(r.width, r.height), 1400) * 0.9;
       svg.replaceChildren();
       el.querySelectorAll<HTMLElement>(selector).forEach((glass, i) => {
         const b = glass.getBoundingClientRect();
@@ -124,5 +127,5 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sele
       ro.disconnect();
       svg.remove();
     };
-  }, [root, light.x, light.y, selector, bandOption, bendOption, radius]);
+  }, [root, light.x, light.y, source, selector, bandOption, bendOption, radius]);
 }
