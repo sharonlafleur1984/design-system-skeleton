@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from 'react';
+import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import './page-shell.css';
 
@@ -42,6 +42,29 @@ const Wheel = () => (
 export function PageShell({ title, subtitle, navigation, children, className }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
   useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass' });
+  // Where the header's glass tiles sit, so the rays fade behind them (shell-art-ray-behind-glass).
+  useLayoutEffect(() => {
+    const el = shell.current;
+    if (!el) return;
+    const update = () => {
+      const tiles = el.querySelectorAll<HTMLElement>('.ds-shell__header .ds-tile');
+      if (!tiles.length) return;
+      const top = el.getBoundingClientRect().top;
+      let a = Infinity;
+      let b = -Infinity;
+      tiles.forEach((t) => {
+        const r = t.getBoundingClientRect();
+        a = Math.min(a, r.top - top);
+        b = Math.max(b, r.bottom - top);
+      });
+      el.style.setProperty('--shell-glass-top', `${a}px`);
+      el.style.setProperty('--shell-glass-bottom', `${b}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   return (
     <div ref={shell} className={className ? `ds-shell ${className}` : 'ds-shell'}>
       <Wheel />

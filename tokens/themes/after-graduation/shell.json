@@ -111,6 +111,11 @@
         "$type": "dimension",
         "$value": "920px",
         "$description": "Largest the wheel gets, on wide screens."
+      },
+      "ray-behind-glass": {
+        "$type": "number",
+        "$value": 0.45,
+        "$description": "How strong the rays are behind the glass tiles (1 is full strength). The rays themselves fade there, so the glass stays clear and the crimson isn't tinted."
       }
     },
     "subtitle": {

@@ -57,16 +57,16 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* The glass itself: a clear tint that bends the art behind it at its edges and quiets it a little
-   (material-art-calm), so the rays behind the text are softer. */
+/* The glass itself: clear, bending the art behind it at its edges. Nothing tints it; on the page shell
+   the rays fade behind the tiles at their source instead (shell-art-ray-behind-glass). */
 .ds-tile__glass {
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
   background: var(--color-surface-glass-on-art);
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color)) brightness(var(--material-art-calm-brightness));
-  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color)) brightness(var(--material-art-calm-brightness));
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
 }
 
 .ds-tile__label {

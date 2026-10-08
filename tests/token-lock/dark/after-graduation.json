@@ -288,9 +288,6 @@
   "material-blur-on-art-selected": "10px",
   "material-refraction-band": "24px",
   "material-refraction-max": "8px",
-  "material-art-calm": 0.5,
-  "material-art-calm-color": 1.7,
-  "material-art-calm-brightness": 0.86,
   "shadow-glass": "inset 0px 0px 0px 0px rgba(0,0,0,0)",
   "shadow-glass-on-art": "0px 6px 18px 0px rgba(60,0,15,0.28)",
   "shadow-edge": "0px 0px 0px 0px rgba(0,0,0,0)",
@@ -330,5 +327,6 @@
   "shell-art-wheel": "rgba(255, 255, 255, 0.22)",
   "shell-art-wheel-min": "420px",
   "shell-art-wheel-max": "920px",
+  "shell-art-ray-behind-glass": 0.45,
   "shell-subtitle": "#fcc687"
 }

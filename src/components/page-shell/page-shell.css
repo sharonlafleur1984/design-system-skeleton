@@ -6,6 +6,8 @@
 .ds-shell {
   --shell-light-x: calc(100% - var(--light-from-right));
   --shell-light-y: var(--light-top);
+  --shell-glass-top: -100vh;
+  --shell-glass-bottom: -100vh;
   position: relative;
   isolation: isolate;
   overflow: clip;
@@ -23,7 +25,8 @@
 
 /* Rays from the wheel's center: 30 rays, 12deg apart. 12 divides 360 evenly, so every gap matches,
    including where the circle meets itself straight up. They start just outside the center, so they
-   never crowd together at the source, then fade as they travel away from it. */
+   never crowd together at the source, then fade as they travel away from it. Behind the row of glass
+   tiles they fade further (shell-art-ray-behind-glass); PageShell measures where that row sits. */
 .ds-shell::before {
   content: '';
   position: absolute;
@@ -32,8 +35,14 @@
   pointer-events: none;
   transform-origin: var(--shell-light-x) var(--shell-light-y);
   background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 3deg, transparent 3deg 12deg);
-  -webkit-mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
-  mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
+  --_behind: color-mix(in srgb, black calc(var(--shell-art-ray-behind-glass) * 100%), transparent);
+  -webkit-mask:
+    radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%),
+    linear-gradient(to bottom, black calc(var(--shell-glass-top) - var(--space-3)), var(--_behind) var(--shell-glass-top), var(--_behind) var(--shell-glass-bottom), black calc(var(--shell-glass-bottom) + var(--space-3)));
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%) intersect,
+    linear-gradient(to bottom, black calc(var(--shell-glass-top) - var(--space-3)), var(--_behind) var(--shell-glass-top), var(--_behind) var(--shell-glass-bottom), black calc(var(--shell-glass-bottom) + var(--space-3)));
 }
 
 .ds-shell__inner {
