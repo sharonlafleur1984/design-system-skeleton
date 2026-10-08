@@ -27,10 +27,25 @@
   padding: var(--space-6);
   border-radius: 0;
   background:
-    /* the light itself, top right */
-    radial-gradient(45% 110% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent), transparent 70%),
-    /* its wider bloom */
-    radial-gradient(95% 170% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent), transparent 75%),
+    /* the light itself, top right. Extra stops ease it out (roughly a smoothstep), so it melts into the
+       sky instead of ending on a visible edge. */
+    radial-gradient(
+      45% 110% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 84%), transparent) 14%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 56%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 3%), transparent) 70%,
+      transparent 78%
+    ),
+    /* its wider bloom, eased the same way */
+    radial-gradient(
+      95% 170% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 19%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 60%,
+      transparent 82%
+    ),
     /* warm band along the bottom at sunrise and sunset */
     linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
     linear-gradient(

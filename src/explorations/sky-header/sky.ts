@@ -1,6 +1,6 @@
 // The Life Hub sky: what the header looks like at any hour. Exploration only.
 // Every color comes from Life Hub's palette (tokens/themes/life-hub). The light always sits top right:
-// the sun by day, sinking and warming at sunset, a cool moon glow at night. Positions and strengths are
+// the sun by day, sinking and warming at sunset, a cool moon glow at night in the sun's daytime spot. Positions and strengths are
 // estimates until they become tokens.
 
 export type SkyMode = 'light' | 'dark';
@@ -19,8 +19,8 @@ interface Key {
 
 // Palette names are in the comments so the colors can be traced back to tokens.
 const KEYS: Key[] = [
-  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.2, glowX: 92, glowY: 6, horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon
-  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.2, glowX: 92, glowY: 6, horizon: 0, stars: 1 },
+  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon
+  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
   { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, glowX: 94, glowY: 80, horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100
   { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, glowX: 92, glowY: 35, horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
   { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, glowX: 88, glowY: 0, horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100
@@ -28,9 +28,9 @@ const KEYS: Key[] = [
   { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, glowX: 90, glowY: 25, horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200
   { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, glowX: 94, glowY: 80, horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400
   { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, glowX: 96, glowY: 100, horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300
-  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 92, glowY: 10, horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
-  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.2, glowX: 92, glowY: 6, horizon: 0, stars: 1 },
-  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.2, glowX: 92, glowY: 6, horizon: 0, stars: 1 },
+  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#e6ecf2', glowAlpha: 0.1, glowX: 88, glowY: 0, horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
+  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
+  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
 ];
 
 // Colors are blended in OKLab, so sunset passes through rose and violet instead of muddy gray.
@@ -193,7 +193,7 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     top = mixColor(top, areaNight, dark * 0.45);
     bottom = mixColor(bottom, areaNight, dark * 0.6);
   }
-  const alpha = material === 'glass' ? 0.78 + dark * 0.1 : 1;
+  const alpha = material === 'glass' ? 0.78 + dark * 0.17 : 1;
   const glow = mixColor(a.glow, b.glow, t);
   const glowAlpha = mix(a.glowAlpha, b.glowAlpha, t);
   const horizon = mix(a.horizon, b.horizon, t);
