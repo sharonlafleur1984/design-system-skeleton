@@ -54,6 +54,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-switch__knob {
-    transition: inset-inline-start 0.15s ease;
+    transition: inset-inline-start var(--motion-duration-fast) var(--motion-easing-in-out);
   }
 }

@@ -1,0 +1,71 @@
+/* Storybook only: the demos on the Motion page. Nothing moves until a button is pressed,
+   so screenshots always catch the settled state. */
+.motion-demo__card {
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-card);
+  box-shadow: var(--shadow-rest);
+}
+
+.motion-demo__play .motion-demo__card {
+  animation: motion-demo-arrive var(--motion-arrive-duration) var(--motion-arrive-easing) both;
+  animation-delay: calc(var(--i, 0) * var(--motion-stagger));
+}
+
+@keyframes motion-demo-arrive {
+  from {
+    opacity: 0;
+    translate: 0 var(--motion-arrive-distance);
+  }
+}
+
+.motion-demo__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-chip);
+  background: var(--color-status-success-surface);
+  color: var(--color-status-success-ink);
+  font-weight: var(--font-weight-semibold);
+}
+
+.motion-demo__badge--won {
+  animation: motion-demo-celebrate var(--motion-celebrate-duration) var(--motion-celebrate-easing);
+}
+
+@keyframes motion-demo-celebrate {
+  0% {
+    scale: 0.6;
+    opacity: 0;
+  }
+  50% {
+    scale: var(--motion-celebrate-scale);
+    opacity: 1;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+.motion-demo__track {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--color-surface-muted, var(--color-border-default));
+}
+
+.motion-demo__dot {
+  position: absolute;
+  inset-block-start: -4px;
+  inset-inline-start: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-accent-base);
+}
+
+.motion-demo__track--go .motion-demo__dot {
+  inset-inline-start: calc(100% - 16px);
+  transition: inset-inline-start var(--d) var(--e);
+}

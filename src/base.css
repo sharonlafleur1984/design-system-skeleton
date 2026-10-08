@@ -21,3 +21,43 @@ html {
 body {
   margin: 0;
 }
+
+/*
+ * Motion moods. Each theme sets its default mood for arrivals and celebrations.
+ * A page (or any section of one) can switch with data-motion="calm" or data-motion="energetic".
+ * Controls never use the mood: they always use --motion-duration-* and --motion-easing-*.
+ */
+[data-motion='calm'] {
+  --motion-arrive-duration: var(--motion-mood-calm-arrive-duration);
+  --motion-arrive-easing: var(--motion-mood-calm-arrive-easing);
+  --motion-arrive-distance: var(--motion-mood-calm-arrive-distance);
+  --motion-celebrate-duration: var(--motion-mood-calm-celebrate-duration);
+  --motion-celebrate-easing: var(--motion-mood-calm-celebrate-easing);
+  --motion-celebrate-scale: var(--motion-mood-calm-celebrate-scale);
+}
+
+[data-motion='energetic'] {
+  --motion-arrive-duration: var(--motion-mood-energetic-arrive-duration);
+  --motion-arrive-easing: var(--motion-mood-energetic-arrive-easing);
+  --motion-arrive-distance: var(--motion-mood-energetic-arrive-distance);
+  --motion-celebrate-duration: var(--motion-mood-energetic-celebrate-duration);
+  --motion-celebrate-easing: var(--motion-mood-energetic-celebrate-easing);
+  --motion-celebrate-scale: var(--motion-mood-energetic-celebrate-scale);
+}
+
+/*
+ * Reduced motion always wins, whatever the page picked: nothing travels, grows or bounces.
+ * Things still fade, so changes are never silent. Controls keep only their quick color changes.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme],
+  [data-motion] {
+    --motion-arrive-easing: var(--motion-easing-out);
+    --motion-arrive-distance: 0px;
+    --motion-celebrate-easing: var(--motion-easing-out);
+    --motion-celebrate-scale: 1;
+    --motion-duration-base: var(--motion-duration-fast);
+    --motion-duration-slow: var(--motion-duration-fast);
+  }
+}

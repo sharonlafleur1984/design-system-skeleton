@@ -37,6 +37,38 @@
       "$type": "dimension",
       "$value": "920px",
       "$description": "Widest the page's content gets, in the header and the sheet. Wider screens get more frame, not longer lines."
+    },
+    "entrance": {
+      "$description": "The header's entrance when a page opens, from the prototype: the title slams in, speed lines burst behind it, the subtitle fades down and the magic circle turns. Slowed to about 1.4 times the prototype's speed, which felt too fast. Its own tokens so the header can be dramatic while cards and lists keep the quicker energetic arrival.",
+      "title-duration": {
+        "$type": "duration",
+        "$value": "1000ms",
+        "$description": "The title slams in: starts big and tilted, overshoots, settles. Prototype: 700ms."
+      },
+      "title-easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.mood.energetic.arrive-easing}"
+      },
+      "burst-duration": {
+        "$type": "duration",
+        "$value": "1400ms",
+        "$description": "Speed lines grow out behind the title. Prototype: 1000ms."
+      },
+      "subtitle-duration": {
+        "$type": "duration",
+        "$value": "1000ms",
+        "$description": "The subtitle fades down into place."
+      },
+      "subtitle-delay": {
+        "$type": "duration",
+        "$value": "560ms",
+        "$description": "The subtitle waits until the title has landed. Prototype: 400ms."
+      },
+      "circle-turn": {
+        "$type": "duration",
+        "$value": "50s",
+        "$description": "One slow turn of the magic circle. It never stops, unless reduced motion is on."
+      }
     }
   }
 }

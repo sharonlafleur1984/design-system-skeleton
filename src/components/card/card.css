@@ -71,7 +71,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-card--interactive {
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow var(--motion-duration-base) var(--motion-easing-out);
   }
 }
 
