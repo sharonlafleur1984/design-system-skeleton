@@ -11,6 +11,7 @@ import {
   type Key,
 } from 'react-aria-components';
 import '../material.css';
+import '../glass.css';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -103,20 +104,20 @@ export function ActionTile({ label, title, description, id, href, onPress, isDis
   const state = rest['data-state'];
   if (inSwitch) {
     return (
-      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile" data-state={state}>
+      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
         {body}
       </AriaTab>
     );
   }
   if (href) {
     return (
-      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile" data-state={state}>
+      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
         {body}
       </AriaLink>
     );
   }
   return (
-    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile" data-state={state}>
+    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
       {body}
     </AriaButton>
   );

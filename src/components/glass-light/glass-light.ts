@@ -46,7 +46,8 @@ function bendMap(w: number, h: number, band: number, r: number) {
 }
 
 export interface GlassLightOptions {
-  /** Where the light is, as fractions of the container: 0 is left or top, 1 is right or bottom. */
+  /** Where the light is, as fractions of the container: 0 is left or top, 1 is right or bottom.
+   *  Leave out (with no source) to use the shared light tokens: light-from-right and light-top. */
   light?: { x: number; y: number };
   /** Or: an element inside the container whose center is the light, like the page shell's wheel. Wins over light. */
   source?: string;
@@ -56,8 +57,10 @@ export interface GlassLightOptions {
   band?: number;
   /** How far a line behind the glass shifts at the edge, in px. Defaults to the theme's --material-refraction-max. */
   bend?: number;
-  /** Corner radius of the glass, in px, so the bend follows the corners. */
+  /** Corner radius of the glass, in px, so the bend follows the corners. Defaults to each surface's own corners. */
   radius?: number;
+  /** The light's strength right next to it (0 to 1). Defaults to 1. */
+  peak?: number;
 }
 
 /**
@@ -65,7 +68,7 @@ export interface GlassLightOptions {
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
-export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x: 1, y: 0 }, source, selector, band: bandOption, bend: bendOption, radius = 16 }: GlassLightOptions) {
+export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1 }: GlassLightOptions) {
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -83,8 +86,21 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x
       const bend = bendOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-max')) || 4);
       const r = el.getBoundingClientRect();
       const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
-      const lx = src ? src.left + src.width / 2 : r.left + r.width * light.x;
-      const ly = src ? src.top + src.height / 2 : r.top + r.height * light.y;
+      let lx: number;
+      let ly: number;
+      if (src) {
+        lx = src.left + src.width / 2;
+        ly = src.top + src.height / 2;
+      } else if (light) {
+        lx = r.left + r.width * light.x;
+        ly = r.top + r.height * light.y;
+      } else {
+        // The shared light tokens: a percentage in from the right, and a distance down from the top.
+        const fromRight = Number.parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
+        const top = Number.parseFloat(cs.getPropertyValue('--light-top')) || 0;
+        lx = r.right - (r.width * fromRight) / 100;
+        ly = r.top + top;
+      }
       const reach = Math.min(Math.max(r.width, r.height), 1400) * 0.9;
       svg.replaceChildren();
       el.querySelectorAll<HTMLElement>(selector).forEach((glass, i) => {
@@ -95,7 +111,7 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x
         const dist = Math.hypot(lx - (b.left + b.width / 2), ly - (b.top + b.height / 2));
         glass.style.setProperty('--light-x', `${hx.toFixed(1)}%`);
         glass.style.setProperty('--light-y', `${hy.toFixed(1)}%`);
-        glass.style.setProperty('--light-k', (1 / (1 + (dist / reach) ** 2)).toFixed(3));
+        glass.style.setProperty('--light-k', (peak / (1 + (dist / reach) ** 2)).toFixed(3));
         // Which way the light comes from (a unit vector from the glass's center): highlights face it,
         // shadows fall away from it.
         const dx = lx - (b.left + b.width / 2);
@@ -103,6 +119,7 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x
         const len = Math.hypot(dx, dy) || 1;
         glass.style.setProperty('--light-dx', (dx / len).toFixed(3));
         glass.style.setProperty('--light-dy', (dy / len).toFixed(3));
+        const radius = radiusOption ?? (Number.parseFloat(getComputedStyle(glass).borderTopLeftRadius) || 16);
         const w = Math.round(glass.offsetWidth);
         const h = Math.round(glass.offsetHeight);
         const id = `${prefix}-${i}`;
@@ -127,5 +144,5 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light = { x
       ro.disconnect();
       svg.remove();
     };
-  }, [root, light.x, light.y, source, selector, bandOption, bendOption, radius]);
+  }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak]);
 }

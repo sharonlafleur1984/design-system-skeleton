@@ -5,6 +5,16 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> One light position and one glass recipe for every product</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the light source sits in one shared place (`light-from-right`, `light-top`): After Graduation's wheel and Life Hub's sun. Every glass surface on a page, cards and tiles, in light and dark mode, is lit from it with one shared recipe (glass.css): rim, glint, highlight, shade and shadow. Each theme sets the recipe's settings in tokens. Glass on artwork bends the art behind it and softens it a little.
+- **Why:** the light direction decides how every piece of glass looks, so it has to agree everywhere. One recipe means a fix reaches both products.
+- **Also decided:** the wheel turns as the page opens and then rests (WCAG 2.2.2); action tiles rise 2px on hover and don't underline.
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> After Graduation's red is crimson</summary>
 
 - **Decided by:** Sharon

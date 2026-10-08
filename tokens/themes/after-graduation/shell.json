@@ -64,10 +64,30 @@
         "$value": "560ms",
         "$description": "The subtitle waits until the title has landed. Prototype: 400ms."
       },
-      "circle-turn": {
+      "wheel-duration": {
         "$type": "duration",
-        "$value": "100s",
-        "$description": "One slow turn of the magic wheel (Oct 7: halved from 50s, which felt too fast). It never stops, unless reduced motion is on."
+        "$value": "30s",
+        "$description": "The wheel turns as the page opens, then eases to a stop over this long. Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
+      },
+      "wheel-angle": {
+        "$type": "number",
+        "$value": 60,
+        "$description": "How far the wheel turns before it rests, in degrees. Starts at about the old speed (one turn in 100s) and slows to a stop."
+      },
+      "title-from-scale": {
+        "$type": "number",
+        "$value": 1.5,
+        "$description": "How big the title starts before it slams into place."
+      },
+      "title-from-tilt": {
+        "$type": "number",
+        "$value": -4,
+        "$description": "How tilted the title starts, in degrees."
+      },
+      "burst-from-scale": {
+        "$type": "number",
+        "$value": 0.4,
+        "$description": "How small the rays start before they burst out from the wheel."
       }
     },
     "art": {
@@ -91,17 +111,6 @@
         "$type": "dimension",
         "$value": "920px",
         "$description": "Largest the wheel gets, on wide screens."
-      },
-      "light-top": {
-        "$type": "dimension",
-        "$value": "124px",
-        "$description": "How far down from the top of the page the wheel's center sits: on the subtitle's line, measured at each screen size, off to the right of the text. Fixed, so adding episodes makes the header taller without moving the wheel.",
-        "$extensions": {
-          "com.sharon.screen-class": {
-            "compact": "78px",
-            "medium": "112px"
-          }
-        }
       }
     },
     "subtitle": {

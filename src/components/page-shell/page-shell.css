@@ -4,8 +4,8 @@
    frame on both sides of the sheet. The wheel is the one light source: the red is lightest there and
    deepens with distance, and the rays fade as they travel. */
 .ds-shell {
-  --shell-light-x: 78%;
-  --shell-light-y: var(--shell-art-light-top);
+  --shell-light-x: calc(100% - var(--light-from-right));
+  --shell-light-y: var(--light-top);
   position: relative;
   isolation: isolate;
   overflow: clip;
@@ -65,7 +65,8 @@
 }
 
 /* The entrance (shell-entrance tokens): the title slams in, the rays burst out from the wheel,
-   the subtitle fades down, and the wheel turns slowly. Reduced motion only fades. */
+   the subtitle fades down, and the wheel turns, easing to a stop (anything moving on its own past
+   5 seconds has to stop, WCAG 2.2.2). Reduced motion only fades. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-shell::before {
     animation: ds-shell-burst var(--shell-entrance-burst-duration) var(--motion-easing-out) both;
@@ -77,7 +78,7 @@
     animation: ds-shell-fade-down var(--shell-entrance-subtitle-duration) var(--motion-easing-out) var(--shell-entrance-subtitle-delay) both;
   }
   .ds-shell__wheel {
-    animation: ds-shell-turn var(--shell-entrance-circle-turn) linear infinite;
+    animation: ds-shell-turn var(--shell-entrance-wheel-duration) cubic-bezier(0, 0, 0.58, 1) both;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -87,10 +88,10 @@
   }
 }
 @keyframes ds-shell-slam {
-  from { transform: scale(1.5) rotate(-4deg); opacity: 0; }
+  from { transform: scale(var(--shell-entrance-title-from-scale)) rotate(calc(var(--shell-entrance-title-from-tilt) * 1deg)); opacity: 0; }
 }
 @keyframes ds-shell-burst {
-  from { transform: scale(0.4); opacity: 0; }
+  from { transform: scale(var(--shell-entrance-burst-from-scale)); opacity: 0; }
 }
 @keyframes ds-shell-fade-down {
   from { opacity: 0; transform: translateY(calc(-1 * var(--space-2))); }
@@ -99,7 +100,7 @@
   from { opacity: 0; }
 }
 @keyframes ds-shell-turn {
-  to { rotate: 360deg; }
+  to { rotate: calc(var(--shell-entrance-wheel-angle) * 1deg); }
 }
 
 .ds-shell__title {

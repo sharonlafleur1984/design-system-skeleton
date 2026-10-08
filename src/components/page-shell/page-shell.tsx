@@ -7,11 +7,12 @@ import './page-shell.css';
 // header's red frames the page. All spacing comes from the layout and shell tokens.
 //
 // The art: a magic wheel on the right is the page's one light source. It sits a fixed distance from
-// the top (shell-art-light-top), so it stays put whatever the header holds. The art runs behind the
+// the top (light-top, shared with Life Hub's sun), so it stays put whatever the header holds. The art runs behind the
 // whole page, so the rays also show in the side frame on desktop. The red is lightest at the wheel
 // and deepens with distance, rays fade as they travel, and every glass tile is lit from the wheel:
 // rims brightest facing it, edges bending the rays behind them. When the page opens, the title slams
-// in, the rays burst, the subtitle fades down and the wheel keeps turning (shell-entrance tokens).
+// in, the rays burst, the subtitle fades down and the wheel turns, then rests (shell-entrance tokens).
+// Every glass surface on the page, cards included, is lit from the wheel, in light and dark mode.
 
 export interface PageShellProps {
   /** The product name. The page's only h1. */
@@ -40,7 +41,7 @@ const Wheel = () => (
 
 export function PageShell({ title, subtitle, navigation, children, className }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
-  useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-tile' });
+  useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass' });
   return (
     <div ref={shell} className={className ? `ds-shell ${className}` : 'ds-shell'}>
       <Wheel />

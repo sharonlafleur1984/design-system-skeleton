@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageShell } from './page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '../action-tile/action-tile';
-import { Card } from '../card/card';
 
 const meta: Meta<typeof PageShell> = {
   title: 'Components/Page shell',
@@ -20,7 +19,11 @@ const meta: Meta<typeof PageShell> = {
           '',
           '**Spacing:** all from tokens. `layout-gutter`, `layout-section` and `layout-title-gap` set the space; `shell-sheet-overlap` and `shell-sheet-inset` shape the sheet; `shell-content-max` caps the width. They change on phone, tablet and desktop on their own. Resize, or pick a size in the toolbar.',
           '',
-          '**Accessibility:** the title is the page\'s only h1. The header is a `header` landmark and the sheet is `main`.',
+          "**The light:** the wheel is the page's one light source, at the shared `light-from-right` and `light-top` tokens (Life Hub's sun sits in the same place). The red is lightest at the wheel and deepens with distance, the rays fade as they travel, and every glass surface on the page, tiles and cards, in light and dark mode, is lit from it with the shared glass recipe.",
+          '',
+          '**Motion:** when the page opens, the title slams in, the rays burst, the subtitle fades down, and the wheel turns, then eases to a stop (`shell-entrance` tokens). Reduced motion only fades.',
+          '',
+          '**Accessibility:** the title is the page\'s only h1. The header is a `header` landmark and the sheet is `main`. Nothing moves on its own for more than 30 seconds (WCAG 2.2.2).',
         ].join('\n'),
       },
     },
@@ -54,9 +57,7 @@ export const WithEpisodes: Story = {
       >
         {episodes.map((e) => (
           <ActionTilePanel key={e.id} id={e.id}>
-            <Card>
-              <p style={{ margin: 0 }}>{e.title} goes here.</p>
-            </Card>
+            <p style={{ margin: 0 }}>{e.title} goes here.</p>
           </ActionTilePanel>
         ))}
       </PageShell>
@@ -70,9 +71,7 @@ export const TitleOnly: Story = {
     title: 'After Graduation',
     subtitle: 'Alex, get ready for Season 2',
     children: (
-      <Card>
-        <p style={{ margin: 0 }}>The page goes here.</p>
-      </Card>
+      <p style={{ margin: 0 }}>The page goes here.</p>
     ),
   },
 };

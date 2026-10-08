@@ -28,6 +28,16 @@
       "$type": "dimension",
       "$value": "12px",
       "$description": "The most a line behind the glass shifts at the edge."
+    },
+    "art-calm": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "How much glass on artwork quiets what's behind it (1 is unchanged). After Graduation's rays fade behind the tiles so the text reads calmly."
+    },
+    "art-calm-color": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Gives back the color that art-calm takes away, so only the art's contrast softens, not its color."
     }
   },
   "color": {
@@ -108,6 +118,25 @@
         "$type": "color",
         "$value": "rgba(255, 255, 255, 0.18)",
         "$description": "The rim where it faces away from the light: a faint line, so the glass edge never disappears."
+      },
+      "strength": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "How bright the rim gets where it faces the light (1 is the rim color at full strength)."
+      },
+      "glint": {
+        "$type": "number",
+        "$value": 0.25,
+        "$description": "The faint glint on the far corner, where light leaves the glass."
+      },
+      "spread-x": {
+        "$type": "dimension",
+        "$value": "70%",
+        "$description": "How far the lit part of the rim reaches across the glass."
+      },
+      "spread-y": {
+        "$type": "dimension",
+        "$value": "150%"
       }
     },
     "highlight": {
@@ -134,6 +163,11 @@
       "$type": "dimension",
       "$value": "22px",
       "$description": "How soft the cast shadow is."
+    },
+    "contact": {
+      "$type": "color",
+      "$value": "rgba(29, 26, 24, 0.22)",
+      "$description": "The tight shadow right under the glass's edge."
     }
   }
 }

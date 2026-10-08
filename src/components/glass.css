@@ -1,0 +1,52 @@
+/* The shared glass recipe. Every glass surface in every product is lit the same way, from the page's
+   one light (the light-* tokens: After Graduation's wheel, Life Hub's sun):
+   - a shadow cast away from the light, and a tight contact shadow at the edge
+   - an inner highlight on the edge facing the light, and an inner shade on the far edge
+   - a rim brightest where it faces the light, a faint glint where light leaves, and a faint line elsewhere
+   A component adds the class ds-glass and sets the recipe's settings (--g-*) from its own tokens:
+   cards from card.glass, tiles on artwork from glass. The light helper (useGlassLight) sets where the
+   light hits each surface (--light-x, --light-y), which way it comes from (--light-dx, --light-dy) and
+   how strong it is there (--light-k). Without it, light comes from the top right at full strength. */
+.ds-glass {
+  --light-x: 100%;
+  --light-y: 0%;
+  --light-k: 1;
+  --light-dx: 0.707;
+  --light-dy: -0.707;
+  --glass-lift: 1;
+  --_d: var(--g-cast-distance);
+  box-shadow:
+    calc(var(--light-dx) * -1 * var(--_d) * var(--glass-lift)) calc(var(--light-dy) * -1 * var(--_d) * var(--glass-lift)) calc(var(--g-cast-blur) * var(--glass-lift)) var(--g-cast),
+    calc(var(--light-dx) * -0.2 * var(--_d)) calc(var(--light-dy) * -0.2 * var(--_d)) calc(var(--_d) * 0.36) var(--g-contact),
+    inset calc(var(--light-dx) * 0.4 * var(--_d)) calc(var(--light-dy) * 0.4 * var(--_d)) calc(var(--_d) * 0.7) calc(var(--_d) * -0.36) var(--g-highlight),
+    inset calc(var(--light-dx) * -0.35 * var(--_d)) calc(var(--light-dy) * -0.35 * var(--_d)) calc(var(--_d) * 0.62) calc(var(--_d) * -0.36) var(--g-shade),
+    var(--g-extra-shadow, 0 0 0 0 transparent);
+}
+
+.ds-glass::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--g-rim-width, 1px));
+  padding: var(--g-rim-width, 1px);
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    radial-gradient(var(--g-rim-spread-x) var(--g-rim-spread-y) at var(--light-x) var(--light-y),
+      color-mix(in srgb, var(--g-rim-color) calc(min(1, var(--light-k) * var(--g-rim-strength)) * 100%), transparent) 0,
+      color-mix(in srgb, var(--g-rim-color) calc(min(1, var(--light-k) * var(--g-rim-strength)) * 95%), transparent) 24%,
+      color-mix(in srgb, var(--g-rim-color) calc(min(1, var(--light-k) * var(--g-rim-strength)) * 45%), transparent) 50%,
+      transparent 70%),
+    radial-gradient(22% 34% at calc(100% - var(--light-x)) calc(100% - var(--light-y)),
+      color-mix(in srgb, var(--g-rim-color) calc(var(--light-k) * var(--g-rim-glint) * 100%), transparent),
+      transparent 75%),
+    linear-gradient(var(--g-rim-base), var(--g-rim-base));
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-glass {
+    transition: box-shadow var(--motion-duration-fast) var(--motion-easing-out);
+  }
+}

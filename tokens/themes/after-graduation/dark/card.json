@@ -9,11 +9,63 @@
       "$value": "transparent",
       "$type": "color"
     },
-    "rim": {
-      "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.88) 0, rgb(253 251 241 / 0.84) 24%, rgb(253 251 241 / 0.4) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.22), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-    },
     "shadow": {
-      "$value": "-8px 8px 22px rgb(29 26 24 / 0.45), -1.6px 1.6px 4px rgb(29 26 24 / 0.25), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.19), inset 2.8px -2.8px 7px -4px rgb(10 9 8 / 0.32)"
+      "$value": "0px 0px 0px 0px rgba(0,0,0,0)",
+      "$description": "No extra shadow: glass cards take theirs from the light (card.glass)."
+    },
+    "shadow-hover": {
+      "$value": "0px 0px 0px 0px rgba(0,0,0,0)"
+    },
+    "glass": {
+      "$description": "The shared glass recipe's settings for cards (see glass.css): rim, glint, highlight, shade and shadow, all aimed at the page's one light.",
+      "rim-color": {
+        "$type": "color",
+        "$value": "rgb(253 251 241)"
+      },
+      "rim-strength": {
+        "$type": "number",
+        "$value": 0.88
+      },
+      "rim-glint": {
+        "$type": "number",
+        "$value": 0.22
+      },
+      "rim-spread-x": {
+        "$type": "dimension",
+        "$value": "65%"
+      },
+      "rim-spread-y": {
+        "$type": "dimension",
+        "$value": "155%"
+      },
+      "rim-base": {
+        "$type": "color",
+        "$value": "rgb(253 251 241 / 0.03)"
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgb(253 251 241 / 0.19)"
+      },
+      "shade": {
+        "$type": "color",
+        "$value": "rgb(10 9 8 / 0.32)"
+      },
+      "cast": {
+        "$type": "color",
+        "$value": "rgb(29 26 24 / 0.45)"
+      },
+      "contact": {
+        "$type": "color",
+        "$value": "rgb(29 26 24 / 0.25)"
+      },
+      "cast-distance": {
+        "$type": "dimension",
+        "$value": "11.3px"
+      },
+      "cast-blur": {
+        "$type": "dimension",
+        "$value": "22px"
+      }
     }
   }
 }

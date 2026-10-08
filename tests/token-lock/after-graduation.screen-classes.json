@@ -14,6 +14,16 @@
     "medium": "20px",
     "expanded": "24px"
   },
+  "light-from-right": {
+    "compact": "0%",
+    "medium": "22%",
+    "expanded": "22%"
+  },
+  "light-top": {
+    "compact": "78px",
+    "medium": "112px",
+    "expanded": "124px"
+  },
   "type-display-cover-line-height": {
     "compact": 1.14286,
     "medium": 1.16667,
@@ -73,10 +83,5 @@
     "compact": "24px",
     "medium": "32px",
     "expanded": "40px"
-  },
-  "shell-art-light-top": {
-    "compact": "78px",
-    "medium": "112px",
-    "expanded": "124px"
   }
 }

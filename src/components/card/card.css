@@ -12,21 +12,33 @@
   border: 1px solid var(--card-border);
   border-radius: var(--radius-card);
   background: color-mix(in srgb, var(--card-surface) var(--_fill), transparent);
-  box-shadow: var(--card-shadow);
   color: var(--color-ink-primary);
+  /* Lit by the shared glass recipe (glass.css). Each theme sets card.glass: Life Hub's and After
+     Graduation's dark cards are glass; After Graduation's light cards are solid, with the glass
+     settings off and card.shadow as a plain shadow underneath. */
+  --g-rim-color: var(--card-glass-rim-color);
+  --g-rim-strength: var(--card-glass-rim-strength);
+  --g-rim-glint: var(--card-glass-rim-glint);
+  --g-rim-spread-x: var(--card-glass-rim-spread-x);
+  --g-rim-spread-y: var(--card-glass-rim-spread-y);
+  --g-rim-base: var(--card-glass-rim-base);
+  --g-highlight: var(--card-glass-highlight);
+  --g-shade: var(--card-glass-shade);
+  --g-cast: var(--card-glass-cast);
+  --g-contact: var(--card-glass-contact);
+  --g-cast-distance: var(--card-glass-cast-distance);
+  --g-cast-blur: var(--card-glass-cast-blur);
+  --g-extra-shadow: var(--card-shadow);
 }
 
-/* Glass cards (Life Hub). A frosted fill behind the content that fades at the edges, so a thin clear band
-   of glass shows at the rim, and a rim lit from the sun. Themes without glass set both to none.
-   An area page can pass its own tuning: --card-frost, --card-shadow and --card-rim (tokens color.area.*). */
-.ds-card::before,
+/* Glass cards: a frosted fill behind the content that fades at the edges, so a thin clear band of glass
+   shows at the rim. The rim itself comes from the shared recipe. Themes without frost set it to none.
+   An area page can pass its own tuning: --card-frost and the card-glass settings (tokens color.area.*). */
 .ds-card::after {
   content: '';
   position: absolute;
   pointer-events: none;
   border-radius: inherit;
-}
-.ds-card::after {
   z-index: -1;
   inset: 0;
   background: var(--card-frost);
@@ -40,18 +52,9 @@
     linear-gradient(to right, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent) intersect,
     linear-gradient(to bottom, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent);
 }
-.ds-card::before {
-  inset: -1px;
-  padding: 1px;
-  background: var(--card-rim);
-  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
-}
-
 .ds-card--transparent {
   --_fill: 70%;
-  box-shadow: var(--shadow-edge);
+  --g-extra-shadow: var(--shadow-edge);
 }
 .ds-card--opaque {
   --_fill: 100%;
@@ -62,7 +65,8 @@
 }
 .ds-card--interactive:hover,
 .ds-card--interactive[data-state='hover'] {
-  box-shadow: var(--shadow-hover), var(--shadow-edge);
+  --glass-lift: 1.5;
+  --g-extra-shadow: var(--card-shadow-hover);
 }
 .ds-card--interactive:focus-within {
   outline: 2px solid var(--color-border-focus);
