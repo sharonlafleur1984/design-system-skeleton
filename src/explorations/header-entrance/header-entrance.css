@@ -1,5 +1,7 @@
 /* Exploration: After Graduation's header entrance, rebuilt from the prototype with tokens. */
 .ag-header {
+  --ag-light-x: 78%;
+  --ag-light-y: 100%;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -9,21 +11,23 @@
   color: #fff;
 }
 
-/* Speed lines, radiating from behind the title's right side. */
+/* The wheel is the header's one light source (like Life Hub's sun). Rays start at its center
+   and burst outward from there. Change --ag-light-x/-y and the wheel and rays move together. */
 .ag-header::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: repeating-conic-gradient(from 0deg at 80% 45%, rgb(255 255 255 / 0.13) 0 2deg, transparent 2deg 7deg);
+  transform-origin: var(--ag-light-x) var(--ag-light-y);
+  background: repeating-conic-gradient(from 0deg at var(--ag-light-x) var(--ag-light-y), rgb(255 255 255 / 0.13) 0 2deg, transparent 2deg 7deg);
 }
 
 /* The magic circle: large and faint, centered on the header's bottom edge toward the right,
    so only its top half shows above the page sheet. */
 .ag-header__circle {
   position: absolute;
-  inset-inline-start: 78%;
-  inset-block-start: 100%;
+  inset-inline-start: var(--ag-light-x);
+  inset-block-start: var(--ag-light-y);
   width: clamp(420px, 48%, 920px);
   aspect-ratio: 1;
   translate: -50% -50%;
