@@ -103,6 +103,11 @@
           }
         }
       }
+    },
+    "subtitle": {
+      "$type": "color",
+      "$value": "{palette.gold.300}",
+      "$description": "The header's subtitle: warm gold on the crimson. Passes 4.4:1 at its darkest point behind it (large text needs 3:1)."
     }
   }
 }

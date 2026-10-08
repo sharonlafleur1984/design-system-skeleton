@@ -304,5 +304,6 @@
   "shell-art-wheel": "rgba(255, 255, 255, 0.22)",
   "shell-art-wheel-min": "420px",
   "shell-art-wheel-max": "920px",
-  "shell-art-light-top": "124px"
+  "shell-art-light-top": "124px",
+  "shell-subtitle": "#fcc687"
 }

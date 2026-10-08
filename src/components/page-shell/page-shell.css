@@ -75,7 +75,8 @@
   }
   .ds-shell__subtitle {
     animation: ds-shell-fade-down var(--shell-entrance-subtitle-duration) var(--motion-easing-out) var(--shell-entrance-subtitle-delay) both;
-  }
+    color: var(--shell-subtitle);
+}
   .ds-shell__wheel {
     animation: ds-shell-turn var(--shell-entrance-circle-turn) linear infinite;
   }
