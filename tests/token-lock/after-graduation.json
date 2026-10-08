@@ -256,5 +256,6 @@
   "shell-sheet-inset": "16px",
   "shell-sheet-overlap": "40px",
   "shell-sheet-radius": "24px",
-  "shell-frame": "#6e0f20"
+  "shell-frame": "#6e0f20",
+  "shell-content-max": "920px"
 }
