@@ -86,6 +86,40 @@ export const LinksAndActions: Story = {
   ),
 };
 
+type PlaygroundArgs = { showLabel: boolean; label: string; title: string; showDescription: boolean; description: string };
+
+/** Try it: turn the label and description on or off, and change the words. */
+export const Playground: StoryObj<PlaygroundArgs> = {
+  args: { showLabel: true, label: 'Episode 1', title: 'Explore Schools', showDescription: true, description: 'Select your favorites' },
+  argTypes: {
+    showLabel: { name: 'Label', control: 'boolean' },
+    label: { name: 'Label text', if: { arg: 'showLabel' } },
+    showDescription: { name: 'Description', control: 'boolean' },
+    description: { name: 'Description text', if: { arg: 'showDescription' } },
+  },
+  render: ({ showLabel, label, title, showDescription, description }) => (
+    <OnHeader>
+      <ActionTileGroup aria-label="Playground">
+        <ActionTile onPress={() => {}} title={title} label={showLabel ? label : undefined} description={showDescription ? description : undefined} />
+      </ActionTileGroup>
+    </OnHeader>
+  ),
+};
+
+/** Variants: the title is the only required part. Label and description are each optional. */
+export const Variants: Story = {
+  render: () => (
+    <OnHeader>
+      <ActionTileGroup aria-label="Variants">
+        <ActionTile onPress={() => {}} title="Title only" />
+        <ActionTile onPress={() => {}} label="Label" title="Label and title" />
+        <ActionTile onPress={() => {}} title="Title and description" description="One short line" />
+        <ActionTile onPress={() => {}} label="Label" title="All three" description="One short line" />
+      </ActionTileGroup>
+    </OnHeader>
+  ),
+};
+
 /** Every state: rest, hover, keyboard focus and chosen. */
 export const States: Story = {
   render: () => (

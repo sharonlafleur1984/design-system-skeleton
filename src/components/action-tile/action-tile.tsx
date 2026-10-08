@@ -70,11 +70,11 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
 }
 
 export interface ActionTileProps {
-  /** Small line above the title, like "Episode 1". */
+  /** Optional. Small line above the title, like "Episode 1". */
   label?: ReactNode;
-  /** What the tile is, like "Explore Schools". */
+  /** Required. What the tile is, like "Explore Schools". */
   title: ReactNode;
-  /** One short line about what happens there. */
+  /** Optional. One short line about what happens there. */
   description?: ReactNode;
   /** In a switch group: matches the ActionTilePanel it shows. */
   id?: Key;
