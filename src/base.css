@@ -61,3 +61,46 @@ body {
     --motion-duration-slow: var(--motion-duration-fast);
   }
 }
+
+/*
+ * Preferences (usePreferences). Each one is an attribute on <html> that changes tokens, so every
+ * component follows without knowing about settings.
+ */
+
+/* Reduce motion, picked in settings. The device setting is handled by each component's media query;
+   this does the same for everyone who turns it on here. Things still fade, so changes are never silent. */
+:root[data-reduce-motion] {
+  --motion-arrive-easing: var(--motion-easing-out);
+  --motion-arrive-distance: 0px;
+  --motion-celebrate-easing: var(--motion-easing-out);
+  --motion-celebrate-scale: 1;
+  --motion-duration-base: var(--motion-duration-fast);
+  --motion-duration-slow: var(--motion-duration-fast);
+}
+:root[data-reduce-motion] *,
+:root[data-reduce-motion] *::before,
+:root[data-reduce-motion] *::after {
+  animation-duration: 1ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+/* Text spacing. Wide follows the dyslexia spacing research; extra wide is WCAG 1.4.12's test values. */
+:root[data-text-spacing='wide'] body * {
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.1em !important;
+}
+:root[data-text-spacing='extra'] body * {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.16em !important;
+}
+:root[data-text-spacing='extra'] p {
+  line-height: 1.5 !important;
+}
+
+/* Underline links, on by default: color is never the only sign that text is a link. */
+:root[data-underline-links] a,
+:root[data-underline-links] .ds-link {
+  text-decoration-line: underline !important;
+}

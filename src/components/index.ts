@@ -28,3 +28,9 @@ export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from '
 export type { ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
 export { useGlassLight } from './glass-light/glass-light';
 export type { GlassLightOptions } from './glass-light/glass-light';
+export { Select } from './select/select';
+export type { SelectProps, SelectOption } from './select/select';
+export { SettingsDialog, SettingsGroup, SettingRow } from './settings/settings';
+export type { SettingsDialogProps, SettingsSectionDef, SettingsGroupProps, SettingRowProps } from './settings/settings';
+export { usePreferences, applyPreferences, defaultPreferences } from './preferences/preferences';
+export type { Preferences } from './preferences/preferences';

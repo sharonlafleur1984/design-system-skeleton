@@ -112,6 +112,20 @@
   to { rotate: calc(var(--shell-entrance-wheel-angle) * 1deg); }
 }
 
+.ds-shell__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+/* App-wide actions, top right: where people look for settings. */
+.ds-shell__actions {
+  flex: none;
+  display: flex;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
 .ds-shell__title {
   margin: 0;
   transform-origin: left center;

@@ -21,6 +21,8 @@ export interface PageShellProps {
   subtitle?: ReactNode;
   /** Navigation that sits in the header, like an ActionTileGroup. */
   navigation?: ReactNode;
+  /** App-wide actions at the top right of the header, like the Settings button. */
+  actions?: ReactNode;
   /** The page itself, shown on the sheet. */
   children: ReactNode;
   className?: string;
@@ -39,7 +41,7 @@ const Wheel = () => (
   </svg>
 );
 
-export function PageShell({ title, subtitle, navigation, children, className }: PageShellProps) {
+export function PageShell({ title, subtitle, navigation, actions, children, className }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
   useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass' });
   // Where the header's glass tiles sit, so the rays fade behind them (shell-art-ray-behind-glass).
@@ -70,7 +72,10 @@ export function PageShell({ title, subtitle, navigation, children, className }: 
       <Wheel />
       <header className="ds-shell__header">
         <div className="ds-shell__inner">
-          <h1 className="ds-shell__title">{title}</h1>
+          <div className="ds-shell__top">
+            <h1 className="ds-shell__title">{title}</h1>
+            {actions && <div className="ds-shell__actions">{actions}</div>}
+          </div>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}
           {navigation && <div className="ds-shell__nav">{navigation}</div>}
         </div>

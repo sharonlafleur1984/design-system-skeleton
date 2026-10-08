@@ -13,5 +13,25 @@
       "$type": "dimension",
       "$value": "18px"
     }
+  },
+  "dialog": {
+    "$description": "Full-size dialogs, like Settings. On phones they fill the screen.",
+    "max-inline": {
+      "$type": "dimension",
+      "$value": "1040px",
+      "$description": "Widest a full-size dialog gets."
+    },
+    "max-block": {
+      "$type": "dimension",
+      "$value": "760px",
+      "$description": "Tallest a full-size dialog gets; it scrolls inside after that."
+    }
+  },
+  "settings": {
+    "nav-width": {
+      "$type": "dimension",
+      "$value": "224px",
+      "$description": "Width of the section list down the left of Settings, on tablet and desktop."
+    }
   }
 }

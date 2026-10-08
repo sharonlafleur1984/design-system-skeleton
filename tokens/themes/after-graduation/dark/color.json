@@ -64,6 +64,10 @@
       "glass-strong": {
         "$value": "rgba(252,249,248,0.14)",
         "$type": "color"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.6)"
       }
     },
     "border": {

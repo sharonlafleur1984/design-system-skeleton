@@ -185,6 +185,16 @@
       "inverse": {
         "$type": "color",
         "$value": "{palette.neutral.900}"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(29,26,24,0.48)",
+        "$description": "Dims the page behind a full-size dialog, so the dialog is the only thing in focus."
+      },
+      "glass-on-art-solid": {
+        "$type": "color",
+        "$value": "{palette.red.800}",
+        "$description": "What glass on artwork becomes when someone turns on Reduce transparency or Increase contrast: solid, with text that still passes."
       }
     },
     "border": {

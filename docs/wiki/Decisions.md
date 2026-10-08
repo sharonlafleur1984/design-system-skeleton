@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> Settings: a full-size dialog, opened from the top right of the header</summary>
+
+- **Decided by:** Sharon
+- **Decision:** app-wide settings open in a full-size dialog, modeled on Claude's, from a Settings button at the top right of the header on every screen size. Eight sections: Account, Appearance, Accessibility, Plan, Family, Notifications, Privacy and data, Help and legal. On phones the section list comes first and each section opens with a Back button. Changes apply right away, with no Save button. Anything the device can tell us defaults to Match device; if the device asks for reduced motion, motion stays reduced.
+- **Why:** top right is where people look for app-wide settings; on the page it would read as settings for that page. The Motion setting also gives people a way to stop the header wheel.
+- **Research:** Settings research in the After Graduation wiki (sections, defaults, and the research behind each accessibility setting).
+- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42).
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> One light position and one glass recipe for every product</summary>
 
 - **Decided by:** Sharon
