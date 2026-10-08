@@ -47,7 +47,7 @@ export const WithEpisodes: Story = {
         navigation={
           <ActionTileGroup aria-label="Episodes" behavior="switch">
             {episodes.map((e) => (
-              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
+              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} />
             ))}
           </ActionTileGroup>
         }
