@@ -60,7 +60,8 @@ export interface GlassLightOptions {
 
 /**
  * Sets, on every glass piece: --light-x and --light-y (where the light hits its rim, as percentages),
- * --light-k (0 to 1, weaker with distance) and --glass-bend (an SVG filter for backdrop-filter).
+ * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
+ * distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
 export function useGlassLight(root: RefObject<HTMLElement | null>, { light, selector, band: bandOption, bend: bendOption, radius = 16 }: GlassLightOptions) {
   useLayoutEffect(() => {
@@ -92,6 +93,13 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sele
         glass.style.setProperty('--light-x', `${hx.toFixed(1)}%`);
         glass.style.setProperty('--light-y', `${hy.toFixed(1)}%`);
         glass.style.setProperty('--light-k', (1 / (1 + (dist / reach) ** 2)).toFixed(3));
+        // Which way the light comes from (a unit vector from the glass's center): highlights face it,
+        // shadows fall away from it.
+        const dx = lx - (b.left + b.width / 2);
+        const dy = ly - (b.top + b.height / 2);
+        const len = Math.hypot(dx, dy) || 1;
+        glass.style.setProperty('--light-dx', (dx / len).toFixed(3));
+        glass.style.setProperty('--light-dy', (dy / len).toFixed(3));
         const w = Math.round(glass.offsetWidth);
         const h = Math.round(glass.offsetHeight);
         const id = `${prefix}-${i}`;

@@ -25,6 +25,8 @@
   --light-x: 100%;
   --light-y: 0%;
   --light-k: 1;
+  --light-dx: 0.707;
+  --light-dy: -0.707;
   position: relative;
   isolation: isolate;
   display: grid;
@@ -36,8 +38,14 @@
   border: none;
   border-radius: var(--radius-card);
   background: transparent;
-  box-shadow: var(--shadow-glass-on-art);
-  color: var(--color-ink-inverse);
+  /* The same recipe as the glass cards, aimed at the light: a shadow cast away from it, a tight
+     contact shadow, an inner highlight on the edge facing it and an inner shade on the far edge. */
+  box-shadow:
+    calc(var(--light-dx) * -1 * var(--glass-cast-distance)) calc(var(--light-dy) * -1 * var(--glass-cast-distance)) var(--glass-cast-blur) var(--glass-cast),
+    calc(var(--light-dx) * -0.2 * var(--glass-cast-distance)) calc(var(--light-dy) * -0.2 * var(--glass-cast-distance)) calc(var(--glass-cast-blur) * 0.2) var(--glass-cast),
+    inset calc(var(--light-dx) * 0.4 * var(--glass-cast-distance)) calc(var(--light-dy) * 0.4 * var(--glass-cast-distance)) calc(var(--glass-cast-distance) * 1) calc(var(--glass-cast-distance) * -0.5) var(--glass-highlight),
+    inset calc(var(--light-dx) * -0.35 * var(--glass-cast-distance)) calc(var(--light-dy) * -0.35 * var(--glass-cast-distance)) calc(var(--glass-cast-distance) * 0.9) calc(var(--glass-cast-distance) * -0.5) var(--glass-shade);
+  color: var(--color-ink-on-art);
   font-family: var(--font-family-body);
   text-align: start;
   text-decoration: none;
@@ -67,9 +75,13 @@
   padding: var(--glass-rim-width);
   pointer-events: none;
   background:
-    radial-gradient(70% 140% at var(--light-x) var(--light-y),
-      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 100%), transparent) 0,
-      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 45%), transparent) 45%,
+    radial-gradient(70% 150% at var(--light-x) var(--light-y),
+      color-mix(in srgb, var(--glass-rim-color) calc(min(1, var(--light-k) * 1.25) * 100%), transparent) 0,
+      color-mix(in srgb, var(--glass-rim-color) calc(min(1, var(--light-k) * 1.25) * 90%), transparent) 24%,
+      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 45%), transparent) 50%,
+      transparent 72%),
+    radial-gradient(22% 34% at calc(100% - var(--light-x)) calc(100% - var(--light-y)),
+      color-mix(in srgb, var(--glass-rim-color) calc(var(--light-k) * 25%), transparent),
       transparent 75%),
     linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint));
   -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
@@ -119,7 +131,7 @@
    together, so color is never the only signal. */
 .ds-tile[data-selected],
 .ds-tile[data-state='chosen'] {
-  color: var(--color-accent-contrast);
+  color: var(--color-ink-on-art-selected);
 }
 .ds-tile[data-selected] .ds-tile__glass,
 .ds-tile[data-state='chosen'] .ds-tile__glass {
@@ -142,7 +154,7 @@
 
 .ds-tile[data-focus-visible],
 .ds-tile[data-state='focus'] {
-  outline: 2px solid var(--color-ink-inverse);
+  outline: 2px solid var(--color-ink-on-art);
   outline-offset: 2px;
 }
 .ds-tile[data-disabled] {

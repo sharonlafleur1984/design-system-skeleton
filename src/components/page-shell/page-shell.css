@@ -20,7 +20,7 @@
   padding-block-end: calc(var(--layout-section) + var(--shell-sheet-overlap));
   padding-inline: var(--layout-gutter);
   background: linear-gradient(var(--color-accent-base), var(--shell-frame));
-  color: var(--color-ink-inverse);
+  color: var(--color-ink-on-art);
   position: relative;
   overflow: hidden;
   isolation: isolate;

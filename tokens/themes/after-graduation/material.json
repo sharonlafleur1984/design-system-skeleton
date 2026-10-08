@@ -101,6 +101,31 @@
         "$value": "rgba(255, 255, 255, 0.18)",
         "$description": "The rim where it faces away from the light: a faint line, so the glass edge never disappears."
       }
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "rgba(255, 255, 255, 0.55)",
+      "$description": "Inner highlight along the edge that faces the light."
+    },
+    "shade": {
+      "$type": "color",
+      "$value": "rgba(60, 0, 15, 0.30)",
+      "$description": "Inner shade along the edge facing away from the light."
+    },
+    "cast": {
+      "$type": "color",
+      "$value": "rgba(60, 0, 15, 0.38)",
+      "$description": "Shadow the glass casts, falling away from the light."
+    },
+    "cast-distance": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "How far the shadow falls from the glass, away from the light."
+    },
+    "cast-blur": {
+      "$type": "dimension",
+      "$value": "22px",
+      "$description": "How soft the cast shadow is."
     }
   }
 }

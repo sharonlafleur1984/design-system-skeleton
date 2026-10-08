@@ -246,6 +246,8 @@
   "color-ink-muted": "#a39996",
   "color-ink-disabled": "#bab2af",
   "color-ink-inverse": "#faf7f1",
+  "color-ink-on-art": "#faf7f1",
+  "color-ink-on-art-selected": "#2a2625",
   "color-surface-page": "#faf7f1",
   "color-surface-card": "#fdfbf9",
   "color-surface-raised": "#f7f3ef",
@@ -410,5 +412,10 @@
   "shadow-float": "-2px 4px 10px 0px rgba(6,48,44,0.07), -2px 24px 48px -20px rgba(6,48,44,0.26)",
   "glass-rim-width": "1px",
   "glass-rim-color": "rgba(255, 255, 255, 0.7)",
-  "glass-rim-faint": "rgba(255, 255, 255, 0.18)"
+  "glass-rim-faint": "rgba(255, 255, 255, 0.18)",
+  "glass-highlight": "rgba(253, 251, 241, 0.45)",
+  "glass-shade": "rgba(29, 26, 24, 0.18)",
+  "glass-cast": "rgba(29, 26, 24, 0.22)",
+  "glass-cast-distance": "8px",
+  "glass-cast-blur": "22px"
 }
