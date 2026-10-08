@@ -1,0 +1,203 @@
+/* Life Hub sky header: exploration. The sky's colors arrive as custom properties from sky.ts. They are
+   registered so the browser can blend them: following the real clock, each minute's change glides over
+   that minute, so sunset happens as slowly as the real one. */
+@property --sky-top { syntax: '<color>'; inherits: true; initial-value: #fdfbf9; }
+@property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #faf7f1; }
+@property --sky-glow { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
+@property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
+@property --sky-glow-x { syntax: '<percentage>'; inherits: true; initial-value: 88%; }
+@property --sky-glow-y { syntax: '<percentage>'; inherits: true; initial-value: 0%; }
+@property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --sky-stars { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --twinkle { syntax: '<number>'; inherits: false; initial-value: 1; }
+
+.lh-sky {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  /* Border-box, so the minimum includes the padding and the space under the card matches the space above. */
+  box-sizing: border-box;
+  min-block-size: 193px;
+  /* Edge to edge across the top of the page, like After Graduation's header. The marble runs behind it
+     and continues below. */
+  padding: var(--space-6);
+  border-radius: 0;
+  background:
+    /* the light itself, top right. Extra stops ease it out (roughly a smoothstep), so it melts into the
+       sky instead of ending on a visible edge. */
+    radial-gradient(
+      45% 110% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 84%), transparent) 14%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 56%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 3%), transparent) 70%,
+      transparent 78%
+    ),
+    /* its wider bloom, eased the same way */
+    radial-gradient(
+      95% 170% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 19%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 60%,
+      transparent 82%
+    ),
+    /* warm band along the bottom at sunrise and sunset */
+    linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
+    linear-gradient(
+      color-mix(in srgb, var(--sky-top) calc(var(--sky-a) * 100%), transparent),
+      color-mix(in srgb, var(--sky-bottom) calc(var(--sky-a) * 100%), transparent)
+    );
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  transition:
+    --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
+    --sky-glow-x 60s linear, --sky-glow-y 60s linear, --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
+}
+/* Glass: the marble shows through, blurred, with a rim lit from the top right like the cards. */
+.lh-sky--glass {
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+  box-shadow: var(--card-shadow);
+}
+.lh-sky--glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: var(--card-rim);
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
+}
+.lh-sky--instant {
+  transition: none;
+}
+
+/* Stars fade in at dusk and twinkle slowly. */
+.lh-sky__stars {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Stars everywhere except behind the greeting card. The component measures the card into --sky-hole-*;
+     the fallback hole covers the card's usual spot. */
+  -webkit-mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat,
+    linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat exclude,
+    linear-gradient(black 0 0);
+}
+.lh-sky__star {
+  position: absolute;
+  border-radius: var(--radius-pill);
+  /* Starlight stays white in both modes (ink-inverse turns dark in dark mode). */
+  background: var(--palette-paper-warm);
+  opacity: calc(var(--sky-stars) * var(--b) * var(--twinkle));
+  /* A gentle twinkle: dimmer and a touch smaller, then back. */
+  scale: calc(0.8 + var(--twinkle) * 0.3);
+  animation: lh-twinkle 6s ease-in-out infinite alternate;
+}
+.lh-sky__star--bright {
+  box-shadow: 0 0 5px 1px color-mix(in srgb, var(--palette-paper-warm) 85%, transparent);
+}
+@keyframes lh-twinkle {
+  from { --twinkle: 1; }
+  to { --twinkle: 0.2; }
+}
+
+/* The greeting: a glass card lit by the sky's light, light or dark glass to suit the sky. At twilight a
+   veil (computed in sky.ts) deepens or lightens it just enough for the text to stay readable. */
+.lh-sky__card {
+  flex: 0 1 380px;
+  min-inline-size: 0;
+}
+/* The greeting is glass on art, the same clear glass as After Graduation's episode tabs: the sky is the art.
+   Light by day, nearly clear at night, never the thick white frost of page cards. The readability math in
+   sky.ts uses these same token values (a test checks they match). */
+.lh-sky .lh-sky__card {
+  --card-frost: var(--color-surface-glass-on-art);
+  --card-backdrop: blur(var(--material-blur-on-art));
+}
+.lh-sky .lh-sky__card,
+.lh-sky .lh-sky__chat {
+  background-image: linear-gradient(var(--sky-veil, transparent), var(--sky-veil, transparent));
+}
+.lh-sky__meta {
+  margin: 0;
+  color: var(--color-ink-tertiary);
+  font-size: var(--type-label-meta-size);
+  line-height: var(--type-label-meta-line-height);
+}
+.lh-sky__title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--type-display-m-family);
+  font-size: var(--type-display-m-size);
+  font-weight: var(--type-display-m-weight);
+  line-height: var(--type-display-m-line-height);
+  letter-spacing: var(--type-display-m-letter-spacing);
+  color: var(--color-ink-primary);
+}
+.lh-sky__prompt {
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-secondary);
+  font-size: var(--type-body-default-size);
+  line-height: var(--type-body-default-line-height);
+}
+
+/* Text never pops. When the sky turns light or dark, text colors fade with it, and a new greeting
+   crossfades over the old one. About 1.5 seconds: well under the 5 seconds where motion needs a pause control,
+   and the settled text always meets contrast. */
+.lh-sky__meta,
+.lh-sky__title,
+.lh-sky__prompt,
+.lh-sky .lh-sky__card,
+.lh-sky .lh-sky__chat {
+  transition: color 1.5s ease-in-out, background-color 1.5s ease-in-out, border-color 1.5s ease-in-out;
+}
+.lh-fade {
+  display: inline-grid;
+}
+.lh-fade__item {
+  grid-area: 1 / 1;
+  animation: lh-fade-in 1.5s ease-in-out both;
+}
+.lh-fade__item--out {
+  animation: lh-fade-out 1.5s ease-in-out both;
+}
+@keyframes lh-fade-in {
+  from { opacity: 0; }
+}
+@keyframes lh-fade-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-fade__item,
+  .lh-fade__item--out {
+    animation-duration: var(--motion-duration-fast, 140ms);
+  }
+  .lh-sky {
+    transition: none;
+  }
+  .lh-sky__star {
+    animation: none;
+  }
+}
+
+/* The page's light and dark crossfade (Follow the sun): slow, easing in and out like dimming light. */
+html.lh-mode-fade::view-transition-old(root),
+html.lh-mode-fade::view-transition-new(root) {
+  animation-duration: 4s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+}
