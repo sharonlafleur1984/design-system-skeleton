@@ -83,7 +83,7 @@
   font-weight: var(--type-label-weight);
   line-height: var(--type-label-line-height);
   letter-spacing: var(--type-label-letter-spacing);
-  text-transform: uppercase;
+  text-transform: var(--type-label-transform);
 }
 .ds-tile__title {
   font-family: var(--type-heading-title-family);

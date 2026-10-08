@@ -245,7 +245,12 @@
         "$type": "fontFamily",
         "$value": "{font.family.body}"
       },
-      "$description": "Introduces a section, like NEXT STEPS. Shown in capitals."
+      "$description": "Introduces a section, like NEXT STEPS. Shown in capitals.",
+      "transform": {
+        "$type": "string",
+        "$value": "uppercase",
+        "$description": "Labels are shown in capitals. Part of the style, so every label matches."
+      }
     },
     "label-meta": {
       "$description": "Describes an item: dates and short metadata, like OCT 2026. Capitals, gray, light weight, so the item's name stands out. Keep it to a few words.",
@@ -264,6 +269,11 @@
       "family": {
         "$type": "fontFamily",
         "$value": "{font.family.body}"
+      },
+      "transform": {
+        "$type": "string",
+        "$value": "uppercase",
+        "$description": "Labels are shown in capitals. Part of the style, so every label matches."
       }
     },
     "data-default": {
