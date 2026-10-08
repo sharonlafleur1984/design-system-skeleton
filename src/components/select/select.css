@@ -1,0 +1,81 @@
+/* Select. React Aria sets data-hovered, data-pressed, data-focus-visible, data-open and data-disabled
+   on the button, and data-focused, data-selected and data-hovered on each option. */
+.ds-select {
+  display: inline-flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.ds-select__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-block-size: var(--control-height-large);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-card);
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-medium-size);
+  font-weight: var(--control-type-medium-weight);
+  line-height: var(--control-type-medium-line-height);
+  text-align: start;
+  cursor: pointer;
+  outline: none;
+}
+.ds-select__button[data-hovered] {
+  border-color: var(--color-border-strong);
+}
+.ds-select__button[data-focus-visible] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+.ds-select__value[data-placeholder] {
+  color: var(--color-ink-tertiary);
+}
+/* A small chevron drawn with borders, so it follows the text color. */
+.ds-select__chevron {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  margin-block-start: calc(-1 * var(--space-1));
+  border-inline-end: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  rotate: 45deg;
+  flex: none;
+}
+.ds-select__popover {
+  min-inline-size: var(--trigger-width);
+  max-block-size: 50vh;
+  overflow: auto;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-panel);
+  background: var(--color-surface-card);
+  box-shadow: var(--shadow-float);
+}
+.ds-select__list {
+  outline: none;
+}
+.ds-select__option {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-medium-size);
+  line-height: var(--control-type-medium-line-height);
+  cursor: pointer;
+  outline: none;
+}
+.ds-select__option[data-focused] {
+  background: var(--color-surface-muted, var(--color-accent-surface));
+}
+.ds-select__option[data-selected] {
+  color: var(--color-accent-text);
+  font-weight: var(--control-type-medium-weight);
+}
+.ds-select__option[data-selected]::after {
+  content: ' ✓';
+}

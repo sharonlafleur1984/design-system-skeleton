@@ -1,0 +1,27 @@
+{
+  "material": {
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Dark mode bends more, since the art behind is harder to see."
+    }
+  },
+  "glass": {
+    "highlight": {
+      "$type": "color",
+      "$value": "rgba(253, 251, 241, 0.32)"
+    },
+    "shade": {
+      "$type": "color",
+      "$value": "rgba(10, 9, 8, 0.40)"
+    },
+    "cast": {
+      "$type": "color",
+      "$value": "rgba(10, 9, 8, 0.50)"
+    }
+  }
+}

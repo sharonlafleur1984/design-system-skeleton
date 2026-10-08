@@ -13,5 +13,33 @@
       "$type": "dimension",
       "$value": "18px"
     }
+  },
+  "bottom-bar": {
+    "$description": "The bottom bar: on phones, a page's main navigation moves to the bottom of the screen, within thumb reach.",
+    "icon": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Icon size in the bottom bar."
+    }
+  },
+  "dialog": {
+    "$description": "Full-size dialogs, like Settings. On phones they fill the screen.",
+    "max-inline": {
+      "$type": "dimension",
+      "$value": "1040px",
+      "$description": "Widest a full-size dialog gets."
+    },
+    "max-block": {
+      "$type": "dimension",
+      "$value": "760px",
+      "$description": "Tallest a full-size dialog gets; it scrolls inside after that."
+    }
+  },
+  "settings": {
+    "nav-width": {
+      "$type": "dimension",
+      "$value": "224px",
+      "$description": "Width of the section list down the left of Settings, on tablet and desktop."
+    }
   }
 }

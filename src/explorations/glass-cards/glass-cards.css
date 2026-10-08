@@ -3,16 +3,13 @@
 @import '@fontsource/figtree/500.css';
 @import '@fontsource/figtree/600.css';
 
-/* Life Hub glass cards: exploration. One sun in the header (top right). Light mode shows the light as
+/* Life Hub glass cards: exploration. One sun, at the shared light position. Light mode shows the light as
    shade and shadow; dark mode shows it as highlights. Light colors: sunlight #fdfbf1 (Sunflower Medley 50
    mixed with warm paper). Shade and shadow: Life Hub ink. Values are estimates until they become tokens. */
 
 .lh-screen {
   --sun: 253 251 241;
   --ink: 42 38 37;
-  /* The sun's rays are parallel, so every element is lit from the same upper-right angle. */
-  --shx: -8px;
-  --shy: 8px;
   --font-family-body: Figtree, system-ui, sans-serif;
   position: relative;
   isolation: isolate;
@@ -85,15 +82,12 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(140% 120% at 100% 0%, rgb(20 16 15 / 0) 35%, rgb(20 16 15 / 0.22) 100%);
-}
-.lh-filters {
-  position: absolute;
+  background: radial-gradient(140% 120% at calc(100% - var(--light-from-right)) var(--light-top), rgb(20 16 15 / 0) 35%, rgb(20 16 15 / 0.22) 100%);
 }
 
-/* Glass card. --k (0 to 1) is the light's strength at this card, set by its distance from the sun. */
+/* Glass card, drawn by the shared glass recipe (glass.css) with Life Hub's settings for each mode.
+   The light helper sets --light-k (0 to 1): the light's strength at this card, weaker with distance. */
 .lh-glass {
-  --k: 1;
   position: relative;
   display: grid;
 }
@@ -103,28 +97,19 @@
   display: grid;
   padding: var(--space-4);
   border-radius: var(--radius-card);
-  backdrop-filter: var(--lh-bend, none);
-  box-shadow:
-    var(--shx) var(--shy) var(--cast-blur) rgb(var(--ink) / calc(var(--cast) * var(--lh-shadow, 1))),
-    calc(var(--shx) * 0.2) calc(var(--shy) * 0.2) 4px rgb(var(--ink) / calc(var(--contact) * var(--lh-shadow, 1))),
-    inset calc(var(--shx) * 0.4) calc(var(--shy) * 0.4) 8px -4px rgb(var(--sun) / calc(var(--bevel) * var(--k))),
-    inset calc(var(--shx) * -0.35) calc(var(--shy) * -0.35) 7px -4px var(--shade);
-}
-/* Rim: brightest where it faces the sun (top right), a faint glint where light leaves (bottom left). */
-.lh-glass__content::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  background:
-    radial-gradient(var(--rim-w) var(--rim-h) at 100% 0%, rgb(var(--sun) / var(--k)) 0, rgb(var(--sun) / calc(0.95 * var(--k))) 24%, rgb(var(--sun) / calc(0.45 * var(--k))) 50%, rgb(var(--sun) / 0) 70%),
-    radial-gradient(22% 34% at 0% 100%, rgb(var(--sun) / calc(var(--glint) * var(--k))), rgb(var(--sun) / 0) 75%),
-    linear-gradient(var(--rim-base), var(--rim-base));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  backdrop-filter: var(--glass-bend, none);
+  --g-rim-color: rgb(var(--sun));
+  --g-rim-strength: 1;
+  --g-rim-glint: var(--glint);
+  --g-rim-spread-x: var(--rim-w);
+  --g-rim-spread-y: var(--rim-h);
+  --g-rim-base: var(--rim-base);
+  --g-highlight: rgb(var(--sun) / calc(var(--bevel) * var(--light-k)));
+  --g-shade: var(--shade);
+  --g-cast: rgb(var(--ink) / calc(var(--cast) * var(--lh-shadow, 1)));
+  --g-contact: rgb(var(--ink) / calc(var(--contact) * var(--lh-shadow, 1)));
+  --g-cast-distance: 11.3px;
+  --g-cast-blur: var(--cast-blur);
 }
 
 /* Light mode frost: clear edges that bend the marble, a frosted center behind the text. */
@@ -268,7 +253,7 @@
   right: 12px;
   border-radius: 1px;
   pointer-events: none;
-  background: linear-gradient(to right, rgb(var(--sun) / 0), rgb(var(--sun) / calc(var(--kiss) * var(--k))) 80%, rgb(var(--sun) / calc(var(--kiss) * 0.6 * var(--k))));
+  background: linear-gradient(to right, rgb(var(--sun) / 0), rgb(var(--sun) / calc(var(--kiss) * var(--light-k, 1))) 80%, rgb(var(--sun) / calc(var(--kiss) * 0.6 * var(--light-k, 1))));
 }
 .lh-screen .ds-button--tertiary {
   text-decoration: underline;

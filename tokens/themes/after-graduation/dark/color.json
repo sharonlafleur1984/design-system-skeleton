@@ -64,6 +64,10 @@
       "glass-strong": {
         "$value": "rgba(252,249,248,0.14)",
         "$type": "color"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.6)"
       }
     },
     "border": {
@@ -80,26 +84,26 @@
         "$type": "color"
       },
       "focus": {
-        "$value": "#ff8d9a",
+        "$value": "#fe908a",
         "$type": "color"
       }
     },
     "accent": {
       "base": {
-        "$value": "#d03656",
+        "$value": "#cb1b2c",
         "$type": "color",
         "$description": "Same red as light mode: white text on it passes."
       },
       "hover": {
-        "$value": "#a92141",
+        "$value": "#a50c1f",
         "$type": "color"
       },
       "surface": {
-        "$value": "#3a1820",
+        "$value": "#3b1917",
         "$type": "color"
       },
       "soft": {
-        "$value": "#4a1d27",
+        "$value": "#4b1e1c",
         "$type": "color"
       },
       "ink": {
@@ -107,16 +111,16 @@
         "$type": "color"
       },
       "text": {
-        "$value": "#ff8d9a",
+        "$value": "#fe908a",
         "$type": "color",
         "$description": "A lighter red for links and red text, so it passes on charcoal."
       },
       "text-hover": {
-        "$value": "#febdc2",
+        "$value": "#ffbeb9",
         "$type": "color"
       },
       "contrast": {
-        "$value": "#ffdfe1",
+        "$value": "#fee0dd",
         "$type": "color"
       },
       "secondary": {
@@ -127,73 +131,73 @@
     "status": {
       "error": {
         "surface": {
-          "$value": "#3a1d1a",
+          "$value": "#391e15",
           "$type": "color"
         },
         "accent": {
-          "$value": "#e57c70",
+          "$value": "#e3805d",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#f09a90",
+          "$value": "#ee9d81",
           "$type": "color"
         },
         "ink": {
-          "$value": "#f4b6ad",
+          "$value": "#f2b8a4",
           "$type": "color"
         }
       },
       "warning": {
         "surface": {
-          "$value": "#352810",
+          "$value": "#372711",
           "$type": "color"
         },
         "accent": {
-          "$value": "#dba034",
+          "$value": "#e19c3a",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#dba034",
+          "$value": "#e19c3a",
           "$type": "color"
         },
         "ink": {
-          "$value": "#f2d08a",
+          "$value": "#fccb8d",
           "$type": "color"
         }
       },
       "success": {
         "surface": {
-          "$value": "#16301f",
+          "$value": "#17301e",
           "$type": "color"
         },
         "accent": {
-          "$value": "#55b582",
+          "$value": "#60b479",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#7cc99d",
+          "$value": "#84c896",
           "$type": "color"
         },
         "ink": {
-          "$value": "#a3dbb6",
+          "$value": "#a6dbb3",
           "$type": "color"
         }
       },
       "info": {
         "surface": {
-          "$value": "#1b2742",
+          "$value": "#192742",
           "$type": "color"
         },
         "accent": {
-          "$value": "#7c9be0",
+          "$value": "#789ce0",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#9db4ea",
+          "$value": "#98b6ea",
           "$type": "color"
         },
         "ink": {
-          "$value": "#b8caef",
+          "$value": "#b6cbef",
           "$type": "color"
         }
       },

@@ -1,0 +1,97 @@
+{
+  "color": {
+    "status": {
+      "$description": "After Graduation's status colors, tuned to crimson (Oct 7): error is rust, so it never looks like the crimson button; warning, success and info sit with the gold. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1).",
+      "error": {
+        "surface": {
+          "$type": "color",
+          "$value": "#fbe9e2"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#ca5d34"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#b14519"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#94360e"
+        }
+      },
+      "warning": {
+        "surface": {
+          "$type": "color",
+          "$value": "#fff4e7"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#e19c3a"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#855919"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#6b4815"
+        }
+      },
+      "success": {
+        "surface": {
+          "$type": "color",
+          "$value": "#e9f4eb"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#4d9f67"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#2d6d42"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#255835"
+        }
+      },
+      "info": {
+        "surface": {
+          "$type": "color",
+          "$value": "#ebf0fa"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#4f74b8"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#3f5d96"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#354c78"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$type": "color",
+          "$value": "#f1efef"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#a39996"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#716764"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#5f5755"
+        }
+      }
+    }
+  }
+}

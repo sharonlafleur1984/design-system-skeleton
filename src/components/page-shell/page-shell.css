@@ -1,30 +1,134 @@
 /* Page shell. Every space is a layout or shell token, so phone, tablet and desktop each get their
-   own values without media queries here. The shell's background is the header's deepest red, so on
-   desktop it shows down both sides of the sheet. */
+   own values without media queries here.
+   The art (light, rays and wheel) runs behind the whole shell, so it continues down the frame on both
+   sides of the sheet. The wheel is the one light source: the red is lightest there and
+   deepens with distance, and the rays fade as they travel. */
 .ds-shell {
+  --shell-light-x: calc(100% - var(--light-from-right));
+  --shell-light-y: var(--light-top);
+  --shell-glass-top: -100vh;
+  --shell-glass-bottom: -100vh;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   min-block-size: 100dvh;
-  background: var(--shell-frame);
+  background: radial-gradient(
+    circle farthest-corner at var(--shell-light-x) var(--shell-light-y),
+    color-mix(in oklab, var(--color-accent-base) 55%, var(--color-accent-hover)) 0,
+    var(--color-accent-hover) 30%,
+    color-mix(in oklab, var(--color-accent-hover) 45%, var(--shell-frame)) 58%,
+    var(--shell-frame) 90%
+  );
+}
+
+/* Rays from the wheel's center: 30 rays, 12deg apart. 12 divides 360 evenly, so every gap matches,
+   including where the circle meets itself straight up. They start just outside the center, so they
+   never crowd together at the source, then fade as they travel away from it. Behind the row of glass
+   tiles they fade further (shell-art-ray-behind-glass); PageShell measures where that row sits. */
+.ds-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transform-origin: var(--shell-light-x) var(--shell-light-y);
+  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 3deg, transparent 3deg 12deg);
+  --_behind: color-mix(in srgb, black calc(var(--shell-art-ray-behind-glass) * 100%), transparent);
+  -webkit-mask:
+    radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%),
+    linear-gradient(to bottom, black calc(var(--shell-glass-top) - var(--space-3)), var(--_behind) var(--shell-glass-top), var(--_behind) var(--shell-glass-bottom), black calc(var(--shell-glass-bottom) + var(--space-3)));
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%) intersect,
+    linear-gradient(to bottom, black calc(var(--shell-glass-top) - var(--space-3)), var(--_behind) var(--shell-glass-top), var(--_behind) var(--shell-glass-bottom), black calc(var(--shell-glass-bottom) + var(--space-3)));
 }
 
 .ds-shell__inner {
   inline-size: 100%;
-  max-inline-size: var(--shell-content-max);
+  max-inline-size: var(--layout-content-max);
   margin-inline: auto;
 }
 
-/* The header fades from the accent red down to the frame red the sheet sits on. */
+/* The header is see-through: the art behind the shell shows through it. */
 .ds-shell__header {
   padding-block-start: var(--layout-section);
-  padding-block-end: calc(var(--layout-section) + var(--shell-sheet-overlap));
+  padding-block-end: calc(var(--layout-title-gap) + var(--shell-sheet-overlap));
   padding-inline: var(--layout-gutter);
-  background: linear-gradient(var(--color-accent-base), var(--shell-frame));
-  color: var(--color-ink-inverse);
+  color: var(--color-ink-on-art);
+}
+
+/* The magic wheel: large and faint, at a fixed spot near the top right, so it stays put whatever the
+   header holds. The sheet covers whatever falls below the header. */
+.ds-shell__wheel {
+  position: absolute;
+  inset-inline-start: var(--shell-light-x);
+  inset-block-start: var(--shell-light-y);
+  z-index: -1;
+  inline-size: clamp(var(--shell-art-wheel-min), 48%, var(--shell-art-wheel-max));
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  color: var(--shell-art-wheel);
+  pointer-events: none;
+}
+
+/* The entrance (shell-entrance tokens): the title slams in, the rays burst out from the wheel,
+   the subtitle fades down, and the wheel turns, easing to a stop (anything moving on its own past
+   5 seconds has to stop, WCAG 2.2.2). Reduced motion only fades. */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-shell::before {
+    animation: ds-shell-burst var(--shell-entrance-burst-duration) var(--motion-easing-out) both;
+  }
+  .ds-shell__title {
+    animation: ds-shell-slam var(--shell-entrance-title-duration) var(--shell-entrance-title-easing) both;
+  }
+  .ds-shell__subtitle {
+    animation: ds-shell-fade-down var(--shell-entrance-subtitle-duration) var(--motion-easing-out) var(--shell-entrance-subtitle-delay) both;
+  }
+  .ds-shell__wheel {
+    animation: ds-shell-turn var(--shell-entrance-wheel-duration) cubic-bezier(0, 0, 0.58, 1) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ds-shell__title,
+  .ds-shell__subtitle {
+    animation: ds-shell-fade var(--motion-duration-slow) var(--motion-easing-out) both;
+  }
+}
+@keyframes ds-shell-slam {
+  from { transform: scale(var(--shell-entrance-title-from-scale)) rotate(calc(var(--shell-entrance-title-from-tilt) * 1deg)); opacity: 0; }
+}
+@keyframes ds-shell-burst {
+  from { transform: scale(var(--shell-entrance-burst-from-scale)); opacity: 0; }
+}
+@keyframes ds-shell-fade-down {
+  from { opacity: 0; transform: translateY(calc(-1 * var(--space-2))); }
+}
+@keyframes ds-shell-fade {
+  from { opacity: 0; }
+}
+@keyframes ds-shell-turn {
+  to { rotate: calc(var(--shell-entrance-wheel-angle) * 1deg); }
+}
+
+.ds-shell__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+/* App-wide actions, top right: where people look for settings. */
+.ds-shell__actions {
+  flex: none;
+  display: flex;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
 }
 
 .ds-shell__title {
   margin: 0;
+  transform-origin: left center;
   font-family: var(--type-display-cover-family);
   font-size: var(--type-display-cover-size);
   font-weight: var(--type-display-cover-weight);
@@ -39,21 +143,37 @@
   font-weight: var(--type-display-m-weight);
   line-height: var(--type-display-m-line-height);
   letter-spacing: var(--type-display-m-letter-spacing);
+  color: var(--shell-subtitle);
 }
 
 .ds-shell__nav {
   margin-block-start: var(--layout-title-gap);
 }
 
-/* The sheet rises over the header's bottom edge by sheet-overlap. */
+/* The sheet rises over the header's bottom edge by sheet-overlap. It is exactly as wide as the header's
+   content: capped at layout-content-max, and never closer to the screen side than sheet-inset. */
 .ds-shell__sheet {
+  position: relative;
   flex: 1;
+  align-self: center;
+  box-sizing: border-box; /* the width includes the sheet's padding, so its edges match the header's content */
+  inline-size: min(var(--layout-content-max), 100% - 2 * var(--shell-sheet-inset));
   margin-block-start: calc(-1 * var(--shell-sheet-overlap));
-  margin-inline: var(--shell-sheet-inset);
   padding-block: var(--layout-section);
   padding-inline: var(--layout-gutter);
   border-start-start-radius: var(--shell-sheet-radius);
   border-start-end-radius: var(--shell-sheet-radius);
   background: var(--color-surface-page);
   color: var(--color-ink-primary);
+}
+
+/* Phones: the navigation tiles become the bottom bar (see action tile), so the header loses the gap
+   above them and the sheet leaves room at the bottom so the bar never covers the last lines. */
+@media (width < 37.5rem) {
+  .ds-shell__nav:has(.ds-tiles--switch) {
+    margin-block-start: 0;
+  }
+  .ds-shell:has(.ds-tiles--switch) .ds-shell__sheet {
+    padding-block-end: calc(var(--layout-section) + var(--bottom-bar-icon) + var(--type-body-small-size) * 2 + var(--space-7) + env(safe-area-inset-bottom));
+  }
 }

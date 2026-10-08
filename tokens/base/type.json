@@ -30,6 +30,11 @@
     }
   },
   "type": {
+    "measure": {
+      "$type": "dimension",
+      "$value": "70ch",
+      "$description": "Longest a line of running text gets: about 70 characters. Readable lines are 45 to 75 characters (Baymard), and WCAG 1.4.8 caps them at 80. Set on paragraphs and list items in base.css, so text in a wide container still wraps at a readable length. Shared by every product."
+    },
     "display-cover": {
       "line-height": {
         "$type": "number",
@@ -245,7 +250,12 @@
         "$type": "fontFamily",
         "$value": "{font.family.body}"
       },
-      "$description": "Introduces a section, like NEXT STEPS. Shown in capitals."
+      "$description": "Introduces a section, like NEXT STEPS. Shown in capitals.",
+      "transform": {
+        "$type": "string",
+        "$value": "uppercase",
+        "$description": "Labels are shown in capitals. Part of the style, so every label matches."
+      }
     },
     "label-meta": {
       "$description": "Describes an item: dates and short metadata, like OCT 2026. Capitals, gray, light weight, so the item's name stands out. Keep it to a few words.",
@@ -264,6 +274,11 @@
       "family": {
         "$type": "fontFamily",
         "$value": "{font.family.body}"
+      },
+      "transform": {
+        "$type": "string",
+        "$value": "uppercase",
+        "$description": "Labels are shown in capitals. Part of the style, so every label matches."
       }
     },
     "data-default": {

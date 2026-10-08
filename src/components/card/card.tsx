@@ -1,5 +1,6 @@
 import type { ElementType, HTMLAttributes, ReactNode } from 'react';
 import '../material.css';
+import '../glass.css';
 import './card.css';
 
 // Mirrors the Figma "Card" set: variant (transparent, translucent, opaque) and state (rest, hover).
@@ -27,7 +28,7 @@ export function Card({
   children,
   ...rest
 }: CardProps) {
-  const classes = ['ds-card', `ds-card--${variant}`];
+  const classes = ['ds-card', 'ds-glass', `ds-card--${variant}`];
   if (interactive) classes.push('ds-card--interactive');
   if (className) classes.push(className);
   return (

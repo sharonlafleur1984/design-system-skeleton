@@ -1,0 +1,232 @@
+/* Action tile. React Aria sets data-selected (switch tiles), data-hovered, data-pressed,
+   data-focus-visible and data-disabled. data-state forces a look for Storybook.
+   Light: a container with a light source (the page shell's wheel) sets --light-x, --light-y, --light-k
+   and --glass-bend on each tile. Without one, the light comes from the top right. */
+.ds-tile-switch {
+  display: contents;
+}
+
+/* Tiles never stack: three across on tablet and up (titles may wrap to two lines on small tablets).
+   On phones, switch tiles become the bottom bar and action tiles stack, at the end of this file. */
+.ds-tiles__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.ds-tile__bar {
+  display: none;
+}
+
+.ds-tile {
+  /* Lit by the shared glass recipe (glass.css), with the settings for glass on artwork. */
+  --g-rim-color: var(--glass-rim-color);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  --g-highlight: var(--glass-highlight);
+  --g-shade: var(--glass-shade);
+  --g-cast: var(--glass-cast);
+  --g-contact: var(--glass-contact);
+  --g-cast-distance: var(--glass-cast-distance);
+  --g-cast-blur: var(--glass-cast-blur);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+  min-block-size: var(--control-height-large);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4) var(--space-7);
+  border: none;
+  border-radius: var(--radius-card);
+  background: transparent;
+  color: var(--color-ink-on-art);
+  font-family: var(--font-family-body);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The glass itself: clear, bending the art behind it at its edges. Nothing tints it; on the page shell
+   the rays fade behind the tiles at their source instead (shell-art-ray-behind-glass). */
+.ds-tile__glass {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--color-surface-glass-on-art);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+}
+
+.ds-tile__label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-letter-spacing);
+  text-transform: var(--type-label-transform);
+}
+.ds-tile__title {
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
+  letter-spacing: var(--type-heading-title-letter-spacing);
+}
+.ds-tile__description {
+  font-family: var(--type-body-small-family);
+  font-size: var(--type-body-small-size);
+  font-weight: var(--type-body-small-weight);
+  line-height: var(--type-body-small-line-height);
+  letter-spacing: var(--type-body-small-letter-spacing);
+}
+
+/* Hover: the tile rises a little toward you, its shadow deepens and the rim catches the full light.
+   No underline: tiles are switches and buttons, not links. With reduced motion, the shadow and rim
+   still show the hover. The fill stays clear, so white text keeps its contrast. A chosen tile settles
+   back down. */
+.ds-tile[data-hovered]:not([data-selected]),
+.ds-tile[data-state='hover'] {
+  --light-k: 1;
+  --glass-lift: 1.5;
+  translate: 0 calc(-1 * var(--motion-lift-large));
+}
+.ds-tile[data-pressed] {
+  scale: 0.985;
+}
+
+/* Chosen (switch tiles): frosted white, deep red text, and the star. The star and the fill change
+   together, so color is never the only signal. */
+.ds-tile[data-selected],
+.ds-tile[data-state='chosen'] {
+  color: var(--color-ink-on-art-selected);
+}
+.ds-tile[data-selected] .ds-tile__glass,
+.ds-tile[data-state='chosen'] .ds-tile__glass {
+  background: var(--color-surface-glass-on-art-selected);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art-selected));
+}
+.ds-tile__star {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-4);
+  font-size: var(--type-heading-title-size);
+  line-height: 1;
+  visibility: hidden;
+}
+.ds-tile[data-selected] .ds-tile__star,
+.ds-tile[data-state='chosen'] .ds-tile__star {
+  visibility: visible;
+}
+
+.ds-tile[data-focus-visible],
+.ds-tile[data-state='focus'] {
+  outline: 2px solid var(--color-ink-on-art);
+  outline-offset: 2px;
+}
+.ds-tile[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-tile {
+    transition:
+      color var(--motion-duration-fast) var(--motion-easing-out),
+      translate var(--motion-duration-fast) var(--motion-easing-out),
+      box-shadow var(--motion-duration-fast) var(--motion-easing-out),
+      scale var(--motion-duration-instant) var(--motion-easing-out);
+  }
+  .ds-tile__glass {
+    transition: background-color var(--motion-duration-fast) var(--motion-easing-out);
+  }
+}
+
+/* Phones (under 600px, the compact screen size from the layout tokens; CSS can't read a token in a
+   media query): switch tiles become the bottom bar. Same tabs, same selection, new look: an icon and a
+   short name, pinned to the bottom of the screen within thumb reach. The chosen tab gets a soft pill
+   behind its icon and the accent color, so color is never the only signal. */
+@media (width < 37.5rem) {
+  .ds-tiles--actions .ds-tiles__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .ds-tiles--switch .ds-tiles__list {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 10;
+    gap: 0;
+    padding-block: var(--space-2) max(var(--space-2), env(safe-area-inset-bottom));
+    padding-inline: var(--layout-gutter);
+    background: var(--color-surface-glass);
+    -webkit-backdrop-filter: blur(var(--material-blur));
+    backdrop-filter: blur(var(--material-blur));
+    box-shadow: var(--shadow-float);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    min-block-size: 0;
+    padding: var(--space-1);
+    box-shadow: none;
+    color: var(--color-ink-secondary);
+    text-align: center;
+    translate: none;
+    scale: none;
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile::before,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__glass,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__label,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__title,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__description,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__star {
+    display: none;
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile__bar {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+  }
+  .ds-tiles--switch .ds-tile__bar-icon {
+    display: grid;
+    place-items: center;
+    padding-block: var(--space-1);
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-pill);
+  }
+  .ds-tiles--switch .ds-tile__bar-icon svg {
+    inline-size: var(--bottom-bar-icon);
+    block-size: var(--bottom-bar-icon);
+  }
+  .ds-tiles--switch .ds-tile__bar-name {
+    font-family: var(--type-body-small-family);
+    font-size: var(--type-body-small-size);
+    font-weight: var(--type-body-small-weight);
+    line-height: var(--type-body-small-line-height);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-hovered]:not([data-selected]) {
+    color: var(--color-ink-primary);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-selected],
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='chosen'] {
+    color: var(--color-accent-text);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-selected] .ds-tile__bar-icon,
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='chosen'] .ds-tile__bar-icon {
+    background: var(--color-accent-soft);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-focus-visible],
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='focus'] {
+    outline-color: var(--color-accent-text);
+    border-radius: var(--radius-control);
+  }
+}

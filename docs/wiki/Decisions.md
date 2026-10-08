@@ -1,8 +1,95 @@
 # Decisions
 
-**Last updated:** October 7, 2026
+**Last updated:** October 8, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>
+
+- **Decided by:** Sharon
+- **Decision:** tiles that switch pages stay three across on tablet and up, with titles wrapping to two lines on small tablets if needed. On phones (under 600px) the same tiles become the bottom bar: an icon and a short name each, with a soft pill behind the chosen one. Tiles that are plain links or buttons still stack on phones. The switch is by screen size, not by the width of the tile row.
+- **Why:** the tiles were stacking on tablets up to about 648px, because the row sits inside the page margins. Three across fits at every tablet width (measured 600 to 839px, nothing overflows). Phones were always meant to use the bottom bar, as in the After Graduation prototype.
+- **How:** it's one set of tabs with two looks, so keyboard, screen readers and the chosen page stay the same on every screen. New tile props `icon` and `shortTitle`; new token `bottom-bar.icon` (24px).
+- **Details:** Components, Page shell, With navigation in Storybook (renamed from With episodes).
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Max content width is 1024px, shared by every product</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the max content width (how wide a page's content gets) is 1024px, as `layout.content-max` in the shared base. It replaces After Graduation's `shell.content-max` (920px, which had no recorded source).
+- **Why:** 920px left a lot of red on each side, and the design system serves more than After Graduation. 1024px is the [US Web Design System](https://designsystem.digital.gov/utilities/layout-grid/)'s default container. Running text stays readable at any width because of the 70-character measure.
+- **Other options:** 960px ([GOV.UK](https://design-system.service.gov.uk/styles/layout/)); 1200px (almost no red on a 1280px laptop).
+- **Next:** shared for now. A product can get its own value later if it needs one.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Running text stops at a 70-character measure</summary>
+
+- **Decided by:** Sharon
+- **Decision:** paragraphs and list items are never wider than `type.measure`, 70ch (about 70 characters), in every product. The page's max content width is separate: tiles, tables and cards still use the full width.
+- **Why:** inside the 920px sheet, text ran about 95 to 100 characters per line. Readable lines are 45 to 75 characters ([Baymard](https://baymard.com/blog/line-length-readability)), and [WCAG 1.4.8](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html) caps them at 80.
+- **Next:** starting value. Revisit if it looks wrong once real episode content is on the page.
+- **Details:** Foundations, Type, Measure in Storybook.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Page shell: the sheet is as wide as the header's content, with a margin on every screen size</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the page sheet is never wider than the header's content. On wide screens both cap at the max content width. On every screen size the sheet sits in from the screen sides by the same space as the header's content, so the two always line up. This replaces the Oct 4 rule that the sheet ran edge to edge on tablet and phone.
+- **Why:** on desktop the sheet ran much wider than the header, so the page didn't line up with it. On phones the sheet touched the screen sides and lost its margin.
+- **Tokens (After Graduation only):** `shell.sheet-inset` now 16 / 24 / 24, matching `layout.gutter`.
+- **Names:** the width cap is the **max content width** (often called the container). The space between the screen side and the content is the **margin** (Material 3's term); gutters are the space between columns.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Settings: a full-size dialog, opened from the top right of the header</summary>
+
+- **Decided by:** Sharon
+- **Decision:** app-wide settings open in a full-size dialog, modeled on Claude's, from a Settings button at the top right of the header on every screen size. Eight sections: Account, Appearance, Accessibility, Plan, Family, Notifications, Privacy and data, Help and legal. On phones the section list comes first and each section opens with a Back button. Changes apply right away, with no Save button. Anything the device can tell us defaults to Match device; if the device asks for reduced motion, motion stays reduced.
+- **Why:** top right is where people look for app-wide settings; on the page it would read as settings for that page. The Motion setting also gives people a way to stop the header wheel.
+- **Research:** Settings research in the After Graduation wiki (sections, defaults, and the research behind each accessibility setting).
+- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42).
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> One light position and one glass recipe for every product</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the light source sits in one shared place (`light-from-right`, `light-top`): After Graduation's wheel and Life Hub's sun. Every glass surface on a page, cards and tiles, in light and dark mode, is lit from it with one shared recipe (glass.css): rim, glint, highlight, shade and shadow. Each theme sets the recipe's settings in tokens. Glass on artwork bends the art behind it and softens it a little.
+- **Why:** the light direction decides how every piece of glass looks, so it has to agree everywhere. One recipe means a fix reaches both products.
+- **Also decided:** the wheel turns as the page opens and then rests (WCAG 2.2.2); action tiles rise 2px on hover and don't underline.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> After Graduation's red is crimson</summary>
+
+- **Decided by:** Sharon
+- **Decision:** After Graduation's red ramp moves from cherry to crimson (600 is #cb1b2c), with the same steps, so components don't change. Its status colors are tuned to match: error moves to rust (#ca5d34) so it never looks like the crimson button, and warning, success and info sit with the gold. Dark mode follows.
+- **Why:** crimson looks richer and warmer, and less juvenile. White on the crimson button passes 5.6:1, up from 4.8:1.
+- **Replaces:** the cherry red (#d03656) in Sep 26, "After Graduation is quiet by default."
+- **Details:** comparison under Explorations, After Graduation crimson.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Each theme picks its own status colors</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the base keeps the status names (error, warning, success, info, neutral) and the rules: always with an icon and a label, and text that passes 4.5:1. Each theme picks its own status values, so they fit its palette, type and card styling. Life Hub keeps today's set, which matches its Figma library. After Graduation gets a set tuned to its palette.
+- **Why:** each product has its own look on purpose. One shared status set couldn't match both palettes.
+- **Trade-off:** a fix to a status color no longer reaches every product at once.
+- **Replaces:** part of Sep 26, "One shared base, a theme for each product," which put one status color set in the base.
+
+</details>
 
 <details>
 <summary><b>Oct 7, 2026:</b> Motion: one timing scale, two moods (calm and energetic)</summary>
@@ -213,7 +300,7 @@ Newest first.
 <summary><b>Sep 26, 2026:</b> After Graduation is quiet by default: color only communicates</summary>
 
 - **Decided by:** Sharon
-- **Decision:** neutral screens. Cherry red (#d03656) marks the one next step: the main button, the current step, focus. Gold marks a real win. Status colors mean status, always with an icon and a label. Everything else is neutral. Paths and categories use icons and labels, not colors. Cards sit on shadows instead of borders.
+- **Decision:** neutral screens. Cherry red (#d03656; crimson #cb1b2c since Oct 7) marks the one next step: the main button, the current step, focus. Gold marks a real win. Status colors mean status, always with an icon and a label. Everything else is neutral. Paths and categories use icons and labels, not colors. Cards sit on shadows instead of borders.
 - **Why:** the product already has lots of graphics, so the system stays simple. The prototype had 98 colors, and a screen with seven colors gave no clear place to look.
 - **How it was chosen:** 6 color directions built with color theory (OKLCH ramps, contrast checked). The race-car red stayed, softened toward cherry for an anime feel, which also moves it a little further from the error red.
 - **Other options:** red with teal, sky, mint or lavender support colors; berry and indigo; a teal-led palette.
@@ -243,7 +330,7 @@ Newest first.
 <summary><b>Sep 26, 2026:</b> One shared base, a theme for each product, in its own repo</summary>
 
 - **Decided by:** Sharon
-- **Decision:** a shared base (structure, naming, scales, status colors, accessibility) with a theme per product, in its own repo.
+- **Decision:** a shared base (structure, naming, scales, status colors, accessibility) with a theme per product, in its own repo. (Updated Oct 7: status colors moved to each theme; the base keeps their names and rules.)
 - **Why:** three products will use it (Life Hub, After Graduation, a designer toolkit), and Life Hub needs it soon. Life Hub's Figma library already had the structure Sharon wants.
 - **Other options:** start inside After Graduation and move it later; separate systems per product.
 
@@ -253,7 +340,7 @@ Newest first.
 <summary><b>Sep 26, 2026:</b> Structure taken from the Life Hub Library</summary>
 
 - **Decided by:** Sharon
-- **Decision:** the base copies the Life Hub Library's structure: a 4-point spacing scale, radius by purpose, ink, surface, border and accent names, one status set, and the type roles (display, heading, body, label, data).
+- **Decision:** the base copies the Life Hub Library's structure: a 4-point spacing scale, radius by purpose, ink, surface, border and accent names, one status set (updated Oct 7: one set of status names; each theme picks the values), and the type roles (display, heading, body, label, data).
 - **Why:** it's already set up the way Sharon wants a design system organized. Only the look changes per product.
 
 </details>

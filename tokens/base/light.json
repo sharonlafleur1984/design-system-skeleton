@@ -1,0 +1,27 @@
+{
+  "light": {
+    "$description": "Where the one light source sits, shared by every product: After Graduation's wheel and Life Hub's sun. Glass everywhere is lit from here.",
+    "from-right": {
+      "$type": "dimension",
+      "$value": "22%",
+      "$description": "How far in from the right edge the light's center sits. On phones it sits on the edge, clear of the title and subtitle.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "0%",
+          "medium": "22%"
+        }
+      }
+    },
+    "top": {
+      "$type": "dimension",
+      "$value": "124px",
+      "$description": "How far down from the top of the page the light's center sits: on the subtitle's line. Fixed, so the light never moves with what the header holds.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "78px",
+          "medium": "112px"
+        }
+      }
+    }
+  }
+}

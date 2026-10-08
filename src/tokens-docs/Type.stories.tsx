@@ -35,6 +35,21 @@ export const Scale: StoryObj = {
   ),
 };
 
+/**
+ * The measure (`type-measure`, 70ch): the longest a line of running text gets, in every product.
+ * Paragraphs and list items wrap here however wide their container is (base.css). Readable lines
+ * are 45 to 75 characters; WCAG 1.4.8 caps them at 80.
+ */
+export const Measure: StoryObj = {
+  render: () => (
+    <p style={{ margin: 0, outline: '1px dashed var(--color-ink-tertiary)', outlineOffset: 'var(--space-1)' }}>
+      This paragraph stops at the measure, about 70 characters per line, so it stays easy to read on a
+      wide screen. The page around it can be much wider: tiles, tables and cards still use the full
+      content width, while sentences wrap at a length the eye can follow back to the start of the next line.
+    </p>
+  ),
+};
+
 const rem = (px: string) => `${Number.parseFloat(px) / 16}rem`;
 
 /** Every size at once: phone (under 600px), tablet (600 to 839px) and desktop (840px and up). */
