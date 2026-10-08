@@ -22,8 +22,10 @@
   justify-content: space-between;
   gap: var(--space-4);
   min-block-size: 193px;
+  /* Edge to edge across the top of the page, like After Graduation's header. The marble runs behind it
+     and continues below. */
   padding: var(--space-6);
-  border-radius: var(--radius-panel);
+  border-radius: 0;
   background:
     /* the light itself, top right */
     radial-gradient(45% 110% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent), transparent 70%),
@@ -123,7 +125,38 @@
   line-height: var(--type-body-default-line-height);
 }
 
+/* Text never pops. When the sky turns light or dark, text colors fade with it, and a new greeting
+   crossfades over the old one. About 1.5 seconds: well under the 5 seconds where motion needs a pause control,
+   and the settled text always meets contrast. */
+.lh-sky__meta,
+.lh-sky__title,
+.lh-sky__prompt,
+.lh-sky .lh-sky__card,
+.lh-sky .lh-sky__chat {
+  transition: color 1.5s ease-in-out, background-color 1.5s ease-in-out, border-color 1.5s ease-in-out;
+}
+.lh-fade {
+  display: inline-grid;
+}
+.lh-fade__item {
+  grid-area: 1 / 1;
+  animation: lh-fade-in 1.5s ease-in-out both;
+}
+.lh-fade__item--out {
+  animation: lh-fade-out 1.5s ease-in-out both;
+}
+@keyframes lh-fade-in {
+  from { opacity: 0; }
+}
+@keyframes lh-fade-out {
+  to { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .lh-fade__item,
+  .lh-fade__item--out {
+    animation-duration: var(--motion-duration-fast, 140ms);
+  }
   .lh-sky {
     transition: none;
   }

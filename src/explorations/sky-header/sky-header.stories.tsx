@@ -26,7 +26,7 @@ const meta: Meta<Args> = {
   // Life Hub only: lock the toolbar's theme so the page around it is Life Hub too.
   globals: { theme: 'life-hub' },
   parameters: {
-    layout: 'padded',
+    layout: 'fullscreen',
     docs: {
       description: {
         component:
@@ -59,8 +59,8 @@ function MarblePage({ background, mode, children }: { background: string; mode?:
   const style: CSSProperties = {
     // The night layer only shows on dark pages; light pages get the marble as is.
     background: `linear-gradient(var(--page-night, transparent), var(--page-night, transparent)), url('${m.texture}') center / cover`,
-    padding: 'var(--space-5) var(--space-5) var(--space-8)',
-    borderRadius: 'var(--radius-panel)',
+    padding: '0 0 var(--space-8)',
+    minHeight: 320,
     ['--page-night' as string]: (mode ?? document.documentElement.dataset.mode) === 'dark' ? layer : 'transparent',
   };
   return (
@@ -93,7 +93,7 @@ function useDay(start: number) {
   }, [playing]);
   const label = clockLabel(hour);
   const controls = (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-5)' }}>
       <Button variant="secondary" size="small" onPress={() => setPlaying((p) => !p)}>
         {playing ? 'Pause' : 'Play'}
       </Button>
@@ -127,7 +127,7 @@ export const CompareAAndB: Story = {
         {controls}
         {(['glass', 'sky'] as Version[]).map((v) => (
           <section key={v} aria-label={labels[v]} style={{ display: 'grid', gap: 'var(--space-2)' }}>
-            <p style={{ margin: 0, color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{labels[v]}</p>
+            <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{labels[v]}</p>
             <MarblePage background={background}>{header(v, hour, background)}</MarblePage>
           </section>
         ))}
@@ -146,7 +146,7 @@ export const EveryBackground: Story = {
         {controls}
         {marbles.map((m) => (
           <section key={m.name} aria-label={m.name} style={{ display: 'grid', gap: 'var(--space-2)' }}>
-            <p style={{ margin: 0, color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{m.name}</p>
+            <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{m.name}</p>
             <MarblePage background={m.name}>{header(version, hour, m.name)}</MarblePage>
           </section>
         ))}

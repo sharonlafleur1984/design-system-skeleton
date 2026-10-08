@@ -1,4 +1,30 @@
 import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
+
+/** Crossfades when the text changes (Good morning to Good afternoon), so words never pop. */
+function FadeText({ text }: { text: string }) {
+  const [items, setItems] = useState([{ text, id: 0, out: false }]);
+  useEffect(() => {
+    setItems((prev) => {
+      const last = prev[prev.length - 1];
+      if (last.text === text) return prev;
+      return [{ ...last, out: true }, { text, id: last.id + 1, out: false }];
+    });
+  }, [text]);
+  return (
+    <span className="lh-fade">
+      {items.map((it) => (
+        <span
+          key={it.id}
+          className={it.out ? 'lh-fade__item lh-fade__item--out' : 'lh-fade__item'}
+          aria-hidden={it.out || undefined}
+          onAnimationEnd={it.out ? () => setItems((p) => p.filter((x) => x.id !== it.id)) : undefined}
+        >
+          {it.text}
+        </span>
+      ))}
+    </span>
+  );
+}
 import { Button } from '../../components/button/button';
 import { Card } from '../../components/card/card';
 import { greetingAt, makeStars, skyAt } from './sky';
@@ -94,7 +120,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
       <Stars />
       <Card className="lh-sky__card">
         {meta && <p className="lh-sky__meta">{meta}</p>}
-        <h1 className="lh-sky__title">{name ? `${greeting}, ${name}` : greeting}</h1>
+        <h1 className="lh-sky__title"><FadeText text={name ? `${greeting}, ${name}` : greeting} /></h1>
         {prompt && <p className="lh-sky__prompt">{prompt}</p>}
       </Card>
       <Button variant="secondary" size="small" className="lh-sky__chat" onPress={onStartChat}>
