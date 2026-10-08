@@ -1,7 +1,8 @@
 # Approves new screenshots. Add the "update-screenshots" label to a pull request and
 # this takes fresh screenshots of every story, commits them to the pull request's
 # branch, reruns the checks on that commit, and removes the label. Review the new images in the pull request's
-# "Files changed" tab before merging.
+# "Files changed" tab before merging. It also posts a short summary comment on the pull request
+# (scripts/screenshot-summary.mjs): what changed and by how much, so a review starts there.
 name: Update screenshots
 on:
   pull_request:
@@ -19,6 +20,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 22
@@ -37,6 +39,11 @@ jobs:
           git diff --cached --quiet && echo "No screenshot changes." && exit 0
           git commit -m "Approve new screenshots"
           git push
+      - name: Post the screenshot summary
+        run: node scripts/screenshot-summary.mjs "origin/${{ github.event.pull_request.base.ref }}" HEAD
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
       # A commit pushed by this job doesn't start other checks on its own (GitHub's rule),
       # so start them here. Otherwise required checks would wait forever.
       - name: Rerun the checks on the new commit
