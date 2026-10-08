@@ -23,7 +23,7 @@ const meta: Meta<typeof PageShell> = {
           '',
           '**Motion:** when the page opens, the title slams in, the rays burst, the subtitle fades down, and the wheel turns, then eases to a stop (`shell-entrance` tokens). Reduced motion only fades.',
           '',
-          '**Accessibility:** the title is the page\'s only h1. The header is a `header` landmark and the sheet is `main`. Nothing moves on its own for more than 30 seconds (WCAG 2.2.2).',
+          '**Accessibility:** the title is the page\'s only h1. The header is a `header` landmark and the sheet is `main`. The wheel comes to rest after 20 seconds (WCAG 2.2.2).',
         ].join('\n'),
       },
     },

@@ -66,13 +66,13 @@
       },
       "wheel-duration": {
         "$type": "duration",
-        "$value": "30s",
-        "$description": "The wheel turns as the page opens, then eases to a stop over this long. Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
+        "$value": "20s",
+        "$description": "The wheel turns as the page opens, then eases to a stop over this long (Oct 7: 20s, half again as fast as 30s, since it always comes to rest). Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
       },
       "wheel-angle": {
         "$type": "number",
-        "$value": 60,
-        "$description": "How far the wheel turns before it rests, in degrees. Starts at about the old speed (one turn in 100s) and slows to a stop."
+        "$value": 44,
+        "$description": "How far the wheel turns before it rests, in degrees. 44 is the resting angle that puts the fewest wheel lines inside the episode tiles and behind their words (measured on desktop and tablet)."
       },
       "title-from-scale": {
         "$type": "number",
