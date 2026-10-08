@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> Motion: one timing scale, two moods (calm and energetic)</summary>
+
+- **Decided by:** Sharon
+- **Decision:** every product shares one timing scale for controls (80, 140, 220 and 380ms, two easings, a 60ms stagger), so buttons, toggles and tabs feel the same on every page. Arrivals and celebrations use a mood: calm (settles, never bounces) or energetic (snaps in and overshoots). Life Hub defaults to calm, After Graduation to energetic, and any page can switch with `data-motion`. Reduced motion always gets calm, with fades only. After Graduation's header entrance gets its own slower tokens (about 1.4 times the prototype's speed) so it can stay dramatic while cards and lists keep the quicker energetic arrival.
+- **Why:** the components had hard-coded their own speeds, and Life Hub's quiet rules didn't fit After Graduation's anime look. Saving energetic for earned moments keeps it from wearing thin.
+- **Sources:** timing from the Life Hub Figma Glass, Motion, Sizing page; header animation from the [After Graduation prototype](https://afterhighschool.netlify.app/).
+- **Other options:** one calm system for every product; picking the mood for each whole page, including its controls.
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> Home and Office trade colors</summary>
 
 - **Decided by:** Sharon

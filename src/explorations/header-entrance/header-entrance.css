@@ -1,0 +1,109 @@
+/* Exploration: After Graduation's header entrance, rebuilt from the prototype with tokens. */
+.ag-header {
+  --ag-light-x: 78%;
+  --ag-light-y: 100%;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--space-8) var(--space-7) var(--space-9);
+  border-radius: var(--radius-panel);
+  background: linear-gradient(160deg, var(--color-accent-base), var(--shell-frame));
+  color: #fff;
+}
+
+/* The wheel is the header's one light source (like Life Hub's sun). Rays start at its center
+   and burst outward from there. Change --ag-light-x/-y and the wheel and rays move together. */
+.ag-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform-origin: var(--ag-light-x) var(--ag-light-y);
+  background: repeating-conic-gradient(from 0deg at var(--ag-light-x) var(--ag-light-y), rgb(255 255 255 / 0.13) 0 2deg, transparent 2deg 7deg);
+}
+
+/* The magic circle: large and faint, centered on the header's bottom edge toward the right,
+   so only its top half shows above the page sheet. */
+.ag-header__circle {
+  position: absolute;
+  inset-inline-start: var(--ag-light-x);
+  inset-block-start: var(--ag-light-y);
+  width: clamp(420px, 48%, 920px);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  z-index: -1;
+  color: #fff;
+  opacity: 0.22;
+}
+
+.ag-header__title {
+  margin: 0;
+  font-family: var(--font-family-display);
+  font-size: clamp(28px, 6vw, 56px);
+  line-height: 1.15;
+  text-shadow: 3px 3px 0 var(--shell-frame);
+}
+
+.ag-header__subtitle {
+  margin: var(--space-3) 0 0;
+  color: var(--color-accent-secondary);
+  font-size: var(--type-heading-small-size, 1.25rem);
+  font-weight: var(--font-weight-semibold);
+  text-shadow: 2px 2px 0 var(--shell-frame);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ag-header::before {
+    animation: ag-burst var(--shell-entrance-burst-duration) var(--motion-easing-out) both;
+  }
+  .ag-header__title {
+    animation: ag-slam var(--shell-entrance-title-duration) var(--shell-entrance-title-easing) both;
+  }
+  .ag-header__subtitle {
+    animation: ag-fade-down var(--shell-entrance-subtitle-duration) var(--motion-easing-out) var(--shell-entrance-subtitle-delay) both;
+  }
+  .ag-header__circle {
+    animation: ag-turn var(--shell-entrance-circle-turn) linear infinite;
+  }
+}
+
+/* Reduced motion: no slam, burst or turning. Everything just fades in. */
+@media (prefers-reduced-motion: reduce) {
+  .ag-header__title,
+  .ag-header__subtitle {
+    animation: ag-fade var(--motion-duration-slow) var(--motion-easing-out) both;
+  }
+}
+
+@keyframes ag-slam {
+  from {
+    transform: scale(1.5) rotate(-4deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ag-burst {
+  from {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+}
+
+@keyframes ag-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes ag-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes ag-turn {
+  to {
+    rotate: 360deg;
+  }
+}

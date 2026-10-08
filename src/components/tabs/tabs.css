@@ -62,10 +62,10 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .ds-tabs__indicator {
-    transition: translate 0.2s ease, width 0.2s ease;
+    transition: translate var(--motion-duration-base) var(--motion-easing-in-out), width var(--motion-duration-base) var(--motion-easing-in-out);
   }
   .ds-tabs__tab {
-    transition: color 0.15s ease;
+    transition: color var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 

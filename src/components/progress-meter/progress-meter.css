@@ -34,6 +34,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-progress__fill {
-    transition: inline-size 0.5s ease;
+    transition: inline-size var(--motion-duration-slow) var(--motion-easing-out);
   }
 }
