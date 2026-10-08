@@ -113,19 +113,15 @@
   letter-spacing: var(--type-body-small-letter-spacing);
 }
 
-/* Hover: the tile rises a little toward you, its shadow deepens, the rim catches the full light and
-   the title underlines. The fill stays clear, so white text keeps its contrast. A chosen tile settles
+/* Hover: the tile rises a little toward you, its shadow deepens and the rim catches the full light.
+   No underline: tiles are switches and buttons, not links. With reduced motion, the shadow and rim
+   still show the hover. The fill stays clear, so white text keeps its contrast. A chosen tile settles
    back down. */
 .ds-tile[data-hovered]:not([data-selected]),
 .ds-tile[data-state='hover'] {
   --light-k: 1;
   --tile-cast: calc(var(--glass-cast-distance) * 1.5);
   translate: 0 calc(-1 * var(--motion-lift));
-}
-.ds-tile[data-hovered]:not([data-selected]) .ds-tile__title,
-.ds-tile[data-state='hover'] .ds-tile__title {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }
 .ds-tile[data-pressed] {
   scale: 0.985;
