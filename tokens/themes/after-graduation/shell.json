@@ -94,12 +94,12 @@
       },
       "light-top": {
         "$type": "dimension",
-        "$value": "220px",
-        "$description": "How far down from the top of the page the wheel's center sits: the bottom of a title-only header, measured at each screen size. Fixed, so adding episodes makes the header taller and shows more of the wheel instead of moving it.",
+        "$value": "124px",
+        "$description": "How far down from the top of the page the wheel's center sits: on the subtitle's line, measured at each screen size, off to the right of the text. Fixed, so adding episodes makes the header taller without moving the wheel.",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "140px",
-            "medium": "192px"
+            "compact": "78px",
+            "medium": "112px"
           }
         }
       }

@@ -14,14 +14,16 @@
   min-block-size: 100dvh;
   background: radial-gradient(
     circle farthest-corner at var(--shell-light-x) var(--shell-light-y),
-    var(--color-accent-base) 0,
-    var(--color-accent-hover) 35%,
-    var(--shell-frame) 75%
+    color-mix(in oklab, var(--color-accent-base) 55%, var(--color-accent-hover)) 0,
+    var(--color-accent-hover) 30%,
+    color-mix(in oklab, var(--color-accent-hover) 45%, var(--shell-frame)) 58%,
+    var(--shell-frame) 90%
   );
 }
 
-/* Rays from the wheel's center. They start just outside the center, so they never crowd together
-   at the source, then fade as they travel away from it. */
+/* Rays from the wheel's center: 30 rays, 12deg apart. 12 divides 360 evenly, so every gap matches,
+   including where the circle meets itself straight up. They start just outside the center, so they
+   never crowd together at the source, then fade as they travel away from it. */
 .ds-shell::before {
   content: '';
   position: absolute;
@@ -29,7 +31,7 @@
   z-index: -1;
   pointer-events: none;
   transform-origin: var(--shell-light-x) var(--shell-light-y);
-  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 2deg, transparent 2deg 7deg);
+  background: repeating-conic-gradient(from 0deg at var(--shell-light-x) var(--shell-light-y), var(--shell-art-ray) 0 3deg, transparent 3deg 12deg);
   -webkit-mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
   mask: radial-gradient(circle farthest-corner at var(--shell-light-x) var(--shell-light-y), transparent 0, black 6%, color-mix(in srgb, black 55%, transparent) 30%, transparent 70%);
 }
@@ -43,7 +45,7 @@
 /* The header is see-through: the art behind the shell shows through it. */
 .ds-shell__header {
   padding-block-start: var(--layout-section);
-  padding-block-end: calc(var(--layout-section) + var(--shell-sheet-overlap));
+  padding-block-end: calc(var(--layout-title-gap) + var(--shell-sheet-overlap));
   padding-inline: var(--layout-gutter);
   color: var(--color-ink-on-art);
 }
