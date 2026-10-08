@@ -50,9 +50,9 @@ export interface GlassLightOptions {
   light: { x: number; y: number };
   /** Which glass pieces to light. */
   selector: string;
-  /** How far in from the edge the glass bends, in px. */
+  /** How far in from the edge the glass bends, in px. Defaults to the theme's --material-refraction-band. */
   band?: number;
-  /** How far a line behind the glass shifts at the edge, in px. */
+  /** How far a line behind the glass shifts at the edge, in px. Defaults to the theme's --material-refraction-max. */
   bend?: number;
   /** Corner radius of the glass, in px, so the bend follows the corners. */
   radius?: number;
@@ -62,7 +62,7 @@ export interface GlassLightOptions {
  * Sets, on every glass piece: --light-x and --light-y (where the light hits its rim, as percentages),
  * --light-k (0 to 1, weaker with distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
-export function useGlassLight(root: RefObject<HTMLElement | null>, { light, selector, band = 16, bend = 12, radius = 16 }: GlassLightOptions) {
+export function useGlassLight(root: RefObject<HTMLElement | null>, { light, selector, band: bandOption, bend: bendOption, radius = 16 }: GlassLightOptions) {
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -75,6 +75,9 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sele
     el.append(svg);
     const prefix = `gl${Math.random().toString(36).slice(2, 8)}`;
     const update = () => {
+      const cs = getComputedStyle(el);
+      const band = bandOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-band')) || 16);
+      const bend = bendOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-max')) || 4);
       const r = el.getBoundingClientRect();
       const lx = r.left + r.width * light.x;
       const ly = r.top + r.height * light.y;
@@ -113,5 +116,5 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sele
       ro.disconnect();
       svg.remove();
     };
-  }, [root, light.x, light.y, selector, band, bend, radius]);
+  }, [root, light.x, light.y, selector, bandOption, bendOption, radius]);
 }

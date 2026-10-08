@@ -21,13 +21,13 @@
     },
     "refraction-band": {
       "$type": "dimension",
-      "$value": "16px",
-      "$description": "How far in from the edge the glass bends the art behind it (convex squircle profile, after kube.io)."
+      "$value": "24px",
+      "$description": "How far in from the edge the glass bends the art behind it. Wide and gentle (Oct 7: 16px felt too sharp over the header rays)."
     },
     "refraction-max": {
       "$type": "dimension",
-      "$value": "12px",
-      "$description": "The most a line behind the glass shifts at the very edge."
+      "$value": "4px",
+      "$description": "The most a line behind the glass shifts at the very edge. Oct 7: 12px read as jagged steps over the thin header rays and pulled focus; 4px still shows the bend."
     }
   },
   "color": {
