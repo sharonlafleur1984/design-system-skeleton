@@ -9,7 +9,7 @@
     "build:lib": "vite build -c vite.lib.config.ts && tsc -p tsconfig.build.json",
     "prepare": "npm run tokens && npm run build:lib",
     "test": "npm run tokens && vitest run",
-    "storybook": "npm run tokens && storybook dev -p 6006",
+    "storybook": "node scripts/storybook-dev.mjs",
     "build-storybook": "npm run tokens && storybook build -o storybook-static",
     "typecheck": "tsc --noEmit",
     "test:update": "npm run tokens && vitest run -u",

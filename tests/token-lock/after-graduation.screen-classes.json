@@ -75,8 +75,8 @@
     "expanded": "40px"
   },
   "shell-art-light-top": {
-    "compact": "240px",
-    "medium": "288px",
-    "expanded": "320px"
+    "compact": "140px",
+    "medium": "192px",
+    "expanded": "220px"
   }
 }

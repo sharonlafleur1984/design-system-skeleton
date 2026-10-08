@@ -94,12 +94,12 @@
       },
       "light-top": {
         "$type": "dimension",
-        "$value": "320px",
-        "$description": "How far down from the top of the page the wheel's center sits. Fixed, so the wheel stays in the same place whatever the header holds.",
+        "$value": "220px",
+        "$description": "How far down from the top of the page the wheel's center sits: the bottom of a title-only header, measured at each screen size. Fixed, so adding episodes makes the header taller and shows more of the wheel instead of moving it.",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "240px",
-            "medium": "288px"
+            "compact": "140px",
+            "medium": "192px"
           }
         }
       }
