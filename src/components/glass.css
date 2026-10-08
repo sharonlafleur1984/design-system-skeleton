@@ -28,7 +28,9 @@
   position: absolute;
   inset: calc(-1 * var(--g-rim-width, 1px));
   padding: var(--g-rim-width, 1px);
-  border-radius: inherit;
+  /* The rim sits just outside the edge, so its corners curve a little wider than the surface's, keeping
+     the two curves together all the way round. */
+  border-radius: calc(var(--g-radius, var(--radius-card)) + var(--g-rim-width, 1px));
   pointer-events: none;
   background:
     radial-gradient(var(--g-rim-spread-x) var(--g-rim-spread-y) at var(--light-x) var(--light-y),
