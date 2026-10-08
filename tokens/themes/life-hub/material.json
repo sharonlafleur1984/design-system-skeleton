@@ -38,6 +38,11 @@
       "$type": "number",
       "$value": 1,
       "$description": "Gives back the color that art-calm takes away, so only the art's contrast softens, not its color."
+    },
+    "art-calm-brightness": {
+      "$type": "number",
+      "$value": 1,
+      "$description": "Brings back the darkness that art-calm lifts, so the background behind glass stays as deep and only the rays fade."
     }
   },
   "color": {

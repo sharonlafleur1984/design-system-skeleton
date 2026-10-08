@@ -511,6 +511,7 @@
   "material-refraction-max": "12px",
   "material-art-calm": 1,
   "material-art-calm-color": 1,
+  "material-art-calm-brightness": 1,
   "shadow-glass": "inset 0px 1px 0px 0px rgba(253,251,241,0.12), inset 0px -1px 0px 0px rgba(255,255,255,0.25)",
   "shadow-glass-on-art": "0px 6px 18px 0px rgba(29,26,24,0.18)",
   "shadow-edge": "inset 0px 1px 0px 0px rgba(253,251,241,0.08)",

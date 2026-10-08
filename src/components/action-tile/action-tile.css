@@ -65,8 +65,8 @@
   z-index: -1;
   border-radius: inherit;
   background: var(--color-surface-glass-on-art);
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color));
-  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color));
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color)) brightness(var(--material-art-calm-brightness));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art)) contrast(var(--material-art-calm)) saturate(var(--material-art-calm-color)) brightness(var(--material-art-calm-brightness));
 }
 
 .ds-tile__label {

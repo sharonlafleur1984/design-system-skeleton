@@ -31,13 +31,18 @@
     },
     "art-calm": {
       "$type": "number",
-      "$value": 0.7,
+      "$value": 0.5,
       "$description": "How much glass on artwork quiets what's behind it (1 is unchanged). After Graduation's rays fade behind the tiles so the text reads calmly."
     },
     "art-calm-color": {
       "$type": "number",
-      "$value": 1.4,
+      "$value": 1.7,
       "$description": "Gives back the color that art-calm takes away, so only the art's contrast softens, not its color."
+    },
+    "art-calm-brightness": {
+      "$type": "number",
+      "$value": 0.86,
+      "$description": "Brings back the darkness that art-calm lifts, so the background behind glass stays as deep and only the rays fade."
     }
   },
   "color": {
