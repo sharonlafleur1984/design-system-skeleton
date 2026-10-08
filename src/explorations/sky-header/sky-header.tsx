@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 
 /** Crossfades when the text changes (Good morning to Good afternoon), so words never pop. */
 function FadeText({ text }: { text: string }) {
@@ -55,7 +55,8 @@ export interface SkyHeaderProps {
   onStartChat?: () => void;
 }
 
-const STARS = makeStars(110);
+// Enough stars to fill an edge-to-edge header, left side included.
+const STARS = makeStars(220);
 
 // Drawn once; the sky's star strength arrives through a custom property, so they never re-render.
 const Stars = memo(function Stars() {
@@ -95,6 +96,27 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     const id = window.setInterval(() => setClock(nowHour()), 60_000);
     return () => window.clearInterval(id);
   }, [hour]);
+  // Stars fill the whole sky except the greeting card: measure the card and cut a hole that size.
+  const ref = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const header = ref.current;
+    const card = header?.querySelector<HTMLElement>('.lh-sky__card');
+    if (!header || !card) return;
+    const place = () => {
+      const h = header.getBoundingClientRect();
+      const c = card.getBoundingClientRect();
+      const gap = 16; // breathing room so no star touches the card's edge
+      header.style.setProperty('--sky-hole-x', `${c.left - h.left - gap}px`);
+      header.style.setProperty('--sky-hole-y', `${c.top - h.top - gap}px`);
+      header.style.setProperty('--sky-hole-w', `${c.width + gap * 2}px`);
+      header.style.setProperty('--sky-hole-h', `${c.height + gap * 2}px`);
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(header);
+    ro.observe(card);
+    return () => ro.disconnect();
+  }, []);
   const h = hour ?? clock;
   const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
   const style = {
@@ -112,6 +134,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
   const greeting = greetingAt(greetingHour ?? h);
   return (
     <header
+      ref={ref}
       className={`lh-sky lh-sky--${material}${instant ? ' lh-sky--instant' : ''}`}
       data-theme="life-hub"
       data-mode={sky.mode}

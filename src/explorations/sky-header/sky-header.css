@@ -21,16 +21,33 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-4);
+  /* Border-box, so the minimum includes the padding and the space under the card matches the space above. */
+  box-sizing: border-box;
   min-block-size: 193px;
   /* Edge to edge across the top of the page, like After Graduation's header. The marble runs behind it
      and continues below. */
   padding: var(--space-6);
   border-radius: 0;
   background:
-    /* the light itself, top right */
-    radial-gradient(45% 110% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent), transparent 70%),
-    /* its wider bloom */
-    radial-gradient(95% 170% at var(--sky-glow-x) var(--sky-glow-y), color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent), transparent 75%),
+    /* the light itself, top right. Extra stops ease it out (roughly a smoothstep), so it melts into the
+       sky instead of ending on a visible edge. */
+    radial-gradient(
+      45% 110% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 84%), transparent) 14%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 56%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 3%), transparent) 70%,
+      transparent 78%
+    ),
+    /* its wider bloom, eased the same way */
+    radial-gradient(
+      95% 170% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 19%), transparent) 35%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 60%,
+      transparent 82%
+    ),
     /* warm band along the bottom at sunrise and sunset */
     linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
     linear-gradient(
@@ -71,9 +88,15 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  /* No stars behind the greeting card: the sky starts to the right of it. */
-  -webkit-mask: linear-gradient(to right, transparent 440px, black 540px);
-  mask: linear-gradient(to right, transparent 440px, black 540px);
+  /* Stars everywhere except behind the greeting card. The component measures the card into --sky-hole-*;
+     the fallback hole covers the card's usual spot. */
+  -webkit-mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat,
+    linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat exclude,
+    linear-gradient(black 0 0);
 }
 .lh-sky__star {
   position: absolute;
@@ -90,7 +113,7 @@
 }
 @keyframes lh-twinkle {
   from { --twinkle: 1; }
-  to { --twinkle: 0.35; }
+  to { --twinkle: 0.2; }
 }
 
 /* The greeting: a glass card lit by the sky's light, light or dark glass to suit the sky. At twilight a
@@ -98,6 +121,13 @@
 .lh-sky__card {
   flex: 0 1 380px;
   min-inline-size: 0;
+}
+/* The greeting is glass on art, the same clear glass as After Graduation's episode tabs: the sky is the art.
+   Light by day, nearly clear at night, never the thick white frost of page cards. The readability math in
+   sky.ts uses these same token values (a test checks they match). */
+.lh-sky .lh-sky__card {
+  --card-frost: var(--color-surface-glass-on-art);
+  --card-backdrop: blur(var(--material-blur-on-art));
 }
 .lh-sky .lh-sky__card,
 .lh-sky .lh-sky__chat {
