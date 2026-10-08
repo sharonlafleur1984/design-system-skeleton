@@ -93,7 +93,7 @@ export const TEXT = {
   light: { primary: '#2a2625', secondary: '#524c4a', tertiary: '#716764' },
   dark: { primary: '#faf7f1', secondary: '#e8e2db', tertiary: '#d6cec7' },
 } as const;
-const LIGHT_CARD_FROST = { color: '#faf7f1', alpha: 0.83 }; // card-frost at its thinnest
+export const CARD_GLASS = { light: { color: '#ffffff', alpha: 0.35 }, dark: { color: '#fdfbf1', alpha: 0.08 } }; // surface-glass-on-art
 const BUTTON_GLASS = { light: { color: '#ffffff', alpha: 0.35 }, dark: { color: '#fdfbf1', alpha: 0.08 } }; // surface-glass
 // Glass headers show some marble. The model assumes the worst marble: pure white or near black.
 const MARBLE_EXTREMES = ['#ffffff', '#1f1f1f'];
@@ -127,7 +127,7 @@ const TEXT_L = {
 for (const m of ['light', 'dark'] as const)
   for (const k of ['primary', 'secondary', 'tertiary'] as const) TEXT_L[m][k] = rgbLuminance(rgb(TEXT[m][k]));
 const MARBLES = MARBLE_EXTREMES.map(rgb);
-const FROST = rgb(LIGHT_CARD_FROST.color);
+const CARD = { light: rgb(CARD_GLASS.light.color), dark: rgb(CARD_GLASS.dark.color) };
 const VEIL = { light: rgb(PAPER), dark: rgb(INK) };
 const GLASS = { light: rgb(BUTTON_GLASS.light.color), dark: rgb(BUTTON_GLASS.dark.color) };
 
@@ -142,7 +142,7 @@ export function readability(sky: Backdrop, mode: SkyMode, veilAlpha: number) {
   for (const marble of sky.alpha >= 1 ? MARBLES.slice(0, 1) : MARBLES) {
     for (const s of behindCard) {
       let c = over(veil, veilAlpha, over(s, sky.alpha, marble));
-      if (mode === 'light') c = over(FROST, LIGHT_CARD_FROST.alpha, c);
+      c = over(CARD[mode], CARD_GLASS[mode].alpha, c);
       const L = rgbLuminance(c);
       worst = Math.min(worst, contrast(L, text.primary) / 3, contrast(L, text.secondary) / 4.5, contrast(L, text.tertiary) / 4.5);
     }
@@ -236,8 +236,9 @@ export function makeStars(count: number) {
     return {
       x: rand() * 100,
       y: rand() * 100,
-      size: bright ? 1.6 + rand() * 0.6 : 0.5 + rand() * 0.8,
-      base: bright ? 1 : 0.45 + rand() * 0.45,
+      // At least 0.8px, so no star drops below a visible pixel on an edge-to-edge header.
+      size: bright ? 1.8 + rand() * 0.8 : 0.8 + rand() * 0.8,
+      base: bright ? 1 : 0.55 + rand() * 0.4,
       bright,
       delay: rand() * 8,
       duration: 4 + rand() * 5,
