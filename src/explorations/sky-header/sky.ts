@@ -84,13 +84,91 @@ export interface Sky {
   veilAlpha: number;
 }
 
-// Text must reach 4.5:1 (WCAG 1.4.3). Light text (ink-inverse) needs a backing at or under this luminance,
-// dark text (ink) at or over the other. Between them, at twilight, neither works, so the veil fills the gap.
-// Both include a small safety margin.
-const LIGHT_TEXT_MAX = 0.13;
-const DARK_TEXT_MIN = 0.3;
+// Readability. Everything that sits behind the greeting and the chat button, layer by layer, copied from
+// the Life Hub tokens (a test checks they still match). Colors are blended the way browsers blend them,
+// channel by channel in sRGB.
 const INK = '#2a2625';
 const PAPER = '#faf7f1';
+export const TEXT = {
+  light: { primary: '#2a2625', secondary: '#524c4a', tertiary: '#716764' },
+  dark: { primary: '#faf7f1', secondary: '#e8e2db', tertiary: '#d6cec7' },
+} as const;
+const LIGHT_CARD_FROST = { color: '#faf7f1', alpha: 0.83 }; // card-frost at its thinnest
+const BUTTON_GLASS = { light: { color: '#ffffff', alpha: 0.35 }, dark: { color: '#fdfbf1', alpha: 0.08 } }; // surface-glass
+// Glass headers show some marble. The model assumes the worst marble: pure white or near black.
+const MARBLE_EXTREMES = ['#ffffff', '#1f1f1f'];
+
+type Rgb = [number, number, number];
+const rgb = (hex: string): Rgb => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)) as Rgb;
+const over = (top: Rgb, alpha: number, below: Rgb): Rgb => below.map((c, i) => c + (top[i] - c) * alpha) as Rgb;
+const rgbLuminance = (c: Rgb) => {
+  const [r, g, b] = c.map((v) => toLinear(v / 255));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+export const contrast = (a: number, b: number) => (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+
+interface Backdrop {
+  top: string;
+  bottom: string;
+  glow: string;
+  glowAlpha: number;
+  horizon: number;
+  alpha: number;
+}
+
+/**
+ * The lowest contrast any text in the header reaches, as a share of what it needs (1 or more passes).
+ * Body text needs 4.5:1; the greeting is large, so 3:1 (WCAG 1.4.3).
+ */
+const TEXT_L = {
+  light: { primary: 0, secondary: 0, tertiary: 0 },
+  dark: { primary: 0, secondary: 0, tertiary: 0 },
+};
+for (const m of ['light', 'dark'] as const)
+  for (const k of ['primary', 'secondary', 'tertiary'] as const) TEXT_L[m][k] = rgbLuminance(rgb(TEXT[m][k]));
+const MARBLES = MARBLE_EXTREMES.map(rgb);
+const FROST = rgb(LIGHT_CARD_FROST.color);
+const VEIL = { light: rgb(PAPER), dark: rgb(INK) };
+const GLASS = { light: rgb(BUTTON_GLASS.light.color), dark: rgb(BUTTON_GLASS.dark.color) };
+
+export function readability(sky: Backdrop, mode: SkyMode, veilAlpha: number) {
+  const veil = VEIL[mode];
+  const text = TEXT_L[mode];
+  // The sky behind the card (top to bottom, with the warm band) and behind the button (top, under the light).
+  const behindCard = [rgb(sky.top), rgb(sky.bottom), over(rgb(sky.glow), sky.horizon * 0.55, rgb(sky.bottom))];
+  const behindButton = [rgb(sky.top), over(rgb(sky.glow), sky.glowAlpha, rgb(sky.top))];
+  let worst = Infinity;
+  // A solid sky hides the marble, so one pass is enough.
+  for (const marble of sky.alpha >= 1 ? MARBLES.slice(0, 1) : MARBLES) {
+    for (const s of behindCard) {
+      let c = over(veil, veilAlpha, over(s, sky.alpha, marble));
+      if (mode === 'light') c = over(FROST, LIGHT_CARD_FROST.alpha, c);
+      const L = rgbLuminance(c);
+      worst = Math.min(worst, contrast(L, text.primary) / 3, contrast(L, text.secondary) / 4.5, contrast(L, text.tertiary) / 4.5);
+    }
+    for (const s of behindButton) {
+      // The button's own glass is underneath; the veil is painted over it.
+      const c = over(veil, veilAlpha, over(GLASS[mode], BUTTON_GLASS[mode].alpha, over(s, sky.alpha, marble)));
+      worst = Math.min(worst, contrast(rgbLuminance(c), text.primary) / 4.5);
+    }
+  }
+  return worst;
+}
+
+/** The least veil that makes every text pass in this mode, or Infinity if even a strong veil can't. */
+function veilNeeded(sky: Backdrop, mode: SkyMode) {
+  if (readability(sky, mode, 0) >= 1) return 0;
+  if (readability(sky, mode, 0.9) < 1) return Infinity;
+  // More veil only ever helps, so halve the gap until it is under 1%.
+  let lo = 0;
+  let hi = 0.9;
+  while (hi - lo > 0.005) {
+    const mid = (lo + hi) / 2;
+    if (readability(sky, mode, mid) >= 1) hi = mid;
+    else lo = mid;
+  }
+  return hi;
+}
 
 export interface SkyOptions {
   /** The area's night layer (half its 900, half ink). Dark skies lean toward it, so night matches the marble below. */
@@ -116,25 +194,24 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     bottom = mixColor(bottom, areaNight, dark * 0.6);
   }
   const alpha = material === 'glass' ? 0.78 + dark * 0.1 : 1;
-  // What sits behind the text, at its brightest and darkest: the sky, plus whatever marble shows through.
-  const skyLums = [luminance(top), luminance(bottom)];
-  const brightest = Math.max(...skyLums) * alpha + 0.85 * (1 - alpha);
-  const darkest = Math.min(...skyLums) * alpha + 0.02 * (1 - alpha);
-  const inkL = luminance(INK);
-  const paperL = luminance(PAPER);
-  const needDark = Math.max(0, (brightest - LIGHT_TEXT_MAX) / (brightest - inkL));
-  const needLight = Math.max(0, (DARK_TEXT_MIN - darkest) / (paperL - darkest));
+  const glow = mixColor(a.glow, b.glow, t);
+  const glowAlpha = mix(a.glowAlpha, b.glowAlpha, t);
+  const horizon = mix(a.horizon, b.horizon, t);
+  // Light or dark text, whichever needs less veil to read. Then just that much veil.
+  const backdrop = { top, bottom, glow, glowAlpha, horizon, alpha };
+  const needDark = veilNeeded(backdrop, 'dark');
+  const needLight = veilNeeded(backdrop, 'light');
   const mode: SkyMode = needDark < needLight ? 'dark' : 'light';
   return {
     // Glass: frosted enough by day to read on any marble, deeper at night.
     alpha,
     top,
     bottom,
-    glow: mixColor(a.glow, b.glow, t),
-    glowAlpha: mix(a.glowAlpha, b.glowAlpha, t),
+    glow,
+    glowAlpha,
     glowX: mix(a.glowX, b.glowX, t),
     glowY: mix(a.glowY, b.glowY, t),
-    horizon: mix(a.horizon, b.horizon, t),
+    horizon,
     stars: mix(a.stars, b.stars, t),
     mode,
     veil: mode === 'dark' ? INK : PAPER,
