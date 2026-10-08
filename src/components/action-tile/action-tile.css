@@ -100,7 +100,7 @@
 .ds-tile[data-state='hover'] {
   --light-k: 1;
   --glass-lift: 1.5;
-  translate: 0 calc(-1 * var(--motion-lift));
+  translate: 0 calc(-1 * var(--motion-lift-large));
 }
 .ds-tile[data-pressed] {
   scale: 0.985;

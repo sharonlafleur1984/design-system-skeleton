@@ -23,7 +23,7 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**Light:** drawn with the shared glass recipe, the same one cards use. In the page shell the wheel is the light: rims are brightest facing it, shadows fall away from it, and the glass bends and softens the rays behind it (the bend shows in Chrome and Edge; other browsers show clear glass).',
           '',
-          '**Hover:** the tile rises 2px (`motion-lift`) and its shadow deepens; a chosen tile settles back down.',
+          '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. Hover only happens with a mouse; on phones the episodes move to a bottom bar.',
         ].join('\n'),
       },
     },

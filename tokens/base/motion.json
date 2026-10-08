@@ -132,7 +132,12 @@
     "lift": {
       "$type": "dimension",
       "$value": "2px",
-      "$description": "How far a tile or card rises on hover. Chosen ones settle back down."
+      "$description": "How far a small control rises on hover, like a chip or a small button."
+    },
+    "lift-large": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "How far a tile or card rises on hover. Large surfaces need a little more movement to read as lifting. Chosen ones settle back down."
     }
   }
 }

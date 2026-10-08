@@ -67,6 +67,7 @@
 .ds-card--interactive[data-state='hover'] {
   --glass-lift: 1.5;
   --g-extra-shadow: var(--card-shadow-hover);
+  translate: 0 calc(-1 * var(--motion-lift-large));
 }
 .ds-card--interactive:focus-within {
   outline: 2px solid var(--color-border-focus);
@@ -75,7 +76,9 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-card--interactive {
-    transition: box-shadow var(--motion-duration-base) var(--motion-easing-out);
+    transition:
+      box-shadow var(--motion-duration-fast) var(--motion-easing-out),
+      translate var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 
