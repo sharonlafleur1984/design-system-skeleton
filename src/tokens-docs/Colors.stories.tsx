@@ -19,7 +19,7 @@ export const Shared: Story = {
   ),
 };
 
-/** One status set for buttons and messages in every product. Never color alone: pair with an icon or label. */
+/** Status colors: every theme uses the same names, and each theme picks its own colors to fit its palette. Never color alone: pair with an icon or label. */
 export const Status: Story = {
   render: () => (
     <>

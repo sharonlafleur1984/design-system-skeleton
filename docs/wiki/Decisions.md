@@ -5,6 +5,17 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> Each theme picks its own status colors</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the base keeps the status names (error, warning, success, info, neutral) and the rules: always with an icon and a label, and text that passes 4.5:1. Each theme picks its own status values, so they fit its palette, type and card styling. Life Hub keeps today's set, which matches its Figma library. After Graduation gets a set tuned to its palette.
+- **Why:** each product has its own look on purpose. One shared status set couldn't match both palettes.
+- **Trade-off:** a fix to a status color no longer reaches every product at once.
+- **Replaces:** part of Sep 26, "One shared base, a theme for each product," which put one status color set in the base.
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> Motion: one timing scale, two moods (calm and energetic)</summary>
 
 - **Decided by:** Sharon
@@ -243,7 +254,7 @@ Newest first.
 <summary><b>Sep 26, 2026:</b> One shared base, a theme for each product, in its own repo</summary>
 
 - **Decided by:** Sharon
-- **Decision:** a shared base (structure, naming, scales, status colors, accessibility) with a theme per product, in its own repo.
+- **Decision:** a shared base (structure, naming, scales, status colors, accessibility) with a theme per product, in its own repo. (Updated Oct 7: status colors moved to each theme; the base keeps their names and rules.)
 - **Why:** three products will use it (Life Hub, After Graduation, a designer toolkit), and Life Hub needs it soon. Life Hub's Figma library already had the structure Sharon wants.
 - **Other options:** start inside After Graduation and move it later; separate systems per product.
 
@@ -253,7 +264,7 @@ Newest first.
 <summary><b>Sep 26, 2026:</b> Structure taken from the Life Hub Library</summary>
 
 - **Decided by:** Sharon
-- **Decision:** the base copies the Life Hub Library's structure: a 4-point spacing scale, radius by purpose, ink, surface, border and accent names, one status set, and the type roles (display, heading, body, label, data).
+- **Decision:** the base copies the Life Hub Library's structure: a 4-point spacing scale, radius by purpose, ink, surface, border and accent names, one status set (updated Oct 7: one set of status names; each theme picks the values), and the type roles (display, heading, body, label, data).
 - **Why:** it's already set up the way Sharon wants a design system organized. Only the look changes per product.
 
 </details>

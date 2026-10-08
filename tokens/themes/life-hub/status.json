@@ -1,6 +1,7 @@
 {
   "color": {
     "status": {
+      "$description": "Life Hub's status colors, from its Figma library. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1); the values are this theme's own.",
       "error": {
         "surface": {
           "$type": "color",
