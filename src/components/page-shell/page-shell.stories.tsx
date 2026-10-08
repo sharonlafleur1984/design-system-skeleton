@@ -11,13 +11,13 @@ const meta: Meta<typeof PageShell> = {
     docs: {
       description: {
         component: [
-          "After Graduation's page: a red header that runs edge to edge, and the page as a sheet rising over its bottom edge. On desktop the sheet sits in from the sides so the header's red frames it.",
+          "After Graduation's page: a red header that runs edge to edge, and the page as a sheet rising over its bottom edge. The sheet is exactly as wide as the header's content and always sits in from the screen sides, so the header's red frames it on every screen size.",
           '',
           '**When to use:** once per app, around every page.',
           '',
           "**When not to:** Life Hub has no shell yet; its theme doesn't define the shell tokens.",
           '',
-          '**Spacing:** all from tokens. `layout-gutter`, `layout-section` and `layout-title-gap` set the space; `shell-sheet-overlap` and `shell-sheet-inset` shape the sheet; `shell-content-max` caps the width. They change on phone, tablet and desktop on their own. Resize, or pick a size in the toolbar.',
+          "**Spacing:** all from tokens. `layout-gutter`, `layout-section` and `layout-title-gap` set the space; `shell-sheet-overlap` and `shell-sheet-inset` shape the sheet; `layout-content-max` (1024px, shared by every product) caps the width of the header's content and the sheet together. They change on phone, tablet and desktop on their own. Resize, or pick a size in the toolbar.",
           '',
           "**The light:** the wheel is the page's one light source, at the shared `light-from-right` and `light-top` tokens (Life Hub's sun sits in the same place). The red is lightest at the wheel and deepens with distance, the rays fade as they travel, and every glass surface on the page, tiles and cards, in light and dark mode, is lit from it with the shared glass recipe.",
           '',

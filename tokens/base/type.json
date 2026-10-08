@@ -30,6 +30,11 @@
     }
   },
   "type": {
+    "measure": {
+      "$type": "dimension",
+      "$value": "70ch",
+      "$description": "Longest a line of running text gets: about 70 characters. Readable lines are 45 to 75 characters (Baymard), and WCAG 1.4.8 caps them at 80. Set on paragraphs and list items in base.css, so text in a wide container still wraps at a readable length. Shared by every product."
+    },
     "display-cover": {
       "line-height": {
         "$type": "number",

@@ -3,8 +3,8 @@ import { useGlassLight } from '../glass-light/glass-light';
 import './page-shell.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
-// sheet that rises over its bottom edge. On desktop the sheet sits in from the screen sides so the
-// header's red frames the page. All spacing comes from the layout and shell tokens.
+// sheet that rises over its bottom edge (Oct 7: the sheet is as wide as the header's content and always
+// sits in from the screen sides, so the header's red frames the page on every screen size). All spacing comes from the layout and shell tokens.
 //
 // The art: a magic wheel on the right is the page's one light source. It sits a fixed distance from
 // the top (light-top, shared with Life Hub's sun), so it stays put whatever the header holds. The art runs behind the

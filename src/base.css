@@ -22,6 +22,12 @@ body {
   margin: 0;
 }
 
+/* Running text never gets longer than the measure (about 70 characters), however wide its container. */
+p,
+li {
+  max-inline-size: var(--type-measure);
+}
+
 /*
  * Motion moods. Each theme sets its default mood for arrivals and celebrations.
  * A page (or any section of one) can switch with data-motion="calm" or data-motion="energetic".

@@ -5,6 +5,39 @@
 Newest first.
 
 <details>
+<summary><b>Oct 7, 2026:</b> Max content width is 1024px, shared by every product</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the max content width (how wide a page's content gets) is 1024px, as `layout.content-max` in the shared base. It replaces After Graduation's `shell.content-max` (920px, which had no recorded source).
+- **Why:** 920px left a lot of red on each side, and the design system serves more than After Graduation. 1024px is the [US Web Design System](https://designsystem.digital.gov/utilities/layout-grid/)'s default container. Running text stays readable at any width because of the 70-character measure.
+- **Other options:** 960px ([GOV.UK](https://design-system.service.gov.uk/styles/layout/)); 1200px (almost no red on a 1280px laptop).
+- **Next:** shared for now. A product can get its own value later if it needs one.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Running text stops at a 70-character measure</summary>
+
+- **Decided by:** Sharon
+- **Decision:** paragraphs and list items are never wider than `type.measure`, 70ch (about 70 characters), in every product. The page's max content width is separate: tiles, tables and cards still use the full width.
+- **Why:** inside the 920px sheet, text ran about 95 to 100 characters per line. Readable lines are 45 to 75 characters ([Baymard](https://baymard.com/blog/line-length-readability)), and [WCAG 1.4.8](https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation.html) caps them at 80.
+- **Next:** starting value. Revisit if it looks wrong once real episode content is on the page.
+- **Details:** Foundations, Type, Measure in Storybook.
+
+</details>
+
+<details>
+<summary><b>Oct 7, 2026:</b> Page shell: the sheet is as wide as the header's content, with a margin on every screen size</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the page sheet is never wider than the header's content. On wide screens both cap at the max content width. On every screen size the sheet sits in from the screen sides by the same space as the header's content, so the two always line up. This replaces the Oct 4 rule that the sheet ran edge to edge on tablet and phone.
+- **Why:** on desktop the sheet ran much wider than the header, so the page didn't line up with it. On phones the sheet touched the screen sides and lost its margin.
+- **Tokens (After Graduation only):** `shell.sheet-inset` now 16 / 24 / 24, matching `layout.gutter`.
+- **Names:** the width cap is the **max content width** (often called the container). The space between the screen side and the content is the **margin** (Material 3's term); gutters are the space between columns.
+
+</details>
+
+<details>
 <summary><b>Oct 7, 2026:</b> Settings: a full-size dialog, opened from the top right of the header</summary>
 
 - **Decided by:** Sharon

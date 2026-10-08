@@ -1,7 +1,7 @@
 /* Page shell. Every space is a layout or shell token, so phone, tablet and desktop each get their
    own values without media queries here.
-   The art (light, rays and wheel) runs behind the whole shell, so on desktop it continues down the
-   frame on both sides of the sheet. The wheel is the one light source: the red is lightest there and
+   The art (light, rays and wheel) runs behind the whole shell, so it continues down the frame on both
+   sides of the sheet. The wheel is the one light source: the red is lightest there and
    deepens with distance, and the rays fade as they travel. */
 .ds-shell {
   --shell-light-x: calc(100% - var(--light-from-right));
@@ -47,7 +47,7 @@
 
 .ds-shell__inner {
   inline-size: 100%;
-  max-inline-size: var(--shell-content-max);
+  max-inline-size: var(--layout-content-max);
   margin-inline: auto;
 }
 
@@ -150,12 +150,15 @@
   margin-block-start: var(--layout-title-gap);
 }
 
-/* The sheet rises over the header's bottom edge by sheet-overlap. */
+/* The sheet rises over the header's bottom edge by sheet-overlap. It is exactly as wide as the header's
+   content: capped at layout-content-max, and never closer to the screen side than sheet-inset. */
 .ds-shell__sheet {
   position: relative;
   flex: 1;
+  align-self: center;
+  box-sizing: border-box; /* the width includes the sheet's padding, so its edges match the header's content */
+  inline-size: min(var(--layout-content-max), 100% - 2 * var(--shell-sheet-inset));
   margin-block-start: calc(-1 * var(--shell-sheet-overlap));
-  margin-inline: var(--shell-sheet-inset);
   padding-block: var(--layout-section);
   padding-inline: var(--layout-gutter);
   border-start-start-radius: var(--shell-sheet-radius);

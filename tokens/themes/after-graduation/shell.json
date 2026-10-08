@@ -1,14 +1,14 @@
 {
   "shell": {
-    "$description": "After Graduation's page shell: the header runs edge to edge and the page is a sheet that rises over its bottom edge. On desktop the sheet sits in from the screen sides, so the header's red frames the page. Theme-only: Life Hub has no shell yet.",
+    "$description": "After Graduation's page shell: the header runs edge to edge and the page is a sheet that rises over its bottom edge. The sheet is never wider than the header's content and always sits in from the screen sides, so the header's red frames the page on every screen size. Theme-only: Life Hub has no shell yet.",
     "sheet-inset": {
       "$type": "dimension",
-      "$value": "16px",
-      "$description": "Space between the screen side and the page sheet, so the header color shows around it. Desktop only.",
+      "$value": "24px",
+      "$description": "Smallest space between the screen side and the page sheet, so the header color always shows around it. Matches layout-gutter, so the sheet's edges line up with the header's content on every screen size.",
       "$extensions": {
         "com.sharon.screen-class": {
-          "compact": "0px",
-          "medium": "0px"
+          "compact": "16px",
+          "medium": "24px"
         }
       }
     },
@@ -32,11 +32,6 @@
       "$type": "color",
       "$value": "#6e0f20",
       "$description": "The deep red the header fades to at its bottom, shown around the sheet on desktop."
-    },
-    "content-max": {
-      "$type": "dimension",
-      "$value": "920px",
-      "$description": "Widest the page's content gets, in the header and the sheet. Wider screens get more frame, not longer lines."
     },
     "entrance": {
       "$description": "The header's entrance when a page opens, from the prototype: the title slams in, speed lines burst behind it, the subtitle fades down and the magic circle turns. Slowed to about 1.4 times the prototype's speed, which felt too fast. Its own tokens so the header can be dramatic while cards and lists keep the quicker energetic arrival.",
