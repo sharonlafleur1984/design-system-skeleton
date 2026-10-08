@@ -21,6 +21,10 @@ import './action-tile.css';
 // - With href, a tile goes to a page (Link).
 // - With onPress, a tile does an action (Button).
 // Each tile is one click target: never put a button inside a tile.
+//
+// Tiles never stack. Tablet and up: three across. Phones (under 600px): the same tiles become the
+// bottom bar, each an icon and a short name, so it's one set of tabs with one selection on every screen.
+// Action tiles (links and buttons) aren't navigation, so on phones they stack instead.
 
 const SwitchContext = createContext(false);
 
@@ -51,10 +55,10 @@ export interface ActionTileGroupProps {
   behavior?: 'switch' | 'actions';
   children: ReactNode;
 }
-/** Lays tiles out three across when there's room, stacked when there isn't. */
+/** Three across on tablet and up. On phones, switch tiles become the bottom bar and action tiles stack. */
 export function ActionTileGroup({ behavior = 'actions', children, ...rest }: ActionTileGroupProps) {
   return (
-    <div className="ds-tiles">
+    <div className={`ds-tiles ds-tiles--${behavior}`}>
       {behavior === 'switch' ? (
         <SwitchContext.Provider value>
           <AriaTabList aria-label={rest['aria-label']} className="ds-tiles__list">
@@ -77,6 +81,10 @@ export interface ActionTileProps {
   title: ReactNode;
   /** Optional. One short line about what happens there. */
   description?: ReactNode;
+  /** The tile's icon in the phone bottom bar. Decorative: the name next to it is what's read out. */
+  icon?: ReactNode;
+  /** One or two words for the phone bottom bar, like "Schools". Falls back to the title. */
+  shortTitle?: ReactNode;
   /** In a switch group: matches the ActionTilePanel it shows. */
   id?: Key;
   /** Goes to this page. */
@@ -88,7 +96,7 @@ export interface ActionTileProps {
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, id, href, onPress, isDisabled, ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, ...rest }: ActionTileProps) {
   const inSwitch = useContext(SwitchContext);
   const body = (
     <>
@@ -98,6 +106,14 @@ export function ActionTile({ label, title, description, id, href, onPress, isDis
       {description && <span className="ds-tile__description">{description}</span>}
       <span className="ds-tile__star" aria-hidden="true">
         ✦
+      </span>
+      <span className="ds-tile__bar">
+        {icon && (
+          <span className="ds-tile__bar-icon" aria-hidden="true">
+            {icon}
+          </span>
+        )}
+        <span className="ds-tile__bar-name">{shortTitle ?? title}</span>
       </span>
     </>
   );

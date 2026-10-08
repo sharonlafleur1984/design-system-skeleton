@@ -6,20 +6,15 @@
   display: contents;
 }
 
-.ds-tiles {
-  container-type: inline-size;
-}
+/* Tiles never stack: three across on tablet and up (titles may wrap to two lines on small tablets).
+   On phones, switch tiles become the bottom bar and action tiles stack, at the end of this file. */
 .ds-tiles__list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
 }
-/* 37.5rem is 600px, the phone (compact) size from the layout tokens. CSS can't read a token here. */
-@container (inline-size < 37.5rem) {
-  .ds-tiles__list {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
-  }
+.ds-tile__bar {
+  display: none;
 }
 
 .ds-tile {
@@ -151,5 +146,87 @@
   }
   .ds-tile__glass {
     transition: background-color var(--motion-duration-fast) var(--motion-easing-out);
+  }
+}
+
+/* Phones (under 600px, the compact screen size from the layout tokens; CSS can't read a token in a
+   media query): switch tiles become the bottom bar. Same tabs, same selection, new look: an icon and a
+   short name, pinned to the bottom of the screen within thumb reach. The chosen tab gets a soft pill
+   behind its icon and the accent color, so color is never the only signal. */
+@media (width < 37.5rem) {
+  .ds-tiles--actions .ds-tiles__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .ds-tiles--switch .ds-tiles__list {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: 10;
+    gap: 0;
+    padding-block: var(--space-2) max(var(--space-2), env(safe-area-inset-bottom));
+    padding-inline: var(--layout-gutter);
+    background: var(--color-surface-glass);
+    -webkit-backdrop-filter: blur(var(--material-blur));
+    backdrop-filter: blur(var(--material-blur));
+    box-shadow: var(--shadow-float);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    min-block-size: 0;
+    padding: var(--space-1);
+    box-shadow: none;
+    color: var(--color-ink-secondary);
+    text-align: center;
+    translate: none;
+    scale: none;
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile::before,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__glass,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__label,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__title,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__description,
+  .ds-tiles--switch .ds-tiles__list .ds-tile__star {
+    display: none;
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile__bar {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+  }
+  .ds-tiles--switch .ds-tile__bar-icon {
+    display: grid;
+    place-items: center;
+    padding-block: var(--space-1);
+    padding-inline: var(--space-5);
+    border-radius: var(--radius-pill);
+  }
+  .ds-tiles--switch .ds-tile__bar-icon svg {
+    inline-size: var(--bottom-bar-icon);
+    block-size: var(--bottom-bar-icon);
+  }
+  .ds-tiles--switch .ds-tile__bar-name {
+    font-family: var(--type-body-small-family);
+    font-size: var(--type-body-small-size);
+    font-weight: var(--type-body-small-weight);
+    line-height: var(--type-body-small-line-height);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-hovered]:not([data-selected]) {
+    color: var(--color-ink-primary);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-selected],
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='chosen'] {
+    color: var(--color-accent-text);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-selected] .ds-tile__bar-icon,
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='chosen'] .ds-tile__bar-icon {
+    background: var(--color-accent-soft);
+  }
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-focus-visible],
+  .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='focus'] {
+    outline-color: var(--color-accent-text);
+    border-radius: var(--radius-control);
   }
 }

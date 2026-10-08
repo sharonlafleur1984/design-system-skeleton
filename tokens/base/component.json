@@ -14,6 +14,14 @@
       "$value": "18px"
     }
   },
+  "bottom-bar": {
+    "$description": "The bottom bar: on phones, a page's main navigation moves to the bottom of the screen, within thumb reach.",
+    "icon": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Icon size in the bottom bar."
+    }
+  },
   "dialog": {
     "$description": "Full-size dialogs, like Settings. On phones they fill the screen.",
     "max-inline": {

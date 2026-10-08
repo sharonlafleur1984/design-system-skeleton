@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageShell } from './page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '../action-tile/action-tile';
@@ -14,6 +15,8 @@ const meta: Meta<typeof PageShell> = {
           "After Graduation's page: a red header that runs edge to edge, and the page as a sheet rising over its bottom edge. The sheet is exactly as wide as the header's content and always sits in from the screen sides, so the header's red frames it on every screen size.",
           '',
           '**When to use:** once per app, around every page.',
+          '',
+          '**Navigation:** pass page-switching tiles as `navigation`. Tablet and up, they sit three across in the header. On phones they become the bottom bar, within thumb reach; give each tile an `icon` and a `shortTitle` for it. The sheet leaves room at the bottom so the bar never covers content.',
           '',
           "**When not to:** Life Hub has no shell yet; its theme doesn't define the shell tokens.",
           '',
@@ -34,14 +37,50 @@ const meta: Meta<typeof PageShell> = {
 export default meta;
 type Story = StoryObj<typeof PageShell>;
 
+// Bottom bar icons for the sample (simple line icons, 24 x 24, drawn in the text color).
+const icon = (d: ReactNode) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round">
+    {d}
+  </svg>
+);
+const icons = {
+  schools: icon(
+    <>
+      <path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z" />
+      <path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5" />
+      <path d="M22 9.5v5" />
+    </>,
+  ),
+  finances: icon(
+    <>
+      <path d="M5 11a7 6 0 0 1 12.5-3.5L20 6v4l1 1v3h-2a7 6 0 0 1-3 2.5V19h-3v-2h-2v2H8v-2.7A6 6 0 0 1 5 11Z" />
+      <path d="M10 8.5h3" />
+      <circle cx="16" cy="10.5" r="0.5" fill="currentColor" />
+    </>,
+  ),
+  dates: icon(
+    <>
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M4 10h16M8 3v4M16 3v4" />
+      <path d="M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 16.5h.01M12 16.5h.01" strokeWidth={2.25} />
+    </>,
+  ),
+};
+
 const episodes = [
-  { id: 'explore', label: 'Episode 1', title: 'Explore Schools', description: 'Select your favorites' },
-  { id: 'pay', label: 'Episode 2', title: 'Financial Planning', description: 'How will you pay for it?' },
-  { id: 'dates', label: 'Episode 3', title: 'Important Dates', description: "What's next, step by step" },
+  { id: 'explore', label: 'Episode 1', title: 'Explore Schools', shortTitle: 'Schools', icon: icons.schools, description: 'Select your favorites' },
+  { id: 'pay', label: 'Episode 2', title: 'Financial Planning', shortTitle: 'Finances', icon: icons.finances, description: 'How will you pay for it?' },
+  { id: 'dates', label: 'Episode 3', title: 'Important Dates', shortTitle: 'Dates', icon: icons.dates, description: "What's next, step by step" },
 ];
 
-/** The shell with the episodes as action tiles, as After Graduation uses it. Pick an episode to switch pages. Replays its entrance each time the story opens. */
-export const WithEpisodes: Story = {
+/**
+ * The shell with navigation, as After Graduation uses it for its episodes. Pick one to switch
+ * pages. Tablet and up: three tiles across. Phones (under 600px): the same tiles become the bottom bar,
+ * each an icon and a short name. Pick a phone size in the toolbar to see it. Replays its entrance each
+ * time the story opens.
+ */
+export const WithNavigation: Story = {
+  name: 'With navigation',
   render: () => (
     <ActionTileSwitch defaultSelectedKey="explore">
       <PageShell
@@ -50,7 +89,7 @@ export const WithEpisodes: Story = {
         navigation={
           <ActionTileGroup aria-label="Episodes" behavior="switch">
             {episodes.map((e) => (
-              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} />
+              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} shortTitle={e.shortTitle} icon={e.icon} />
             ))}
           </ActionTileGroup>
         }

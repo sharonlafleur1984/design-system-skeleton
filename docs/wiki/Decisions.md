@@ -1,8 +1,19 @@
 # Decisions
 
-**Last updated:** October 7, 2026
+**Last updated:** October 8, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>
+
+- **Decided by:** Sharon
+- **Decision:** tiles that switch pages stay three across on tablet and up, with titles wrapping to two lines on small tablets if needed. On phones (under 600px) the same tiles become the bottom bar: an icon and a short name each, with a soft pill behind the chosen one. Tiles that are plain links or buttons still stack on phones. The switch is by screen size, not by the width of the tile row.
+- **Why:** the tiles were stacking on tablets up to about 648px, because the row sits inside the page margins. Three across fits at every tablet width (measured 600 to 839px, nothing overflows). Phones were always meant to use the bottom bar, as in the After Graduation prototype.
+- **How:** it's one set of tabs with two looks, so keyboard, screen readers and the chosen page stay the same on every screen. New tile props `icon` and `shortTitle`; new token `bottom-bar.icon` (24px).
+- **Details:** Components, Page shell, With navigation in Storybook (renamed from With episodes).
+
+</details>
 
 <details>
 <summary><b>Oct 7, 2026:</b> Max content width is 1024px, shared by every product</summary>

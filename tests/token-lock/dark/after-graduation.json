@@ -2,6 +2,7 @@
   "callout-gap": "10px",
   "callout-padding-inline": "14px",
   "callout-icon": "18px",
+  "bottom-bar-icon": "24px",
   "dialog-max-inline": "1040px",
   "dialog-max-block": "760px",
   "settings-nav-width": "224px",

@@ -166,3 +166,14 @@
   background: var(--color-surface-page);
   color: var(--color-ink-primary);
 }
+
+/* Phones: the navigation tiles become the bottom bar (see action tile), so the header loses the gap
+   above them and the sheet leaves room at the bottom so the bar never covers the last lines. */
+@media (width < 37.5rem) {
+  .ds-shell__nav:has(.ds-tiles--switch) {
+    margin-block-start: 0;
+  }
+  .ds-shell:has(.ds-tiles--switch) .ds-shell__sheet {
+    padding-block-end: calc(var(--layout-section) + var(--bottom-bar-icon) + var(--type-body-small-size) * 2 + var(--space-7) + env(safe-area-inset-bottom));
+  }
+}

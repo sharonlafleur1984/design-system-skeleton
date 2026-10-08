@@ -51,6 +51,12 @@ export function PageShell({ title, subtitle, navigation, actions, children, clas
     const update = () => {
       const tiles = el.querySelectorAll<HTMLElement>('.ds-shell__header .ds-tile');
       if (!tiles.length) return;
+      // On phones the tiles are the bottom bar, not in the header: nothing to fade behind.
+      if (getComputedStyle(tiles[0].parentElement!).position === 'fixed') {
+        el.style.setProperty('--shell-glass-top', '-100vh');
+        el.style.setProperty('--shell-glass-bottom', '-100vh');
+        return;
+      }
       const top = el.getBoundingClientRect().top;
       let a = Infinity;
       let b = -Infinity;
