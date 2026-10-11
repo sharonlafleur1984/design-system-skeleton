@@ -1,5 +1,9 @@
 # Design system
 
+**[See it live in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes in the toolbar.
+
+> **This is a work in progress.** In this day of AI design, things are moving fast, and I'm moving a million miles a minute to get relevant design experience for this new age as I look for my next career opportunity. I'd love to share what I'm learning with whoever I end up with next. You can see the whole thing in all its messy glory, but don't expect it to be polished.
+
 One design system for all my products: a shared base, with a theme for each product.
 
 **The problem:** each of my products was defining its own colors, spacing and type. A fix in one never reached the others, and the After Graduation prototype alone had 98 different hex colors in its CSS.
