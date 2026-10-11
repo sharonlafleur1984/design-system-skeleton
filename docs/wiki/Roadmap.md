@@ -1,16 +1,19 @@
 # Roadmap
 
-**Last updated:** September 26, 2026
+**Last updated:** October 11, 2026
 
 | Now | Next | Later |
 |---|---|---|
-| **Do both themes look right?** Sharon reviews the tokens and merges colors | **Can products use it?** After Graduation and Life Hub load the theme CSS | **Designer toolkit:** a third theme |
-| **Can anyone see it?** Storybook published with a link | **First components:** button, card, chip, built after the After Graduation usability sessions | **Figma in sync** with the code |
+| **What After Graduation needs next:** a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42) | **Can Life Hub use it?** Life Hub loads its theme and builds its pages from these components | **Designer toolkit:** a third theme |
+| **Exploring:** a [Life Hub header that follows the time of day](https://github.com/sharonlafleur1984/design-system-skeleton/pull/36) | | **Figma in sync** with the code |
 
 ## Milestones
 
 | Milestone | Done when | Timing |
 |---|---|---|
-| Themes reviewed | Sharon has merged the colors on the Dashboard and approved both themes | Aiming for Oct 2026 |
-| Storybook published | A public link opens Storybook with the theme switcher | Not set yet |
-| First components | Button, card and chip pass the Storybook gate in both themes | After the After Graduation usability sessions |
+| Themes reviewed | Sharon has approved both themes | Done, Oct 7, 2026 ([Decisions](Decisions)) |
+| Storybook published | A public link opens Storybook with the theme switcher | Done ([Storybook](https://designsystemskeleton.netlify.app/)) |
+| First components | Button, card and chip pass the Storybook gate in both themes | Done, with 13 components and a Settings pattern on React Aria |
+| After Graduation uses it | After Graduation installs a pinned version | Done, [v0.2.0](https://github.com/sharonlafleur1984/after-graduation/blob/main/package.json) |
+| After Graduation's next pages | The phone bottom bar, icon set and settings menu pass the Storybook gate in both themes | Not set yet |
+| Life Hub uses it | Life Hub installs a pinned version | Not set yet |
