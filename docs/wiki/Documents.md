@@ -18,6 +18,7 @@ Private files aren't here. They're listed in Sharon's private Notion document in
 
 | Document | Read this when |
 |---|---|
+| [Storybook](https://designsystemskeleton.netlify.app/) ([source: src/components](../../tree/main/src/components)) | You want to see every component and token, in every theme. Switch themes in the toolbar. |
 | [README](../../blob/main/README.md) | You want to know what this is and how to run it |
 | [CLAUDE.md](../../blob/main/CLAUDE.md) | You're an AI or developer starting work |
 | [Tokens](../../tree/main/tokens) | Changing a value: `base/` for everything shared, `themes/<product>/` for one product's look |
