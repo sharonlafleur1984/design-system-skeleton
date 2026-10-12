@@ -61,8 +61,8 @@ import { skyHourFor, sunTimes } from './sun';
 import './sky-header.css';
 
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
-// day. The orb on the Let's chat button, in the page's own color (lighter by day, deeper at night), is
-// where the light comes from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
+// day. The orb on the Let's chat button, a glowing light in the page's own color (its lightest shades,
+// glowing stronger at night), is where the light comes from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
 // same recipe as After Graduation's episode tabs (glass.css and useGlassLight).
 
 export interface SkyHeaderProps {
@@ -225,10 +225,10 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
-    // The orb is the page's own color all day: its palette's light, middle and deep shades.
-    '--orb-light': `var(--palette-${palette}-200)`,
-    '--orb-mid': `var(--palette-${palette}-500)`,
-    '--orb-deep': `var(--palette-${palette}-800)`,
+    // The orb is the page's own color all day, only its three lightest shades, so it always reads as light.
+    '--orb-1': `var(--palette-${palette}-100)`,
+    '--orb-2': `var(--palette-${palette}-200)`,
+    '--orb-3': `var(--palette-${palette}-300)`,
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;
