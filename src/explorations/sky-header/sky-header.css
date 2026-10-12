@@ -5,6 +5,8 @@
 @property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #faf7f1; }
 @property --sky-glow { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
 @property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
+@property --sky-orb-core { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
+@property --sky-orb-edge { syntax: '<color>'; inherits: true; initial-value: #d9c080; }
 @property --sky-veil { syntax: '<color>'; inherits: true; initial-value: transparent; }
 @property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
@@ -58,7 +60,7 @@
   font-family: var(--font-family-body);
   transition:
     --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
-    --sky-veil 60s linear,
+    --sky-orb-core 60s linear, --sky-orb-edge 60s linear, --sky-veil 60s linear,
     --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
 }
 /* Glass: the marble shows through, blurred, with a rim lit from the orb like the cards. */
@@ -225,24 +227,15 @@
   outline-offset: 2px;
 }
 
-/* The orb: the same animated orb as the Life Hub page (size, fill and glow copied from it), and the
-   header's light. */
+/* The orb: a solid sphere, the header's light. Its colors come from sky.ts: a small sun by day, warm at
+   sunset, violet at night. Only its own soft edge glows; the sky's light is the glow behind it. */
 .lh-sky__orb {
-  position: relative;
   flex: none;
   inline-size: 32px;
   block-size: 32px;
-  overflow: hidden;
   border-radius: var(--radius-pill);
-  background: #8b6cf0;
-  box-shadow: 0 0 12px 1px rgba(139, 108, 240, 0.4);
-}
-.lh-sky__orb video {
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: cover;
-  border-radius: inherit;
+  background: radial-gradient(circle at 38% 34%, var(--sky-orb-core) 0%, color-mix(in srgb, var(--sky-orb-core) 45%, var(--sky-orb-edge)) 38%, var(--sky-orb-edge) 100%);
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--sky-orb-edge) 55%, transparent);
 }
 
 /* Glass at its full lighting, as before the orb became the source: only the light's direction comes

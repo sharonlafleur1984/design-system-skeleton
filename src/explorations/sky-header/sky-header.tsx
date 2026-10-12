@@ -58,50 +58,11 @@ import { Card } from '../../components/card/card';
 import { useGlassLight } from '../../components/glass-light/glass-light';
 import { greetingAt, makeStars, skyAt } from './sky';
 import { skyHourFor, sunTimes } from './sun';
-import orbWebm from './assets/orb.webm';
-import orbMp4 from './assets/orb.mp4';
-import orbPoster from './assets/orb-poster.jpg';
 import './sky-header.css';
 
-/** The same swirl as the Life Hub page's orb: a 6 second loop slowed to about 24 seconds. */
-const ORB_RATE = 0.25;
-
-/** Life Hub's orb, the header's light. With reduced motion, it holds still on its first frame. */
-function Orb() {
-  const video = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const v = video.current;
-    if (!v) return;
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const set = () => {
-      v.defaultPlaybackRate = ORB_RATE;
-      v.playbackRate = ORB_RATE;
-      if (mq.matches) {
-        v.pause();
-        v.currentTime = 0;
-      } else v.play().catch(() => {});
-    };
-    set();
-    v.addEventListener('loadeddata', set);
-    mq.addEventListener('change', set);
-    return () => {
-      v.removeEventListener('loadeddata', set);
-      mq.removeEventListener('change', set);
-    };
-  }, []);
-  return (
-    <span className="lh-sky__orb" aria-hidden="true">
-      <video ref={video} muted loop playsInline autoPlay preload="auto" poster={orbPoster}>
-        <source src={orbWebm} type="video/webm" />
-        <source src={orbMp4} type="video/mp4" />
-      </video>
-    </span>
-  );
-}
-
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
-// day. The orb on the Let's chat button (the same animated orb as the Life Hub page) is where the light
-// comes from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
+// day. The orb on the Let's chat button (a small sun by day, violet at night) is where the light comes
+// from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
 // same recipe as After Graduation's episode tabs (glass.css and useGlassLight).
 
 export interface SkyHeaderProps {
@@ -238,6 +199,8 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
+    '--sky-orb-core': sky.orbCore,
+    '--sky-orb-edge': sky.orbEdge,
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;
@@ -260,7 +223,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
       <div className="lh-sky__actions">
         <AriaButton className="ds-glass lh-sky__action lh-sky__action--lit-within" onPress={onChat}>
           <span className="lh-sky__action-glass" aria-hidden="true" />
-          <Orb />
+          <span className="lh-sky__orb" aria-hidden="true" />
           Let&rsquo;s chat
         </AriaButton>
         <AriaButton className="ds-glass lh-sky__action" onPress={onOpenSettings}>

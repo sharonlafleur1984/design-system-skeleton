@@ -50,7 +50,7 @@ export default meta;
 type Story = StoryObj<Args>;
 
 const copy = {
-  name: 'Alex',
+  name: 'Alexis',
   meta: 'Updated today at 4:12 pm',
   prompt: 'What can I help you knock off your plate today?',
   settingsCount: 2,
