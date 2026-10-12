@@ -78,6 +78,8 @@ export interface SkyHeaderProps {
   greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
   material?: 'sky' | 'glass';
+  /** How the header meets the page: clean, a lit rim and cast shadow; fade, the sky melts into the page. */
+  edge?: 'clean' | 'fade';
   /** The page's palette, like 'lilacs-lavender' (the area's color family). The orb uses its shades. */
   palette?: string;
   /** The page's marble image as a CSS url with a full address, so its swirl continues faintly through the sky. */
@@ -133,7 +135,7 @@ function nowHour() {
   return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', palette = 'earth-moss', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', edge = 'clean', palette = 'earth-moss', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -237,7 +239,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     <>
     <header
       ref={ref}
-      className={`lh-sky lh-sky--${material}${instant ? ' lh-sky--instant' : ''}`}
+      className={`lh-sky lh-sky--${material}${edge === 'fade' ? ' lh-sky--fade' : ''}${instant ? ' lh-sky--instant' : ''}`}
       data-theme="life-hub"
       data-mode={sky.mode}
       style={style}

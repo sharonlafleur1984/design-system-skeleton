@@ -25,7 +25,7 @@ const swirlOf = (name: string) => `url('${new URL(findMarble(name).texture, docu
 
 type Version = 'glass' | 'sky';
 const labels: Record<Version, string> = { glass: 'A: glass', sky: 'B: solid sky' };
-type Args = { hour: number; background: string; version: Version };
+type Args = { hour: number; background: string; version: Version; edge: 'clean' | 'fade' };
 
 const meta: Meta<Args> = {
   title: 'Explorations/Life Hub sky header',
@@ -43,10 +43,11 @@ const meta: Meta<Args> = {
       },
     },
   },
-  args: { hour: 18.5, background: 'Dashboard', version: 'glass' },
+  args: { hour: 18.5, background: 'Dashboard', version: 'glass', edge: 'clean' },
   argTypes: {
     hour: { control: { type: 'range', min: 0, max: 24, step: 0.25 }, description: 'Hour of the day (18.5 is 6:30 pm)' },
     background: { control: 'select', options: marbleNames },
+    edge: { control: { type: 'inline-radio', labels: { clean: 'Clean edge', fade: 'Fade' } }, options: ['clean', 'fade'], description: 'How the header meets the page' },
     version: { control: { type: 'inline-radio', labels: { glass: 'A: glass', sky: 'B: solid sky' } }, options: ['glass', 'sky'] },
   },
 };
@@ -83,13 +84,14 @@ function MarblePage({ background, mode, children }: { background: string; mode?:
 const SUN = sunTimes(new Date());
 
 /** The header at a clock hour: the sky follows the real-clock mapping, the greeting follows the clock. */
-const header = (version: Version, hour: number, background: string) => (
+const header = (version: Version, hour: number, background: string, edge: 'clean' | 'fade' = 'clean') => (
   <SkyHeader
     {...copy}
     hour={skyHourFor(hour, SUN)}
     greetingHour={hour}
     instant
     material={version}
+    edge={edge}
     swirl={swirlOf(background)}
         palette={findMarble(background).palette}
     areaNight={findMarble(background).night}
@@ -206,7 +208,7 @@ function useAppearance() {
  * One marble page with the header, following the appearance setting: with Follow the sun, the page fades
  * to dark at dusk and back at dawn; with Dark, the header holds a still night sky.
  */
-function Scene({ version, hour, background, setting, deviceDark }: { version: Version; hour: number; background: string; setting: ModeSetting; deviceDark: boolean }) {
+function Scene({ version, hour, background, setting, deviceDark, edge = 'clean' }: { version: Version; hour: number; background: string; setting: ModeSetting; deviceDark: boolean; edge?: 'clean' | 'fade' }) {
   const night = findMarble(background).night;
   const skyHour = skyHourFor(hour, SUN);
   const skyMode = skyAt(skyHour, { material: version, areaNight: night }).mode;
@@ -223,6 +225,7 @@ function Scene({ version, hour, background, setting, deviceDark }: { version: Ve
         greetingHour={hour}
         instant
         material={version}
+        edge={edge}
         swirl={swirlOf(background)}
         palette={findMarble(background).palette}
         areaNight={night}
@@ -236,14 +239,14 @@ const deviceDarkOf = (context: { globals: Record<string, unknown> }) => context.
 /** A whole day sped up on one marble. Pick the background and version in Controls. */
 export const PlayADay: Story = {
   argTypes: { hour: { table: { disable: true } } },
-  render: function Render({ background, version }, context) {
+  render: function Render({ background, version, edge }, context) {
     const { hour, controls } = useDay(SUN.sunrise - 0.75);
     const { setting, switcher } = useAppearance();
     return (
       <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
         {switcher}
         {controls}
-        <Scene version={version} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} />
+        <Scene version={version} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} edge={edge} />
       </div>
     );
   },
@@ -252,7 +255,7 @@ export const PlayADay: Story = {
 /** A and B on the same marble, playing together. */
 export const CompareAAndB: Story = {
   argTypes: { hour: { table: { disable: true } }, version: { table: { disable: true } } },
-  render: function Render({ background }, context) {
+  render: function Render({ background, edge }, context) {
     const { hour, controls } = useDay(SUN.sunrise - 0.75);
     const { setting, switcher } = useAppearance();
     return (
@@ -262,7 +265,7 @@ export const CompareAAndB: Story = {
         {(['glass', 'sky'] as Version[]).map((v) => (
           <section key={v} aria-label={labels[v]} style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{labels[v]}</p>
-            <Scene version={v} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} />
+            <Scene version={v} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} edge={edge} />
           </section>
         ))}
       </div>
@@ -275,7 +278,7 @@ const ALL = 'All marbles';
 export const EveryBackground: Story = {
   args: { background: ALL },
   argTypes: { hour: { table: { disable: true } }, background: { control: 'select', options: [ALL, ...marbleNames] } },
-  render: function Render({ version, background }, context) {
+  render: function Render({ version, background, edge }, context) {
     const { hour, controls } = useDay(SUN.sunrise - 0.75);
     const { setting, switcher } = useAppearance();
     return (
@@ -285,7 +288,7 @@ export const EveryBackground: Story = {
         {marbles.filter((m) => background === ALL || m.name === background).map((m) => (
           <section key={m.name} aria-label={m.name} style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{m.name}</p>
-            <Scene version={version} hour={hour} background={m.name} setting={setting} deviceDark={deviceDarkOf(context)} />
+            <Scene version={version} hour={hour} background={m.name} setting={setting} deviceDark={deviceDarkOf(context)} edge={edge} />
           </section>
         ))}
       </div>
@@ -295,17 +298,18 @@ export const EveryBackground: Story = {
 
 /** One moment, still. Use the hour slider in Controls. */
 export const AtAnHour: Story = {
-  render: ({ hour, background, version }) => <MarblePage background={background}>{header(version, hour, background)}</MarblePage>,
+  render: ({ hour, background, version, edge }) => <MarblePage background={background}>{header(version, hour, background, edge)}</MarblePage>,
 };
 
 /** Follows your computer's clock. */
 export const Live: Story = {
   argTypes: { hour: { table: { disable: true } } },
-  render: ({ background, version }) => (
+  render: ({ background, version, edge }) => (
     <MarblePage background={background}>
       <SkyHeader
         {...copy}
         material={version}
+        edge={edge}
         swirl={swirlOf(background)}
         palette={findMarble(background).palette}
         areaNight={findMarble(background).night}
@@ -314,7 +318,7 @@ export const Live: Story = {
   ),
 };
 
-function SettingsDemo({ background, deviceDark }: { background: string; deviceDark: boolean }) {
+function SettingsDemo({ background, deviceDark, edge }: { background: string; deviceDark: boolean; edge: 'clean' | 'fade' }) {
   // A sped-up day on the real clock, starting mid-afternoon so sunset comes soon.
   const { hour, controls } = useDay(15.5);
   const { setting, switcher } = useAppearance();
@@ -322,7 +326,7 @@ function SettingsDemo({ background, deviceDark }: { background: string; deviceDa
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
       {switcher}
       {controls}
-      <Scene version="glass" hour={hour} background={background} setting={setting} deviceDark={deviceDark} />
+      <Scene version="glass" hour={hour} background={background} setting={setting} deviceDark={deviceDark} edge={edge} />
     </div>
   );
 }
@@ -335,5 +339,5 @@ function SettingsDemo({ background, deviceDark }: { background: string; deviceDa
  */
 export const Settings: Story = {
   argTypes: { hour: { table: { disable: true } }, version: { table: { disable: true } } },
-  render: ({ background }, context) => <SettingsDemo background={background} deviceDark={context.globals.mode === 'dark'} />,
+  render: ({ background, edge }, context) => <SettingsDemo background={background} deviceDark={context.globals.mode === 'dark'} edge={edge} />,
 };

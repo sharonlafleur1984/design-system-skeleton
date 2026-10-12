@@ -110,6 +110,55 @@
   opacity: calc(0.06 + var(--sky-stars) * 0.1);
 }
 
+/* The divider between the header and the marble, lit from the orb (--edge-x is the orb's spot across).
+   Two styles (edge prop): clean, a lit rim with a shadow cast on the page; fade, the sky dissolves into
+   the page with no line at all.
+   Clean: near the light, a brighter rim and a short, dark, crisp shadow; farther away, a fainter rim and a
+   longer, softer shadow that still reads clearly under the greeting. The same glass tokens as every other
+   shadow (glass.css); the reach and falloff are estimates. */
+.lh-sky__edge {
+  position: relative;
+  z-index: 1;
+  block-size: 0;
+  pointer-events: none;
+}
+.lh-sky__edge::before,
+.lh-sky__edge::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+}
+/* Near the light */
+.lh-sky__edge::before {
+  block-size: calc(var(--glass-cast-distance) * 2);
+  background:
+    linear-gradient(var(--_rim, var(--glass-rim-color)), var(--_rim, var(--glass-rim-color))) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-contact), transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);
+}
+/* Farther away: longer and softer, reaching well under the greeting */
+.lh-sky__edge::after {
+  block-size: calc(var(--glass-cast-blur) * 1.8);
+  background:
+    linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint)) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-cast), color-mix(in srgb, var(--glass-cast) 40%, transparent) 35%, transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.75) 45%, black 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.75) 45%, black 100%);
+}
+/* Fade: no edge; the sky melts into the page below, and the buttons line up with the top of the card
+   since there's no bottom line to anchor them to. */
+.lh-sky--fade {
+  align-items: flex-start;
+  padding-block-end: calc(var(--space-6) + 56px);
+  -webkit-mask: linear-gradient(black calc(100% - 96px), transparent);
+  mask: linear-gradient(black calc(100% - 96px), transparent);
+}
+.lh-sky--fade + .lh-sky__edge {
+  display: none;
+}
+
 /* Stars fade in at dusk and twinkle slowly. */
 .lh-sky__stars {
   position: absolute;
@@ -154,14 +203,15 @@
 }
 .lh-sky .lh-sky__card,
 .lh-sky__action {
-  --g-rim-color: var(--glass-rim-color);
+  /* Brighter light, brighter highlights: the rim and inner highlight follow the sky's light strength. */
+  --g-rim-color: color-mix(in srgb, white calc(70% + var(--sky-glow-a) * 30%), transparent);
   --g-rim-width: var(--glass-rim-width);
   --g-rim-strength: var(--glass-rim-strength);
   --g-rim-glint: var(--glass-rim-glint);
   --g-rim-spread-x: var(--glass-rim-spread-x);
   --g-rim-spread-y: var(--glass-rim-spread-y);
   --g-rim-base: var(--glass-rim-faint);
-  --g-highlight: var(--glass-highlight);
+  --g-highlight: color-mix(in srgb, var(--palette-paper-warm) calc(45% + var(--sky-glow-a) * 40%), transparent);
   --g-shade: var(--glass-shade);
   --g-cast: var(--glass-cast);
   --g-contact: var(--glass-contact);
