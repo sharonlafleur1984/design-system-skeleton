@@ -209,8 +209,8 @@
   z-index: -1;
   border-radius: inherit;
   background: var(--lh-sky-glass);
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
-  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+  /* Truly clear: no blur, so the stars and swirl show straight through. Only the edges bend the sky. */
+  backdrop-filter: var(--glass-bend, none);
 }
 .lh-sky__action[data-hovered] {
   --light-k: 1;
@@ -261,6 +261,8 @@
   --g-rim-spread-x: 160%;
   --g-rim-spread-y: 260%;
   --g-rim-glint: 0;
+  /* No inner shade: light from inside leaves no dark side, and an even shade all round reads as a fill. */
+  --g-shade: transparent;
 }
 
 .lh-sky__icon {
