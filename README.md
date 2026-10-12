@@ -1,13 +1,18 @@
 # Design system
 
+- **[See it live in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes in the toolbar.
+- **[Read the project wiki](https://github.com/sharonlafleur1984/design-system-skeleton/wiki)**: the dashboard, roadmap and decisions.
+
+> **This is a work in progress.** In this day of AI design, things are moving fast, and I'm moving a million miles a minute to get relevant design experience for this new age as I look for my next career opportunity. I'd love to share what I'm learning with whoever I end up with next. You can see the whole thing in all its messy glory, but don't expect it to be polished.
+
 One design system for all my products: a shared base, with a theme for each product.
 
 **The problem:** each of my products was defining its own colors, spacing and type. A fix in one never reached the others, and the After Graduation prototype alone had 98 different hex colors in its CSS.
 
 **The fix:** one system underneath, a different look on top.
 
-- **The shared base:** structure and naming, the spacing scale, type line heights and weights, radius, one status color set (error, warning, success, info, neutral), and accessibility rules.
-- **A theme per product:** Life Hub, After Graduation and, later, my designer toolkit each bring their own colors, fonts and personality.
+- **The shared base:** structure and naming, the spacing scale, type line heights and weights, radius, the status names and rules (error, warning, success, info, neutral: always with an icon and a label, text always readable), and accessibility rules.
+- **A theme per product:** Life Hub, After Graduation and, later, my designer toolkit each bring their own colors (status colors included), fonts and personality.
 
 Fix something in the base once, and every product gets it.
 
@@ -38,7 +43,7 @@ npm run build-storybook && npm run test:visual   # visual tests
 Apps install a tagged version straight from GitHub, so an update only arrives when the app chooses it:
 
 ```bash
-npm install github:sharonlafleur1984/design-system-skeleton#v0.3.0
+npm install github:sharonlafleur1984/design-system-skeleton#v0.2.0
 ```
 
 Then load the theme, its fonts, the base page styles and the component styles once, set the theme on the page, and import components:

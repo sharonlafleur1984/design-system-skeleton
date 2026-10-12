@@ -5,135 +5,513 @@
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.522), -1.6px 1.6px 4px rgb(42 38 37 / 0.29), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.192), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.873) 0, rgb(253 251 241 / 0.829) 24%, rgb(253 251 241 / 0.393) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.218), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(45,50,36,0.82)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.873
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.218
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.192)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.522)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.29)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "time": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.45), -1.6px 1.6px 4px rgb(42 38 37 / 0.25), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.189), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.859) 0, rgb(253 251 241 / 0.816) 24%, rgb(253 251 241 / 0.386) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.215), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(29,57,72,0.85)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.859
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.215
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.189)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.45)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.25)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "finance": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.562), -1.6px 1.6px 4px rgb(42 38 37 / 0.312), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.183), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.833) 0, rgb(253 251 241 / 0.792) 24%, rgb(253 251 241 / 0.375) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.208), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(40,48,46,0.83)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.833
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.208
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.183)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.562)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.312)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "parenting": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.81), -1.6px 1.6px 4px rgb(42 38 37 / 0.45), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.172), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.783) 0, rgb(253 251 241 / 0.744) 24%, rgb(253 251 241 / 0.352) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.196), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(58,47,52,0.91)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.783
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.196
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.172)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.81)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.45)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "health": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.306), -1.6px 1.6px 4px rgb(42 38 37 / 0.17), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.194), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.88) 0, rgb(253 251 241 / 0.836) 24%, rgb(253 251 241 / 0.396) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.22), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(77,42,46,0.82)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.88
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.22
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.194)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.306)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.17)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "home": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.41), -1.6px 1.6px 4px rgb(42 38 37 / 0.228), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.193), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.876) 0, rgb(253 251 241 / 0.833) 24%, rgb(253 251 241 / 0.394) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.219), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(66,56,52,0.88)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.876
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.219
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.193)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.41)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.228)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "office": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.419), -1.6px 1.6px 4px rgb(42 38 37 / 0.233), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.19), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.865) 0, rgb(253 251 241 / 0.822) 24%, rgb(253 251 241 / 0.389) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.216), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(59,50,31,0.84)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.865
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.216
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.19)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.419)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.233)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "professional": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.729), -1.6px 1.6px 4px rgb(42 38 37 / 0.405), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.176), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.801) 0, rgb(253 251 241 / 0.761) 24%, rgb(253 251 241 / 0.36) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.2), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(36,42,52,0.86)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.801
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.2
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.176)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.729)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.405)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       },
       "growth": {
         "card-frost": {
           "$value": "none"
         },
-        "card-shadow": {
-          "$value": "-8px 8px 22px rgb(42 38 37 / 0.338), -1.6px 1.6px 4px rgb(42 38 37 / 0.188), inset -3.2px 3.2px 8px -4px rgb(253 251 241 / 0.192), inset 2.8px -2.8px 7px -4px rgb(20 16 15 / 0.32)"
-        },
-        "card-rim": {
-          "$value": "radial-gradient(65% 155% at 100% 0%, rgb(253 251 241 / 0.873) 0, rgb(253 251 241 / 0.829) 24%, rgb(253 251 241 / 0.393) 50%, rgb(253 251 241 / 0) 70%), radial-gradient(22% 34% at 0% 100%, rgb(253 251 241 / 0.218), rgb(253 251 241 / 0) 75%), linear-gradient(rgb(253 251 241 / 0.03), rgb(253 251 241 / 0.03))"
-        },
         "night": {
           "$value": "rgba(76,51,29,0.87)",
           "$type": "color"
+        },
+        "card-glass-rim-color": {
+          "$type": "color",
+          "$value": "rgb(253 251 241)"
+        },
+        "card-glass-rim-strength": {
+          "$type": "number",
+          "$value": 0.873
+        },
+        "card-glass-rim-glint": {
+          "$type": "number",
+          "$value": 0.218
+        },
+        "card-glass-rim-spread-x": {
+          "$type": "dimension",
+          "$value": "65%"
+        },
+        "card-glass-rim-spread-y": {
+          "$type": "dimension",
+          "$value": "155%"
+        },
+        "card-glass-rim-base": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.03)"
+        },
+        "card-glass-highlight": {
+          "$type": "color",
+          "$value": "rgb(253 251 241 / 0.192)"
+        },
+        "card-glass-shade": {
+          "$type": "color",
+          "$value": "rgb(20 16 15 / 0.32)"
+        },
+        "card-glass-cast": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.338)"
+        },
+        "card-glass-contact": {
+          "$type": "color",
+          "$value": "rgb(42 38 37 / 0.188)"
+        },
+        "card-glass-cast-distance": {
+          "$type": "dimension",
+          "$value": "11.3px"
+        },
+        "card-glass-cast-blur": {
+          "$type": "dimension",
+          "$value": "22px"
         }
       }
     }

@@ -14,7 +14,7 @@
   text-underline-offset: var(--link-underline-offset);
   text-decoration-color: color-mix(in srgb, currentColor calc(var(--link-underline-strength) * 1%), transparent);
   border-radius: var(--radius-xs);
-  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+  transition: color var(--motion-duration-fast) var(--motion-easing-out), text-decoration-color var(--motion-duration-fast) var(--motion-easing-out);
 }
 
 .ds-link--quiet {

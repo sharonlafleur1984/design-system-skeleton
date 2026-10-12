@@ -19,12 +19,64 @@
       "$type": "color",
       "$description": "Same as before: the card color at 60%."
     },
-    "rim": {
-      "$value": "none"
-    },
     "shadow": {
       "$value": "0px 1px 2px 0px rgba(29,26,24,0.06), 0px 4px 12px 0px rgba(29,26,24,0.06), 0px 0px 0px 0px rgba(0,0,0,0)",
-      "$description": "Same as before: shadow.rest plus shadow.edge."
+      "$description": "Solid cards: shadow.rest plus shadow.edge, straight down. Glass settings are off."
+    },
+    "shadow-hover": {
+      "$value": "0px 2px 4px 0px rgba(29,26,24,0.08), 0px 10px 24px 0px rgba(29,26,24,0.10), 0px 0px 0px 0px rgba(0,0,0,0)",
+      "$description": "Solid cards on hover: shadow.hover plus shadow.edge."
+    },
+    "glass": {
+      "$description": "The shared glass recipe's settings for cards (see glass.css): rim, glint, highlight, shade and shadow, all aimed at the page's one light.",
+      "rim-color": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "rim-strength": {
+        "$type": "number",
+        "$value": 0
+      },
+      "rim-glint": {
+        "$type": "number",
+        "$value": 0
+      },
+      "rim-spread-x": {
+        "$type": "dimension",
+        "$value": "60%"
+      },
+      "rim-spread-y": {
+        "$type": "dimension",
+        "$value": "150%"
+      },
+      "rim-base": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "shade": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "cast": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "contact": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "cast-distance": {
+        "$type": "dimension",
+        "$value": "0px"
+      },
+      "cast-blur": {
+        "$type": "dimension",
+        "$value": "0px"
+      }
     }
   }
 }

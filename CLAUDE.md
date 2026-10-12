@@ -4,7 +4,7 @@ Start here. This file tells Claude (and any developer) where everything lives, s
 
 ## What this is
 
-Design system: one shared base (structure, naming, scales, status colors, accessibility) with a theme for each of Sharon's products (Life Hub, After Graduation, and later a designer toolkit).
+Design system: one shared base (structure, naming, scales, status names and rules, accessibility) with a theme for each of Sharon's products (Life Hub, After Graduation, and later a designer toolkit).
 
 ## Rules
 
@@ -14,8 +14,10 @@ Design system: one shared base (structure, naming, scales, status colors, access
 - **Ask before changing or deleting anything.** A recommendation is not approval.
 - **Wiki pages are edited in `docs/wiki/`,** never in the GitHub Wiki tab.
 - **Code and Storybook are the source of truth.** Figma is for ideas and follows the code. A token change must update the token lock (`npm run test:update`); a visual change needs the `update-screenshots` label. Both are reviewed in the pull request.
+- **Decisions update Storybook in the same pull request.** When a decision changes how something looks or works, update its Storybook docs (component descriptions, Foundations pages, story notes) in the same pull request, and list what changed in the pull request description. If docs keep getting missed anyway, add a test that fails when a decision names a component or token whose Storybook docs weren't touched.
 - **Base or theme?** A value every product shares goes in `tokens/base/`. A product's look goes in `tokens/themes/<product>/`. A new shared name must be added to every theme, or the contract test fails.
 - **Never color alone:** status colors always come with an icon or a label.
+- **Status colors:** the names and rules are shared; each theme picks its own values in `tokens/themes/<product>/status.json`.
 
 ## Where everything is
 

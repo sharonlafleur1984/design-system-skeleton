@@ -71,6 +71,10 @@
       "glass-on-art-selected": {
         "$value": "rgba(253,251,241,0.14)",
         "$type": "color"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.55)"
       }
     },
     "border": {

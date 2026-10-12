@@ -28,6 +28,27 @@ const toRem = (v) => {
   return n === 0 ? '0rem' : `${+(n / BASE_PX).toFixed(4)}rem`; // a unit on zero, so it still works inside calc()
 };
 
+// The color transform reads rgb(42 38 37 / 0.1) as solid and drops the "/ 0.1", so a soft
+// shadow came out fully dark. Rewrite that modern form as rgba(42, 38, 37, 0.1) before any
+// transform runs. tests/tokens.test.ts checks that no see-through color comes out solid.
+const MODERN_RGB = /^rgba?\(\s*(\d*\.?\d+)\s+(\d*\.?\d+)\s+(\d*\.?\d+)\s*\/\s*(\d*\.?\d+)(%?)\s*\)$/;
+const toLegacyRgba = (v) => {
+  const m = typeof v === 'string' && MODERN_RGB.exec(v.trim());
+  if (!m) return v;
+  const alpha = m[5] ? Number(m[4]) / 100 : Number(m[4]);
+  return `rgba(${m[1]}, ${m[2]}, ${m[3]}, ${alpha})`;
+};
+const legacyAlpha = (node) => {
+  if (node && typeof node === 'object') {
+    for (const [key, child] of Object.entries(node)) {
+      if (key === '$value' || key === 'value') node[key] = toLegacyRgba(child);
+      else legacyAlpha(child);
+    }
+  }
+  return node;
+};
+StyleDictionary.registerPreprocessor({ name: 'color/legacy-alpha', preprocessor: legacyAlpha });
+
 StyleDictionary.registerTransform({
   name: 'size/px-to-rem-scaling',
   type: 'value',
@@ -72,6 +93,7 @@ const themes = readdirSync('tokens/themes');
 for (const theme of themes) {
   const sd = new StyleDictionary({
     usesDtcg: true,
+    preprocessors: ['color/legacy-alpha'],
     // A theme's dark folder holds dark mode overrides; it is built separately below.
     source: ['tokens/base/**/*.json', `tokens/themes/${theme}/!(dark)/**/*.json`, `tokens/themes/${theme}/*.json`],
     log: { verbosity: 'default' },
@@ -105,6 +127,7 @@ for (const theme of themes) {
   if (existsSync(darkDir)) {
     const dark = new StyleDictionary({
       usesDtcg: true,
+      preprocessors: ['color/legacy-alpha'],
       source: ['tokens/base/**/*.json', `tokens/themes/${theme}/*.json`, `${darkDir}/**/*.json`],
       log: { verbosity: 'silent', warnings: 'disabled' },
       platforms: {

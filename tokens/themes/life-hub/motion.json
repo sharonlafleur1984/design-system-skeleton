@@ -1,0 +1,15 @@
+{
+  "motion": {
+    "arrive": {
+      "$description": "Life Hub defaults to calm: things arrive quietly and never bounce.",
+      "duration": { "$type": "duration", "$value": "{motion.mood.calm.arrive-duration}" },
+      "easing": { "$type": "cubicBezier", "$value": "{motion.mood.calm.arrive-easing}" },
+      "distance": { "$type": "dimension", "$value": "{motion.mood.calm.arrive-distance}" }
+    },
+    "celebrate": {
+      "duration": { "$type": "duration", "$value": "{motion.mood.calm.celebrate-duration}" },
+      "easing": { "$type": "cubicBezier", "$value": "{motion.mood.calm.celebrate-easing}" },
+      "scale": { "$type": "number", "$value": "{motion.mood.calm.celebrate-scale}" }
+    }
+  }
+}

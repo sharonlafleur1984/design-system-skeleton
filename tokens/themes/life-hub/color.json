@@ -428,6 +428,16 @@
       "inverse": {
         "$type": "color",
         "$value": "{palette.ink.inverse}"
+      },
+      "on-art": {
+        "$type": "color",
+        "$value": "#faf7f1",
+        "$description": "Text on artwork, like the header and the glass tiles on it. Never flips in dark mode, because the art doesn't."
+      },
+      "on-art-selected": {
+        "$type": "color",
+        "$value": "#2a2625",
+        "$description": "Text on a chosen tile's frosted white. Never flips in dark mode, because the frosted white doesn't."
       }
     },
     "surface": {
@@ -458,6 +468,16 @@
       "inverse": {
         "$type": "color",
         "$value": "{palette.ink.primary}"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(42,38,37,0.40)",
+        "$description": "Dims the page behind a full-size dialog, so the dialog is the only thing in focus."
+      },
+      "glass-on-art-solid": {
+        "$type": "color",
+        "$value": "{color.surface.card}",
+        "$description": "What glass on artwork becomes when someone turns on Reduce transparency or Increase contrast: solid, with text that still passes."
       }
     },
     "border": {

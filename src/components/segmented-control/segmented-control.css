@@ -78,10 +78,10 @@
 }
 @media (prefers-reduced-motion: no-preference) {
   .ds-segmented__lens {
-    transition: translate 0.2s ease, width 0.2s ease;
+    transition: translate var(--motion-duration-base) var(--motion-easing-in-out), width var(--motion-duration-base) var(--motion-easing-in-out);
   }
   .ds-segmented__option {
-    transition: color 0.15s ease, background-color 0.15s ease;
+    transition: color var(--motion-duration-fast) var(--motion-easing-out), background-color var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {

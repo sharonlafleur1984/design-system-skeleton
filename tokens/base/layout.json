@@ -23,6 +23,11 @@
         }
       }
     },
+    "content-max": {
+      "$type": "dimension",
+      "$value": "1024px",
+      "$description": "Max content width: the widest a page's content gets, in every product. Wider screens get more space at the sides, not wider content. Running text has its own, narrower cap (type.measure). 1024px is the US Web Design System's default container (Decisions, Oct 7). Shared for now; a product can get its own later."
+    },
     "title-gap": {
       "$type": "dimension",
       "$value": "24px",

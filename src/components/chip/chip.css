@@ -118,6 +118,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-chip {
-    transition: background-color 0.15s ease, border-color 0.15s ease;
+    transition: background-color var(--motion-duration-fast) var(--motion-easing-out), border-color var(--motion-duration-fast) var(--motion-easing-out);
   }
 }

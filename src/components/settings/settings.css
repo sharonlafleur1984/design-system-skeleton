@@ -1,0 +1,260 @@
+/* Settings. A full-size dialog over a dim page. Sizes and colors come from tokens only.
+   On phones (under 600px) it fills the screen. */
+.ds-settings-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-7);
+  background: var(--color-surface-scrim);
+}
+.ds-settings-modal {
+  inline-size: min(100%, var(--dialog-max-inline));
+  block-size: min(100%, var(--dialog-max-block));
+  border-radius: var(--radius-panel);
+  background: var(--color-surface-page);
+  box-shadow: var(--shadow-float);
+  overflow: hidden;
+  outline: none;
+}
+.ds-settings {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  outline: none;
+}
+
+.ds-settings__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  padding-inline: var(--space-6);
+  border-block-end: 1px solid var(--color-border-subtle);
+}
+.ds-settings__title {
+  margin: 0;
+  font-family: var(--type-heading-section-family, var(--type-heading-title-family));
+  font-size: var(--type-heading-section-size, var(--type-heading-title-size));
+  font-weight: var(--type-heading-section-weight, var(--type-heading-title-weight));
+  line-height: var(--type-heading-section-line-height, var(--type-heading-title-line-height));
+}
+.ds-settings__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-height-large);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-accent-text);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-large-size);
+  font-weight: var(--control-type-large-weight);
+  cursor: pointer;
+  outline: none;
+}
+.ds-settings__back[data-focus-visible] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+.ds-settings__back-arrow {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-inline-start: 2px solid currentColor;
+  border-block-end: 2px solid currentColor;
+  rotate: 45deg;
+}
+
+/* Sections down the left, the open section on the right. Each side scrolls on its own. */
+.ds-settings__body {
+  flex: 1;
+  min-block-size: 0;
+  display: grid;
+  grid-template-columns: var(--settings-nav-width) minmax(0, 1fr);
+}
+.ds-settings__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-4);
+  list-style: none;
+  overflow-y: auto;
+  border-inline-end: 1px solid var(--color-border-subtle);
+  outline: none;
+}
+.ds-settings__nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  inline-size: 100%;
+  min-block-size: var(--control-height-large);
+  padding-inline: var(--space-3);
+  border: none;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-ink-secondary);
+  font-family: var(--font-family-body);
+  font-size: var(--control-type-medium-size);
+  font-weight: var(--control-type-medium-weight);
+  line-height: var(--control-type-medium-line-height);
+  text-align: start;
+  cursor: pointer;
+  outline: none;
+}
+.ds-settings__nav-item[data-hovered] {
+  background: var(--color-accent-surface);
+  color: var(--color-ink-primary);
+}
+/* The open section: a soft fill and primary text, plus a bar on its leading edge, so color is never
+   the only signal. */
+.ds-settings__nav-item[data-selected] {
+  background: var(--color-accent-surface);
+  color: var(--color-ink-primary);
+  box-shadow: inset 2px 0 0 var(--color-accent-base);
+}
+.ds-settings__nav-item[data-focus-visible] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: -2px;
+}
+.ds-settings__nav-arrow {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-inline-end: 2px solid currentColor;
+  border-block-start: 2px solid currentColor;
+  rotate: 45deg;
+}
+.ds-settings__panel {
+  overflow-y: auto;
+  padding-block: var(--space-6);
+  padding-inline: var(--space-7);
+  outline: none;
+}
+.ds-settings__section-title {
+  margin: 0 0 var(--space-5);
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
+}
+
+/* Groups and rows. */
+.ds-settings-group + .ds-settings-group {
+  margin-block-start: var(--space-7);
+}
+.ds-settings-group__title {
+  margin: 0 0 var(--space-2);
+  color: var(--color-ink-tertiary);
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-letter-spacing);
+  text-transform: var(--type-label-transform);
+}
+.ds-settings-group__rows {
+  display: flex;
+  flex-direction: column;
+}
+.ds-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding-block: var(--space-4);
+  border-block-end: 1px solid var(--color-border-subtle);
+}
+.ds-setting:last-child {
+  border-block-end: none;
+}
+.ds-setting--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+.ds-setting__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.ds-setting__label {
+  font-size: var(--type-body-default-size);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-body-default-line-height);
+}
+.ds-setting__description {
+  color: var(--color-ink-secondary);
+  font-size: var(--type-body-small-size);
+  line-height: var(--type-body-small-line-height);
+}
+.ds-setting__control {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+.ds-setting--stacked .ds-setting__control {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Phones: the dialog fills the screen, the list or the section shows one at a time, and rows stack. */
+/* 37.4375rem is 599px: the phone (compact) size from the layout tokens. CSS media queries can't read tokens. */
+@media (max-width: 37.4375rem) {
+  .ds-settings-overlay {
+    padding: 0;
+  }
+  .ds-settings-modal {
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: 0;
+  }
+  .ds-settings__bar {
+    padding-inline: var(--space-4);
+  }
+  .ds-settings__body {
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: auto;
+  }
+  .ds-settings__nav {
+    border-inline-end: none;
+  }
+  .ds-settings__nav-item {
+    min-block-size: var(--control-height-large);
+    padding-block: var(--space-3);
+    font-size: var(--control-type-large-size);
+  }
+  .ds-settings__panel {
+    padding: var(--space-4);
+  }
+  .ds-setting {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+  .ds-setting__control {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ds-settings-overlay[data-entering] {
+    animation: ds-settings-fade var(--motion-duration-base) var(--motion-easing-out);
+  }
+  .ds-settings-modal[data-entering] {
+    animation: ds-settings-rise var(--motion-duration-base) var(--motion-easing-out);
+  }
+}
+@keyframes ds-settings-fade {
+  from { opacity: 0; }
+}
+@keyframes ds-settings-rise {
+  from { opacity: 0; translate: 0 var(--space-4); }
+}

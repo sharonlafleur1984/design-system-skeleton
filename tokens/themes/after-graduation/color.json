@@ -3,40 +3,41 @@
     "red": {
       "100": {
         "$type": "color",
-        "$value": "#fef2f2"
+        "$value": "#fef2f1"
       },
       "200": {
         "$type": "color",
-        "$value": "#ffdfe1"
+        "$value": "#fee0dd"
       },
       "300": {
         "$type": "color",
-        "$value": "#febdc2"
+        "$value": "#ffbeb9"
       },
       "400": {
         "$type": "color",
-        "$value": "#ff8d9a"
+        "$value": "#fe908a"
       },
       "500": {
         "$type": "color",
-        "$value": "#f25771"
+        "$value": "#f25857"
       },
       "600": {
         "$type": "color",
-        "$value": "#d03656"
+        "$value": "#cb1b2c"
       },
       "700": {
         "$type": "color",
-        "$value": "#a92141"
+        "$value": "#a50c1f"
       },
       "800": {
         "$type": "color",
-        "$value": "#83162f"
+        "$value": "#810817"
       },
       "900": {
         "$type": "color",
-        "$value": "#5f0d21"
-      }
+        "$value": "#5a050d"
+      },
+      "$description": "After Graduation's red: crimson (Oct 7), rich and warm, for the one next step, focus and the header's light. Same steps as before, so components don't change."
     },
     "gold": {
       "100": {
@@ -144,6 +145,16 @@
       "inverse": {
         "$type": "color",
         "$value": "{palette.neutral.white}"
+      },
+      "on-art": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$description": "Text on artwork, like the header and the glass tiles on it. Never flips in dark mode, because the art doesn't."
+      },
+      "on-art-selected": {
+        "$type": "color",
+        "$value": "{palette.red.800}",
+        "$description": "Text on a chosen tile's frosted white. Never flips in dark mode, because the frosted white doesn't."
       }
     },
     "surface": {
@@ -174,6 +185,16 @@
       "inverse": {
         "$type": "color",
         "$value": "{palette.neutral.900}"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(29,26,24,0.48)",
+        "$description": "Dims the page behind a full-size dialog, so the dialog is the only thing in focus."
+      },
+      "glass-on-art-solid": {
+        "$type": "color",
+        "$value": "{palette.red.800}",
+        "$description": "What glass on artwork becomes when someone turns on Reduce transparency or Increase contrast: solid, with text that still passes."
       }
     },
     "border": {

@@ -1,0 +1,15 @@
+{
+  "motion": {
+    "arrive": {
+      "$description": "After Graduation defaults to energetic: it is a product about earning progress, styled after anime. Everyday pages like settings can switch to calm.",
+      "duration": { "$type": "duration", "$value": "{motion.mood.energetic.arrive-duration}" },
+      "easing": { "$type": "cubicBezier", "$value": "{motion.mood.energetic.arrive-easing}" },
+      "distance": { "$type": "dimension", "$value": "{motion.mood.energetic.arrive-distance}" }
+    },
+    "celebrate": {
+      "duration": { "$type": "duration", "$value": "{motion.mood.energetic.celebrate-duration}" },
+      "easing": { "$type": "cubicBezier", "$value": "{motion.mood.energetic.celebrate-easing}" },
+      "scale": { "$type": "number", "$value": "{motion.mood.energetic.celebrate-scale}" }
+    }
+  }
+}

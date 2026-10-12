@@ -155,3 +155,38 @@ describe.each(themes)('%s control type fits its control', (t) => {
     });
   }
 });
+
+// A see-through color in a token file has to stay see-through in the build, light and dark.
+// The color transform once read rgb(42 38 37 / 0.1) as solid, and Life Hub's card shadows
+// turned dark brown.
+describe('see-through colors keep their transparency', () => {
+  const seeThroughValue = (v: string) =>
+    /\/\s*(0?\.\d+|\d+(\.\d+)?%)\s*\)$/.test(v) || /^rgba\(\s*[\d.]+\s*,\s*[\d.]+\s*,\s*[\d.]+\s*,\s*0?\.\d+\s*\)$/.test(v);
+  const isSolid = (v: string) => /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v) || /^rgb\(/.test(v);
+  const files = (dir: string): string[] =>
+    readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+      e.isDirectory() ? files(`${dir}/${e.name}`) : e.name.endsWith('.json') ? [`${dir}/${e.name}`] : []);
+  const seeThrough = (node: unknown, path: string[] = [], out: string[] = []): string[] => {
+    if (node && typeof node === 'object') {
+      const n = node as Record<string, unknown>;
+      if (typeof n.$value === 'string' && seeThroughValue(n.$value.trim())) out.push(path.join('-'));
+      for (const [k, v] of Object.entries(n)) if (!k.startsWith('$')) seeThrough(v, [...path, k], out);
+    }
+    return out;
+  };
+  const checks: [string, string, string][] = [];
+  for (const t of themes) {
+    const light = load(t);
+    const lightFiles = [...files('tokens/base'), ...files(`tokens/themes/${t}`).filter((f) => !f.includes('/dark/'))];
+    for (const name of lightFiles.flatMap((f) => seeThrough(JSON.parse(readFileSync(f, 'utf8')))))
+      if (name in light) checks.push([`${t}`, name, light[name]]);
+    const darkDir = `tokens/themes/${t}/dark`;
+    if (existsSync(darkDir) && existsSync(`build/json-dark/${t}.json`)) {
+      const dark: Record<string, string> = JSON.parse(readFileSync(`build/json-dark/${t}.json`, 'utf8'));
+      for (const name of files(darkDir).flatMap((f) => seeThrough(JSON.parse(readFileSync(f, 'utf8')))))
+        if (name in dark) checks.push([`${t} dark`, name, dark[name]]);
+    }
+  }
+  it('finds see-through colors to check', () => expect(checks.length).toBeGreaterThan(0));
+  it.each(checks)('%s: %s stays see-through', (_t, _name, value) => expect(isSolid(value)).toBe(false));
+});
