@@ -264,17 +264,19 @@ export const CompareAAndB: Story = {
   },
 };
 
-/** Every marble, playing together. Pick the version in Controls. */
+/** Every marble, playing together, or flip through them one at a time with the background dropdown in Controls. */
+const ALL = 'All marbles';
 export const EveryBackground: Story = {
-  argTypes: { hour: { table: { disable: true } }, background: { table: { disable: true } } },
-  render: function Render({ version }, context) {
+  args: { background: ALL },
+  argTypes: { hour: { table: { disable: true } }, background: { control: 'select', options: [ALL, ...marbleNames] } },
+  render: function Render({ version, background }, context) {
     const { hour, controls } = useDay(SUN.sunrise - 0.75);
     const { setting, switcher } = useAppearance();
     return (
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
         {switcher}
         {controls}
-        {marbles.map((m) => (
+        {marbles.filter((m) => background === ALL || m.name === background).map((m) => (
           <section key={m.name} aria-label={m.name} style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{m.name}</p>
             <Scene version={version} hour={hour} background={m.name} setting={setting} deviceDark={deviceDarkOf(context)} />
