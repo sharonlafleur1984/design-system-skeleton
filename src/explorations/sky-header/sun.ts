@@ -96,10 +96,40 @@ export function sunTimes(date: Date, timeZone = Intl.DateTimeFormat().resolvedOp
 export const SKY_SUNRISE = 6.5;
 export const SKY_SUNSET = 18.75;
 
-/** Turns a real clock hour into the sky's hour, so dawn and dusk land on the real sunrise and sunset. */
-export function skyHourFor(hour: number, { sunrise, sunset }: SunTimes) {
+/**
+ * How long sunrise and sunset take on the real clock, in minutes. The sky's in-between colors (where the
+ * text needs a readability tint) all happen inside this window, so they pass in a few minutes, still
+ * gradual, like watching a real sunrise. An estimate Sharon chose to tune by eye (Oct 12 2026).
+ */
+export const TWILIGHT_MINUTES = 6;
+/** The stretch of the sky's day that plays inside that window: night to full day, and day to night. */
+const DAWN: [number, number] = [5.25, 7.5];
+const DUSK: [number, number] = [17.75, 20.25];
+
+/**
+ * Turns a real clock hour into the sky's hour. Dawn and dusk land on the real sunrise and sunset and
+ * play out in TWILIGHT_MINUTES; the rest of the night and day stretch to fill the remaining hours.
+ */
+export function skyHourFor(hour: number, { sunrise, sunset }: SunTimes, minutes = TWILIGHT_MINUTES) {
   const h = ((hour % 24) + 24) % 24;
-  if (h < sunrise) return (h / sunrise) * SKY_SUNRISE;
-  if (h < sunset) return SKY_SUNRISE + ((h - sunrise) / (sunset - sunrise)) * (SKY_SUNSET - SKY_SUNRISE);
-  return SKY_SUNSET + ((h - sunset) / (24 - sunset)) * (24 - SKY_SUNSET);
+  const half = minutes / 60 / 2;
+  // Clock hour to sky hour, point by point; straight lines between.
+  const points: [number, number][] = [
+    [0, 0],
+    [sunrise - half, DAWN[0]],
+    [sunrise, SKY_SUNRISE],
+    [sunrise + half, DAWN[1]],
+    [sunset - half, DUSK[0]],
+    [sunset, SKY_SUNSET],
+    [sunset + half, DUSK[1]],
+    [24, 24],
+  ];
+  for (let i = 1; i < points.length; i++) {
+    const [x1, y1] = points[i];
+    if (h <= x1) {
+      const [x0, y0] = points[i - 1];
+      return x1 === x0 ? y1 : y0 + ((h - x0) / (x1 - x0)) * (y1 - y0);
+    }
+  }
+  return 24;
 }

@@ -46,3 +46,22 @@ describe('Sky header readability', () => {
     for (const mode of ['light', 'dark'] as const) expect(CARD_GLASS[mode].alpha).toBe(0);
   });
 });
+
+describe('Sky header on the real clock', () => {
+  it('needs the readability tint only inside the few minutes of sunrise and sunset', async () => {
+    const { skyHourFor, TWILIGHT_MINUTES } = await import('../src/explorations/sky-header/sun');
+    const sun = { sunrise: 7.25, sunset: 18.5 };
+    const spans: number[] = [];
+    let run = 0;
+    for (let s = 0; s < 24 * 3600; s += 10) {
+      const sky = skyAt(skyHourFor(s / 3600, sun), { material: 'glass', areaNight: nights[0] });
+      if (sky.veilAlpha > 0.02) run += 10;
+      else if (run) {
+        spans.push(run / 60);
+        run = 0;
+      }
+    }
+    expect(spans.length).toBe(2);
+    for (const minutes of spans) expect(minutes).toBeLessThanOrEqual(TWILIGHT_MINUTES);
+  });
+});

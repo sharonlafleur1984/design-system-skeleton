@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNod
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SkyHeader } from './sky-header';
 import { mixColor, skyAt, type SkyMode } from './sky';
-import { skyHourFor, sunTimes } from './sun';
+import { skyHourFor, sunTimes, TWILIGHT_MINUTES } from './sun';
 import { appearanceFor, fadePageMode, modeLabels, type ModeSetting } from './mode';
 import { Segment, SegmentedControl } from '../../components/segmented-control/segmented-control';
 import { Button } from '../../components/button/button';
@@ -74,32 +74,41 @@ function MarblePage({ background, mode, children }: { background: string; mode?:
   );
 }
 
+// Today's real sunrise and sunset where you are. The demos run on the real clock: the sky reaches dawn
+// and dusk at these times and plays them out in TWILIGHT_MINUTES.
+const SUN = sunTimes(new Date());
+
+/** The header at a clock hour: the sky follows the real-clock mapping, the greeting follows the clock. */
 const header = (version: Version, hour: number, background: string) => (
-  <SkyHeader {...copy} hour={hour} instant material={version} swirl={swirlOf(background)} areaNight={findMarble(background).night} />
+  <SkyHeader
+    {...copy}
+    hour={skyHourFor(hour, SUN)}
+    greetingHour={hour}
+    instant
+    material={version}
+    swirl={swirlOf(background)}
+    areaNight={findMarble(background).night}
+  />
 );
 
 const clockLabel = (hour: number) =>
   new Date(2026, 0, 1, Math.floor(hour), Math.floor((hour % 1) * 60)).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
 /**
- * How many seconds the demo spends on each hour. Daytime and night move quickly (1.5 seconds an hour),
- * but sunrise and sunset slow to 12 seconds an hour, so you can watch the sky and the glass blend the way
- * they will on the real clock. The pace eases between the two, so the slowdown itself never jolts.
+ * How many seconds the demo spends on each clock hour. Most of the day moves quickly (1.5 seconds an
+ * hour), but around the real sunrise and sunset it slows to real time divided by 12 (5 minutes an hour),
+ * so the few minutes of sunrise take about 30 seconds to watch. The pace eases in and out over 10 minutes.
  */
-const TWILIGHT = [
-  [5, 7.5],
-  [17, 21],
-];
 function secondsPerHour(hour: number) {
   const h = ((hour % 24) + 24) % 24;
-  // How close to twilight: 1 inside a window, easing to 0 over the half hour on either side.
+  const half = TWILIGHT_MINUTES / 60 / 2 + 2 / 60;
   let near = 0;
-  for (const [from, to] of TWILIGHT) {
-    const d = h < from ? from - h : h > to ? h - to : 0;
-    const t = Math.max(0, 1 - d / 0.5);
+  for (const at of [SUN.sunrise, SUN.sunset]) {
+    const d = Math.max(0, Math.abs(h - at) - half);
+    const t = Math.max(0, 1 - d / (10 / 60));
     near = Math.max(near, t * t * (3 - 2 * t));
   }
-  return 1.5 + (12 - 1.5) * near;
+  return 1.5 + (300 - 1.5) * near;
 }
 
 /** The clock: fast through the day and night, slow through sunrise and sunset. Pause stops it; drag the
@@ -161,6 +170,10 @@ function useDay(start: number) {
         <span>6 pm</span>
         <span>12 am</span>
       </div>
+      <p style={{ margin: 0, color: 'var(--color-ink-secondary)', fontSize: 'var(--type-label-meta-size)' }}>
+        Today here: sunrise {clockLabel(SUN.sunrise)}, sunset {clockLabel(SUN.sunset)}. Each takes {TWILIGHT_MINUTES} minutes and
+        plays slowly so you can watch it.
+      </p>
     </div>
   );
   return { hour, controls, label };
@@ -170,7 +183,7 @@ function useDay(start: number) {
 export const PlayADay: Story = {
   argTypes: { hour: { table: { disable: true } } },
   render: function Render({ background, version }) {
-    const { hour, controls } = useDay(4);
+    const { hour, controls } = useDay(SUN.sunrise - 0.75);
     return (
       <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
         {controls}
@@ -255,12 +268,7 @@ function SettingsDemo({ background, deviceDark }: { background: string; deviceDa
           </Segment>
         ))}
       </SegmentedControl>
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-4)' }}>
-        {controls}
-        <span style={{ color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>
-          Today here: sunrise {clockLabel(sun.sunrise)}, sunset {clockLabel(sun.sunset)}
-        </span>
-      </div>
+      {controls}
       <MarblePage background={background} mode={page}>
         <SkyHeader
           {...copy}
