@@ -1,13 +1,5 @@
-import {
-  memo,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
-import { Button as AriaButton } from "react-aria-components";
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { Button as AriaButton } from 'react-aria-components';
 
 /**
  * Crossfades when the text changes (Good morning to Good afternoon), so words never pop. The width
@@ -24,10 +16,7 @@ function FadeText({ text }: { text: string }) {
       if (latest.text === text) return prev;
       // Remember the width before the new words arrive.
       if (box.current) last.current = box.current.getBoundingClientRect().width;
-      return [
-        { ...latest, out: true },
-        { text, id: latest.id + 1, out: false },
-      ];
+      return [{ ...latest, out: true }, { text, id: latest.id + 1, out: false }];
     });
   }, [text]);
   useLayoutEffect(() => {
@@ -36,20 +25,17 @@ function FadeText({ text }: { text: string }) {
     if (!el || from === null) return;
     last.current = null;
     // The new words' natural width (outgoing words don't count toward it), then glide there.
-    el.style.width = "";
-    const to =
-      el
-        .querySelector<HTMLElement>(".lh-fade__item:not(.lh-fade__item--out)")
-        ?.getBoundingClientRect().width ?? from;
+    el.style.width = '';
+    const to = el.querySelector<HTMLElement>('.lh-fade__item:not(.lh-fade__item--out)')?.getBoundingClientRect().width ?? from;
     if (Math.abs(to - from) < 1) return;
     // While the width glides, the words stay on one line, so the greeting never wraps mid-change.
-    el.classList.add("lh-fade--moving");
+    el.classList.add('lh-fade--moving');
     el.style.width = `${from}px`;
     void el.offsetWidth;
     el.style.width = `${to}px`;
     const done = window.setTimeout(() => {
-      el.classList.remove("lh-fade--moving");
-      el.style.removeProperty("width");
+      el.classList.remove('lh-fade--moving');
+      el.style.removeProperty('width');
     }, 1600);
     return () => window.clearTimeout(done);
   }, [items]);
@@ -58,15 +44,9 @@ function FadeText({ text }: { text: string }) {
       {items.map((it) => (
         <span
           key={it.id}
-          className={
-            it.out ? "lh-fade__item lh-fade__item--out" : "lh-fade__item"
-          }
+          className={it.out ? 'lh-fade__item lh-fade__item--out' : 'lh-fade__item'}
           aria-hidden={it.out || undefined}
-          onAnimationEnd={
-            it.out
-              ? () => setItems((p) => p.filter((x) => x.id !== it.id))
-              : undefined
-          }
+          onAnimationEnd={it.out ? () => setItems((p) => p.filter((x) => x.id !== it.id)) : undefined}
         >
           {it.text}
         </span>
@@ -74,11 +54,11 @@ function FadeText({ text }: { text: string }) {
     </span>
   );
 }
-import { Card } from "../../components/card/card";
-import { useGlassLight } from "../../components/glass-light/glass-light";
-import { greetingAt, makeStars, skyAt } from "./sky";
-import { skyHourFor, sunTimes } from "./sun";
-import "./sky-header.css";
+import { Card } from '../../components/card/card';
+import { useGlassLight } from '../../components/glass-light/glass-light';
+import { greetingAt, makeStars, skyAt } from './sky';
+import { skyHourFor, sunTimes } from './sun';
+import './sky-header.css';
 
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
 // day. The orb on the Let's chat button (a small sun by day, violet at night) is where the light comes
@@ -97,7 +77,7 @@ export interface SkyHeaderProps {
   /** The real clock hour for the greeting, when hour is a sky hour that differs from it. */
   greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
-  material?: "sky" | "glass";
+  material?: 'sky' | 'glass';
   /** The page's marble image as a CSS url with a full address, so its swirl continues faintly through the sky. */
   swirl?: string;
   /** The area's night layer, so dark skies match the marble below. */
@@ -111,16 +91,7 @@ export interface SkyHeaderProps {
 }
 
 const GearIcon = () => (
-  <svg
-    viewBox="0 0 24 24"
-    width="20"
-    height="20"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.6"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="3" />
     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09c-.66 0-1.25.4-1.51 1z" />
   </svg>
@@ -136,16 +107,14 @@ const Stars = memo(function Stars() {
       {STARS.map((s, i) => (
         <span
           key={i}
-          className={
-            s.bright ? "lh-sky__star lh-sky__star--bright" : "lh-sky__star"
-          }
+          className={s.bright ? 'lh-sky__star lh-sky__star--bright' : 'lh-sky__star'}
           style={
             {
               left: `${s.x}%`,
               top: `${s.y}%`,
               width: `${s.size}px`,
               height: `${s.size}px`,
-              "--b": s.base,
+              '--b': s.base,
               animationDelay: `${-s.delay}s`,
               animationDuration: `${s.duration}s`,
             } as CSSProperties
@@ -162,20 +131,7 @@ function nowHour() {
   return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({
-  hour,
-  greetingHour,
-  name,
-  meta,
-  prompt,
-  material = "sky",
-  swirl,
-  areaNight,
-  instant = false,
-  onChat,
-  onOpenSettings,
-  settingsCount = 0,
-}: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -186,16 +142,16 @@ export function SkyHeader({
   const ref = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     const header = ref.current;
-    const card = header?.querySelector<HTMLElement>(".lh-sky__card");
+    const card = header?.querySelector<HTMLElement>('.lh-sky__card');
     if (!header || !card) return;
     const place = () => {
       const h = header.getBoundingClientRect();
       const c = card.getBoundingClientRect();
       const gap = 16; // breathing room so no star touches the card's edge
-      header.style.setProperty("--sky-hole-x", `${c.left - h.left - gap}px`);
-      header.style.setProperty("--sky-hole-y", `${c.top - h.top - gap}px`);
-      header.style.setProperty("--sky-hole-w", `${c.width + gap * 2}px`);
-      header.style.setProperty("--sky-hole-h", `${c.height + gap * 2}px`);
+      header.style.setProperty('--sky-hole-x', `${c.left - h.left - gap}px`);
+      header.style.setProperty('--sky-hole-y', `${c.top - h.top - gap}px`);
+      header.style.setProperty('--sky-hole-w', `${c.width + gap * 2}px`);
+      header.style.setProperty('--sky-hole-h', `${c.height + gap * 2}px`);
     };
     place();
     const ro = new ResizeObserver(place);
@@ -208,11 +164,7 @@ export function SkyHeader({
     const header = ref.current;
     const page = header?.parentElement;
     if (!header || !page) return;
-    const place = () =>
-      header.style.setProperty(
-        "--sky-page-h",
-        `${page.getBoundingClientRect().height}px`,
-      );
+    const place = () => header.style.setProperty('--sky-page-h', `${page.getBoundingClientRect().height}px`);
     place();
     const ro = new ResizeObserver(place);
     ro.observe(page);
@@ -221,23 +173,17 @@ export function SkyHeader({
   // The sky's glow sits on the orb, wherever the layout puts it.
   useLayoutEffect(() => {
     const header = ref.current;
-    const orb = header?.querySelector<HTMLElement>(".lh-sky__orb");
+    const orb = header?.querySelector<HTMLElement>('.lh-sky__orb');
     if (!header || !orb) return;
     const place = () => {
       const h = header.getBoundingClientRect();
       const o = orb.getBoundingClientRect();
       if (!h.width || !h.height) return;
       const x = `${(((o.left + o.width / 2 - h.left) / h.width) * 100).toFixed(1)}%`;
-      header.style.setProperty("--sky-glow-x", x);
+      header.style.setProperty('--sky-glow-x', x);
       // The edge below the header is shaded from the same spot.
-      (header.nextElementSibling as HTMLElement | null)?.style.setProperty(
-        "--edge-x",
-        x,
-      );
-      header.style.setProperty(
-        "--sky-glow-y",
-        `${(((o.top + o.height / 2 - h.top) / h.height) * 100).toFixed(1)}%`,
-      );
+      (header.nextElementSibling as HTMLElement | null)?.style.setProperty('--edge-x', x);
+      header.style.setProperty('--sky-glow-y', `${(((o.top + o.height / 2 - h.top) / h.height) * 100).toFixed(1)}%`);
     };
     place();
     const ro = new ResizeObserver(place);
@@ -246,86 +192,65 @@ export function SkyHeader({
   }, []);
   // Every other piece of glass is lit from the orb, like After Graduation's tabs are lit from the wheel.
   // The Let's chat button holds the orb, so it is lit from within instead (see sky-header.css).
-  useGlassLight(ref, {
-    source: ".lh-sky__orb",
-    selector: ".ds-glass:not(.lh-sky__action--lit-within)",
-  });
+  useGlassLight(ref, { source: '.lh-sky__orb', selector: '.ds-glass:not(.lh-sky__action--lit-within)' });
   const h = hour ?? clock;
-  const sky = useMemo(
-    () => skyAt(h, { material, areaNight }),
-    [h, material, areaNight],
-  );
+  const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
   const style = {
-    "--sky-a": sky.alpha.toFixed(3),
-    "--sky-veil": `color-mix(in srgb, ${sky.veil} ${(sky.veilAlpha * 100).toFixed(1)}%, transparent)`,
-    "--sky-top": sky.top,
-    "--sky-bottom": sky.bottom,
-    "--sky-glow": sky.glow,
-    "--sky-glow-a": sky.glowAlpha.toFixed(3),
-    "--sky-orb-core": sky.orbCore,
-    "--sky-orb-edge": sky.orbEdge,
-    "--sky-horizon": sky.horizon.toFixed(3),
-    "--sky-stars": sky.stars.toFixed(3),
+    '--sky-a': sky.alpha.toFixed(3),
+    // Two tints, one per text color, so when the text switches between dark and light the old tint
+    // fades out while the new one fades in, in step with the text. Never one color sliding into the other.
+    '--sky-veil-ink': (sky.mode === 'dark' ? sky.veilAlpha : 0).toFixed(3),
+    '--sky-veil-paper': (sky.mode === 'light' ? sky.veilAlpha : 0).toFixed(3),
+    '--sky-top': sky.top,
+    '--sky-bottom': sky.bottom,
+    '--sky-glow': sky.glow,
+    '--sky-glow-a': sky.glowAlpha.toFixed(3),
+    '--sky-orb-core': sky.orbCore,
+    '--sky-orb-edge': sky.orbEdge,
+    '--sky-horizon': sky.horizon.toFixed(3),
+    '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;
   const greeting = greetingAt(greetingHour ?? h);
   return (
     <>
-      <header
-        ref={ref}
-        className={`lh-sky lh-sky--${material}${instant ? " lh-sky--instant" : ""}`}
-        data-theme="life-hub"
-        data-mode={sky.mode}
-        style={style}
-      >
-        {swirl && (
-          <div
-            className="lh-sky__swirl"
-            aria-hidden="true"
-            style={{ "--sky-swirl": swirl } as CSSProperties}
-          />
-        )}
-        <Stars />
-        <Card className="lh-sky__card">
-          {meta && <p className="lh-sky__meta">{meta}</p>}
-          <h1 className="lh-sky__title">
-            <FadeText text={name ? `${greeting}, ${name}` : greeting} />
-          </h1>
-          {prompt && <p className="lh-sky__prompt">{prompt}</p>}
-        </Card>
-        <div className="lh-sky__actions">
-          <AriaButton
-            className="ds-glass lh-sky__action lh-sky__action--lit-within"
-            onPress={onChat}
-          >
-            <span className="lh-sky__action-glass" aria-hidden="true" />
-            <span className="lh-sky__orb" aria-hidden="true" />
-            Let&rsquo;s chat
-          </AriaButton>
-          <AriaButton
-            className="ds-glass lh-sky__action"
-            onPress={onOpenSettings}
-          >
-            <span className="lh-sky__action-glass" aria-hidden="true" />
-            <span className="lh-sky__icon" aria-hidden="true">
-              <GearIcon />
-              {settingsCount > 0 && (
-                <span className="lh-sky__count">
-                  {settingsCount > 9 ? "9+" : settingsCount}
-                </span>
-              )}
+    <header
+      ref={ref}
+      className={`lh-sky lh-sky--${material}${instant ? ' lh-sky--instant' : ''}`}
+      data-theme="life-hub"
+      data-mode={sky.mode}
+      style={style}
+    >
+      {swirl && <div className="lh-sky__swirl" aria-hidden="true" style={{ '--sky-swirl': swirl } as CSSProperties} />}
+      <Stars />
+      <Card className="lh-sky__card">
+        {meta && <p className="lh-sky__meta">{meta}</p>}
+        <h1 className="lh-sky__title"><FadeText text={name ? `${greeting}, ${name}` : greeting} /></h1>
+        {prompt && <p className="lh-sky__prompt">{prompt}</p>}
+      </Card>
+      <div className="lh-sky__actions">
+        <AriaButton className="ds-glass lh-sky__action lh-sky__action--lit-within" onPress={onChat}>
+          <span className="lh-sky__action-glass" aria-hidden="true" />
+          <span className="lh-sky__orb" aria-hidden="true" />
+          Let&rsquo;s chat
+        </AriaButton>
+        <AriaButton className="ds-glass lh-sky__action" onPress={onOpenSettings}>
+          <span className="lh-sky__action-glass" aria-hidden="true" />
+          <span className="lh-sky__icon" aria-hidden="true">
+            <GearIcon />
+            {settingsCount > 0 && <span className="lh-sky__count">{settingsCount > 9 ? '9+' : settingsCount}</span>}
+          </span>
+          System Settings
+          {settingsCount > 0 && (
+            <span className="lh-sky__sr">
+              , {settingsCount} {settingsCount === 1 ? 'update' : 'updates'}
             </span>
-            System Settings
-            {settingsCount > 0 && (
-              <span className="lh-sky__sr">
-                , {settingsCount} {settingsCount === 1 ? "update" : "updates"}
-              </span>
-            )}
-          </AriaButton>
-        </div>
-      </header>
-      {/* The header's bottom edge: a thin highlight and the shadow it casts on the marble, crisp and dark
+          )}
+        </AriaButton>
+      </div>
+    </header>
+    {/* The header's bottom edge: a thin highlight and the shadow it casts on the marble, crisp and dark
         near the orb, softer and fainter farther away, like the glass cards' shadows. */}
-      <div className="lh-sky__edge" aria-hidden="true" />
+    <div className="lh-sky__edge" aria-hidden="true" />
     </>
   );
 }

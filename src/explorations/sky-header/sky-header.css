@@ -7,7 +7,8 @@
 @property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
 @property --sky-orb-core { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
 @property --sky-orb-edge { syntax: '<color>'; inherits: true; initial-value: #d9c080; }
-@property --sky-veil { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --sky-veil-ink { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-veil-paper { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
 @property --sky-stars { syntax: '<number>'; inherits: true; initial-value: 0; }
@@ -60,7 +61,8 @@
   font-family: var(--font-family-body);
   transition:
     --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
-    --sky-orb-core 60s linear, --sky-orb-edge 60s linear, --sky-veil 60s linear,
+    --sky-orb-core 60s linear, --sky-orb-edge 60s linear,
+    --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear,
     --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
 }
 /* Glass: the marble shows through, blurred, with a rim lit from the orb like the cards. */
@@ -82,9 +84,9 @@
   mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
 }
 .lh-sky--instant {
-  /* Scrubbing: the sky follows every frame. The veil still eases, so when the text switches between
-     dark and light, the veil behind it blends instead of flipping. */
-  transition: --sky-veil 1.5s ease-in-out;
+  /* Scrubbing: the sky follows every frame. The tints still take 1.5 seconds, the same as the text, so
+     when the text switches between dark and light, its tint switches with it. */
+  transition: --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear;
 }
 
 /* The page's marble swirl continues through the sky as light and shade only, like clouds by day and the
@@ -210,7 +212,10 @@
   --card-backdrop: blur(var(--material-blur-on-art));
   border-color: transparent;
   background-color: var(--lh-sky-glass);
-  background-image: linear-gradient(var(--sky-veil), var(--sky-veil));
+  /* The readability tints: ink and paper, the same colors as sky.ts (INK and PAPER). */
+  background-image:
+    linear-gradient(color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent), color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent)),
+    linear-gradient(color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent), color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent));
 }
 
 /* Let's chat and System Settings: glass pills on the right. */
@@ -231,7 +236,9 @@
   padding-inline: var(--space-2) var(--space-5);
   border: none;
   border-radius: var(--radius-pill);
-  background: linear-gradient(var(--sky-veil), var(--sky-veil));
+  background:
+    linear-gradient(color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent), color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent)),
+    linear-gradient(color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent), color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent));
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
   font-size: var(--type-body-default-size);
