@@ -37,7 +37,7 @@ const meta: Meta<typeof SettingsDialog> = {
       },
     },
   },
-  // After Graduation only for now; says so when the toolbar picks another theme.
+  // After Graduation only for now; with Life Hub picked, shows a message instead.
   decorators: [afterGraduationOnly],
 };
 export default meta;
