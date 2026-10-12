@@ -170,7 +170,7 @@ function useDay(start: number) {
         <span>6 pm</span>
         <span>12 am</span>
       </div>
-      <p style={{ margin: 0, color: 'var(--color-ink-secondary)', fontSize: 'var(--type-label-meta-size)' }}>
+      <p style={{ margin: 0, maxInlineSize: 'none', color: 'var(--color-ink-secondary)', fontSize: 'var(--type-label-meta-size)' }}>
         Today here: sunrise {clockLabel(SUN.sunrise)}, sunset {clockLabel(SUN.sunset)}. Each takes {TWILIGHT_MINUTES} minutes and
         plays slowly so you can watch it.
       </p>
@@ -180,14 +180,64 @@ function useDay(start: number) {
 }
 
 /** A whole day sped up on one marble. Pick the background and version in Controls. */
+/** The appearance setting (Device, Light, Dark, Follow the sun), the same buttons Life Hub's settings will have. */
+function useAppearance() {
+  const [setting, setSetting] = useState<ModeSetting>('device');
+  const switcher = (
+    <div style={{ padding: 'var(--space-3) var(--space-5) 0' }}>
+      <SegmentedControl aria-label="Appearance" selectedKeys={[setting]} onSelectionChange={(keys) => setSetting([...keys][0] as ModeSetting)}>
+        {(Object.keys(modeLabels) as ModeSetting[]).map((k) => (
+          <Segment key={k} id={k}>
+            {modeLabels[k]}
+          </Segment>
+        ))}
+      </SegmentedControl>
+    </div>
+  );
+  return { setting, switcher };
+}
+
+/**
+ * One marble page with the header, following the appearance setting: with Follow the sun, the page fades
+ * to dark at dusk and back at dawn; with Dark, the header holds a still night sky.
+ */
+function Scene({ version, hour, background, setting, deviceDark }: { version: Version; hour: number; background: string; setting: ModeSetting; deviceDark: boolean }) {
+  const night = findMarble(background).night;
+  const skyHour = skyHourFor(hour, SUN);
+  const skyMode = skyAt(skyHour, { material: version, areaNight: night }).mode;
+  const look = appearanceFor(setting, { deviceDark, skyMode });
+  const [page, setPage] = useState<SkyMode>(look.page);
+  useEffect(() => {
+    if (look.page !== page) fadePageMode(() => setPage(look.page));
+  }, [look.page, page]);
+  return (
+    <MarblePage background={background} mode={page}>
+      <SkyHeader
+        {...copy}
+        hour={look.header === 'night' ? 23 : skyHour}
+        greetingHour={hour}
+        instant
+        material={version}
+        swirl={swirlOf(background)}
+        areaNight={night}
+      />
+    </MarblePage>
+  );
+}
+
+const deviceDarkOf = (context: { globals: Record<string, unknown> }) => context.globals.mode === 'dark';
+
+/** A whole day sped up on one marble. Pick the background and version in Controls. */
 export const PlayADay: Story = {
   argTypes: { hour: { table: { disable: true } } },
-  render: function Render({ background, version }) {
+  render: function Render({ background, version }, context) {
     const { hour, controls } = useDay(SUN.sunrise - 0.75);
+    const { setting, switcher } = useAppearance();
     return (
       <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
+        {switcher}
         {controls}
-        <MarblePage background={background}>{header(version, hour, background)}</MarblePage>
+        <Scene version={version} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} />
       </div>
     );
   },
@@ -196,15 +246,17 @@ export const PlayADay: Story = {
 /** A and B on the same marble, playing together. */
 export const CompareAAndB: Story = {
   argTypes: { hour: { table: { disable: true } }, version: { table: { disable: true } } },
-  render: function Render({ background }) {
-    const { hour, controls } = useDay(4);
+  render: function Render({ background }, context) {
+    const { hour, controls } = useDay(SUN.sunrise - 0.75);
+    const { setting, switcher } = useAppearance();
     return (
       <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
+        {switcher}
         {controls}
         {(['glass', 'sky'] as Version[]).map((v) => (
           <section key={v} aria-label={labels[v]} style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{labels[v]}</p>
-            <MarblePage background={background}>{header(v, hour, background)}</MarblePage>
+            <Scene version={v} hour={hour} background={background} setting={setting} deviceDark={deviceDarkOf(context)} />
           </section>
         ))}
       </div>
@@ -215,15 +267,17 @@ export const CompareAAndB: Story = {
 /** Every marble, playing together. Pick the version in Controls. */
 export const EveryBackground: Story = {
   argTypes: { hour: { table: { disable: true } }, background: { table: { disable: true } } },
-  render: function Render({ version }) {
-    const { hour, controls } = useDay(4);
+  render: function Render({ version }, context) {
+    const { hour, controls } = useDay(SUN.sunrise - 0.75);
+    const { setting, switcher } = useAppearance();
     return (
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
+        {switcher}
         {controls}
         {marbles.map((m) => (
           <section key={m.name} aria-label={m.name} style={{ display: 'grid', gap: 'var(--space-2)' }}>
             <p style={{ margin: 0, padding: '0 var(--space-5)', color: 'var(--color-ink-tertiary)', fontSize: 'var(--type-label-size)' }}>{m.name}</p>
-            <MarblePage background={m.name}>{header(version, hour, m.name)}</MarblePage>
+            <Scene version={version} hour={hour} background={m.name} setting={setting} deviceDark={deviceDarkOf(context)} />
           </section>
         ))}
       </div>
@@ -247,39 +301,14 @@ export const Live: Story = {
 };
 
 function SettingsDemo({ background, deviceDark }: { background: string; deviceDark: boolean }) {
-  const [setting, setSetting] = useState<ModeSetting>('device');
   // A sped-up day on the real clock, starting mid-afternoon so sunset comes soon.
   const { hour, controls } = useDay(15.5);
-  const sun = useMemo(() => sunTimes(new Date()), []);
-  const night = findMarble(background).night;
-  const skyHour = skyHourFor(hour, sun);
-  const skyMode = skyAt(skyHour, { areaNight: night }).mode;
-  const look = appearanceFor(setting, { deviceDark, skyMode });
-  const [page, setPage] = useState<SkyMode>(look.page);
-  useEffect(() => {
-    if (look.page !== page) fadePageMode(() => setPage(look.page));
-  }, [look.page, page]);
+  const { setting, switcher } = useAppearance();
   return (
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
-      <SegmentedControl aria-label="Appearance" selectedKeys={[setting]} onSelectionChange={(keys) => setSetting([...keys][0] as ModeSetting)}>
-        {(Object.keys(modeLabels) as ModeSetting[]).map((k) => (
-          <Segment key={k} id={k}>
-            {modeLabels[k]}
-          </Segment>
-        ))}
-      </SegmentedControl>
+      {switcher}
       {controls}
-      <MarblePage background={background} mode={page}>
-        <SkyHeader
-          {...copy}
-          hour={look.header === 'night' ? 23 : skyHour}
-          greetingHour={hour}
-          instant
-          material="glass"
-          swirl={swirlOf(background)}
-          areaNight={night}
-        />
-      </MarblePage>
+      <Scene version="glass" hour={hour} background={background} setting={setting} deviceDark={deviceDark} />
     </div>
   );
 }
