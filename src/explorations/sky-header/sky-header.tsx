@@ -178,11 +178,14 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     if (!header || !card || !actions) return;
     const check = () => {
       header.classList.remove('lh-sky--stacked');
-      if (actions.getBoundingClientRect().top >= card.getBoundingClientRect().bottom) header.classList.add('lh-sky--stacked');
+      const c = card.getBoundingClientRect();
+      header.style.setProperty('--sky-card-w', `${c.width}px`);
+      if (actions.getBoundingClientRect().top >= c.bottom) header.classList.add('lh-sky--stacked');
     };
     check();
     const ro = new ResizeObserver(check);
     ro.observe(header);
+    ro.observe(card);
     return () => ro.disconnect();
   }, []);
   // The sky's glow sits on the orb, wherever the layout puts it.

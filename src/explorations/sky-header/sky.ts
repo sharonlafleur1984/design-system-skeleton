@@ -22,9 +22,9 @@ const KEYS: Key[] = [
   { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon; orb violet sampled from Life Hub's orb (estimate)
   { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
   { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, orbCore: '#f9ebec', orbEdge: '#d5818d', horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100
-  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, orbCore: '#fdfbf1', orbEdge: '#efdcb9', horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
-  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbf1', orbEdge: '#d9c080', horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100; orb gold sand 300
-  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbf1', orbEdge: '#d9c080', horizon: 0, stars: 0 },
+  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, orbCore: '#fdfbe9', orbEdge: '#efdcb9', horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
+  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbe9', orbEdge: '#d9c080', horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100; orb sunflower 50 to gold sand 300
+  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbe9', orbEdge: '#d9c080', horizon: 0, stars: 0 },
   { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, orbCore: '#f7efdd', orbEdge: '#c8a85c', horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200
   { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, orbCore: '#f9ebec', orbEdge: '#c36573', horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400
   { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, orbCore: '#f4dcdf', orbEdge: '#7e5b74', horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300

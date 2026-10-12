@@ -89,9 +89,10 @@
   transition: --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear;
 }
 
-/* The page's marble swirl continues through the sky as light and shade only, like clouds by day and the
-   Milky Way at night. It's the same marble, lined up with the page, turned gray and soft-lit over the
-   sky, so the sky keeps its color. */
+/* The page's marble swirl continues through the sky as soft light, like clouds by day and the Milky Way
+   at night. It's plain white light shaped by the marble's own light and shade (a luminance mask), lined up
+   with the page's marble, so the sky keeps its color. Drawn without filters or blend modes: either one,
+   under the buttons' bending glass, left a visible seam. */
 .lh-sky__swirl {
   position: absolute;
   inset-inline: 0;
@@ -99,47 +100,11 @@
   block-size: var(--sky-page-h, 100%);
   z-index: -2;
   pointer-events: none;
-  background: var(--sky-swirl) center / cover;
-  filter: grayscale(1) blur(2px);
-  mix-blend-mode: soft-light;
-  /* An estimate: enough to see the swirl, not so much that it lightens the night sky. */
-  opacity: 0.5;
-}
-
-/* The divider between the header and the marble, lit from the orb (--edge-x is the orb's spot across).
-   Near the light: a brighter rim and a short, dark, crisp shadow. Farther away: a faint rim and a longer,
-   lighter, softer shadow. The same glass tokens as every other shadow (glass.css); the falloff is an
-   estimate shaped like the light helper's (strength halves about a header-width away). */
-.lh-sky__edge {
-  position: relative;
-  z-index: 1;
-  block-size: 0;
-  pointer-events: none;
-}
-.lh-sky__edge::before,
-.lh-sky__edge::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  inset-block-start: 0;
-}
-/* Near the light */
-.lh-sky__edge::before {
-  block-size: calc(var(--glass-cast-distance) * 1.5);
-  background:
-    linear-gradient(var(--glass-rim-color), var(--glass-rim-color)) top / 100% var(--glass-rim-width) no-repeat,
-    linear-gradient(var(--glass-contact), transparent);
-  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.5) 55%, transparent 100%);
-  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.5) 55%, transparent 100%);
-}
-/* Farther away */
-.lh-sky__edge::after {
-  block-size: var(--glass-cast-blur);
-  background:
-    linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint)) top / 100% var(--glass-rim-width) no-repeat,
-    linear-gradient(color-mix(in srgb, var(--glass-cast) 60%, transparent), transparent);
-  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, transparent, rgb(0 0 0 / 0.5) 45%, black 100%);
-  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, transparent, rgb(0 0 0 / 0.5) 45%, black 100%);
+  background: #fff;
+  -webkit-mask: var(--sky-swirl) center / cover;
+  mask: var(--sky-swirl) center / cover luminance;
+  /* An estimate: a whisper by day, a little more at night where it reads as the Milky Way. */
+  opacity: calc(0.06 + var(--sky-stars) * 0.1);
 }
 
 /* Stars fade in at dusk and twinkle slowly. */
@@ -291,10 +256,12 @@
   outline-offset: 2px;
 }
 
-/* Narrow screens: once the buttons wrap below the greeting, they fill the row. Let's chat takes the larger
+/* Narrow screens: once the buttons wrap below the greeting, they fill the card's width. Let's chat takes the larger
    share, since it's the main action. */
 .lh-sky--stacked .lh-sky__actions {
-  flex: 1 1 100%;
+  /* As wide as the greeting card above, so the two line up on both edges. */
+  flex: 0 0 auto;
+  inline-size: var(--sky-card-w, 100%);
   flex-wrap: nowrap;
 }
 .lh-sky--stacked .lh-sky__action {
