@@ -61,8 +61,8 @@ import { skyHourFor, sunTimes } from './sun';
 import './sky-header.css';
 
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
-// day. The orb on the Let's chat button (a small sun by day, violet at night) is where the light comes
-// from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
+// day. The orb on the Let's chat button, in the page's own color (lighter by day, deeper at night), is
+// where the light comes from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
 // same recipe as After Graduation's episode tabs (glass.css and useGlassLight).
 
 export interface SkyHeaderProps {
@@ -78,6 +78,8 @@ export interface SkyHeaderProps {
   greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
   material?: 'sky' | 'glass';
+  /** The page's palette, like 'lilacs-lavender' (the area's color family). The orb uses its shades. */
+  palette?: string;
   /** The page's marble image as a CSS url with a full address, so its swirl continues faintly through the sky. */
   swirl?: string;
   /** The area's night layer, so dark skies match the marble below. */
@@ -131,7 +133,7 @@ function nowHour() {
   return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', palette = 'earth-moss', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -223,8 +225,10 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
-    '--sky-orb-core': sky.orbCore,
-    '--sky-orb-edge': sky.orbEdge,
+    // The orb is the page's own color all day: its palette's light, middle and deep shades.
+    '--orb-light': `var(--palette-${palette}-200)`,
+    '--orb-mid': `var(--palette-${palette}-500)`,
+    '--orb-deep': `var(--palette-${palette}-800)`,
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;

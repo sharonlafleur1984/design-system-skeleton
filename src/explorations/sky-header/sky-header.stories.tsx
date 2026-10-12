@@ -8,11 +8,15 @@ import { Segment, SegmentedControl } from '../../components/segmented-control/se
 import { Button } from '../../components/button/button';
 import { areas } from '../glass-cards/areas';
 
+/** A palette's token name: 'Lilacs & Lavender' is lilacs-lavender. */
+const slug = (name: string) => name.toLowerCase().replace(/&/g, ' ').trim().replace(/\s+/g, '-');
+
 // Every marble in the system. The tenth, Future option B, has no area yet, so its night layer is an
 // estimate: its darkest tone mixed with Life Hub ink.
 const marbles = [
-  ...areas.map((a) => ({ name: a.name, texture: a.texture, night: a.layer, nightAlpha: a.layerAlpha })),
-  { name: 'Future option B', texture: 'texture-future-option-b.jpg', night: mixColor('#dd816c', '#2a2625', 0.65), nightAlpha: 0.86 },
+  ...areas.map((a) => ({ name: a.name, texture: a.texture, night: a.layer, nightAlpha: a.layerAlpha, palette: slug(a.palette) })),
+  // No palette yet either: berry pie is the closest family to its coral, an estimate.
+  { name: 'Future option B', texture: 'texture-future-option-b.jpg', night: mixColor('#dd816c', '#2a2625', 0.65), nightAlpha: 0.86, palette: 'berry-pie' },
 ];
 const marbleNames = marbles.map((m) => m.name);
 const findMarble = (name: string) => marbles.find((m) => m.name === name) ?? marbles[0];
@@ -87,6 +91,7 @@ const header = (version: Version, hour: number, background: string) => (
     instant
     material={version}
     swirl={swirlOf(background)}
+        palette={findMarble(background).palette}
     areaNight={findMarble(background).night}
   />
 );
@@ -219,6 +224,7 @@ function Scene({ version, hour, background, setting, deviceDark }: { version: Ve
         instant
         material={version}
         swirl={swirlOf(background)}
+        palette={findMarble(background).palette}
         areaNight={night}
       />
     </MarblePage>
@@ -297,7 +303,13 @@ export const Live: Story = {
   argTypes: { hour: { table: { disable: true } } },
   render: ({ background, version }) => (
     <MarblePage background={background}>
-      <SkyHeader {...copy} material={version} swirl={swirlOf(background)} areaNight={findMarble(background).night} />
+      <SkyHeader
+        {...copy}
+        material={version}
+        swirl={swirlOf(background)}
+        palette={findMarble(background).palette}
+        areaNight={findMarble(background).night}
+      />
     </MarblePage>
   ),
 };

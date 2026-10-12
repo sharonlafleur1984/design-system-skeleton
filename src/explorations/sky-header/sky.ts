@@ -11,26 +11,24 @@ interface Key {
   bottom: string; // sky at the bottom
   glow: string; // the light's color
   glowAlpha: number;
-  orbCore: string; // the orb's bright center (the orb only; the sky's light is glow above)
-  orbEdge: string; // the orb's rim
   horizon: number; // 0 to 1: warm band along the bottom at sunrise and sunset
   stars: number; // 0 to 1
 }
 
 // Palette names are in the comments so the colors can be traced back to tokens.
 const KEYS: Key[] = [
-  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon; orb violet sampled from Life Hub's orb (estimate)
-  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
-  { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, orbCore: '#f9ebec', orbEdge: '#d5818d', horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100
-  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, orbCore: '#fdfbe9', orbEdge: '#efdcb9', horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
-  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbe9', orbEdge: '#d9c080', horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100; orb sunflower 50 to gold sand 300
-  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbe9', orbEdge: '#d9c080', horizon: 0, stars: 0 },
-  { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, orbCore: '#f7efdd', orbEdge: '#c8a85c', horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200
-  { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, orbCore: '#f9ebec', orbEdge: '#c36573', horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400
-  { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, orbCore: '#f4dcdf', orbEdge: '#7e5b74', horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300
-  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#e6ecf2', glowAlpha: 0.1, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
-  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
-  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
+  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon
+  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, horizon: 0, stars: 1 },
+  { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100
+  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
+  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100
+  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, horizon: 0, stars: 0 },
+  { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200
+  { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400
+  { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300
+  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#e6ecf2', glowAlpha: 0.1, horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
+  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, horizon: 0, stars: 1 },
+  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, horizon: 0, stars: 1 },
 ];
 
 // Colors are blended in OKLab, so sunset passes through rose and violet instead of muddy gray.
@@ -73,8 +71,6 @@ export interface Sky {
   bottom: string;
   glow: string;
   glowAlpha: number;
-  orbCore: string;
-  orbEdge: string;
   horizon: number;
   stars: number;
   /** Light or dark glass and text, whichever needs less help to read. */
@@ -216,8 +212,6 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     bottom,
     glow,
     glowAlpha,
-    orbCore: mixColor(a.orbCore, b.orbCore, t),
-    orbEdge: mixColor(a.orbEdge, b.orbEdge, t),
     horizon,
     stars: mix(a.stars, b.stars, t),
     mode,

@@ -5,8 +5,6 @@
 @property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #faf7f1; }
 @property --sky-glow { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
 @property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
-@property --sky-orb-core { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
-@property --sky-orb-edge { syntax: '<color>'; inherits: true; initial-value: #d9c080; }
 @property --sky-veil-ink { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-veil-paper { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
@@ -61,7 +59,6 @@
   font-family: var(--font-family-body);
   transition:
     --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
-    --sky-orb-core 60s linear, --sky-orb-edge 60s linear,
     --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear,
     --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
 }
@@ -188,8 +185,8 @@
    and nothing at all the rest of the day. */
 .lh-sky__card,
 .lh-sky__action {
-  --_halo-ink: color-mix(in srgb, #2a2625 calc(min(1, var(--sky-veil-ink) * 3.5) * 100%), transparent);
-  --_halo-paper: color-mix(in srgb, #faf7f1 calc(min(1, var(--sky-veil-paper) * 3.5) * 100%), transparent);
+  --_halo-ink: color-mix(in srgb, var(--palette-ink-primary) calc(min(1, var(--sky-veil-ink) * 3.5) * 100%), transparent);
+  --_halo-paper: color-mix(in srgb, var(--palette-paper-off-white) calc(min(1, var(--sky-veil-paper) * 3.5) * 100%), transparent);
   --_halo-x: calc(var(--light-dx, 0) * -2px);
   --_halo-y: calc(var(--light-dy, 0) * -2px);
 }
@@ -294,15 +291,19 @@
   }
 }
 
-/* The orb: a solid sphere, the header's light. Its colors come from sky.ts: a small sun by day, warm at
-   sunset, violet at night. Only its own soft edge glows; the sky's light is the glow behind it. */
+/* The orb: a solid sphere in the page's own color, and the header's light. Same color family all day:
+   light shades by day, deepening through dusk to its deep shades at night (--sky-stars runs 0 by day to
+   1 at night). Only its own soft edge glows; the sky's light is the glow behind it. */
 .lh-sky__orb {
+  --_dark: calc(var(--sky-stars) * 100%);
+  --_core: color-mix(in oklab, var(--orb-light), var(--orb-mid) var(--_dark));
+  --_edge: color-mix(in oklab, var(--orb-mid), var(--orb-deep) var(--_dark));
   flex: none;
   inline-size: 32px;
   block-size: 32px;
   border-radius: var(--radius-pill);
-  background: radial-gradient(circle at 38% 34%, var(--sky-orb-core) 0%, color-mix(in srgb, var(--sky-orb-core) 45%, var(--sky-orb-edge)) 38%, var(--sky-orb-edge) 100%);
-  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--sky-orb-edge) 55%, transparent);
+  background: radial-gradient(circle at 38% 34%, var(--_core) 0%, color-mix(in oklab, var(--_core) 45%, var(--_edge)) 38%, var(--_edge) 100%);
+  box-shadow: 0 0 10px 2px color-mix(in srgb, var(--_edge) 55%, transparent);
 }
 
 /* Glass at its full lighting, as before the orb became the source: only the light's direction comes
@@ -333,7 +334,7 @@
   block-size: 36px;
   border-radius: var(--radius-pill);
 }
-/* The count says how many updates are waiting, so the dot is never color alone. Berry 700 is an estimate
+/* The count says how many updates are waiting, so the dot is never color alone. Berry pie 700 from the palette
    until there is a badge token; the number on it passes 4.5:1. */
 .lh-sky__count {
   position: absolute;
@@ -345,8 +346,8 @@
   block-size: 18px;
   padding-inline: 4px;
   border-radius: var(--radius-pill);
-  background: #ab3f50;
-  color: #faf7f1;
+  background: var(--palette-berry-pie-700);
+  color: var(--palette-paper-off-white);
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
