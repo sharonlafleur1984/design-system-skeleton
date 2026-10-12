@@ -1,7 +1,8 @@
 // The Life Hub sky: what the header looks like at any hour. Exploration only.
-// Every color comes from Life Hub's palette (tokens/themes/life-hub). The light always sits top right:
-// the sun by day, sinking and warming at sunset, a cool moon glow at night in the sun's daytime spot. Positions and strengths are
-// estimates until they become tokens.
+// Every color comes from Life Hub's palette (tokens/themes/life-hub). The light is the orb on the
+// Let's chat button: a small sun by day, warming at sunset, then a violet Milky Way glow at night.
+// The header measures where the orb is and puts the sky's glow there. Strengths are estimates until
+// they become tokens.
 
 export type SkyMode = 'light' | 'dark';
 
@@ -11,26 +12,26 @@ interface Key {
   bottom: string; // sky at the bottom
   glow: string; // the light's color
   glowAlpha: number;
-  glowX: number; // light position, % across
-  glowY: number; // light position, % down (it sinks at sunset)
+  orbCore: string; // the orb's bright center
+  orbEdge: string; // the orb's rim
   horizon: number; // 0 to 1: warm band along the bottom at sunrise and sunset
   stars: number; // 0 to 1
 }
 
 // Palette names are in the comments so the colors can be traced back to tokens.
 const KEYS: Key[] = [
-  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 }, // navy 900, ink, navy 100 moon
-  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
-  { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, glowX: 94, glowY: 80, horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100
-  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, glowX: 92, glowY: 35, horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight
-  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, glowX: 88, glowY: 0, horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100
-  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, glowX: 88, glowY: 0, horizon: 0, stars: 0 },
-  { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, glowX: 90, glowY: 25, horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200
-  { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, glowX: 94, glowY: 80, horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400
-  { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, glowX: 96, glowY: 100, horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300
-  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#e6ecf2', glowAlpha: 0.1, glowX: 88, glowY: 0, horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
-  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
-  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#e6ecf2', glowAlpha: 0.14, glowX: 88, glowY: 0, horizon: 0, stars: 1 },
+  { hour: 0, top: '#1f2d42', bottom: '#2a2625', glow: '#8e60f9', glowAlpha: 0.3, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 }, // navy 900, ink; Milky Way violet sampled from Sharon's Life Hub orb (estimate until it's a token)
+  { hour: 5, top: '#1f2d42', bottom: '#2a2625', glow: '#8e60f9', glowAlpha: 0.3, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
+  { hour: 6, top: '#374d70', bottom: '#946e8a', glow: '#fcf7c5', glowAlpha: 0.45, orbCore: '#f9ebec', orbEdge: '#d5818d', horizon: 0.6, stars: 0.4 }, // navy 600, lilacs 500, sunflower 100; orb berry 100 to 500
+  { hour: 7, top: '#e6dce4', bottom: '#f9ebec', glow: '#fdfbf1', glowAlpha: 0.75, orbCore: '#fdfbf1', orbEdge: '#efdcb9', horizon: 0.3, stars: 0 }, // lilacs 200, berry 100, sunlight; orb gold sand 200
+  { hour: 9, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbf1', orbEdge: '#d9c080', horizon: 0, stars: 0 }, // paper warm, paper cream, sunflower 100; orb gold sand 300
+  { hour: 16, top: '#fdfbf9', bottom: '#f7f3ef', glow: '#fcf7c5', glowAlpha: 0.6, orbCore: '#fdfbf1', orbEdge: '#d9c080', horizon: 0, stars: 0 },
+  { hour: 17.5, top: '#f7efdd', bottom: '#f9ebec', glow: '#efdcb9', glowAlpha: 0.9, orbCore: '#f7efdd', orbEdge: '#c8a85c', horizon: 0.3, stars: 0 }, // gold sand 100, berry 100, gold sand 200; orb gold sand 400
+  { hour: 18.5, top: '#f4dcdf', bottom: '#efdcb9', glow: '#e1a3ac', glowAlpha: 0.8, orbCore: '#f9ebec', orbEdge: '#c36573', horizon: 0.8, stars: 0 }, // berry 200, gold sand 200, berry 400; orb berry 600
+  { hour: 19.25, top: '#3f5880', bottom: '#d5818d', glow: '#ecc1c5', glowAlpha: 0.55, orbCore: '#f4dcdf', orbEdge: '#7e5b74', horizon: 0.7, stars: 0.35 }, // navy 500, berry 500, berry 300; orb lilacs 600
+  { hour: 20.25, top: '#273751', bottom: '#56414e', glow: '#8e60f9', glowAlpha: 0.24, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0.15, stars: 0.8 }, // navy 800, lilacs 800
+  { hour: 21, top: '#1f2d42', bottom: '#2a2625', glow: '#8e60f9', glowAlpha: 0.3, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
+  { hour: 24, top: '#1f2d42', bottom: '#2a2625', glow: '#8e60f9', glowAlpha: 0.3, orbCore: '#c38cf9', orbEdge: '#6f58f1', horizon: 0, stars: 1 },
 ];
 
 // Colors are blended in OKLab, so sunset passes through rose and violet instead of muddy gray.
@@ -73,8 +74,8 @@ export interface Sky {
   bottom: string;
   glow: string;
   glowAlpha: number;
-  glowX: number;
-  glowY: number;
+  orbCore: string;
+  orbEdge: string;
   horizon: number;
   stars: number;
   /** Light or dark glass and text, whichever needs less help to read. */
@@ -93,10 +94,16 @@ export const TEXT = {
   light: { primary: '#2a2625', secondary: '#524c4a', tertiary: '#716764' },
   dark: { primary: '#faf7f1', secondary: '#e8e2db', tertiary: '#d6cec7' },
 } as const;
-export const CARD_GLASS = { light: { color: '#ffffff', alpha: 0.35 }, dark: { color: '#fdfbf1', alpha: 0.08 } }; // surface-glass-on-art
-const BUTTON_GLASS = { light: { color: '#ffffff', alpha: 0.35 }, dark: { color: '#fdfbf1', alpha: 0.08 } }; // surface-glass
-// Glass headers show some marble. The model assumes the worst marble: pure white or near black.
-const MARBLE_EXTREMES = ['#ffffff', '#1f1f1f'];
+// The greeting and the buttons are clear glass, like After Graduation's episode tabs: no fill at all.
+// sky-header.css sets the same (a test checks they match). Only the veil below is ever added.
+export const CARD_GLASS = { light: { color: '#ffffff', alpha: 0 }, dark: { color: '#fdfbf1', alpha: 0 } };
+const BUTTON_GLASS = CARD_GLASS;
+// Glass headers show some marble. The model assumes the worst marble: pure white, or the darkest tone
+// any marble in the system actually has (the darkest 1% of Lilacs & Lavender, measured Oct 12 2026 from
+// texture-lilacs-lavender.jpg). Assuming pure black instead put a heavy veil on the glass all day.
+// A new, darker marble must update this.
+export const MARBLE_DARKEST = '#3a4b67';
+const MARBLE_EXTREMES = ['#ffffff', MARBLE_DARKEST];
 
 type Rgb = [number, number, number];
 const rgb = (hex: string): Rgb => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)) as Rgb;
@@ -118,7 +125,8 @@ interface Backdrop {
 
 /**
  * The lowest contrast any text in the header reaches, as a share of what it needs (1 or more passes).
- * Body text needs 4.5:1; the greeting is large, so 3:1 (WCAG 1.4.3).
+ * Body text needs 4.5:1; the greeting is large, so 3:1 (WCAG 1.4.3). The header's small lines (updated
+ * time and prompt) use secondary ink: with tertiary, the glass needed a heavy veil all day to pass.
  */
 const TEXT_L = {
   light: { primary: 0, secondary: 0, tertiary: 0 },
@@ -134,7 +142,7 @@ const GLASS = { light: rgb(BUTTON_GLASS.light.color), dark: rgb(BUTTON_GLASS.dar
 export function readability(sky: Backdrop, mode: SkyMode, veilAlpha: number) {
   const veil = VEIL[mode];
   const text = TEXT_L[mode];
-  // The sky behind the card (top to bottom, with the warm band) and behind the button (top, under the light).
+  // The sky behind the card (top to bottom, with the warm band) and behind the buttons (under the orb's glow).
   const behindCard = [rgb(sky.top), rgb(sky.bottom), over(rgb(sky.glow), sky.horizon * 0.55, rgb(sky.bottom))];
   const behindButton = [rgb(sky.top), over(rgb(sky.glow), sky.glowAlpha, rgb(sky.top))];
   let worst = Infinity;
@@ -144,7 +152,7 @@ export function readability(sky: Backdrop, mode: SkyMode, veilAlpha: number) {
       let c = over(veil, veilAlpha, over(s, sky.alpha, marble));
       c = over(CARD[mode], CARD_GLASS[mode].alpha, c);
       const L = rgbLuminance(c);
-      worst = Math.min(worst, contrast(L, text.primary) / 3, contrast(L, text.secondary) / 4.5, contrast(L, text.tertiary) / 4.5);
+      worst = Math.min(worst, contrast(L, text.primary) / 3, contrast(L, text.secondary) / 4.5);
     }
     for (const s of behindButton) {
       // The button's own glass is underneath; the veil is painted over it.
@@ -209,8 +217,8 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     bottom,
     glow,
     glowAlpha,
-    glowX: mix(a.glowX, b.glowX, t),
-    glowY: mix(a.glowY, b.glowY, t),
+    orbCore: mixColor(a.orbCore, b.orbCore, t),
+    orbEdge: mixColor(a.orbEdge, b.orbEdge, t),
     horizon,
     stars: mix(a.stars, b.stars, t),
     mode,

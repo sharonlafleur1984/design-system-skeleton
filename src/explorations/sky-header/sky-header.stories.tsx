@@ -30,7 +30,8 @@ const meta: Meta<Args> = {
     docs: {
       description: {
         component:
-          'Exploration, not in the library yet. The header is a sky that follows the time of day: sunlight by day, a sunset that sinks and warms in the top right, then stars and a moon glow. ' +
+          'Exploration, not in the library yet. The header is a sky that follows the time of day. The orb on Let\'s chat is the light: a small sun by day, warm at sunset, a violet Milky Way glow at night. The greeting and both buttons are the same clear glass as After Graduation\'s episode tabs, lit from the orb. The greeting card hugs its words and glides to a new width when the greeting changes. ' +
+          'Play a day moves fast through day and night and slows down for sunrise and sunset. ' +
           'A is a tinted glass panel the marble shows through; B is a solid sky. At night both lean toward the area\'s own night layer, so they match the marble below. ' +
           'Use the Mode switch in the toolbar for light and dark pages. Colors are from the Life Hub palette; positions and strengths are estimates.',
       },
@@ -49,7 +50,8 @@ type Story = StoryObj<Args>;
 const copy = {
   name: 'Alex',
   meta: 'Updated today at 4:12 pm',
-  prompt: 'What can I help you knock of your plate today?',
+  prompt: 'What can I help you knock off your plate today?',
+  settingsCount: 2,
 };
 
 /** A slice of an area page: its marble, with the night layer over it on dark pages. */
@@ -77,7 +79,28 @@ const header = (version: Version, hour: number, background: string) => (
 const clockLabel = (hour: number) =>
   new Date(2026, 0, 1, Math.floor(hour), Math.floor((hour % 1) * 60)).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
-/** The clock: one hour every 1.5 seconds, the whole day in 36 seconds. Pause stops it. */
+/**
+ * How many seconds the demo spends on each hour. Daytime and night move quickly (1.5 seconds an hour),
+ * but sunrise and sunset slow to 12 seconds an hour, so you can watch the sky and the glass blend the way
+ * they will on the real clock. The pace eases between the two, so the slowdown itself never jolts.
+ */
+const TWILIGHT = [
+  [5, 7.5],
+  [17, 21],
+];
+function secondsPerHour(hour: number) {
+  const h = ((hour % 24) + 24) % 24;
+  // How close to twilight: 1 inside a window, easing to 0 over the half hour on either side.
+  let near = 0;
+  for (const [from, to] of TWILIGHT) {
+    const d = h < from ? from - h : h > to ? h - to : 0;
+    const t = Math.max(0, 1 - d / 0.5);
+    near = Math.max(near, t * t * (3 - 2 * t));
+  }
+  return 1.5 + (12 - 1.5) * near;
+}
+
+/** The clock: fast through the day and night, slow through sunrise and sunset. Pause stops it. */
 function useDay(start: number) {
   const [hour, setHour] = useState(start);
   const [playing, setPlaying] = useState(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -85,7 +108,7 @@ function useDay(start: number) {
     if (!playing) return;
     let last = performance.now();
     let id = requestAnimationFrame(function tick(now) {
-      setHour((h) => (h + (now - last) / 1500) % 24);
+      setHour((h) => (h + (now - last) / 1000 / secondsPerHour(h)) % 24);
       last = now;
       id = requestAnimationFrame(tick);
     });

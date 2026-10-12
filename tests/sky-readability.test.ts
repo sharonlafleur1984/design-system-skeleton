@@ -37,14 +37,12 @@ describe('Sky header readability', () => {
     }
   });
 
-  it('uses the same card glass as the Life Hub tokens (glass on art)', () => {
-    const light = JSON.parse(readFileSync('build/json/life-hub.json', 'utf8'));
-    const dark = JSON.parse(readFileSync('build/json-dark/life-hub.json', 'utf8'));
+  it('uses clear glass, the same as the header styles and After Graduation\'s glass on art', () => {
+    const css = readFileSync('src/explorations/sky-header/sky-header.css', 'utf8');
+    const ag = JSON.parse(readFileSync('build/json/after-graduation.json', 'utf8'));
     const parse = (v: string) => v.match(/[\d.]+/g)!.map(Number);
-    for (const [mode, tokens] of [['light', light], ['dark', dark]] as const) {
-      const [r, g, b, a] = parse(tokens['color-surface-glass-on-art']);
-      expect(rgbHex(r, g, b)).toBe(CARD_GLASS[mode].color);
-      expect(a).toBe(CARD_GLASS[mode].alpha);
-    }
+    expect(parse(ag['color-surface-glass-on-art'])[3]).toBe(0);
+    expect(css).toContain('--lh-sky-glass: transparent;');
+    for (const mode of ['light', 'dark'] as const) expect(CARD_GLASS[mode].alpha).toBe(0);
   });
 });
