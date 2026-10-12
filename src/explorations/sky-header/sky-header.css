@@ -17,7 +17,7 @@
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
-  /* The buttons sit on the same bottom line as the greeting card. */
+  /* The buttons line up with the bottom of the greeting line (the component measures it). */
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-4);

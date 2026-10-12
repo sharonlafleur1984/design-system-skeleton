@@ -209,6 +209,28 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     ro.observe(page);
     return () => ro.disconnect();
   }, []);
+  // The buttons' bottom edge lines up with the bottom of the greeting line ("Good evening, Alex").
+  // When they wrap below the card (narrow screens), they sit normally.
+  useLayoutEffect(() => {
+    const header = ref.current;
+    const title = header?.querySelector<HTMLElement>('.lh-sky__title');
+    const card = header?.querySelector<HTMLElement>('.lh-sky__card');
+    const actions = header?.querySelector<HTMLElement>('.lh-sky__actions');
+    if (!header || !title || !card || !actions) return;
+    const place = () => {
+      actions.style.removeProperty('margin-block-end');
+      const c = card.getBoundingClientRect();
+      const a = actions.getBoundingClientRect();
+      if (a.top >= c.bottom) return; // wrapped onto its own row
+      const t = title.getBoundingClientRect();
+      actions.style.setProperty('margin-block-end', `${Math.max(0, a.bottom - t.bottom)}px`);
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(header);
+    ro.observe(card);
+    return () => ro.disconnect();
+  }, []);
   // The sky's glow sits on the orb, wherever the layout puts it.
   useLayoutEffect(() => {
     const header = ref.current;
