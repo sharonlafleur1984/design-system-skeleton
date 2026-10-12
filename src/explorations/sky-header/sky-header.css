@@ -104,6 +104,42 @@
   opacity: 0.5;
 }
 
+/* The divider between the header and the marble, lit from the orb (--edge-x is the orb's spot across).
+   Near the light: a brighter rim and a short, dark, crisp shadow. Farther away: a faint rim and a longer,
+   lighter, softer shadow. The same glass tokens as every other shadow (glass.css); the falloff is an
+   estimate shaped like the light helper's (strength halves about a header-width away). */
+.lh-sky__edge {
+  position: relative;
+  z-index: 1;
+  block-size: 0;
+  pointer-events: none;
+}
+.lh-sky__edge::before,
+.lh-sky__edge::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+}
+/* Near the light */
+.lh-sky__edge::before {
+  block-size: calc(var(--glass-cast-distance) * 1.5);
+  background:
+    linear-gradient(var(--glass-rim-color), var(--glass-rim-color)) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-contact), transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.5) 55%, transparent 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.5) 55%, transparent 100%);
+}
+/* Farther away */
+.lh-sky__edge::after {
+  block-size: var(--glass-cast-blur);
+  background:
+    linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint)) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(color-mix(in srgb, var(--glass-cast) 60%, transparent), transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, transparent, rgb(0 0 0 / 0.5) 45%, black 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, transparent, rgb(0 0 0 / 0.5) 45%, black 100%);
+}
+
 /* Stars fade in at dusk and twinkle slowly. */
 .lh-sky__stars {
   position: absolute;
