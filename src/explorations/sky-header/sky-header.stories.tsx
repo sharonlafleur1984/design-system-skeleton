@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SkyHeader } from './sky-header';
 import { mixColor, skyAt, type SkyMode } from './sky';
@@ -102,7 +102,8 @@ function secondsPerHour(hour: number) {
   return 1.5 + (12 - 1.5) * near;
 }
 
-/** The clock: fast through the day and night, slow through sunrise and sunset. Pause stops it. */
+/** The clock: fast through the day and night, slow through sunrise and sunset. Pause stops it; drag the
+ * scrubber to any minute of the day, like a video. */
 function useDay(start: number) {
   const [hour, setHour] = useState(start);
   const [playing, setPlaying] = useState(!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -117,12 +118,49 @@ function useDay(start: number) {
     return () => cancelAnimationFrame(id);
   }, [playing]);
   const label = clockLabel(hour);
+  // Dragging the scrubber pauses the day, like a video; letting go picks up where it was.
+  const resume = useRef(false);
   const controls = (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-5)' }}>
-      <Button variant="secondary" size="small" onPress={() => setPlaying((p) => !p)}>
-        {playing ? 'Pause' : 'Play'}
-      </Button>
-      <span style={{ fontVariantNumeric: 'tabular-nums', color: 'var(--color-ink-secondary)' }}>{label}</span>
+    <div style={{ display: 'grid', gap: 'var(--space-1)', padding: 'var(--space-3) var(--space-5)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+        <Button variant="secondary" size="small" onPress={() => setPlaying((p) => !p)}>
+          {playing ? 'Pause' : 'Play'}
+        </Button>
+        <span style={{ minWidth: '5.5em', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--color-ink-primary)' }}>{label}</span>
+        <input
+          type="range"
+          min={0}
+          max={24}
+          step={1 / 60}
+          value={hour}
+          aria-label="Time of day"
+          aria-valuetext={label}
+          onPointerDown={() => {
+            resume.current = playing;
+            setPlaying(false);
+          }}
+          onPointerUp={() => resume.current && setPlaying(true)}
+          onChange={(e) => setHour(Number(e.currentTarget.value) % 24)}
+          style={{ flex: 1, accentColor: 'var(--color-ink-primary)', cursor: 'pointer' }}
+        />
+      </div>
+      <div
+        aria-hidden="true"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginInlineStart: 'calc(5.5em + 2 * var(--space-3) + 64px)',
+          color: 'var(--color-ink-tertiary)',
+          fontSize: 'var(--type-label-meta-size)',
+          fontVariantNumeric: 'tabular-nums',
+        }}
+      >
+        <span>12 am</span>
+        <span>6 am</span>
+        <span>12 pm</span>
+        <span>6 pm</span>
+        <span>12 am</span>
+      </div>
     </div>
   );
   return { hour, controls, label };
