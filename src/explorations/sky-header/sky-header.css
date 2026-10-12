@@ -212,13 +212,35 @@
   --card-backdrop: blur(var(--material-blur-on-art));
   border-color: transparent;
   background-color: var(--lh-sky-glass);
-  /* The readability tints: ink and paper, the same colors as sky.ts (INK and PAPER). */
-  background-image:
-    linear-gradient(color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent), color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent)),
-    linear-gradient(color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent), color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent));
+
 }
 
-/* Let's chat and System Settings: glass pills on the right. */
+/* Readability at sunrise and sunset: instead of tinting the glass, a soft glow hugs the letters for the
+   few minutes the sky is mid-tone. It's a shadow from the orb's light: it falls slightly away from the orb
+   (--light-dx and --light-dy, set on each piece of glass by the light helper) and is softer on the far side.
+   Ink behind light text, paper behind dark text, as strong as sky.ts says the text needs (--sky-veil-*),
+   and nothing at all the rest of the day. */
+.lh-sky__card,
+.lh-sky__action {
+  --_halo-ink: color-mix(in srgb, #2a2625 calc(min(1, var(--sky-veil-ink) * 3.5) * 100%), transparent);
+  --_halo-paper: color-mix(in srgb, #faf7f1 calc(min(1, var(--sky-veil-paper) * 3.5) * 100%), transparent);
+  --_halo-x: calc(var(--light-dx, 0) * -2px);
+  --_halo-y: calc(var(--light-dy, 0) * -2px);
+}
+.lh-sky__meta,
+.lh-sky__title,
+.lh-sky__prompt,
+.lh-sky__action {
+  text-shadow:
+    0 0 3px var(--_halo-ink),
+    var(--_halo-x) var(--_halo-y) 5px var(--_halo-ink),
+    calc(var(--_halo-x) * 2) calc(var(--_halo-y) * 2) 14px var(--_halo-ink),
+    0 0 3px var(--_halo-paper),
+    var(--_halo-x) var(--_halo-y) 5px var(--_halo-paper),
+    calc(var(--_halo-x) * 2) calc(var(--_halo-y) * 2) 14px var(--_halo-paper);
+}
+
+/* Let's chat and Settings: glass pills on the right. */
 .lh-sky__actions {
   display: flex;
   flex-wrap: wrap;
@@ -237,9 +259,7 @@
   padding-inline: var(--space-2) var(--space-5);
   border: none;
   border-radius: var(--radius-pill);
-  background:
-    linear-gradient(color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent), color-mix(in srgb, #2a2625 calc(var(--sky-veil-ink) * 100%), transparent)),
-    linear-gradient(color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent), color-mix(in srgb, #faf7f1 calc(var(--sky-veil-paper) * 100%), transparent));
+  background: none;
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
   font-size: var(--type-body-default-size);
@@ -287,7 +307,7 @@
 .lh-sky--stacked .lh-sky__action--lit-within {
   flex-grow: 3;
 }
-/* Phones (under 600px, the compact screen size): System Settings shows only its gear and count, like the
+/* Phones (under 600px, the compact screen size): Settings shows only its gear and count, like the
    Life Hub page, and Let's chat fills the rest of the row. The label stays for screen readers. */
 @media (width < 37.5rem) {
   .lh-sky--stacked .lh-sky__action:not(.lh-sky__action--lit-within) {

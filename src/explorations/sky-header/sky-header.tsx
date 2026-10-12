@@ -86,7 +86,7 @@ export interface SkyHeaderProps {
   instant?: boolean;
   onChat?: () => void;
   onOpenSettings?: () => void;
-  /** Updates waiting in System Settings. Shown as a count in the dot; 0 or left out hides the dot. */
+  /** Updates waiting in Settings. Shown as a count in the dot; 0 or left out hides the dot. */
   settingsCount?: number;
 }
 
@@ -254,7 +254,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
             <GearIcon />
             {settingsCount > 0 && <span className="lh-sky__count">{settingsCount > 9 ? '9+' : settingsCount}</span>}
           </span>
-          <span className="lh-sky__label">System Settings</span>
+          <span className="lh-sky__label">Settings</span>
           {settingsCount > 0 && (
             <span className="lh-sky__sr">
               , {settingsCount} {settingsCount === 1 ? 'update' : 'updates'}
