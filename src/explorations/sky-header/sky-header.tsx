@@ -170,6 +170,21 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     ro.observe(page);
     return () => ro.disconnect();
   }, []);
+  // When the buttons wrap below the greeting (narrow screens), they stretch to fill the row (see CSS).
+  useLayoutEffect(() => {
+    const header = ref.current;
+    const card = header?.querySelector<HTMLElement>('.lh-sky__card');
+    const actions = header?.querySelector<HTMLElement>('.lh-sky__actions');
+    if (!header || !card || !actions) return;
+    const check = () => {
+      header.classList.remove('lh-sky--stacked');
+      if (actions.getBoundingClientRect().top >= card.getBoundingClientRect().bottom) header.classList.add('lh-sky--stacked');
+    };
+    check();
+    const ro = new ResizeObserver(check);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
   // The sky's glow sits on the orb, wherever the layout puts it.
   useLayoutEffect(() => {
     const header = ref.current;
@@ -239,7 +254,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
             <GearIcon />
             {settingsCount > 0 && <span className="lh-sky__count">{settingsCount > 9 ? '9+' : settingsCount}</span>}
           </span>
-          System Settings
+          <span className="lh-sky__label">System Settings</span>
           {settingsCount > 0 && (
             <span className="lh-sky__sr">
               , {settingsCount} {settingsCount === 1 ? 'update' : 'updates'}

@@ -226,6 +226,7 @@
 }
 .lh-sky__action {
   --g-radius: var(--radius-pill);
+  white-space: nowrap;
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -268,6 +269,41 @@
 .lh-sky__action[data-focus-visible] {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 2px;
+}
+
+/* Narrow screens: once the buttons wrap below the greeting, they fill the row. Let's chat takes the larger
+   share, since it's the main action. */
+.lh-sky--stacked .lh-sky__actions {
+  flex: 1 1 100%;
+  flex-wrap: nowrap;
+}
+.lh-sky--stacked .lh-sky__action {
+  /* Space is shared 3 to 2, but never narrower than the button's own label. */
+  flex: 2 1 0;
+  min-inline-size: max-content;
+  justify-content: center;
+  padding-inline-end: var(--space-4);
+}
+.lh-sky--stacked .lh-sky__action--lit-within {
+  flex-grow: 3;
+}
+/* Phones (under 600px, the compact screen size): System Settings shows only its gear and count, like the
+   Life Hub page, and Let's chat fills the rest of the row. The label stays for screen readers. */
+@media (width < 37.5rem) {
+  .lh-sky--stacked .lh-sky__action:not(.lh-sky__action--lit-within) {
+    flex: none;
+    padding-inline: var(--space-2);
+  }
+  .lh-sky--stacked .lh-sky__action:not(.lh-sky__action--lit-within) .lh-sky__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .lh-sky--stacked .lh-sky__action--lit-within {
+    flex: 1 1 auto;
+  }
 }
 
 /* The orb: a solid sphere, the header's light. Its colors come from sky.ts: a small sun by day, warm at
