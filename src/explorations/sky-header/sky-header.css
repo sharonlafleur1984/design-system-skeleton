@@ -151,9 +151,10 @@
    since there's no bottom line to anchor them to. */
 .lh-sky--fade {
   align-items: flex-start;
-  padding-block-end: calc(var(--space-6) + 56px);
-  -webkit-mask: linear-gradient(black calc(100% - 96px), transparent);
-  mask: linear-gradient(black calc(100% - 96px), transparent);
+  /* A tall, slow fade that starts well below the greeting, so the card sits fully in the sky. */
+  padding-block-end: calc(var(--space-6) + 120px);
+  -webkit-mask: linear-gradient(black calc(100% - 150px), rgb(0 0 0 / 0.6) calc(100% - 90px), rgb(0 0 0 / 0.2) calc(100% - 40px), transparent);
+  mask: linear-gradient(black calc(100% - 150px), rgb(0 0 0 / 0.6) calc(100% - 90px), rgb(0 0 0 / 0.2) calc(100% - 40px), transparent);
 }
 .lh-sky--fade + .lh-sky__edge {
   display: none;
@@ -349,24 +350,42 @@
   }
 }
 
-/* The orb: the header's light, in the page's own color, glowing from within. Only the palette's three
-   lightest shades, so it never goes dark. It's brightest at the center (paper white into 100), evenly
-   all round, fading to 200 and 300 at the edge, with no off-center shading (that read as a ball lit from
-   outside). Its light spills out as a bloom of its own color, with a faint dark ring right at the edge,
-   like a bright light. Day and night change how strongly it glows, not its colors (--sky-stars runs 0 by
-   day to 1 at night). */
+/* The orb: the header's light, in the page's own color. It keeps the swirl of Life Hub's original orb
+   (a still frame from its fullest swirl, so it never distracts), recolored into the page's three lightest shades: the swirl's
+   light and shade, tinted 300 (blend mode "color"), over a bright 100 center. Its light spills out as a
+   bloom of its own color, about the same by day and night, a little brighter at night. */
 .lh-sky__orb {
   --_n: var(--sky-stars);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   flex: none;
   inline-size: 32px;
   block-size: 32px;
   border-radius: var(--radius-pill);
-  background: radial-gradient(circle at 50% 50%, var(--palette-paper-off-white) 0%, var(--orb-1) 30%, var(--orb-2) 68%, var(--orb-3) 100%);
+  background: radial-gradient(circle at 50% 50%, var(--orb-1) 0%, var(--orb-2) 70%, var(--orb-3) 100%);
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--palette-ink-primary) 8%, transparent),
-    0 0 8px 2px color-mix(in srgb, var(--orb-2) calc(80% + var(--_n) * 20%), transparent),
-    0 0 20px 7px color-mix(in srgb, var(--orb-3) calc(55% + var(--_n) * 30%), transparent),
-    0 0 42px 16px color-mix(in srgb, var(--orb-2) calc(20% + var(--_n) * 35%), transparent);
+    0 0 8px 2px color-mix(in srgb, var(--orb-2) 85%, transparent),
+    0 0 20px 7px color-mix(in srgb, var(--orb-3) calc(60% + var(--_n) * 10%), transparent),
+    0 0 40px 14px color-mix(in srgb, var(--orb-2) calc(28% + var(--_n) * 10%), transparent);
+}
+/* The swirl: a frame of the original orb's swirl, already gray and lifted into the light range (55 to
+   100% brightness), so it only ever shows light shades. */
+.lh-sky__orb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--orb-pattern) center / cover;
+  mix-blend-mode: luminosity;
+}
+/* The page's color laid over the swirl */
+.lh-sky__orb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, var(--orb-1), var(--orb-3));
+  mix-blend-mode: color;
 }
 
 /* Glass at its full lighting, as before the orb became the source: only the light's direction comes

@@ -174,6 +174,9 @@ function veilNeeded(sky: Backdrop, mode: SkyMode) {
 }
 
 export interface SkyOptions {
+  /** warm: the daytime light is sunlight yellow (Sharon's Oct 8 tuning). white: daytime light is paper
+   *  white; sunrise and sunset stay warm. Exploration, Oct 12. */
+  light?: 'warm' | 'white';
   /** The area's night layer (half its 900, half ink). Dark skies lean toward it, so night matches the marble below. */
   areaNight?: string;
   /** Glass lets the marble show through, so the header is part of the page. */
@@ -181,7 +184,7 @@ export interface SkyOptions {
 }
 
 /** The sky at an hour from 0 to 24 (fractions allowed: 18.5 is 6:30 pm). */
-export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions = {}): Sky {
+export function skyAt(hour: number, { areaNight, material = 'sky', light = 'warm' }: SkyOptions = {}): Sky {
   const h = ((hour % 24) + 24) % 24;
   const i = KEYS.findIndex((k) => k.hour > h);
   const a = KEYS[i - 1];
@@ -197,7 +200,12 @@ export function skyAt(hour: number, { areaNight, material = 'sky' }: SkyOptions 
     bottom = mixColor(bottom, areaNight, dark * 0.6);
   }
   const alpha = material === 'glass' ? 0.78 + dark * 0.17 : 1;
-  const glow = mixColor(a.glow, b.glow, t);
+  const warmGlow = mixColor(a.glow, b.glow, t);
+  const glowStars = mix(a.stars, b.stars, t);
+  const glowHorizon = mix(a.horizon, b.horizon, t);
+  // White light: by day the glow is paper warm (palette) instead of yellow. Sunrise and sunset keep their
+  // color (the warm horizon band), and night keeps its moon glow.
+  const glow = light === 'white' ? mixColor(warmGlow, '#fdfbf9', (1 - glowStars) * (1 - Math.min(1, glowHorizon * 1.6))) : warmGlow;
   const glowAlpha = mix(a.glowAlpha, b.glowAlpha, t);
   const horizon = mix(a.horizon, b.horizon, t);
   // Light or dark text, whichever needs less veil to read. Then just that much veil.

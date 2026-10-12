@@ -58,6 +58,7 @@ import { Card } from '../../components/card/card';
 import { useGlassLight } from '../../components/glass-light/glass-light';
 import { greetingAt, makeStars, skyAt } from './sky';
 import { skyHourFor, sunTimes } from './sun';
+import orbPattern from './assets/orb-pattern.png';
 import './sky-header.css';
 
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
@@ -78,6 +79,8 @@ export interface SkyHeaderProps {
   greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
   material?: 'sky' | 'glass';
+  /** warm: yellow daytime light. white: paper-white daytime light; sunrise and sunset stay warm. */
+  light?: 'warm' | 'white';
   /** How the header meets the page: clean, a lit rim and cast shadow; fade, the sky melts into the page. */
   edge?: 'clean' | 'fade';
   /** The page's palette, like 'lilacs-lavender' (the area's color family). The orb uses its shades. */
@@ -135,7 +138,7 @@ function nowHour() {
   return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', edge = 'clean', palette = 'earth-moss', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', light = 'warm', edge = 'clean', palette = 'earth-moss', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -216,7 +219,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
   // The Let's chat button holds the orb, so it is lit from within instead (see sky-header.css).
   useGlassLight(ref, { source: '.lh-sky__orb', selector: '.ds-glass:not(.lh-sky__action--lit-within)' });
   const h = hour ?? clock;
-  const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
+  const sky = useMemo(() => skyAt(h, { material, areaNight, light }), [h, material, areaNight, light]);
   const style = {
     '--sky-a': sky.alpha.toFixed(3),
     // Two tints, one per text color, so when the text switches between dark and light the old tint
@@ -228,6 +231,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
     // The orb is the page's own color all day, only its three lightest shades, so it always reads as light.
+    '--orb-pattern': `url('${orbPattern}')`,
     '--orb-1': `var(--palette-${palette}-100)`,
     '--orb-2': `var(--palette-${palette}-200)`,
     '--orb-3': `var(--palette-${palette}-300)`,

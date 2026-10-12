@@ -13,12 +13,12 @@ const nights = [...areas.map((a) => a.layer), mixColor('#dd816c', '#2a2625', 0.6
 const minutes = Array.from({ length: 24 * 60 }, (_, m) => m / 60);
 
 describe('Sky header readability', () => {
-  for (const material of ['glass', 'sky'] as const) {
-    it(`passes every minute on every marble (${material})`, () => {
+  for (const material of ['glass', 'sky'] as const) for (const light of ['warm', 'white'] as const) {
+    it(`passes every minute on every marble (${material}, ${light} light)`, () => {
       const failures: string[] = [];
       for (const areaNight of nights) {
         for (const hour of minutes) {
-          const sky = skyAt(hour, { material, areaNight });
+          const sky = skyAt(hour, { material, areaNight, light });
           const score = readability(sky, sky.mode, sky.veilAlpha);
           if (score < 1) failures.push(`${hour.toFixed(2)} ${areaNight} ${sky.mode} ${score.toFixed(2)}`);
         }
