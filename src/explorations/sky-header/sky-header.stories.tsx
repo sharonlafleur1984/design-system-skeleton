@@ -16,6 +16,8 @@ const marbles = [
 ];
 const marbleNames = marbles.map((m) => m.name);
 const findMarble = (name: string) => marbles.find((m) => m.name === name) ?? marbles[0];
+/** The marble as a full URL: a relative one inside a custom property would resolve against the stylesheet, not the page. */
+const swirlOf = (name: string) => `url('${new URL(findMarble(name).texture, document.baseURI).href}')`;
 
 type Version = 'glass' | 'sky';
 const labels: Record<Version, string> = { glass: 'A: glass', sky: 'B: solid sky' };
@@ -73,7 +75,7 @@ function MarblePage({ background, mode, children }: { background: string; mode?:
 }
 
 const header = (version: Version, hour: number, background: string) => (
-  <SkyHeader {...copy} hour={hour} instant material={version} areaNight={findMarble(background).night} />
+  <SkyHeader {...copy} hour={hour} instant material={version} swirl={swirlOf(background)} areaNight={findMarble(background).night} />
 );
 
 const clockLabel = (hour: number) =>
@@ -188,7 +190,7 @@ export const Live: Story = {
   argTypes: { hour: { table: { disable: true } } },
   render: ({ background, version }) => (
     <MarblePage background={background}>
-      <SkyHeader {...copy} material={version} areaNight={findMarble(background).night} />
+      <SkyHeader {...copy} material={version} swirl={swirlOf(background)} areaNight={findMarble(background).night} />
     </MarblePage>
   ),
 };
@@ -228,6 +230,7 @@ function SettingsDemo({ background, deviceDark }: { background: string; deviceDa
           greetingHour={hour}
           instant
           material="glass"
+          swirl={swirlOf(background)}
           areaNight={night}
         />
       </MarblePage>

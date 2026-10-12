@@ -5,8 +5,6 @@
 @property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #faf7f1; }
 @property --sky-glow { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
 @property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
-@property --sky-orb-core { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
-@property --sky-orb-edge { syntax: '<color>'; inherits: true; initial-value: #d9c080; }
 @property --sky-veil { syntax: '<color>'; inherits: true; initial-value: transparent; }
 @property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
 @property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
@@ -19,7 +17,8 @@
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  /* The buttons sit on the same bottom line as the greeting card. */
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-4);
   /* Border-box, so the minimum includes the padding and the space under the card matches the space above. */
@@ -59,7 +58,7 @@
   font-family: var(--font-family-body);
   transition:
     --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
-    --sky-orb-core 60s linear, --sky-orb-edge 60s linear, --sky-veil 60s linear,
+    --sky-veil 60s linear,
     --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
 }
 /* Glass: the marble shows through, blurred, with a rim lit from the orb like the cards. */
@@ -84,6 +83,23 @@
   /* Scrubbing: the sky follows every frame. The veil still eases, so when the text switches between
      dark and light, the veil behind it blends instead of flipping. */
   transition: --sky-veil 1.5s ease-in-out;
+}
+
+/* The page's marble swirl continues through the sky as light and shade only, like clouds by day and the
+   Milky Way at night. It's the same marble, lined up with the page, turned gray and soft-lit over the
+   sky, so the sky keeps its color. */
+.lh-sky__swirl {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: var(--sky-page-h, 100%);
+  z-index: -2;
+  pointer-events: none;
+  background: var(--sky-swirl) center / cover;
+  filter: grayscale(1) blur(2px);
+  mix-blend-mode: soft-light;
+  /* An estimate: enough to see the swirl, not so much that it lightens the night sky. */
+  opacity: 0.5;
 }
 
 /* Stars fade in at dusk and twinkle slowly. */
@@ -209,18 +225,44 @@
   outline-offset: 2px;
 }
 
-/* The orb: the header's light. Its colors come from sky.ts, so it is a sun by day and the Milky Way at
-   night, and its glow spills into the sky around it. */
+/* The orb: the same animated orb as the Life Hub page (size, fill and glow copied from it), and the
+   header's light. */
 .lh-sky__orb {
+  position: relative;
   flex: none;
-  inline-size: 36px;
-  block-size: 36px;
+  inline-size: 32px;
+  block-size: 32px;
+  overflow: hidden;
   border-radius: var(--radius-pill);
-  background: radial-gradient(circle at 38% 34%, var(--sky-orb-core) 0%, color-mix(in srgb, var(--sky-orb-core) 45%, var(--sky-orb-edge)) 38%, var(--sky-orb-edge) 100%);
-  box-shadow:
-    0 0 10px 2px color-mix(in srgb, var(--sky-orb-edge) 55%, transparent),
-    0 0 26px 8px color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 60%), transparent);
+  background: #8b6cf0;
+  box-shadow: 0 0 12px 1px rgba(139, 108, 240, 0.4);
 }
+.lh-sky__orb video {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* Glass at its full lighting, as before the orb became the source: only the light's direction comes
+   from the orb, not a fade with distance. (The light helper sets --light-k inline, hence !important.) */
+.lh-sky .ds-glass {
+  --light-k: 1 !important;
+}
+/* Let's chat holds the light, so it is lit from within, the way a lamp inside glass looks: the rim
+   glows all the way round, brightest at the orb's end, and the shadow sits evenly underneath instead
+   of being pushed away from the light. */
+.lh-sky .lh-sky__action--lit-within {
+  --light-x: 8%;
+  --light-y: 50%;
+  --light-dx: 0;
+  --light-dy: 0;
+  --g-rim-spread-x: 160%;
+  --g-rim-spread-y: 260%;
+  --g-rim-glint: 0;
+}
+
 .lh-sky__icon {
   position: relative;
   display: grid;
@@ -293,6 +335,9 @@
     box-shadow var(--motion-duration-fast) var(--motion-easing-out),
     translate var(--motion-duration-fast) var(--motion-easing-out),
     scale var(--motion-duration-instant) var(--motion-easing-out);
+}
+.lh-fade--moving .lh-fade__item {
+  white-space: nowrap;
 }
 .lh-fade {
   display: inline-grid;

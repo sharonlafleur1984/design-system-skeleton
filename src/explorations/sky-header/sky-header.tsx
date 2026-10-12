@@ -27,12 +27,20 @@ function FadeText({ text }: { text: string }) {
     // The new words' natural width (outgoing words don't count toward it), then glide there.
     el.style.width = '';
     const to = el.querySelector<HTMLElement>('.lh-fade__item:not(.lh-fade__item--out)')?.getBoundingClientRect().width ?? from;
+    if (Math.abs(to - from) < 1) return;
+    // While the width glides, the words stay on one line, so the greeting never wraps mid-change.
+    el.classList.add('lh-fade--moving');
     el.style.width = `${from}px`;
     void el.offsetWidth;
     el.style.width = `${to}px`;
+    const done = window.setTimeout(() => {
+      el.classList.remove('lh-fade--moving');
+      el.style.removeProperty('width');
+    }, 1600);
+    return () => window.clearTimeout(done);
   }, [items]);
   return (
-    <span className="lh-fade" ref={box} onTransitionEnd={(e) => e.propertyName === 'width' && box.current?.style.removeProperty('width')}>
+    <span className="lh-fade" ref={box}>
       {items.map((it) => (
         <span
           key={it.id}
@@ -50,12 +58,51 @@ import { Card } from '../../components/card/card';
 import { useGlassLight } from '../../components/glass-light/glass-light';
 import { greetingAt, makeStars, skyAt } from './sky';
 import { skyHourFor, sunTimes } from './sun';
+import orbWebm from './assets/orb.webm';
+import orbMp4 from './assets/orb.mp4';
+import orbPoster from './assets/orb-poster.jpg';
 import './sky-header.css';
 
+/** The same swirl as the Life Hub page's orb: a 6 second loop slowed to about 24 seconds. */
+const ORB_RATE = 0.25;
+
+/** Life Hub's orb, the header's light. With reduced motion, it holds still on its first frame. */
+function Orb() {
+  const video = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = video.current;
+    if (!v) return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const set = () => {
+      v.defaultPlaybackRate = ORB_RATE;
+      v.playbackRate = ORB_RATE;
+      if (mq.matches) {
+        v.pause();
+        v.currentTime = 0;
+      } else v.play().catch(() => {});
+    };
+    set();
+    v.addEventListener('loadeddata', set);
+    mq.addEventListener('change', set);
+    return () => {
+      v.removeEventListener('loadeddata', set);
+      mq.removeEventListener('change', set);
+    };
+  }, []);
+  return (
+    <span className="lh-sky__orb" aria-hidden="true">
+      <video ref={video} muted loop playsInline autoPlay preload="auto" poster={orbPoster}>
+        <source src={orbWebm} type="video/webm" />
+        <source src={orbMp4} type="video/mp4" />
+      </video>
+    </span>
+  );
+}
+
 // Exploration only, not exported from the library. Life Hub's header as a sky that follows the time of
-// day. The orb on the Let's chat button is the light: a small sun by day, warm at sunset, a violet Milky
-// Way glow at night. The sky's glow sits behind it, and every piece of glass in the header is lit from it
-// with the same recipe as After Graduation's episode tabs (glass.css and useGlassLight).
+// day. The orb on the Let's chat button (the same animated orb as the Life Hub page) is where the light
+// comes from: the sky's glow sits behind it, and every piece of glass in the header is lit from it with the
+// same recipe as After Graduation's episode tabs (glass.css and useGlassLight).
 
 export interface SkyHeaderProps {
   /** The sky's hour from 0 to 24 (18.5 is sunset). Leave out to follow the real clock and today's real sunset. */
@@ -70,6 +117,8 @@ export interface SkyHeaderProps {
   greetingHour?: number;
   /** sky: a solid sky. glass: a tinted glass panel the marble shows through. */
   material?: 'sky' | 'glass';
+  /** The page's marble image as a CSS url with a full address, so its swirl continues faintly through the sky. */
+  swirl?: string;
   /** The area's night layer, so dark skies match the marble below. */
   areaNight?: string;
   /** Storybook only: changes are instant, for scrubbing through the day. */
@@ -121,7 +170,7 @@ function nowHour() {
   return skyHourFor(d.getHours() + d.getMinutes() / 60, sunTimes(d));
 }
 
-export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
+export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = 'sky', swirl, areaNight, instant = false, onChat, onOpenSettings, settingsCount = 0 }: SkyHeaderProps) {
   const [clock, setClock] = useState(nowHour);
   useEffect(() => {
     if (hour !== undefined) return;
@@ -149,6 +198,17 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     ro.observe(card);
     return () => ro.disconnect();
   }, []);
+  // The swirl lines up with the marble on the page below: it is sized to the page, not the header.
+  useLayoutEffect(() => {
+    const header = ref.current;
+    const page = header?.parentElement;
+    if (!header || !page) return;
+    const place = () => header.style.setProperty('--sky-page-h', `${page.getBoundingClientRect().height}px`);
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(page);
+    return () => ro.disconnect();
+  }, []);
   // The sky's glow sits on the orb, wherever the layout puts it.
   useLayoutEffect(() => {
     const header = ref.current;
@@ -166,8 +226,9 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     ro.observe(header);
     return () => ro.disconnect();
   }, []);
-  // Every piece of glass is lit from the orb, like After Graduation's tabs are lit from the wheel.
-  useGlassLight(ref, { source: '.lh-sky__orb', selector: '.ds-glass' });
+  // Every other piece of glass is lit from the orb, like After Graduation's tabs are lit from the wheel.
+  // The Let's chat button holds the orb, so it is lit from within instead (see sky-header.css).
+  useGlassLight(ref, { source: '.lh-sky__orb', selector: '.ds-glass:not(.lh-sky__action--lit-within)' });
   const h = hour ?? clock;
   const sky = useMemo(() => skyAt(h, { material, areaNight }), [h, material, areaNight]);
   const style = {
@@ -177,8 +238,6 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
-    '--sky-orb-core': sky.orbCore,
-    '--sky-orb-edge': sky.orbEdge,
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;
@@ -191,6 +250,7 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
       data-mode={sky.mode}
       style={style}
     >
+      {swirl && <div className="lh-sky__swirl" aria-hidden="true" style={{ '--sky-swirl': swirl } as CSSProperties} />}
       <Stars />
       <Card className="lh-sky__card">
         {meta && <p className="lh-sky__meta">{meta}</p>}
@@ -198,9 +258,9 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
         {prompt && <p className="lh-sky__prompt">{prompt}</p>}
       </Card>
       <div className="lh-sky__actions">
-        <AriaButton className="ds-glass lh-sky__action" onPress={onChat}>
+        <AriaButton className="ds-glass lh-sky__action lh-sky__action--lit-within" onPress={onChat}>
           <span className="lh-sky__action-glass" aria-hidden="true" />
-          <span className="lh-sky__orb" aria-hidden="true" />
+          <Orb />
           Let&rsquo;s chat
         </AriaButton>
         <AriaButton className="ds-glass lh-sky__action" onPress={onOpenSettings}>
