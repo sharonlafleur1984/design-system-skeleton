@@ -181,8 +181,9 @@
 }
 
 /* Readability at sunrise and sunset: instead of tinting the glass, a soft glow hugs the letters for the
-   few minutes the sky is mid-tone. It's a shadow from the orb's light: it falls slightly away from the orb
-   (--light-dx and --light-dy, set on each piece of glass by the light helper) and is softer on the far side.
+   few minutes the sky is mid-tone, lit by the orb (--light-dx and --light-dy, set on each piece of glass by
+   the light helper). A dark glow is a shadow, so it falls away from the orb. A cream glow is light, so it
+   leans toward the orb, like a highlight.
    Ink behind light text, paper behind dark text, as strong as sky.ts says the text needs (--sky-veil-*),
    and nothing at all the rest of the day. */
 .lh-sky__card,
@@ -201,8 +202,8 @@
     var(--_halo-x) var(--_halo-y) 5px var(--_halo-ink),
     calc(var(--_halo-x) * 2) calc(var(--_halo-y) * 2) 14px var(--_halo-ink),
     0 0 3px var(--_halo-paper),
-    var(--_halo-x) var(--_halo-y) 5px var(--_halo-paper),
-    calc(var(--_halo-x) * 2) calc(var(--_halo-y) * 2) 14px var(--_halo-paper);
+    calc(var(--_halo-x) * -1) calc(var(--_halo-y) * -1) 5px var(--_halo-paper),
+    calc(var(--_halo-x) * -2) calc(var(--_halo-y) * -2) 14px var(--_halo-paper);
 }
 
 /* Let's chat and Settings: glass pills on the right. */
