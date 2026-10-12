@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
+import { afterGraduationOnly } from '../product-only';
 
 const meta: Meta<typeof ActionTile> = {
   title: 'Components/Action tile',
@@ -28,7 +29,8 @@ const meta: Meta<typeof ActionTile> = {
       },
     },
   },
-  decorators: [(Story) => <div data-theme="after-graduation"><Story /></div>],
+  // After Graduation only for now; says so when the toolbar picks another theme.
+  decorators: [afterGraduationOnly],
 };
 export default meta;
 type Story = StoryObj<typeof ActionTile>;
