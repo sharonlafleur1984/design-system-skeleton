@@ -30,24 +30,30 @@
   padding: var(--space-6);
   border-radius: 0;
   background:
-    /* the light itself, on the orb. Extra stops ease it out (roughly a smoothstep), so it melts into the
-       sky instead of ending on a visible edge. */
+    /* the light itself, on the orb. Wide and eased very gradually (close to a Gaussian falloff), so it reads
+       as warmth across the sky, never a visible patch of color. Colors and strengths are Sharon's Oct 8
+       settings; only the size and falloff changed when the light moved to the orb. */
     radial-gradient(
-      45% 110% at var(--sky-glow-x) var(--sky-glow-y),
+      90% 260% at var(--sky-glow-x) var(--sky-glow-y),
       color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent) 0%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 84%), transparent) 14%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 35%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 56%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 3%), transparent) 70%,
-      transparent 78%
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 90%), transparent) 8%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 72%), transparent) 18%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 30%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 30%), transparent) 44%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 15%), transparent) 58%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 72%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 2%), transparent) 86%,
+      transparent 100%
     ),
     /* its wider bloom, eased the same way */
     radial-gradient(
-      95% 170% at var(--sky-glow-x) var(--sky-glow-y),
+      170% 380% at var(--sky-glow-x) var(--sky-glow-y),
       color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent) 0%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 19%), transparent) 35%,
-      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 60%,
-      transparent 82%
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 28%), transparent) 20%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 40%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 7%), transparent) 60%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 2%), transparent) 80%,
+      transparent 100%
     ),
     /* warm band along the bottom at sunrise and sunset */
     linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
@@ -293,23 +299,24 @@
   }
 }
 
-/* The orb: the header's light, in the page's own color. Only the palette's three lightest shades, so it
-   never goes dark: a bright 100 center, 200, then 300 at the edge. Day and night change how strongly it
-   glows and how big its bright center is, not its colors (--sky-stars runs 0 by day to 1 at night). Like a bright light: a faint dark ring
-   hugs its edge, then a bloom of its own color spreads out. */
+/* The orb: the header's light, in the page's own color, glowing from within. Only the palette's three
+   lightest shades, so it never goes dark. It's brightest at the center (paper white into 100), evenly
+   all round, fading to 200 and 300 at the edge, with no off-center shading (that read as a ball lit from
+   outside). Its light spills out as a bloom of its own color, with a faint dark ring right at the edge,
+   like a bright light. Day and night change how strongly it glows, not its colors (--sky-stars runs 0 by
+   day to 1 at night). */
 .lh-sky__orb {
   --_n: var(--sky-stars);
-  --_edge: var(--orb-3);
   flex: none;
   inline-size: 32px;
   block-size: 32px;
   border-radius: var(--radius-pill);
-  background: radial-gradient(circle at 40% 36%, var(--orb-1) 0%, var(--orb-1) calc(14% + var(--_n) * 14%), var(--orb-2) 52%, var(--_edge) 100%);
+  background: radial-gradient(circle at 50% 50%, var(--palette-paper-off-white) 0%, var(--orb-1) 30%, var(--orb-2) 68%, var(--orb-3) 100%);
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--palette-ink-primary) calc(14% - var(--_n) * 6%), transparent),
-    0 0 6px 1px color-mix(in srgb, var(--orb-3) calc(70% + var(--_n) * 20%), transparent),
-    0 0 18px 5px color-mix(in srgb, var(--orb-2) calc(25% + var(--_n) * 45%), transparent),
-    0 0 36px 12px color-mix(in srgb, var(--orb-2) calc(var(--_n) * 30%), transparent);
+    0 0 0 1px color-mix(in srgb, var(--palette-ink-primary) 8%, transparent),
+    0 0 8px 2px color-mix(in srgb, var(--orb-2) calc(80% + var(--_n) * 20%), transparent),
+    0 0 20px 7px color-mix(in srgb, var(--orb-3) calc(55% + var(--_n) * 30%), transparent),
+    0 0 42px 16px color-mix(in srgb, var(--orb-2) calc(20% + var(--_n) * 35%), transparent);
 }
 
 /* Glass at its full lighting, as before the orb became the source: only the light's direction comes
