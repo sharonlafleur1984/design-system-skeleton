@@ -1,13 +1,15 @@
 import type { Preview } from '@storybook/react-vite';
 import '../build/css/life-hub.css';
 import '../build/css/after-graduation.css';
+import '../build/css/designer-toolkit.css';
 import '../src/fonts/life-hub.css';
 import '../src/fonts/after-graduation.css';
 import '../src/base.css';
 import { ThemeContext, singleTheme, type ThemeChoice } from '../src/components/story-helpers';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
-// Stories show one product at a time; "Both" shows them side by side for comparing.
+// Stories show one product at a time; "Both" shows Life Hub and After Graduation side by side for comparing.
+// The Designer Toolkit is always dark: its default tokens hold the dark values, so the Mode switch doesn't change it.
 const preview: Preview = {
   globalTypes: {
     theme: {
@@ -18,7 +20,8 @@ const preview: Preview = {
         items: [
           { value: 'after-graduation', title: 'After Graduation' },
           { value: 'life-hub', title: 'Life Hub' },
-          { value: 'both', title: 'Both, side by side' },
+          { value: 'designer-toolkit', title: 'Designer Toolkit (always dark)' },
+          { value: 'both', title: 'Life Hub and After Graduation, side by side' },
         ],
         dynamicTitle: true,
       },

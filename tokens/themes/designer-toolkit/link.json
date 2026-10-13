@@ -1,0 +1,29 @@
+{
+  "link": {
+    "$description": "This theme's link colors and quiet-link size. Names come from tokens/base/link.json.",
+    "inline": {
+      "color": {
+        "$type": "color",
+        "$value": "{color.ink.primary}"
+      },
+      "color-hover": {
+        "$type": "color",
+        "$value": "{color.accent.text}"
+      }
+    },
+    "quiet": {
+      "color": {
+        "$type": "color",
+        "$value": "{color.ink.tertiary}"
+      },
+      "color-hover": {
+        "$type": "color",
+        "$value": "{color.accent.text}"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{type.body-small.size}"
+      }
+    }
+  }
+}

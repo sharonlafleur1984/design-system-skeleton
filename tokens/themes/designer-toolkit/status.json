@@ -1,0 +1,99 @@
+{
+  "color": {
+    "status": {
+      "$description": "The Designer Toolkit's status colors (Oct 12): fire red for errors, lit honey for warnings, lake green for success, peach for info. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1). Shared components put the inverse ink (near-black) on accent-strong, so accent-strong is always a light step.",
+      "error": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.fire-red.800}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.fire-red.300}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.fire-red.300}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.fire-red.200}"
+        },
+        "$description": "Fire red. Ink is fire red 200 on fire red 800 (9.2:1). Fire red 600 with cream text (5.2:1) is the danger fill, kept in the palette until a component can take light ink on an error fill."
+      },
+      "warning": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.honey.200}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.honey.300}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.honey.200}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.near-black.900}"
+        },
+        "$description": "Honey, lit: the honey itself is the surface, with near-black ink (10.3:1). Warnings are the only place honey appears."
+      },
+      "success": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.lake-green.800}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.lake-green.400}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.lake-green.300}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.lake-green.200}"
+        }
+      },
+      "info": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.peach.700}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.peach.400}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.peach.300}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.peach.200}"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$type": "color",
+          "$value": "{palette.near-black.700}"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "{palette.near-black.500}"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "{palette.near-black.400}"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "{palette.cream.200}"
+        }
+      }
+    }
+  }
+}

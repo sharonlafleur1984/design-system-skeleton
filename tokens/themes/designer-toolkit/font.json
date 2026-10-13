@@ -1,0 +1,33 @@
+{
+  "font": {
+    "family": {
+      "display": {
+        "$type": "fontFamily",
+        "$value": [
+          "Cinzel",
+          "Georgia",
+          "serif"
+        ],
+        "$description": "Typeface not chosen yet (open decision). Copies After Graduation's Cinzel for now, so nothing breaks."
+      },
+      "body": {
+        "$type": "fontFamily",
+        "$value": [
+          "Atkinson Hyperlegible Next",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$description": "Typeface not chosen yet (open decision). Copies After Graduation's Atkinson Hyperlegible Next for now, so nothing breaks."
+      },
+      "data": {
+        "$type": "fontFamily",
+        "$value": [
+          "Atkinson Hyperlegible Next",
+          "system-ui",
+          "sans-serif"
+        ],
+        "$description": "Typeface not chosen yet (open decision). Uses the body font, like After Graduation."
+      }
+    }
+  }
+}

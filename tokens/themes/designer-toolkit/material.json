@@ -1,0 +1,156 @@
+{
+  "material": {
+    "$description": "Glass and light only on things that float above the page, and it should look natural. Page controls stay flat (no blur). 'glass-on-art' is a control floating over a prototype: a warm near-black tint with a soft blur, no colored glow. Based on After Graduation's dark glass, warmed.",
+    "blur": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$description": "Page controls are flat, not glass."
+    },
+    "saturate": {
+      "$type": "number",
+      "$value": 1
+    },
+    "blur-on-art": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "A soft blur behind a control floating over a prototype, so cream text stays readable on any design behind it."
+    },
+    "blur-on-art-selected": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "A little more frost for the chosen control."
+    },
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "How far in from the edge the glass bends what is behind it. Wide and gentle."
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "The most a line behind the glass shifts at the edge. Small, so the bend reads as natural."
+    }
+  },
+  "color": {
+    "surface": {
+      "glass": {
+        "$type": "color",
+        "$value": "rgba(248,240,232,0.06)",
+        "$description": "Fill for page controls: a faint cream tint, not glass, so controls sit on the page and on panels alike."
+      },
+      "glass-strong": {
+        "$type": "color",
+        "$value": "rgba(248,240,232,0.12)",
+        "$description": "Page control fill on hover."
+      },
+      "glass-on-art": {
+        "$type": "color",
+        "$value": "rgba(26,22,18,0.55)",
+        "$description": "A control floating over a prototype: near-black 900 tint over a soft blur."
+      },
+      "glass-on-art-selected": {
+        "$type": "color",
+        "$value": "rgba(51,48,44,0.82)",
+        "$description": "The chosen floating control: near-black 800, more frosted, with cream text."
+      }
+    },
+    "border": {}
+  },
+  "shadow": {
+    "glass": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(248,240,232,0.06)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "A faint cream line along the top edge, as if lit from above."
+    },
+    "glass-on-art": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(13,11,9,0.40)",
+          "offsetX": "0px",
+          "offsetY": "8px",
+          "blur": "24px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Soft warm shadow under floating glass. No glow."
+    }
+  },
+  "glass": {
+    "rim": {
+      "$description": "The lit edge of floating glass: a soft cream line, brightest toward the light, never colored.",
+      "width": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "rgba(248,240,232,0.28)",
+        "$description": "Brightest point of the rim."
+      },
+      "faint": {
+        "$type": "color",
+        "$value": "rgba(248,240,232,0.08)",
+        "$description": "The rim where it faces away from the light: a faint line, so the glass edge never disappears."
+      },
+      "strength": {
+        "$type": "number",
+        "$value": 0.8,
+        "$description": "How bright the rim gets where it faces the light (1 is the rim color at full strength)."
+      },
+      "glint": {
+        "$type": "number",
+        "$value": 0.15,
+        "$description": "The faint glint on the far corner, where light leaves the glass."
+      },
+      "spread-x": {
+        "$type": "dimension",
+        "$value": "70%",
+        "$description": "How far the lit part of the rim reaches across the glass."
+      },
+      "spread-y": {
+        "$type": "dimension",
+        "$value": "150%"
+      }
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "rgba(248,240,232,0.10)",
+      "$description": "Inner highlight along the edge that faces the light."
+    },
+    "shade": {
+      "$type": "color",
+      "$value": "rgba(13,11,9,0.40)",
+      "$description": "Inner shade along the edge facing away from the light."
+    },
+    "cast": {
+      "$type": "color",
+      "$value": "rgba(13,11,9,0.45)",
+      "$description": "Shadow the glass casts, falling away from the light."
+    },
+    "cast-distance": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "How far the shadow falls from the glass, away from the light."
+    },
+    "cast-blur": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "How soft the cast shadow is."
+    },
+    "contact": {
+      "$type": "color",
+      "$value": "rgba(13,11,9,0.30)",
+      "$description": "The tight shadow right under the glass's edge."
+    }
+  }
+}

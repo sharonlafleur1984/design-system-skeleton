@@ -71,7 +71,7 @@ function MoodPanel({ mood, title, about }: { mood: 'calm' | 'energetic'; title: 
 }
 
 /**
- * Arrivals and celebrations use a mood. Each theme picks its default (After Graduation: energetic, Life Hub: calm),
+ * Arrivals and celebrations use a mood. Each theme picks its default (After Graduation: energetic, Life Hub and the Designer Toolkit: calm),
  * and any page can switch with data-motion="calm" or data-motion="energetic". Controls never change with the mood.
  * With reduced motion turned on, both moods only fade.
  */

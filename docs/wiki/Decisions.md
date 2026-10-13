@@ -1,8 +1,21 @@
 # Decisions
 
-**Last updated:** October 8, 2026
+**Last updated:** October 12, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 12, 2026:</b> The Designer Toolkit theme is Fireside, dark only</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the Designer Toolkit gets its own theme, `designer-toolkit`, called Fireside. Six anchors, each a 100 to 900 ramp: cream, peach, rust, fire red, lake green and near-black. Honey (#E1C167) is a seventh anchor, for warnings only. Bright rust (#D06C3E) fills the main button. Fire red is for danger fills, lake green for success and peach for info. The theme is dark only: its default tokens hold the dark values. Light reading surfaces are planned for later.
+- **Why:** the toolkit is a dark shell (toolbar, side panels, details panel) that frames other prototypes. Calm autumn warmth keeps the prototype the brightest thing on screen. Bright rust outranks the honey warning. It also stays distinct from fire red under protanopia and deuteranopia simulation.
+- **Other options:** a blue or violet accent; a gold accent; warning as a second fire red shade.
+- **Tokens:** `tokens/themes/designer-toolkit/`. The page is near-black 900 and panels are near-black 800. Rust text and links use rust 300, the darkest rust that passes 4.5:1 on both. Shared components put near-black text on error fills, so the error fill is fire red 300 for now. Fire red 600 with cream text waits on a component change.
+- **Open:** the toolkit's typeface. It copies After Graduation's fonts and type sizes until then.
+- **Details:** Foundations, Colors in Storybook (pick Designer Toolkit in the toolbar).
+
+</details>
 
 <details>
 <summary><b>Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>

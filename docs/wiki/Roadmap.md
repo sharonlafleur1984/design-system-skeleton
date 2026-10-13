@@ -1,10 +1,10 @@
 # Roadmap
 
-**Last updated:** October 11, 2026
+**Last updated:** October 12, 2026
 
 | Now | Next | Later |
 |---|---|---|
-| **What After Graduation needs next:** a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42) | **Can Life Hub use it?** Life Hub loads its theme and builds its pages from these components | **Designer toolkit:** a third theme |
+| **What After Graduation needs next:** a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42) | **Can Life Hub use it?** Life Hub loads its theme and builds its pages from these components | **Designer toolkit:** components and pages on its theme (the Fireside theme is in, Oct 12; its typeface is still open) |
 | **Exploring:** a [Life Hub header that follows the time of day](https://github.com/sharonlafleur1984/design-system-skeleton/pull/36) | | **Figma in sync** with the code |
 
 ## Milestones

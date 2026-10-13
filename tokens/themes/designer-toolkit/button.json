@@ -1,0 +1,19 @@
+{
+  "button": {
+    "kiss": {
+      "$value": "transparent",
+      "$type": "color"
+    },
+    "tertiary-decoration": {
+      "$value": "none"
+    },
+    "shadow-primary": {
+      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24), inset 0 1px 0 rgba(248,240,232,0.16)",
+      "$description": "A whisper of shadow and a soft top sheen on bright rust."
+    },
+    "shadow-secondary": {
+      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24)",
+      "$description": "A whisper of shadow, no sheen."
+    }
+  }
+}

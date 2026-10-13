@@ -7,7 +7,7 @@ const meta: Meta = { title: 'Foundations/Colors', parameters: { layout: 'padded'
 export default meta;
 type Story = StoryObj;
 
-/** Shared names every theme defines. Switch the theme in the toolbar to compare. */
+/** Shared names every theme defines. Switch the theme in the toolbar to compare. The Designer Toolkit is always dark, so the Mode switch doesn't change it. */
 export const Shared: Story = {
   render: () => (
     <>
@@ -19,7 +19,7 @@ export const Shared: Story = {
   ),
 };
 
-/** Status colors: every theme uses the same names, and each theme picks its own colors to fit its palette. Never color alone: pair with an icon or label. */
+/** Status colors: every theme uses the same names, and each theme picks its own colors to fit its palette. Never color alone: pair with an icon or label. The Designer Toolkit: fire red for errors, lit honey for warnings, lake green for success, peach for info. */
 export const Status: Story = {
   render: () => (
     <>
@@ -35,15 +35,19 @@ export const ThisThemeOnly: Story = {
   name: 'This theme only',
   render: (_args, { globals }) => {
     const theme = singleTheme(globals.theme);
-    return theme === 'life-hub' ? (
-      <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
-    ) : (
-      <p>After Graduation has no extra colors. Paths and categories use icons and labels instead.</p>
-    );
+    if (theme === 'life-hub') return <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />;
+    if (theme === 'designer-toolkit')
+      return (
+        <p>
+          The Designer Toolkit has no extra colors beyond its palette. Color only communicates: bright rust for the main action,
+          honey only for warnings. It is always dark, so the prototype it frames stays the brightest thing on screen.
+        </p>
+      );
+    return <p>After Graduation has no extra colors. Paths and categories use icons and labels instead.</p>;
   },
 };
 
-/** Every color in the current theme's palette, grouped by family. For Life Hub, these are the Figma library's colors, unchanged. */
+/** Every color in the current theme's palette, grouped by family. For Life Hub, these are the Figma library's colors, unchanged. For the Designer Toolkit, Sharon's six Fireside anchors plus honey for warnings, each a 100 to 900 ramp; rust also has bright and bright-hover for filled buttons. */
 export const Palette: Story = {
   render: (_args, { globals }) => {
     const theme = singleTheme(globals.theme);

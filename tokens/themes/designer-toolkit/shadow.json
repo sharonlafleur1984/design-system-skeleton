@@ -1,0 +1,63 @@
+{
+  "shadow": {
+    "$description": "Depth, not flatness, with just a whisper of shadow: soft, warm and low on the near-black. Raised panels get lighter instead of casting heavy shadows. Only menus and popovers (float) cast a real shadow.",
+    "edge": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(248,240,232,0.05)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "A faint cream line along a panel's top edge, as if lit from above."
+    },
+    "rest": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(13,11,9,0.24)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "hover": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(13,11,9,0.28)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "0px"
+        }
+      ]
+    },
+    "float": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(13,11,9,0.20)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(13,11,9,0.40)",
+          "offsetX": "0px",
+          "offsetY": "16px",
+          "blur": "40px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Menus and popovers, the only things that float above the page."
+    }
+  }
+}

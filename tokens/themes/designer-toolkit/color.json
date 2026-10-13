@@ -1,0 +1,433 @@
+{
+  "palette": {
+    "cream": {
+      "100": {
+        "$type": "color",
+        "$value": "#F8F0E8"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#DAD3CC"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#B9B3AD"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#99948F"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#7B7772"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#63605C"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#4A4744"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#32302E"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#171615"
+      },
+      "$description": "Cream: moonlight, luminous canvas. Text and the inverse surface."
+    },
+    "peach": {
+      "100": {
+        "$type": "color",
+        "$value": "#F9F0E9"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#E9CEB5"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#C7AF9A"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#A5917F"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#847465"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#6B5E52"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#50463C"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#362F28"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#191511"
+      },
+      "$description": "Peach: evening light, soft warmth. Supporting text and info."
+    },
+    "rust": {
+      "100": {
+        "$type": "color",
+        "$value": "#F8F0EC"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#E7CEC3"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#D4A997"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#C0856C"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#AA6140"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#8B4E33"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#683924"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#482617"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#241007"
+      },
+      "bright": {
+        "$type": "color",
+        "$value": "#D06C3E",
+        "$description": "Bright rust for filled buttons. Outranks the honey warning and stays distinct from fire red for colorblind people. Near-black text on it: 5.1:1."
+      },
+      "bright-hover": {
+        "$type": "color",
+        "$value": "#DE784B",
+        "$description": "Bright rust, a little lighter (OKLCH lightness +0.04, same hue and chroma), for hover. Near-black text on it: 5.9:1."
+      },
+      "$description": "Rust: autumn earth, signature accent. The one accent: selected, focus, links and the main button."
+    },
+    "fire-red": {
+      "100": {
+        "$type": "color",
+        "$value": "#FCEEEB"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#F4C9BF"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#E89F8E"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#D9745F"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#C8452B"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#BF2B07"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#841A03"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#5C0F01"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#2F0400"
+      },
+      "$description": "Fire red: crackling ember, focused energy. Errors and danger only. Steps 400 and lighter are never text, because 400 sits too close to the bright rust."
+    },
+    "lake-green": {
+      "100": {
+        "$type": "color",
+        "$value": "#F1F2F2"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#D1D5D5"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#AEB6B5"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#8D9897"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#6D7B79"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#546462"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#304341"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#243432"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#0F1817"
+      },
+      "$description": "Lake green: still water, quiet contrast. Success."
+    },
+    "near-black": {
+      "100": {
+        "$type": "color",
+        "$value": "#F2F2F1"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#D5D4D3"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#B5B4B2"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#979592"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#7A7774"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#63605D"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#4B4743"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#33302C"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#1A1612"
+      },
+      "$description": "Near-black: nightfall, grounding depth. Page, panels and raised surfaces."
+    },
+    "honey": {
+      "100": {
+        "$type": "color",
+        "$value": "#FBF1D7"
+      },
+      "200": {
+        "$type": "color",
+        "$value": "#E1C167"
+      },
+      "300": {
+        "$type": "color",
+        "$value": "#D2B050"
+      },
+      "400": {
+        "$type": "color",
+        "$value": "#B2912C"
+      },
+      "500": {
+        "$type": "color",
+        "$value": "#917302"
+      },
+      "600": {
+        "$type": "color",
+        "$value": "#765D01"
+      },
+      "700": {
+        "$type": "color",
+        "$value": "#584500"
+      },
+      "800": {
+        "$type": "color",
+        "$value": "#3D2E00"
+      },
+      "900": {
+        "$type": "color",
+        "$value": "#1D1500"
+      },
+      "$description": "Honey: golden hour, gentle caution. Warnings only. Built from #E1C167 (step 200) on rust's lightness ladder, in honey's hue, with chroma eased like rust's."
+    }
+  },
+  "color": {
+    "ink": {
+      "primary": {
+        "$type": "color",
+        "$value": "{palette.cream.100}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{palette.peach.200}",
+        "$description": "Supporting text: warm peach, so it reads as softer than cream without going dim."
+      },
+      "tertiary": {
+        "$type": "color",
+        "$value": "{palette.cream.300}",
+        "$description": "Cream 300, the darkest cream step that passes 4.5:1 on both the page and a panel (cream 400 is 4.4:1 on a panel)."
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{palette.cream.500}"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{palette.cream.600}"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{palette.near-black.900}"
+      },
+      "on-art": {
+        "$type": "color",
+        "$value": "{palette.cream.100}",
+        "$description": "Text on glass that floats over a prototype. Never flips, because the toolkit is always dark."
+      },
+      "on-art-selected": {
+        "$type": "color",
+        "$value": "{palette.cream.100}",
+        "$description": "Text on a chosen floating control. Its frost is dark, so the text stays cream."
+      }
+    },
+    "surface": {
+      "page": {
+        "$type": "color",
+        "$value": "{palette.near-black.900}",
+        "$description": "The shell: toolbar, side panels and details panel. Dark, so the prototype stays the brightest thing on screen."
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{palette.near-black.800}",
+        "$description": "Panels and cards. Raised surfaces get lighter instead of casting heavy shadows."
+      },
+      "raised": {
+        "$type": "color",
+        "$value": "{palette.near-black.700}"
+      },
+      "sunken": {
+        "$type": "color",
+        "$value": "{palette.cream.900}",
+        "$description": "A touch darker than the page, for wells and disabled controls."
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{palette.near-black.700}"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "{palette.near-black.700}",
+        "$description": "Menus and popovers: the lightest surface, since they float highest."
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "{palette.cream.100}"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(13,11,9,0.6)",
+        "$description": "Dims the page behind a full-size dialog, so the dialog is the only thing in focus."
+      },
+      "glass-on-art-solid": {
+        "$type": "color",
+        "$value": "{palette.near-black.800}",
+        "$description": "What glass over a prototype becomes when someone turns on Reduce transparency or Increase contrast: a solid panel, with cream text that still passes."
+      }
+    },
+    "border": {
+      "subtle": {
+        "$type": "color",
+        "$value": "{palette.near-black.800}"
+      },
+      "default": {
+        "$type": "color",
+        "$value": "{palette.near-black.700}"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "{palette.near-black.500}"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "{palette.rust.300}",
+        "$description": "Rust 300: at least 3:1 on the page, panels and raised surfaces (rust 400 is 2.99:1 on raised)."
+      }
+    },
+    "accent": {
+      "base": {
+        "$type": "color",
+        "$value": "{palette.rust.bright}",
+        "$description": "Bright rust, the one accent: selected, focus and the main button."
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{palette.rust.bright-hover}"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{palette.rust.800}",
+        "$description": "A quiet rust fill behind a selected or hovered row, under cream text."
+      },
+      "soft": {
+        "$type": "color",
+        "$value": "{palette.rust.700}"
+      },
+      "ink": {
+        "$type": "color",
+        "$value": "{palette.near-black.900}",
+        "$description": "Near-black on bright rust: 5.1:1."
+      },
+      "text": {
+        "$type": "color",
+        "$value": "{palette.rust.300}",
+        "$description": "Rust text and links. Rust 300 is the darkest rust that passes 4.5:1 on both the page and a panel (rust 400 is 4.3:1 on a panel)."
+      },
+      "text-hover": {
+        "$type": "color",
+        "$value": "{palette.rust.200}"
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "{palette.rust.200}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{palette.peach.300}",
+        "$description": "A quiet second accent: peach, so rust stays the only bright color."
+      }
+    }
+  }
+}

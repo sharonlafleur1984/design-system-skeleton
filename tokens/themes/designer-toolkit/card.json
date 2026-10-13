@@ -1,0 +1,83 @@
+{
+  "card": {
+    "surface": {
+      "$value": "{color.surface.card}",
+      "$type": "color",
+      "$description": "Panels and cards are solid near-black 800. Glass is only for things that float (menus, popovers)."
+    },
+    "frost": {
+      "$value": "none"
+    },
+    "backdrop": {
+      "$value": "none"
+    },
+    "frost-feather": {
+      "$value": "0px",
+      "$type": "dimension"
+    },
+    "border": {
+      "$value": "rgba(248,240,232,0.06)",
+      "$type": "color",
+      "$description": "A faint cream edge, so a panel separates from the page without a hard line."
+    },
+    "shadow": {
+      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24), inset 0px 1px 0px 0px rgba(248,240,232,0.05)",
+      "$description": "Solid panels: shadow.rest plus shadow.edge. Glass settings are off."
+    },
+    "shadow-hover": {
+      "$value": "0px 2px 6px 0px rgba(13,11,9,0.28), inset 0px 1px 0px 0px rgba(248,240,232,0.05)",
+      "$description": "Solid panels on hover: shadow.hover plus shadow.edge."
+    },
+    "glass": {
+      "$description": "The shared glass recipe's settings for cards (see glass.css). All off: toolkit panels are solid.",
+      "rim-color": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "rim-strength": {
+        "$type": "number",
+        "$value": 0
+      },
+      "rim-glint": {
+        "$type": "number",
+        "$value": 0
+      },
+      "rim-spread-x": {
+        "$type": "dimension",
+        "$value": "60%"
+      },
+      "rim-spread-y": {
+        "$type": "dimension",
+        "$value": "150%"
+      },
+      "rim-base": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "shade": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "cast": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "contact": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0)"
+      },
+      "cast-distance": {
+        "$type": "dimension",
+        "$value": "0px"
+      },
+      "cast-blur": {
+        "$type": "dimension",
+        "$value": "0px"
+      }
+    }
+  }
+}

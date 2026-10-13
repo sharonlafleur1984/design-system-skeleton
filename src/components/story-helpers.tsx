@@ -2,13 +2,15 @@ import { createContext, useContext, type CSSProperties, type ReactNode } from 'r
 
 // Storybook-only helpers. Not exported from the component library.
 
-/** The toolbar's Theme picker: one product, or 'both' to compare them side by side. */
-export type ThemeChoice = 'after-graduation' | 'life-hub' | 'both';
+/** One product's theme. */
+export type Theme = 'after-graduation' | 'life-hub' | 'designer-toolkit';
+/** The toolbar's Theme picker: one product, or 'both' to compare Life Hub and After Graduation side by side. */
+export type ThemeChoice = Theme | 'both';
 export const ThemeContext = createContext<ThemeChoice>('after-graduation');
 
 /** The theme to use when a story can only show one. 'Both' falls back to After Graduation. */
-export function singleTheme(choice: unknown): 'after-graduation' | 'life-hub' {
-  return choice === 'life-hub' ? 'life-hub' : 'after-graduation';
+export function singleTheme(choice: unknown): Theme {
+  return choice === 'life-hub' || choice === 'designer-toolkit' ? choice : 'after-graduation';
 }
 
 const panel: CSSProperties = {
@@ -40,9 +42,11 @@ const backgrounds: Record<string, string> = {
     "linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page)",
   // In dark mode the header's red glows down from the top right (transparent in light mode).
   'after-graduation': 'radial-gradient(90% 70% at 100% 0%, var(--shell-glow), transparent 70%), var(--color-surface-page)',
+  // The Designer Toolkit is always dark: its plain near-black page, no art and no glow.
+  'designer-toolkit': 'var(--color-surface-page)',
 };
 
-const themeNames = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub' } as const;
+export const themeNames: Record<Theme, string> = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub', 'designer-toolkit': 'Designer Toolkit' };
 
 /**
  * Shows the content in the theme picked in the toolbar. Pick "Both" to see
@@ -50,7 +54,7 @@ const themeNames = { 'after-graduation': 'After Graduation', 'life-hub': 'Life H
  */
 export function BothThemes({ children }: { children: ReactNode }) {
   const choice = useContext(ThemeContext);
-  const shown = choice === 'both' ? (['life-hub', 'after-graduation'] as const) : [singleTheme(choice)];
+  const shown: Theme[] = choice === 'both' ? ['life-hub', 'after-graduation'] : [singleTheme(choice)];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
       {shown.map((theme) => (
