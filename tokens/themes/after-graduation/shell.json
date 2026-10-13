@@ -94,8 +94,8 @@
       },
       "wheel": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.22)",
-        "$description": "The wheel's lines: faint, so it reads as light, not a picture."
+        "$value": "rgba(255, 255, 255, 0.16)",
+        "$description": "The wheel's lines: faint, so it reads as light, not a picture (Oct 13: 0.22 to 0.16, quieter beside the lens glass)."
       },
       "wheel-min": {
         "$type": "dimension",
