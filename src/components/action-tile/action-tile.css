@@ -136,6 +136,24 @@
   cursor: not-allowed;
 }
 
+/* Lens glass (glass-lens.css): while the canvas draws a tile, its own glass layer is clear and unblurred,
+   so only the canvas shows. A chosen tile keeps its frosted white (and its blur of the canvas), so its
+   dark red text keeps its contrast. */
+.ds-tile.ds-lens[data-lens='on']:not([data-selected]):not([data-state='chosen']) .ds-tile__glass {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.ds-tile.ds-lens[data-lens='on'][data-selected] .ds-tile__glass,
+.ds-tile.ds-lens[data-lens='on'][data-state='chosen'] .ds-tile__glass {
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  backdrop-filter: blur(var(--material-blur-on-art-selected));
+}
+.ds-tile.ds-lens[data-lens='on'][data-selected],
+.ds-tile.ds-lens[data-lens='on'][data-state='chosen'] {
+  text-shadow: none;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .ds-tile {
     transition:
@@ -172,6 +190,7 @@
     box-shadow: var(--shadow-float);
   }
   .ds-tiles--switch .ds-tiles__list .ds-tile {
+    --glass-lens: off; /* the bottom bar isn't glass on artwork */
     display: grid;
     justify-items: center;
     align-content: center;

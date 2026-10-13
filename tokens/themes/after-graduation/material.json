@@ -150,6 +150,89 @@
       "$type": "color",
       "$value": "rgba(60, 0, 15, 0.38)",
       "$description": "The tight shadow right under the glass's edge."
+    },
+    "lens": {
+      "$description": "Lens glass (Oct 12): action tiles and glass buttons on artwork the design system controls. A WebGL canvas bends the art at the glass's curved edge, never its text. Tuned by Sharon. Used only while the lens is drawing; otherwise the glass keeps the classic recipe above.",
+      "body": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.05)",
+        "$description": "The glass's body: white at this strength over the art."
+      },
+      "tint": {
+        "$type": "color",
+        "$value": "rgba(252, 198, 135, 0.04)",
+        "$description": "A warm gold tint at this strength (After Graduation's gold 300), so the glass reads as glass, not a hole."
+      },
+      "rim-width": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "The lit rim along the glass's edge."
+      },
+      "rim-lit": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.55)",
+        "$description": "The rim where it faces the light, at its brightest."
+      },
+      "rim-faint": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.10)",
+        "$description": "The rim everywhere else, so the edge never disappears."
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.10)",
+        "$description": "The soft band of light just inside the edge that faces the light."
+      },
+      "shadow-color": {
+        "$type": "color",
+        "$value": "rgba(60, 0, 15, 0.20)",
+        "$description": "The shadow the glass casts away from the light (the alpha is its strength)."
+      },
+      "shadow-distance": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "How far the shadow falls away from the light."
+      },
+      "shadow-blur": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "How soft the shadow is."
+      },
+      "bend": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "How strongly the edge bends the art (1 is a true rounded bevel)."
+      },
+      "edge-depth": {
+        "$type": "dimension",
+        "$value": "22px",
+        "$description": "How far in from the edge the glass curves and bends the art. Never more than 95% of half the glass's height; the middle stays clear."
+      },
+      "color-split": {
+        "$type": "number",
+        "$value": 0.02,
+        "$description": "A faint color split where the art bends, like real glass."
+      },
+      "halo": {
+        "$type": "color",
+        "$value": "rgba(60, 0, 15, 0.6)",
+        "$description": "A soft shadow under the text on lens glass, so it stays readable over the brightest part of the art."
+      },
+      "press-swell": {
+        "$type": "number",
+        "$value": 1.02,
+        "$description": "How much the glass swells when pressed, before it settles back."
+      },
+      "press-duration": {
+        "$type": "duration",
+        "$value": "300ms",
+        "$description": "How long the press swell takes to settle back to rest."
+      },
+      "tilt-reach": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "How far tilting a phone moves the light, at most. The light eases back when the phone is still."
+      }
     }
   }
 }
