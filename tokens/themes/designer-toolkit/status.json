@@ -1,7 +1,7 @@
 {
   "color": {
     "status": {
-      "$description": "The Designer Toolkit's status colors (Oct 12): fire red for errors, lit honey for warnings, lake green for success, peach for info. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1). Shared components put the inverse ink (near-black) on accent-strong, so accent-strong is always a light step.",
+      "$description": "The Designer Toolkit's status colors (Oct 12): fire red for errors, lit honey for warnings, lake green for success, peach for info. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1). Error has its own text color on its solid fill (on-accent-strong); the other statuses' solid fills take the inverse ink, so they are light steps.",
       "error": {
         "surface": {
           "$type": "color",
@@ -13,13 +13,24 @@
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "{palette.fire-red.300}"
+          "$value": "{palette.fire-red.600}",
+          "$description": "Fire is lit: the solid danger fill, fire red 600, for destructive buttons and the error icon."
         },
         "ink": {
           "$type": "color",
           "$value": "{palette.fire-red.200}"
         },
-        "$description": "Fire red. Ink is fire red 200 on fire red 800 (9.2:1). Fire red 600 with cream text (5.2:1) is the danger fill, kept in the palette until a component can take light ink on an error fill."
+        "$description": "Fire red. Ink is fire red 200 on fire red 800 (9.2:1). The solid danger fill is fire red 600 with cream text (5.2:1). Fire red 400 and lighter are never text.",
+        "on-accent-strong": {
+          "$type": "color",
+          "$value": "{palette.cream.100}",
+          "$description": "Cream on the fire red fill: 5.2:1."
+        },
+        "accent-strong-hover": {
+          "$type": "color",
+          "$value": "{palette.fire-red.700}",
+          "$description": "The danger fill on hover and press: fire red 700, a little deeper, with the same cream text."
+        }
       },
       "warning": {
         "surface": {

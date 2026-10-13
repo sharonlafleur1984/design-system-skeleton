@@ -21,8 +21,8 @@ const headSha = git(['rev-parse', head]).toString().trim();
 const png = (ref, path) => PNG.sync.read(git(['show', `${ref}:${path}`]));
 
 // One story has a screenshot per product and screen size: group them by story.
-const story = (path) => path.split('/').pop().replace(/--(life-hub|after-graduation)--(phone|tablet|desktop)(-linux)?\.png$/, '');
-const variant = (path) => (path.match(/--((?:life-hub|after-graduation)--(?:phone|tablet|desktop))/) || [])[1] || '';
+const story = (path) => path.split('/').pop().replace(/--(life-hub|after-graduation|designer-toolkit)--(phone|tablet|desktop)(-linux)?\.png$/, '');
+const variant = (path) => (path.match(/--((?:life-hub|after-graduation|designer-toolkit)--(?:phone|tablet|desktop))/) || [])[1] || '';
 
 const rows = git(['diff', '--name-status', '--find-renames', `${mergeBase}...${headSha}`, '--', DIR])
   .toString().trim().split('\n').filter(Boolean).map((l) => l.split('\t'));

@@ -18,6 +18,16 @@
         "ink": {
           "$type": "color",
           "$value": "#94360e"
+        },
+        "on-accent-strong": {
+          "$type": "color",
+          "$value": "{color.ink.inverse}",
+          "$description": "Text and icons on the solid error fill (accent-strong), like a destructive button or an error callout's icon. Same as the inverse ink, as before."
+        },
+        "accent-strong-hover": {
+          "$type": "color",
+          "$value": "{color.status.error.ink}",
+          "$description": "The solid error fill on hover and press. Same as the error ink, as before."
         }
       },
       "warning": {

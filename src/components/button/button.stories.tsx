@@ -87,6 +87,7 @@ export const States: Story = {
   ),
 };
 
+/** The solid destructive button uses the theme's error fill (`color.status.error.accent-strong`, deeper on hover with `accent-strong-hover`) and its own text color on that fill (`color.status.error.on-accent-strong`). In the Designer Toolkit: fire red 600 with cream text. */
 export const Destructive: Story = {
   render: () => (
     <BothThemes>

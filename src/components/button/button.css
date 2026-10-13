@@ -128,13 +128,13 @@
 /* Destructive: status error colors, never color alone (the label names the action) */
 .ds-button--destructive.ds-button--primary {
   --_bg: var(--color-status-error-accent-strong);
-  --_ink: var(--color-ink-inverse);
+  --_ink: var(--color-status-error-on-accent-strong);
 }
 .ds-button--destructive.ds-button--primary[data-hovered],
 .ds-button--destructive.ds-button--primary[data-state='hover'],
 .ds-button--destructive.ds-button--primary[data-pressed],
 .ds-button--destructive.ds-button--primary[data-state='pressed'] {
-  --_bg: var(--color-status-error-ink);
+  --_bg: var(--color-status-error-accent-strong-hover);
 }
 .ds-button--destructive.ds-button--secondary,
 .ds-button--destructive.ds-button--tertiary {

@@ -9,7 +9,7 @@ const index = JSON.parse(readFileSync('storybook-static/index.json', 'utf8')) as
 const stories = Object.values(index.entries).filter((e) => e.type === 'story');
 
 const screens = { phone: 390, tablet: 768, desktop: 1280 } as const;
-const themes = ['after-graduation', 'life-hub'];
+const themes = ['after-graduation', 'life-hub', 'designer-toolkit'];
 
 for (const story of stories) {
   for (const theme of themes) {

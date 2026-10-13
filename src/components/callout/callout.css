@@ -1,6 +1,7 @@
 /* Callout. A short message inside a page, tinted by what it means. Content, so solid, never glass. */
 .ds-callout {
   --_tone: var(--color-status-info-accent-strong);
+  --_on-tone: var(--color-ink-inverse);
   --_body: var(--color-ink-secondary);
   --_fill: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-card));
 
@@ -23,6 +24,7 @@
 }
 .ds-callout--overdue {
   --_tone: var(--color-status-error-accent-strong);
+  --_on-tone: var(--color-status-error-on-accent-strong);
 }
 .ds-callout--quiet {
   --_tone: var(--color-ink-muted);
@@ -39,7 +41,7 @@
   margin-block-start: 1px;
   border-radius: var(--radius-pill);
   background: var(--_tone);
-  color: var(--color-ink-inverse);
+  color: var(--_on-tone);
   font-family: var(--font-family-body);
   font-size: var(--type-body-micro-size);
   font-weight: var(--font-weight-semibold);

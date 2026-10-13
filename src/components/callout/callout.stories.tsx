@@ -20,6 +20,8 @@ const meta: Meta<typeof Callout> = {
           '**Do:** Lead with the fact, then the next step. **Don\'t:** Stack several callouts; pick the most important.',
           '',
           '**Accessibility:** Each tone has its own symbol and a hidden word ("Overdue:") read before the message, so color is never the only signal.',
+          '',
+          '**Overdue icon:** sits on the error fill with the error fill\'s own text color (`color.status.error.on-accent-strong`). Other tones use the inverse ink.',
         ].join('\n'),
       },
     },

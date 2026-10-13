@@ -46,6 +46,9 @@ const pairs: [string, string][] = [
   ['link-quiet-color', 'color-surface-card'],
   ['link-quiet-color-hover', 'color-surface-page'],
   ['link-quiet-color-hover', 'color-surface-card'],
+  // The solid error fill (destructive button, error icon) has its own text color, at rest and on hover.
+  ['color-status-error-on-accent-strong', 'color-status-error-accent-strong'],
+  ['color-status-error-on-accent-strong', 'color-status-error-accent-strong-hover'],
   ...['error', 'warning', 'success', 'info', 'neutral'].map(
     (s) => [`color-status-${s}-ink`, `color-status-${s}-surface`] as [string, string],
   ),

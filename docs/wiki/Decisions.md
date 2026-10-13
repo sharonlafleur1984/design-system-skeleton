@@ -11,7 +11,8 @@ Newest first.
 - **Decision:** the Designer Toolkit gets its own theme, `designer-toolkit`, called Fireside. Six anchors, each a 100 to 900 ramp: cream, peach, rust, fire red, lake green and near-black. Honey (#E1C167) is a seventh anchor, for warnings only. Bright rust (#D06C3E) fills the main button. Fire red is for danger fills, lake green for success and peach for info. The theme is dark only: its default tokens hold the dark values. Light reading surfaces are planned for later.
 - **Why:** the toolkit is a dark shell (toolbar, side panels, details panel) that frames other prototypes. Calm autumn warmth keeps the prototype the brightest thing on screen. Bright rust outranks the honey warning. It also stays distinct from fire red under protanopia and deuteranopia simulation.
 - **Other options:** a blue or violet accent; a gold accent; warning as a second fire red shade.
-- **Tokens:** `tokens/themes/designer-toolkit/`. The page is near-black 900 and panels are near-black 800. Rust text and links use rust 300, the darkest rust that passes 4.5:1 on both. Shared components put near-black text on error fills, so the error fill is fire red 300 for now. Fire red 600 with cream text waits on a component change.
+- **Tokens:** `tokens/themes/designer-toolkit/`. The page is near-black 900 and panels are near-black 800. Rust text and links use rust 300, the darkest rust that passes 4.5:1 on both. Danger is fire red 600 with cream text (5.2:1). Fire red 700 on hover.
+- **New shared tokens:** `color.status.error.on-accent-strong` (text on the solid error fill) and `color.status.error.accent-strong-hover` (that fill on hover). Every theme has them. Life Hub and After Graduation keep their old look: the inverse ink and the error ink.
 - **Open:** the toolkit's typeface. It copies After Graduation's fonts and type sizes until then.
 - **Details:** Foundations, Colors in Storybook (pick Designer Toolkit in the toolbar).
 

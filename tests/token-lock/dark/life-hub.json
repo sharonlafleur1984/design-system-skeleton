@@ -378,6 +378,8 @@
   "color-status-error-accent": "#e57c70",
   "color-status-error-accent-strong": "#f09a90",
   "color-status-error-ink": "#f4b6ad",
+  "color-status-error-on-accent-strong": "#2a2625",
+  "color-status-error-accent-strong-hover": "#f4b6ad",
   "color-status-warning-surface": "#352810",
   "color-status-warning-accent": "#dba034",
   "color-status-warning-accent-strong": "#dba034",
