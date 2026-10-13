@@ -1,6 +1,6 @@
 # Design system: Dashboard
 
-**Last updated:** September 26, 2026
+**Last updated:** October 11, 2026
 
 One design system for all of Sharon's products: a shared base, with a theme for each product.
 
@@ -14,9 +14,9 @@ One design system for all of Sharon's products: a shared base, with a theme for 
 
 | | |
 |---|---|
-| **Where we are** | Tokens for two themes and Storybook pages to compare them. After Graduation's colors are set. No components yet. |
+| **Where we are** | [Storybook is live](https://designsystemskeleton.netlify.app/) with 13 components and a Settings pattern, built on React Aria. After Graduation uses the system ([pinned to v0.2.0](https://github.com/sharonlafleur1984/after-graduation/blob/main/package.json)). Life Hub doesn't use it yet. |
 | **Themes** | Life Hub, After Graduation. The designer toolkit comes later. |
-| **Next milestone** | Themes reviewed (aiming for Oct 2026) |
+| **Next up** | What After Graduation's pages need next: a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42). No dates set. |
 
 Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Decisions). Every task: [Issues](https://github.com/sharonlafleur1984/design-system-skeleton/issues).
 

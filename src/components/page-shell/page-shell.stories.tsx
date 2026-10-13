@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageShell } from './page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '../action-tile/action-tile';
+import { afterGraduationOnly } from '../product-only';
 
 const meta: Meta<typeof PageShell> = {
   title: 'Components/Page shell',
@@ -31,8 +32,8 @@ const meta: Meta<typeof PageShell> = {
       },
     },
   },
-  // The shell is After Graduation only, whatever the toolbar says.
-  decorators: [(Story) => <div data-theme="after-graduation"><Story /></div>],
+  // After Graduation only for now; with Life Hub picked, shows a message instead.
+  decorators: [afterGraduationOnly],
 };
 export default meta;
 type Story = StoryObj<typeof PageShell>;

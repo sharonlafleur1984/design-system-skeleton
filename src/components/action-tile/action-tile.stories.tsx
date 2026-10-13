@@ -5,6 +5,7 @@ import { OnEveryBackground, storyBackgrounds } from '../story-helpers';
 
 const onDark: CSSProperties = { padding: 'var(--space-4)', borderRadius: 'var(--radius-panel)', background: storyBackgrounds.dark.value };
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
+import { afterGraduationOnly } from '../product-only';
 
 const meta: Meta<typeof ActionTile> = {
   title: 'Components/Action tile',
@@ -33,12 +34,14 @@ const meta: Meta<typeof ActionTile> = {
   },
   // Clear glass with white text needs something behind it, so these stories sit on Dark until you
   // pick another background with Storybook's Background button. "On every background" shows them all.
+  // After Graduation only for now; with Life Hub picked, afterGraduationOnly shows a message instead.
   decorators: [
     (Story, context) => (
       <div data-theme="after-graduation" style={context.globals.backgrounds?.value ? undefined : onDark}>
         <Story />
       </div>
     ),
+    afterGraduationOnly,
   ],
 };
 export default meta;

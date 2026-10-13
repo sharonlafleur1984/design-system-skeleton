@@ -9,6 +9,7 @@ import { Segment, SegmentedControl } from '../segmented-control/segmented-contro
 import { Select } from '../select/select';
 import { Switch } from '../switch/switch';
 import { SettingRow, SettingsDialog, SettingsGroup, type SettingsSectionDef } from './settings';
+import { afterGraduationOnly } from '../product-only';
 
 const meta: Meta<typeof SettingsDialog> = {
   title: 'Patterns/Settings',
@@ -36,7 +37,8 @@ const meta: Meta<typeof SettingsDialog> = {
       },
     },
   },
-  decorators: [(Story) => <div data-theme="after-graduation"><Story /></div>],
+  // After Graduation only for now; with Life Hub picked, shows a message instead.
+  decorators: [afterGraduationOnly],
 };
 export default meta;
 type Story = StoryObj<typeof SettingsDialog>;
