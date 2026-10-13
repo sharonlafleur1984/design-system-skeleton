@@ -230,11 +230,12 @@ export function SkyHeader({ hour, greetingHour, name, meta, prompt, material = '
     '--sky-bottom': sky.bottom,
     '--sky-glow': sky.glow,
     '--sky-glow-a': sky.glowAlpha.toFixed(3),
-    // The orb is the page's own color all day, only its three lightest shades, so it always reads as light.
+    // The orb is the page's own color all day: its lightest shades, with the swirl reaching 400 for color.
     '--orb-pattern': `url('${orbPattern}')`,
     '--orb-1': `var(--palette-${palette}-100)`,
     '--orb-2': `var(--palette-${palette}-200)`,
     '--orb-3': `var(--palette-${palette}-300)`,
+    '--orb-4': `var(--palette-${palette}-400)`,
     '--sky-horizon': sky.horizon.toFixed(3),
     '--sky-stars': sky.stars.toFixed(3),
   } as CSSProperties;

@@ -199,7 +199,8 @@ export function skyAt(hour: number, { areaNight, material = 'sky', light = 'warm
     top = mixColor(top, areaNight, dark * 0.45);
     bottom = mixColor(bottom, areaNight, dark * 0.6);
   }
-  const alpha = material === 'glass' ? 0.78 + dark * 0.17 : 1;
+  // Glass: with white light, the daytime sky is more see-through, so more marble shows (Oct 13).
+  const alpha = material === 'glass' ? (light === 'white' ? 0.6 + dark * 0.35 : 0.78 + dark * 0.17) : 1;
   const warmGlow = mixColor(a.glow, b.glow, t);
   const glowStars = mix(a.stars, b.stars, t);
   const glowHorizon = mix(a.horizon, b.horizon, t);
