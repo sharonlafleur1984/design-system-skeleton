@@ -16,7 +16,8 @@
 .ds-lens.ds-lens[data-lens='on']::before {
   display: none;
 }
-/* The press swell happens in the canvas, so the HTML doesn't shrink. */
+/* No press shrink: the lens swells a pressed glass instead (an inline scale on the element, which wins
+   over this while it runs), so the element and its drawn glass move as one. */
 .ds-lens.ds-lens[data-lens='on'][data-pressed] {
   scale: none;
 }

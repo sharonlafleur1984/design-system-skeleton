@@ -5,7 +5,7 @@
 // positive outside. The glass bends what's behind it like a rounded bevel: flat (clear) in the
 // middle, tilting more and more toward the edge, so the art bends most at the very edge.
 
-export const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 /**
  * The corner radius a browser actually draws: CSS clamps a radius to half the element's smaller
@@ -137,7 +137,7 @@ export interface TiltTuning {
   smoothMs: number;
 }
 
-export const tiltTuning: TiltTuning = { fullTilt: 20, restMs: 1200, smoothMs: 140 };
+const tiltTuning: TiltTuning = { fullTilt: 20, restMs: 1200, smoothMs: 140 };
 
 /** Moves the tilt state forward by dt ms, with a new reading or none. */
 export function tiltStep(state: TiltState, reading: { beta: number | null; gamma: number | null } | null, dt: number, tuning: TiltTuning = tiltTuning): TiltState {

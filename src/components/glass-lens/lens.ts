@@ -9,7 +9,7 @@
 // transparency or Increase contrast, nothing is drawn and every glass keeps the classic recipe.
 import { clampRadius, capDpr, pressSwell, swellRect, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
 import { createLensRenderer, MAX_LENS_RECTS, type LensLook, type LensRenderer, type Rgba } from './lens-shader';
-import { resolveColor, type GlassArt } from './lens-art';
+import { num, resolveColor, type GlassArt } from './lens-art';
 import './glass-lens.css';
 
 export interface LensOptions {
@@ -33,7 +33,7 @@ const html = () => document.documentElement;
 const media = (q: string) => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(q) : null);
 
 /** Reduce transparency or Increase contrast, from the device or from Settings: glass turns solid, so no lens. */
-export function lensBlocked() {
+function lensBlocked() {
   const root = html();
   const transparency = root.getAttribute('data-transparency');
   const contrast = root.getAttribute('data-contrast');
@@ -44,7 +44,7 @@ export function lensBlocked() {
 }
 
 /** Reduced motion, from the device or from Settings (usePreferences sets data-reduce-motion). Device "reduce" always wins. */
-export function motionReduced() {
+function motionReduced() {
   return html().hasAttribute('data-reduce-motion') || !!media('(prefers-reduced-motion: reduce)')?.matches;
 }
 
@@ -57,11 +57,6 @@ export function resetTiltPermission() {
 type OrientationCtor = { requestPermission?: () => Promise<'granted' | 'denied' | 'default'> };
 const orientationCtor = (): OrientationCtor | null =>
   typeof window !== 'undefined' && 'DeviceOrientationEvent' in window ? (window.DeviceOrientationEvent as unknown as OrientationCtor) : null;
-
-const num = (v: string, fallback: number) => {
-  const n = Number.parseFloat(v);
-  return Number.isFinite(n) ? n : fallback;
-};
 
 /** Starts lens glass on a container. Returns a cleanup. */
 export function attachLens(root: HTMLElement, options: LensControllerOptions, deps: LensDeps = {}): () => void {
@@ -102,8 +97,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
   };
 
   // ---- Look: the theme's glass.lens tokens, read again when the theme or mode changes.
-  const readLook = (dpr: number): LensLook => {
-    const cs = getComputedStyle(root);
+  const readLook = (cs: CSSStyleDeclaration, dpr: number): LensLook => {
     const v = (n: string) => cs.getPropertyValue(n).trim();
     const key = [dpr, ...['body', 'tint', 'rim-lit', 'rim-faint', 'highlight', 'shadow-color', 'rim-width', 'shadow-distance', 'shadow-blur', 'bend', 'edge-depth', 'color-split'].map((n) => v(`--glass-lens-${n}`))].join('|');
     if (look && key === lookKey) return look;
@@ -130,23 +124,22 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
   };
 
   // ---- Motion: press swell and phone tilt, both off with reduced motion.
-  const swelled = new Map<HTMLElement, number>();
+  const swelled = new Set<HTMLElement>();
   const setSwell = (el: HTMLElement, scale: number) => {
     if (scale === 1) {
       if (swelled.delete(el)) el.style.removeProperty('scale');
     } else {
-      swelled.set(el, scale);
+      swelled.add(el);
       el.style.setProperty('scale', String(scale));
     }
   };
   const clearSwells = () => {
-    for (const el of swelled.keys()) el.style.removeProperty('scale');
+    for (const el of swelled) el.style.removeProperty('scale');
     swelled.clear();
   };
-  const swellNow = (el: HTMLElement, now: number) => {
+  const swellNow = (el: HTMLElement, now: number, duration: number) => {
     const start = presses.get(el);
     if (start == null) return 0;
-    const duration = num(getComputedStyle(root).getPropertyValue('--glass-lens-press-duration'), 300);
     const s = pressSwell(now - start, duration);
     if (s === 0 && now - start >= duration) presses.delete(el);
     return s;
@@ -173,10 +166,9 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
   /** The first tap on lens glass: on iOS, ask for motion access (never on load, never without a tap). */
   const onTap = (e: Event) => {
-    if (!active() || motionReduced()) return;
+    if (!needsPermission || !active() || motionReduced()) return;
     const target = e.target instanceof Element ? e.target.closest<HTMLElement>(selector) : null;
     if (!target || !root.contains(target)) return;
-    if (!needsPermission) return;
     if (tiltPermission === 'granted') {
       startTilt();
       return;
@@ -246,8 +238,10 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     const oy = rb.top + root.clientTop;
     const dpr0 = capDpr(window.devicePixelRatio);
     const rootCs = getComputedStyle(root);
-    const margin = Math.ceil(num(rootCs.getPropertyValue('--glass-lens-shadow-distance'), 2) + num(rootCs.getPropertyValue('--glass-lens-shadow-blur'), 24) + 8);
-    const swell = num(rootCs.getPropertyValue('--glass-lens-press-swell'), 1.02);
+    const token = (name: string, fallback: number) => num(rootCs.getPropertyValue(`--glass-lens-${name}`), fallback);
+    const margin = Math.ceil(token('shadow-distance', 2) + token('shadow-blur', 24) + 8);
+    const swell = token('press-swell', 1.02);
+    const pressDuration = token('press-duration', 300);
 
     // Where each glass is, relative to the container (CSS px).
     const boxes = els.map((el) => {
@@ -257,7 +251,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       if (swelled.has(el)) el.style.removeProperty('scale');
       const b = el.getBoundingClientRect();
       const cs = getComputedStyle(el);
-      const s = motionReduced() ? 0 : swellNow(el, now);
+      const s = motionReduced() ? 0 : swellNow(el, now, pressDuration);
       const scale = 1 + (swell - 1) * s;
       setSwell(el, scale);
       const g = swellRect(b.left - ox, b.top - oy, b.width, b.height, clampRadius(num(cs.borderTopLeftRadius, 0), b.width, b.height), scale);
@@ -336,14 +330,14 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
     // The light, nudged a little by the phone's tilt.
     const L = light();
-    const reach = num(rootCs.getPropertyValue('--glass-lens-tilt-reach'), 40);
+    const reach = token('tilt-reach', 40);
     const lx = (L.x - ox - left + tilt.x * reach) * dpr;
     const ly = (L.y - oy - top + tilt.y * reach) * dpr;
 
     renderer.draw({
       light: [lx, ly],
       dpr,
-      look: readLook(dpr),
+      look: readLook(rootCs, dpr),
       rects: boxes.map((b) => ({ x: (b.x - left) * dpr, y: (b.y - top) * dpr, w: b.w * dpr, h: b.h * dpr, r: clampRadius(b.r * dpr, b.w * dpr, b.h * dpr), k: b.k, alpha: b.alpha, lift: b.lift })),
     });
     canvas.style.visibility = 'visible';
@@ -420,8 +414,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       stopTilt();
       presses.clear();
       clearSwells();
-    } else if (renderer && !needsPermission) startTilt();
-    else if (renderer && tiltPermission === 'granted') startTilt();
+    } else if (renderer && (!needsPermission || tiltPermission === 'granted')) startTilt();
     look = null;
     artKey = '';
     invalidate();

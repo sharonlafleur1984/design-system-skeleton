@@ -83,7 +83,7 @@ export interface GlassLightOptions {
 type LightOptions = Pick<GlassLightOptions, 'light' | 'source'>;
 
 /** Where the light is, in viewport px: the source element's center, a point in the container, or the shared light tokens. */
-export function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
+function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
   const r = el.getBoundingClientRect();
   const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
   if (src) return { x: src.left + src.width / 2, y: src.top + src.height / 2 };

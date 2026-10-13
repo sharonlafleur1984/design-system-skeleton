@@ -61,7 +61,7 @@ export function resolveColor(css: string, within: HTMLElement): [number, number,
 }
 
 /** A computed CSS color as numbers, through the canvas so every color syntax the browser knows works. */
-export function parseColor(css: string): [number, number, number, number] | null {
+function parseColor(css: string): [number, number, number, number] | null {
   const m = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(css.trim());
   if (m) {
     const a = m[4] == null ? 1 : m[4].endsWith('%') ? Number.parseFloat(m[4]) / 100 : Number(m[4]);
@@ -79,15 +79,14 @@ export function parseColor(css: string): [number, number, number, number] | null
   return a === 0 ? [0, 0, 0, 0] : [Math.round(d[0] / a), Math.round(d[1] / a), Math.round(d[2] / a), a];
 }
 
-const rgbaString = (c: [number, number, number, number] | null, fallback = 'rgba(0,0,0,0)') =>
-  c ? `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})` : fallback;
-
 /** Resolves a CSS color to a string a canvas always understands. */
-export function canvasColor(css: string, within: HTMLElement, fallback?: string) {
-  return rgbaString(resolveColor(css, within), fallback);
+function canvasColor(css: string, within: HTMLElement) {
+  const c = resolveColor(css, within);
+  return c ? `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})` : 'rgba(0,0,0,0)';
 }
 
-const px = (v: string, fallback = 0) => {
+/** A CSS number or length as a number, or the fallback when it isn't one. */
+export const num = (v: string, fallback = 0) => {
   const n = Number.parseFloat(v);
   return Number.isFinite(n) ? n : fallback;
 };
@@ -196,9 +195,9 @@ export function shellArt(): GlassArt {
     paint(ctx, { width, height }, shell) {
       const cs = getComputedStyle(shell);
       const v = (name: string) => cs.getPropertyValue(name).trim();
-      const fromRight = px(v('--light-from-right'));
+      const fromRight = num(v('--light-from-right'));
       const lx = width - (width * fromRight) / 100;
-      const ly = px(v('--light-top'));
+      const ly = num(v('--light-top'));
       const R = Math.max(Math.hypot(lx, ly), Math.hypot(width - lx, ly), Math.hypot(lx, height - ly), Math.hypot(width - lx, height - ly));
 
       // The red: lightest at the wheel, deepening to the frame color.
@@ -259,12 +258,12 @@ export function shellArt(): GlassArt {
         r.fillStyle = fade;
         r.fillRect(0, 0, width, height);
         // Behind the row of glass tiles the rays fade further (shell-art-ray-behind-glass).
-        const top = px(v('--shell-glass-top'), -1e5);
-        const bottom = px(v('--shell-glass-bottom'), -1e5);
+        const top = num(v('--shell-glass-top'), -1e5);
+        const bottom = num(v('--shell-glass-bottom'), -1e5);
         if (top > -1e4 && bottom > top) {
-          const behind = px(v('--shell-art-ray-behind-glass'), 1);
-          const pad = px(getComputedStyle(shell).getPropertyValue('--space-3'), 0) * (px(getComputedStyle(document.documentElement).fontSize, 16) || 16);
-          const padPx = Number.isFinite(pad) && pad > 0 ? pad : 12;
+          const behind = num(v('--shell-art-ray-behind-glass'), 1);
+          const pad = num(v('--space-3'), 0) * (num(getComputedStyle(document.documentElement).fontSize, 16) || 16);
+          const padPx = pad > 0 ? pad : 12;
           const lin = r.createLinearGradient(0, 0, 0, height);
           const at = (y: number) => Math.min(1, Math.max(0, y / height));
           lin.addColorStop(0, 'rgba(0,0,0,1)');
@@ -279,7 +278,7 @@ export function shellArt(): GlassArt {
         r.globalCompositeOperation = 'source-over';
         ctx.save();
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.globalAlpha = Math.min(1, Math.max(0, px(before.opacity, 1)));
+        ctx.globalAlpha = Math.min(1, Math.max(0, num(before.opacity, 1)));
         ctx.drawImage(scratch, 0, 0);
         ctx.restore();
       }
@@ -288,12 +287,12 @@ export function shellArt(): GlassArt {
       const wheel = shell.querySelector<SVGSVGElement>('.ds-shell__wheel');
       if (wheel) {
         const ws = getComputedStyle(wheel);
-        const size = px(ws.width);
+        const size = num(ws.width);
         const box = wheel.getBoundingClientRect();
         const sb = shell.getBoundingClientRect();
         const cx = box.left + box.width / 2 - sb.left - shell.clientLeft;
         const cy = box.top + box.height / 2 - sb.top - shell.clientTop;
-        const angle = ws.rotate && ws.rotate !== 'none' ? px(ws.rotate) : 0;
+        const angle = ws.rotate && ws.rotate !== 'none' ? num(ws.rotate) : 0;
         if (size > 0) {
           const color = canvasColor(ws.color, shell);
           ctx.save();
@@ -303,7 +302,7 @@ export function shellArt(): GlassArt {
           ctx.translate(-100, -100);
           ctx.strokeStyle = color;
           ctx.fillStyle = color;
-          ctx.globalAlpha = Math.min(1, Math.max(0, px(ws.opacity, 1)));
+          ctx.globalAlpha = Math.min(1, Math.max(0, num(ws.opacity, 1)));
           drawWheel(ctx);
           ctx.restore();
         }
