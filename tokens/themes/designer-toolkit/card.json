@@ -16,17 +16,17 @@
       "$type": "dimension"
     },
     "border": {
-      "$value": "rgba(248,240,232,0.06)",
+      "$value": "rgba(248,240,232,0.08)",
       "$type": "color",
-      "$description": "A faint cream edge, so a panel separates from the page without a hard line."
+      "$description": "A hairline: cream 100 at 8%."
     },
     "shadow": {
-      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24), inset 0px 1px 0px 0px rgba(248,240,232,0.05)",
-      "$description": "Solid panels: shadow.rest plus shadow.edge. Glass settings are off."
+      "$value": "inset 0px 1px 0px 0px rgba(248,240,232,0.05), 0px 1px 2px 0px rgba(0,0,0,0.4)",
+      "$description": "Solid panels: shadow.rest (top light plus a whisper of shadow). shadow.edge is empty, since rest carries the top light."
     },
     "shadow-hover": {
-      "$value": "0px 2px 6px 0px rgba(13,11,9,0.28), inset 0px 1px 0px 0px rgba(248,240,232,0.05)",
-      "$description": "Solid panels on hover: shadow.hover plus shadow.edge."
+      "$value": "inset 0px 1px 0px 0px rgba(248,240,232,0.07), 0px 2px 4px 0px rgba(0,0,0,0.48)",
+      "$description": "Solid panels on hover: shadow.hover."
     },
     "glass": {
       "$description": "The shared glass recipe's settings for cards (see glass.css). All off: toolkit panels are solid.",

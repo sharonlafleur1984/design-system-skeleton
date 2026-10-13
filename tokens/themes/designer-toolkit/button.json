@@ -9,12 +9,12 @@
       "$description": "Text buttons are underlined so they read as tappable without color."
     },
     "shadow-primary": {
-      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24), inset 0 1px 0 rgba(248,240,232,0.16)",
-      "$description": "A whisper of shadow and a soft top sheen on bright rust."
+      "$value": "inset 0 1px 0 rgba(248,240,232,0.16), 0px 1px 2px 0px rgba(0,0,0,0.4)",
+      "$description": "shadow.rest with a stronger top sheen on bright rust."
     },
     "shadow-secondary": {
-      "$value": "0px 1px 2px 0px rgba(13,11,9,0.24)",
-      "$description": "A whisper of shadow, no sheen."
+      "$value": "inset 0 1px 0 rgba(248,240,232,0.05), 0px 1px 2px 0px rgba(0,0,0,0.4)",
+      "$description": "shadow.rest: the top-edge light and a whisper of shadow. Also the selected segment's lens."
     }
   }
 }

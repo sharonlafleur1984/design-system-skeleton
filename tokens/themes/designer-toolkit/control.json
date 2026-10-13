@@ -1,0 +1,42 @@
+{
+  "control": {
+    "$description": "The Designer Toolkit's compact controls, like Figma's: dense, so the prototype keeps the room. Small stays at 24px, the WCAG 2.2 minimum target size (2.5.8).",
+    "height": {
+      "small": {
+        "$type": "dimension",
+        "$value": "24px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "28px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "32px"
+      }
+    },
+    "padding-inline": {
+      "small": {
+        "$type": "dimension",
+        "$value": "8px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "10px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "12px"
+      }
+    },
+    "icon": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Space between a control and its label."
+    }
+  }
+}

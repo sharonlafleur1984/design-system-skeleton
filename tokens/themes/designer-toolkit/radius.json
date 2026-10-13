@@ -1,0 +1,27 @@
+{
+  "radius": {
+    "$description": "The Designer Toolkit's own shape: tighter corners than the products it frames, so the shell reads as a tool, not a page. Floating controls (toolbars, segmented controls) already use radius.pill.",
+    "control": {
+      "$type": "dimension",
+      "$value": "6px",
+      "$description": "Small items: menu rows, tags, checkboxes."
+    },
+    "button": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "card": {
+      "$type": "dimension",
+      "$value": "12px"
+    },
+    "panel": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "Side panels, the details panel and dialogs."
+    },
+    "chip": {
+      "$type": "dimension",
+      "$value": "{radius.pill}"
+    }
+  }
+}

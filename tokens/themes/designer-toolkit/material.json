@@ -8,17 +8,18 @@
     },
     "saturate": {
       "$type": "number",
-      "$value": 1
+      "$value": 1,
+      "$description": "Stays 1: this one value also applies to flat page controls (chips, secondary buttons, the segmented lens), and glass is only for floating layers."
     },
     "blur-on-art": {
       "$type": "dimension",
-      "$value": "12px",
-      "$description": "A soft blur behind a control floating over a prototype, so cream text stays readable on any design behind it."
+      "$value": "20px",
+      "$description": "Glass on floating layers: a 20px blur behind it."
     },
     "blur-on-art-selected": {
       "$type": "dimension",
-      "$value": "16px",
-      "$description": "A little more frost for the chosen control."
+      "$value": "20px",
+      "$description": "Same blur when chosen; the chosen state is a lighter surface, not more frost."
     },
     "refraction-band": {
       "$type": "dimension",
@@ -40,18 +41,18 @@
       },
       "glass-strong": {
         "$type": "color",
-        "$value": "rgba(248,240,232,0.12)",
-        "$description": "Page control fill on hover."
+        "$value": "{palette.near-black.700}",
+        "$description": "Page control on hover, and the chosen segment: one surface step lighter (near-black 700), no color fill. Matches the Reduce transparency fallback (surface.raised)."
       },
       "glass-on-art": {
         "$type": "color",
-        "$value": "rgba(26,22,18,0.55)",
-        "$description": "A control floating over a prototype: near-black 900 tint over a soft blur."
+        "$value": "rgba(51,48,44,0.72)",
+        "$description": "Floating glass: near-black 800 at 72% over a 20px blur."
       },
       "glass-on-art-selected": {
         "$type": "color",
-        "$value": "rgba(51,48,44,0.82)",
-        "$description": "The chosen floating control: near-black 800, more frosted, with cream text."
+        "$value": "rgba(75,71,67,0.88)",
+        "$description": "The chosen floating tool: near-black 700, one step lighter, no color fill. Cream text on it passes (8.2:1 on solid near-black 700)."
       }
     },
     "border": {}
@@ -61,7 +62,7 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(248,240,232,0.06)",
+          "color": "rgba(248,240,232,0.05)",
           "offsetX": "0px",
           "offsetY": "1px",
           "blur": "0px",
@@ -75,41 +76,48 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(13,11,9,0.40)",
+          "color": "rgba(0,0,0,0.35)",
           "offsetX": "0px",
-          "offsetY": "8px",
-          "blur": "24px",
+          "offsetY": "2px",
+          "blur": "6px",
+          "spread": "0px"
+        },
+        {
+          "color": "rgba(0,0,0,0.50)",
+          "offsetX": "0px",
+          "offsetY": "12px",
+          "blur": "32px",
           "spread": "0px"
         }
       ],
-      "$description": "Soft warm shadow under floating glass. No glow."
+      "$description": "Floating glass casts shadow.float."
     }
   },
   "glass": {
     "rim": {
-      "$description": "The lit edge of floating glass: a soft cream line, brightest toward the light, never colored.",
+      "$description": "The lit edge of floating glass: a 1px cream line at about 12%, brightest toward the shared light (top right), never colored.",
       "width": {
         "$type": "dimension",
         "$value": "1px"
       },
       "color": {
         "$type": "color",
-        "$value": "rgba(248,240,232,0.28)",
+        "$value": "rgba(248,240,232,0.12)",
         "$description": "Brightest point of the rim."
       },
       "faint": {
         "$type": "color",
-        "$value": "rgba(248,240,232,0.08)",
+        "$value": "rgba(248,240,232,0.04)",
         "$description": "The rim where it faces away from the light: a faint line, so the glass edge never disappears."
       },
       "strength": {
         "$type": "number",
-        "$value": 0.8,
+        "$value": 1,
         "$description": "How bright the rim gets where it faces the light (1 is the rim color at full strength)."
       },
       "glint": {
         "$type": "number",
-        "$value": 0.15,
+        "$value": 0.2,
         "$description": "The faint glint on the far corner, where light leaves the glass."
       },
       "spread-x": {
@@ -124,7 +132,7 @@
     },
     "highlight": {
       "$type": "color",
-      "$value": "rgba(248,240,232,0.10)",
+      "$value": "rgba(248,240,232,0.08)",
       "$description": "Inner highlight along the edge that faces the light."
     },
     "shade": {

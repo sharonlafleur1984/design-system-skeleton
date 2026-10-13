@@ -1,7 +1,20 @@
 {
   "shadow": {
-    "$description": "Depth, not flatness, with just a whisper of shadow: soft, warm and low on the near-black. Raised panels get lighter instead of casting heavy shadows. Only menus and popovers (float) cast a real shadow.",
+    "$description": "Depth, not flatness: a 1px light along the top edge plus a tight dark shadow. Raised panels get lighter instead of casting heavy shadows. Only floating layers (popovers, floating toolbars) cast a real shadow.",
     "edge": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(0,0,0,0)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Empty: shadow.rest already carries the top-edge light."
+    },
+    "rest": {
       "$type": "shadow",
       "$value": [
         {
@@ -11,30 +24,33 @@
           "blur": "0px",
           "spread": "0px",
           "inset": true
-        }
-      ],
-      "$description": "A faint cream line along a panel's top edge, as if lit from above."
-    },
-    "rest": {
-      "$type": "shadow",
-      "$value": [
+        },
         {
-          "color": "rgba(13,11,9,0.24)",
+          "color": "rgba(0,0,0,0.40)",
           "offsetX": "0px",
           "offsetY": "1px",
           "blur": "2px",
           "spread": "0px"
         }
-      ]
+      ],
+      "$description": "A 1px cream light along the top edge, plus a tight shadow."
     },
     "hover": {
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(13,11,9,0.28)",
+          "color": "rgba(248,240,232,0.07)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        },
+        {
+          "color": "rgba(0,0,0,0.48)",
           "offsetX": "0px",
           "offsetY": "2px",
-          "blur": "6px",
+          "blur": "4px",
           "spread": "0px"
         }
       ]
@@ -43,21 +59,21 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(13,11,9,0.20)",
+          "color": "rgba(0,0,0,0.35)",
           "offsetX": "0px",
           "offsetY": "2px",
           "blur": "6px",
           "spread": "0px"
         },
         {
-          "color": "rgba(13,11,9,0.40)",
+          "color": "rgba(0,0,0,0.50)",
           "offsetX": "0px",
-          "offsetY": "16px",
-          "blur": "40px",
+          "offsetY": "12px",
+          "blur": "32px",
           "spread": "0px"
         }
       ],
-      "$description": "Menus and popovers, the only things that float above the page."
+      "$description": "Popovers and floating toolbars, the only things that float above the page."
     }
   }
 }

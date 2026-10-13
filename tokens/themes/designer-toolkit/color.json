@@ -370,11 +370,13 @@
     "border": {
       "subtle": {
         "$type": "color",
-        "$value": "{palette.near-black.800}"
+        "$value": "rgba(248,240,232,0.08)",
+        "$description": "A hairline: cream 100 at 8%."
       },
       "default": {
         "$type": "color",
-        "$value": "{palette.near-black.700}"
+        "$value": "rgba(248,240,232,0.08)",
+        "$description": "A hairline: cream 100 at 8%, for controls, dividers and popovers. There is no shared hover border name yet, so the 14% hover hairline is not set."
       },
       "strong": {
         "$type": "color",
