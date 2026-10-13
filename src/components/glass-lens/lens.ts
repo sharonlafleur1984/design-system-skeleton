@@ -7,7 +7,7 @@
 // hover transition or the art's entrance) and pauses off screen. Motion (press swell and phone tilt)
 // is off with reduced motion, from the device or from Settings. With no WebGL, a lost context, Reduce
 // transparency or Increase contrast, nothing is drawn and every glass keeps the classic recipe.
-import { clampRadius, capDpr, pressSwell, swellRect, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
+import { clampRadius, capDpr, pressSwell, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
 import { createLensRenderer, MAX_LENS_RECTS, type LensLook, type LensRenderer, type Rgba } from './lens-shader';
 import { num, resolveColor, type GlassArt } from './lens-art';
 import './glass-lens.css';
@@ -245,16 +245,15 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
     // Where each glass is, relative to the container (CSS px).
     const boxes = els.map((el) => {
-      // The press swell scales the whole element (its fill, text and focus ring), so the drawn glass
-      // and anything the element paints itself, like a chosen tile's frosted fill, move as one.
-      // Measured at rest: the swell is taken off for the measurement (no paint happens in between).
-      if (swelled.has(el)) el.style.removeProperty('scale');
+      // The press swell scales the whole element (its fill, text and focus ring). The glass is then
+      // drawn where the element actually is this frame, so it follows any scale transition the
+      // component has instead of running ahead of it, and the fill never comes loose from the rim.
+      const s = motionReduced() ? 0 : swellNow(el, now, pressDuration);
+      setSwell(el, 1 + (swell - 1) * s);
       const b = el.getBoundingClientRect();
       const cs = getComputedStyle(el);
-      const s = motionReduced() ? 0 : swellNow(el, now, pressDuration);
-      const scale = 1 + (swell - 1) * s;
-      setSwell(el, scale);
-      const g = swellRect(b.left - ox, b.top - oy, b.width, b.height, clampRadius(num(cs.borderTopLeftRadius, 0), b.width, b.height), scale);
+      const k = el.offsetWidth > 0 ? b.width / el.offsetWidth : 1;
+      const g = { x: b.left - ox, y: b.top - oy, w: b.width, h: b.height, r: clampRadius(num(cs.borderTopLeftRadius, 0) * k, b.width, b.height) };
       return {
         ...g,
         k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1))),

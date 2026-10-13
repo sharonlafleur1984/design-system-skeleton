@@ -91,7 +91,12 @@ function setup() {
   root.append(glass);
   document.body.append(root);
   vi.spyOn(root, 'getBoundingClientRect').mockReturnValue(new DOMRect(0, 0, 400, 200));
-  vi.spyOn(glass, 'getBoundingClientRect').mockReturnValue(new DOMRect(40, 40, 100, 38));
+  // Like a browser, the glass's box includes its scale (the press swell), around its center.
+  vi.spyOn(glass, 'getBoundingClientRect').mockImplementation(() => {
+    const k = Number(glass.style.scale || 1);
+    return new DOMRect(40 - (100 * k - 100) / 2, 40 - (38 * k - 38) / 2, 100 * k, 38 * k);
+  });
+  Object.defineProperty(glass, 'offsetWidth', { configurable: true, get: () => 100 });
   const stop = attachLens(root, { art, light: () => ({ x: 400, y: 0 }) }, { createRenderer });
   return { root, glass, draws, createRenderer, stop };
 }
