@@ -61,6 +61,12 @@ export interface GlassLightOptions {
   radius?: number;
   /** The light's strength right next to it (0 to 1). Defaults to 1. */
   peak?: number;
+  /**
+   * How far the light carries, as a share of the page's size. Highlights and shadows soften with
+   * distance; a shorter reach (night) softens them sooner, so far surfaces all look the same.
+   * Defaults to 0.9.
+   */
+  reach?: number;
 }
 
 /**
@@ -68,7 +74,7 @@ export interface GlassLightOptions {
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
-export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1 }: GlassLightOptions) {
+export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1, reach: reachOption = 0.9 }: GlassLightOptions) {
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -101,7 +107,7 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
         lx = r.right - (r.width * fromRight) / 100;
         ly = r.top + top;
       }
-      const reach = Math.min(Math.max(r.width, r.height), 1400) * 0.9;
+      const reach = Math.min(Math.max(r.width, r.height), 1400) * reachOption;
       svg.replaceChildren();
       el.querySelectorAll<HTMLElement>(selector).forEach((glass, i) => {
         const b = glass.getBoundingClientRect();
@@ -144,5 +150,5 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
       ro.disconnect();
       svg.remove();
     };
-  }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak]);
+  }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak, reachOption]);
 }

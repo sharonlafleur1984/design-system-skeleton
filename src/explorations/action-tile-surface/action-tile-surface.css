@@ -1,0 +1,218 @@
+/* Exploration: Action tile in two variants, one for light backgrounds and one for dark.
+   Every panel is the same page frame at real size, with the one light at the same spot: the
+   shared light tokens (light-from-right, light-top), the center of After Graduation's wheel.
+   By day it's bright white light you never see directly; by night, no moon, a clear sky with a
+   luminous Milky Way. Storybook only; not in the library. */
+
+.ats-stack { display: grid; gap: var(--space-5); }
+.ats-group-title { margin: var(--space-4) 0 0; font: 600 18px/1.3 system-ui, sans-serif; color: #1d1a18; }
+.ats-label { margin: 0 0 var(--space-2); font: 600 12px/1.3 system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #55504e; }
+
+.ats-frame {
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+  inline-size: 1024px;
+  max-inline-size: 100%;
+  min-block-size: 420px;
+  /* The tile row starts where it does on the page shell: about 40px below the light, so the light sits
+     above and to the right of the tiles, as it does over After Graduation's header tiles. */
+  padding: calc(var(--light-top) + 40px) var(--space-6) var(--space-6);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+}
+.ats-frame .ds-tiles__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ats-frame .ds-tile__bar { display: none; }
+.ats-frame .ds-card { padding: var(--space-4); }
+
+/* The light, shown only as light: a soft bloom by day, a band of sky glow by night. */
+.ats-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.ats-day::before {
+  /* Day: light spreads out from one spot and fades with distance the same way the tiles' light does
+     (inverse-square, reach 0.9 of the panel), so the glow fills the panel instead of sitting in a spot. */
+  background: radial-gradient(circle 2000px at calc(100% - var(--light-from-right)) var(--light-top), rgb(255 255 255 / 0.700) 0%, rgb(255 255 255 / 0.667) 10%, rgb(255 255 255 / 0.585) 20%, rgb(255 255 255 / 0.485) 30%, rgb(255 255 255 / 0.350) 45%, rgb(255 255 255 / 0.227) 65%, rgb(255 255 255 / 0.118) 100%, rgb(255 255 255 / 0) 100%);
+}
+.ats-night::before {
+  /* Night: the same spread from the same spot, fading sooner than day (reach 0.55), cool light. */
+  background: radial-gradient(circle 2000px at calc(100% - var(--light-from-right)) var(--light-top), rgb(205 215 255 / 0.200) 0%, rgb(205 215 255 / 0.177) 10%, rgb(205 215 255 / 0.131) 20%, rgb(205 215 255 / 0.091) 30%, rgb(205 215 255 / 0.054) 45%, rgb(205 215 255 / 0.030) 65%, rgb(205 215 255 / 0.014) 100%, rgb(205 215 255 / 0) 100%);
+}
+.ats-page { background-color: var(--color-surface-page); }
+.ats-pattern { background-image: repeating-linear-gradient(45deg, #111 0 12px, #f5f5f5 12px 24px); }
+
+/* Brand color: the color of where you are. Every value below comes from one rule in OKLCH: the same
+   lightness and the same maximum vividness (chroma) for every brand, only the hue changes, so every
+   chosen tile is equally loud. Chosen: lightness 0.93 / chroma up to 0.035 by day, 0.37 / 0.06 at night.
+   Text on it: 0.33 / 0.07 by day, 0.93 / 0.03 at night. Primary button: 0.22 / 0.045 and 0.97 / 0.012.
+   Brand color: the color of where you are. Chosen tiles use it. Neutral has none, so ink stands in;
+   Life Hub uses the current area's accent (here, Finance); After Graduation uses its crimson.
+   --brand fills a surface under light text; --brand-ink is text on a light surface. */
+.ats-neutral { --brand: #2a2625; --brand-ink: #383433; --brand-tint: #ece6e5; --brand-deep: #433f3d; --brand-ink-night: #ece6e5; --brand-darkest: #1d1a19; --brand-lightest: #f9f4f2; --brand-button-night: #d5d0ce; --brand-button-night-hover: #e2dddb; }
+.ats-lifehub { --brand: #3d6963; --brand-ink: #0f3e39; --brand-tint: #cff0eb; --brand-deep: #1c4843; --brand-ink-night: #d3efea; --brand-darkest: #00211d; --brand-lightest: #edf8f6; --brand-button-night: #72e9da; --brand-button-night-hover: #96f2e6; }
+.ats-aftergrad { --brand: #cb1b2c; --brand-ink: #542523; --brand-tint: #ffdfdd; --brand-deep: #5c3230; --brand-ink-night: #fce1de; --brand-darkest: #2c1110; --brand-lightest: #fdf2f1; --brand-button-night: #ffb4ae; --brand-button-night-hover: #ffc7c1; }
+
+/* Both variants use the card's glass recipe, so tiles and cards are lit alike. */
+.ats-light .ds-tile,
+.ats-dark .ds-tile {
+  --g-rim-color: rgb(253 251 241);
+  --g-rim-strength: 1;
+  --g-rim-glint: 0.6;
+  --g-rim-spread-x: 60%;
+  --g-rim-spread-y: 150%;
+  --g-highlight: rgb(253 251 241 / 0.8);
+  --g-cast-distance: 11px;
+  --g-cast-blur: 26px;
+}
+
+/* Light variant, base: the card's frost, dark text. */
+.ats-light .ds-tile {
+  --g-rim-base: rgb(29 26 24 / 0.12);
+  --g-shade: rgb(29 26 24 / 0.11);
+  --g-cast: rgb(29 26 24 / 0.137);
+  --g-contact: rgb(29 26 24 / 0.084);
+  color: #1d1a18;
+}
+/* Resting and locked tiles keep the approved clear glass (Decisions, Oct 4): no fill, no blur, and
+   the background bends near the edges (--glass-bend from the light helper). Nothing overrides it here. */
+
+/* Dark variant: dark frost, light text, so it holds up on any dark or busy background. */
+.ats-dark .ds-tile {
+  --g-rim-base: rgb(255 255 255 / 0.16);
+  --g-shade: rgb(0 0 0 / 0.3);
+  --g-cast: rgb(0 0 0 / 0.35);
+  --g-contact: rgb(0 0 0 / 0.25);
+  color: #fcf9f8;
+}
+
+/* Dark variant, chosen: set by the direction below. */
+
+/* Disabled, both variants: the glass is still a real object in the same light, so it keeps its rim,
+   highlight and shadow. Only what's inside goes quiet: the text, at 3:1 or better. No fade, no hover lift. */
+.ats-frame .ds-tile[data-disabled] { opacity: 1; cursor: not-allowed; }
+.ats-light .ds-tile[data-disabled] { color: #8a8380; }
+.ats-dark .ds-tile[data-disabled] { color: rgb(252 249 248 / 0.4); }
+
+/* Chosen, both variants and both modes: a pale tint from the brand color's ramp, with dark brand
+   text and the star. Light enough that the primary button stays the strongest thing on the page. */
+.ats-frame .ds-tile[data-state='chosen'] { color: var(--brand-ink); --g-rim-base: rgb(29 26 24 / 0.14); --g-shade: rgb(29 26 24 / 0.11); --g-cast: rgb(29 26 24 / 0.16); --g-contact: rgb(29 26 24 / 0.1); }
+.ats-frame .ds-tile[data-state='chosen'] .ds-tile__glass { background: color-mix(in srgb, var(--brand-tint) 94%, transparent); backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art-selected)); }
+
+/* The page's primary button, for checking the hierarchy. */
+.ats-actions { display: flex; justify-content: flex-end; }
+
+/* Dark mode, chosen: the deep tint from the same ramp, with the pale tint as text. */
+.ats-frame[data-mode='dark'] .ds-tile[data-state='chosen'] { color: var(--brand-ink-night); --g-rim-base: rgb(255 255 255 / 0.2); --g-shade: rgb(0 0 0 / 0.3); --g-cast: rgb(0 0 0 / 0.35); --g-contact: rgb(0 0 0 / 0.25); }
+.ats-frame[data-mode='dark'] .ds-tile[data-state='chosen'] .ds-tile__glass { background: color-mix(in srgb, var(--brand-deep) 94%, transparent); }
+
+/* Primary button: always the far end of the brand ramp. Darkest (tinted near-black) in light mode,
+   lightest (tinted near-white) in dark mode, so it's the most contrasting thing on every page. */
+.ats-frame .ds-button--primary { --_bg: var(--brand-darkest); --_ink: var(--brand-lightest); }
+.ats-frame .ds-button--primary[data-hovered] { --_bg: color-mix(in srgb, var(--brand-darkest) 85%, white); }
+/* Dark mode: the button is the most vivid thing on the page. Light (0.86) and colored: the same
+   vividness (chroma 0.11) for every brand, above the chosen tile's cap, with the darkest shade as text. */
+.ats-frame[data-mode='dark'] .ds-button--primary { --_bg: var(--brand-button-night); --_ink: var(--brand-darkest); }
+.ats-frame[data-mode='dark'] .ds-button--primary[data-hovered] { --_bg: var(--brand-button-night-hover); }
+.ats-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.ats-side .ats-frame { inline-size: 100%; min-block-size: 0; padding-block-start: 64px; }
+.ats-side .ats-frame .ds-tiles__list { grid-template-columns: 1fr; }
+
+/* Life Hub pages sit on marble (here the Dashboard's sage-cream), with the area's night layer in dark
+   mode (transparent by day). Cards are see-through, so the pattern shows; a solid button stands out. */
+.ats-lifehub.ats-page {
+  background: linear-gradient(var(--color-area-finance-night), var(--color-area-finance-night)), url('/texture-sage-cream.jpg') center / cover, var(--color-surface-page);
+}
+
+/* Day shadows are soft: sky light bounces in and fills them, so they're lighter and more spread out
+   than a single lamp's. Applies to tiles and cards alike. */
+.ats-frame[data-mode='light'] .ds-tile,
+.ats-frame[data-mode='light'] .ds-card {
+  --g-cast: rgb(29 26 24 / 0.075);
+  --g-contact: rgb(29 26 24 / 0.05);
+  --g-shade: rgb(29 26 24 / 0.07);
+  --g-cast-blur: 36px;
+}
+
+/* Dark mode, in every product: the glass of After Graduation's settled header tiles (glass.json),
+   so every dark page matches them. Shadows use black at the same strength instead of the crimson
+   tint, which only suits the red header art. */
+.ats-frame[data-mode='dark'] .ds-tile,
+.ats-frame[data-mode='dark'] .ds-card {
+  --g-rim-width: 1px;
+  --g-rim-color: rgb(255 255 255 / 0.8);
+  --g-rim-base: rgb(255 255 255 / 0.18);
+  --g-rim-strength: 1.25;
+  --g-rim-glint: 0.25;
+  --g-rim-spread-x: 70%;
+  --g-rim-spread-y: 150%;
+  --g-highlight: rgb(255 255 255 / 0.55);
+  --g-shade: rgb(0 0 0 / 0.3);
+  --g-cast: rgb(0 0 0 / 0.38);
+  --g-cast-distance: 8px;
+  --g-cast-blur: 22px;
+  --g-contact: rgb(0 0 0 / 0.38);
+}
+
+/* Locked: the lock and the word use the shared warning color ("heads up", not "something broke"),
+   so the label isn't skimmed past. The icon and the word carry the meaning, never the color alone. */
+.ats-locked { color: var(--color-status-warning-ink); }
+
+/* Light mode: no stroke. On a light page the rim shows only as a gray outline, so it's off;
+   shade and shadow carry the light. */
+.ats-frame[data-mode='light'] .ds-tile,
+.ats-frame[data-mode='light'] .ds-card {
+  --g-rim-base: transparent;
+  --g-rim-strength: 0;
+  --g-rim-glint: 0;
+}
+
+/* Unselected tiles are perfectly clear in every product (Oct 4 rule): no fill, no blur. The art
+   behind still bends at the edges. */
+.ats-frame .ds-tile:not([data-state='chosen']) .ds-tile__glass {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: var(--glass-bend, none);
+}
+
+/* The card uses the same glass as After Graduation's settled action tiles (Oct 4): clear, no fill and
+   no frost, the art behind bending at its edges, and the tiles' rim, highlight, shade and shadows.
+   The light and dark settings above still apply to it, the same as to the tiles. */
+.ats-frame .ds-card {
+  border-color: transparent;
+  background: transparent;
+  --g-rim-color: var(--glass-rim-color);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  --g-highlight: var(--glass-highlight);
+  --g-shade: var(--glass-shade);
+  --g-cast: var(--glass-cast);
+  --g-contact: var(--glass-contact);
+  --g-cast-distance: var(--glass-cast-distance);
+  --g-cast-blur: var(--glass-cast-blur);
+  --g-extra-shadow: 0 0 0 0 transparent;
+}
+.ats-frame .ds-card::after {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: var(--glass-bend, none);
+  -webkit-mask: none;
+  mask: none;
+}
+
+/* On light pages the lines behind an unselected tile stay sharp (no blur) but show lighter, as if
+   seen through the glass: lower contrast, lifted toward white. The glass itself stays unfilled. */
+.ats-frame[data-mode='light'] .ds-tile:not([data-state='chosen']) .ds-tile__glass {
+  -webkit-backdrop-filter: contrast(0.55) brightness(1.3);
+  backdrop-filter: var(--glass-bend, none) contrast(0.55) brightness(1.3);
+}

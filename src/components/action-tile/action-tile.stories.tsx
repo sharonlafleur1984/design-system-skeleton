@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
+import { OnEveryBackground, storyBackgrounds } from '../story-helpers';
+
+const onDark: CSSProperties = { padding: 'var(--space-4)', borderRadius: 'var(--radius-panel)', background: storyBackgrounds.dark.value };
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
 
 const meta: Meta<typeof ActionTile> = {
@@ -28,12 +31,22 @@ const meta: Meta<typeof ActionTile> = {
       },
     },
   },
-  decorators: [(Story) => <div data-theme="after-graduation"><Story /></div>],
+  // Clear glass with white text needs something behind it, so these stories sit on Dark until you
+  // pick another background with Storybook's Background button. "On every background" shows them all.
+  decorators: [
+    (Story, context) => (
+      <div data-theme="after-graduation" style={context.globals.backgrounds?.value ? undefined : onDark}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof ActionTile>;
 
-// Storybook only: a slice of the header, with its rays and light low on the right.
+// Storybook only: lights the tiles from low on the right, as the wheel does in the page shell.
+// No background of its own: pick one with Storybook's Background button, or see "On every background".
+// The full art (light, rays, wheel) lives only in Page shell.
 function OnHeader({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   useGlassLight(ref, { light: { x: 0.85, y: 1 }, selector: '.ds-tile' });
@@ -42,18 +55,40 @@ function OnHeader({ children }: { children: ReactNode }) {
     isolation: 'isolate',
     overflow: 'hidden',
     padding: 'var(--layout-gutter)',
-    borderRadius: 'var(--radius-panel)',
-    background:
-      'repeating-conic-gradient(from 0deg at 85% 100%, rgb(255 255 255 / 0.12) 0 2deg, transparent 2deg 7deg), linear-gradient(var(--color-accent-base), var(--shell-frame))',
   };
   return <div ref={ref} style={style}>{children}</div>;
 }
+
+// The switched content sits on the page, like the sheet in Page shell, so its dark text stays readable.
+const panelOnPage: CSSProperties = {
+  marginBlockStart: 'var(--space-4)',
+  padding: 'var(--space-4)',
+  borderRadius: 'var(--radius-panel)',
+  background: 'var(--color-surface-page)',
+  color: 'var(--color-ink-primary)',
+};
 
 const episodes = [
   { id: 'explore', label: 'Episode 1', title: 'Explore Schools', description: 'Select your favorites' },
   { id: 'pay', label: 'Episode 2', title: 'Financial Planning', description: 'How will you pay for it?' },
   { id: 'dates', label: 'Episode 3', title: 'Important Dates', description: "What's next, step by step" },
 ];
+
+/** Chosen, rest and disabled tiles on every test background at once: light, dark, mid-tone, a busy pattern and a gradient. */
+export const EveryBackground: Story = {
+  name: 'On every background',
+  render: () => (
+    <OnEveryBackground>
+      <OnHeader>
+        <ActionTileGroup aria-label="Tiles">
+          <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
+          <ActionTile label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
+          <ActionTile isDisabled label="Disabled" title="Important Dates" description="What's next, step by step" onPress={() => {}} />
+        </ActionTileGroup>
+      </OnHeader>
+    </OnEveryBackground>
+  ),
+};
 
 /** Switch: three episodes, the first chosen. Use the arrow keys to move between them. */
 export const Switch: Story = {
@@ -67,7 +102,7 @@ export const Switch: Story = {
         </ActionTileGroup>
       </OnHeader>
       {episodes.map((e) => (
-        <ActionTilePanel key={e.id} id={e.id} style={{ paddingBlock: 'var(--space-4)' }}>
+        <ActionTilePanel key={e.id} id={e.id} style={panelOnPage}>
           {e.title} goes here.
         </ActionTilePanel>
       ))}
@@ -122,7 +157,7 @@ export const Variants: Story = {
   ),
 };
 
-/** Every state: rest, hover, keyboard focus and chosen. */
+/** Every state: rest, hover, keyboard focus, chosen and disabled. */
 export const States: Story = {
   render: () => (
     <OnHeader>
@@ -131,6 +166,7 @@ export const States: Story = {
         <ActionTile data-state="hover" label="Hover" title="Explore Schools" description="Select your favorites" />
         <ActionTile data-state="focus" label="Keyboard focus" title="Explore Schools" description="Select your favorites" />
         <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" />
+        <ActionTile isDisabled label="Disabled" title="Explore Schools" description="Select your favorites" />
       </ActionTileGroup>
     </OnHeader>
   ),

@@ -4,7 +4,7 @@ import '../build/css/after-graduation.css';
 import '../src/fonts/life-hub.css';
 import '../src/fonts/after-graduation.css';
 import '../src/base.css';
-import { ThemeContext, singleTheme, type ThemeChoice } from '../src/components/story-helpers';
+import { ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
 // Stories show one product at a time; "Both" shows them side by side for comparing.
@@ -45,6 +45,7 @@ const preview: Preview = {
       document.documentElement.setAttribute('data-mode', context.globals.mode === 'dark' ? 'dark' : 'light');
       return (
         <ThemeContext.Provider value={choice}>
+          <style>{storyBackgroundsCss}</style>
           <Story />
         </ThemeContext.Provider>
       );
@@ -53,6 +54,9 @@ const preview: Preview = {
   parameters: {
     a11y: { test: 'error' },
     layout: 'padded',
+    // The paint bucket in the toolbar: Page or On artwork, in the theme picked (story-helpers).
+    // No default, so stories keep their plain canvas unless they ask for one, like Action tile.
+    backgrounds: { options: storyBackgrounds },
     // Material 3 screen classes. Pick one in the toolbar to see the tokens change.
     viewport: {
       options: {
