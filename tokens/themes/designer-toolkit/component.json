@@ -1,0 +1,13 @@
+{
+  "callout": {
+    "$description": "Tighter callouts for the toolkit. The block padding (12px) is set in the component's CSS, so it can't be changed per theme yet.",
+    "gap": {
+      "$type": "dimension",
+      "$value": "8px"
+    },
+    "padding-inline": {
+      "$type": "dimension",
+      "$value": "12px"
+    }
+  }
+}

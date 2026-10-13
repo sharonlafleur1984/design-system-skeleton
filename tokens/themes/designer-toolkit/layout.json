@@ -1,0 +1,38 @@
+{
+  "layout": {
+    "$description": "The Designer Toolkit's tighter layout, like a dense technical tool (Linear, Figma, Vercel): the same 16px on every screen size, so the shell leaves the room to the prototype. Every value is a step on the shared space scale.",
+    "gutter": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Page and shell inset from the screen sides.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "16px",
+          "medium": "16px"
+        }
+      }
+    },
+    "section": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Space between sections.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "16px",
+          "medium": "16px"
+        }
+      }
+    },
+    "title-gap": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "Space under a page title.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "12px",
+          "medium": "12px"
+        }
+      }
+    }
+  }
+}

@@ -1,18 +1,18 @@
 {
   "layout-gutter": {
     "compact": "16px",
-    "medium": "24px",
-    "expanded": "24px"
+    "medium": "16px",
+    "expanded": "16px"
   },
   "layout-section": {
-    "compact": "24px",
-    "medium": "32px",
-    "expanded": "40px"
+    "compact": "16px",
+    "medium": "16px",
+    "expanded": "16px"
   },
   "layout-title-gap": {
-    "compact": "16px",
-    "medium": "20px",
-    "expanded": "24px"
+    "compact": "12px",
+    "medium": "12px",
+    "expanded": "12px"
   },
   "light-from-right": {
     "compact": "0%",
