@@ -142,8 +142,11 @@ describe('lens', () => {
     await settle();
     flush(100 + 75);
     expect(draws.at(-1)!.rects[0].w).toBeGreaterThan(rest);
+    // The element swells with its glass, so a fill it paints itself never comes loose from the rim.
+    expect(Number(glass.style.scale)).toBeCloseTo(draws.at(-1)!.rects[0].w / rest);
     flush(100 + 400);
     expect(draws.at(-1)!.rects[0].w).toBeCloseTo(rest);
+    expect(glass.style.scale).toBe('');
     stop();
   });
 

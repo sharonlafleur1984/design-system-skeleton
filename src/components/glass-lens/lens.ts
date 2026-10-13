@@ -130,6 +130,19 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
   };
 
   // ---- Motion: press swell and phone tilt, both off with reduced motion.
+  const swelled = new Map<HTMLElement, number>();
+  const setSwell = (el: HTMLElement, scale: number) => {
+    if (scale === 1) {
+      if (swelled.delete(el)) el.style.removeProperty('scale');
+    } else {
+      swelled.set(el, scale);
+      el.style.setProperty('scale', String(scale));
+    }
+  };
+  const clearSwells = () => {
+    for (const el of swelled.keys()) el.style.removeProperty('scale');
+    swelled.clear();
+  };
   const swellNow = (el: HTMLElement, now: number) => {
     const start = presses.get(el);
     if (start == null) return 0;
@@ -238,10 +251,16 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
     // Where each glass is, relative to the container (CSS px).
     const boxes = els.map((el) => {
+      // The press swell scales the whole element (its fill, text and focus ring), so the drawn glass
+      // and anything the element paints itself, like a chosen tile's frosted fill, move as one.
+      // Measured at rest: the swell is taken off for the measurement (no paint happens in between).
+      if (swelled.has(el)) el.style.removeProperty('scale');
       const b = el.getBoundingClientRect();
       const cs = getComputedStyle(el);
       const s = motionReduced() ? 0 : swellNow(el, now);
-      const g = swellRect(b.left - ox, b.top - oy, b.width, b.height, clampRadius(num(cs.borderTopLeftRadius, 0), b.width, b.height), 1 + (swell - 1) * s);
+      const scale = 1 + (swell - 1) * s;
+      setSwell(el, scale);
+      const g = swellRect(b.left - ox, b.top - oy, b.width, b.height, clampRadius(num(cs.borderTopLeftRadius, 0), b.width, b.height), scale);
       return {
         ...g,
         k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1))),
@@ -370,6 +389,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     raf = 0;
     stopTilt();
     presses.clear();
+    clearSwells();
     unlightAll();
     renderer?.dispose();
     renderer = null;
@@ -399,6 +419,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     if (motionReduced()) {
       stopTilt();
       presses.clear();
+      clearSwells();
     } else if (renderer && !needsPermission) startTilt();
     else if (renderer && tiltPermission === 'granted') startTilt();
     look = null;
