@@ -149,10 +149,6 @@
   -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
   backdrop-filter: blur(var(--material-blur-on-art-selected));
 }
-.ds-tile.ds-lens[data-lens='on'][data-selected],
-.ds-tile.ds-lens[data-lens='on'][data-state='chosen'] {
-  text-shadow: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-tile {

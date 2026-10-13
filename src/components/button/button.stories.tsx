@@ -28,7 +28,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**Do:** Start the label with a verb that says what happens ("Add school"). **Don\'t:** Use "Submit" or "Click here".',
           '',
-          '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on. Glass button text uses `button-glass-ink` with a soft text shadow (`glass-lens-halo`) and keeps 4.5:1 on the header red and on every Life Hub marble; the lens canvas is decorative and hidden from screen readers, and focus rings, keyboard behavior and touch targets are unchanged.',
+          '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on. Glass button text uses `button-glass-ink`, with no text shadow, and keeps 4.5:1 on the header red and on every Life Hub marble; the lens canvas is decorative and hidden from screen readers, and focus rings, keyboard behavior and touch targets are unchanged.',
         ].join('\n'),
       },
     },

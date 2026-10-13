@@ -12,7 +12,6 @@
 /* The canvas draws the shadow and the rim. Doubled class to outrank each component's own rules. */
 .ds-lens.ds-lens[data-lens='on'] {
   box-shadow: none;
-  text-shadow: 0 1px 2px var(--glass-lens-halo), 0 0 var(--space-1) var(--glass-lens-halo), 0 0 var(--space-2) var(--glass-lens-halo);
 }
 .ds-lens.ds-lens[data-lens='on']::before {
   display: none;

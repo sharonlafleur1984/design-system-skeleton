@@ -329,7 +329,6 @@
   "glass-lens-bend": 1,
   "glass-lens-edge-depth": "22px",
   "glass-lens-color-split": 0.02,
-  "glass-lens-halo": "rgba(60, 0, 15, 0.6)",
   "glass-lens-press-swell": 1.02,
   "glass-lens-press-duration": "300ms",
   "glass-lens-tilt-reach": "40px",

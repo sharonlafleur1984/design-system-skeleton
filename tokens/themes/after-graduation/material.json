@@ -213,11 +213,6 @@
         "$value": 0.02,
         "$description": "A faint color split where the art bends, like real glass."
       },
-      "halo": {
-        "$type": "color",
-        "$value": "rgba(60, 0, 15, 0.6)",
-        "$description": "A soft shadow under the text on lens glass, so it stays readable over the brightest part of the art."
-      },
       "press-swell": {
         "$type": "number",
         "$value": 1.02,
