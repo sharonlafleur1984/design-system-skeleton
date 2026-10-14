@@ -10,6 +10,7 @@ const stories = Object.values(index.entries).filter((e) => e.type === 'story');
 
 const screens = { phone: 390, tablet: 768, desktop: 1280 } as const;
 const themes = ['after-graduation', 'life-hub'];
+const screenshotTime = new Date('2026-10-13T06:53:00Z');
 
 for (const story of stories) {
   for (const theme of themes) {
@@ -17,6 +18,7 @@ for (const story of stories) {
       const name = `${story.id}--${theme}--${screen}`;
       test(name, async ({ page }) => {
         await page.setViewportSize({ width, height: 800 });
+        await page.clock.setFixedTime(screenshotTime);
         await page.goto(`/iframe.html?id=${story.id}&globals=theme:${theme}&viewMode=story`);
         await page.locator('#storybook-root').waitFor();
         await page.evaluate(() => document.fonts.ready);
