@@ -496,6 +496,11 @@
       "focus": {
         "$type": "color",
         "$value": "{palette.ink.primary}"
+      },
+      "focus-glow": {
+        "$type": "color",
+        "$value": "{palette.ink.inverse}",
+        "$description": "The lightest step on the theme's primary color line. The keyboard focus glow is half white, half this (Sharon, Oct 14)."
       }
     },
     "accent": {

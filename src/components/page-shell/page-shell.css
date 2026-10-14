@@ -147,8 +147,6 @@
 }
 
 .ds-shell__nav {
-  /* Tiles on the header art glow in the header's text color when focused, so the glow never matches the art. */
-  --tile-focus: currentColor;
   margin-block-start: var(--layout-title-gap);
 }
 

@@ -292,9 +292,9 @@
   box-shadow:
     0 0 2px 0 color-mix(in srgb, var(--_glow) 80%, transparent),
     0 0 var(--space-3) 0 color-mix(in srgb, var(--_glow) 30%, transparent);
-  /* A container on art (the page shell header) sets --tile-focus to its text color, since the theme's
-     focus color can match the art. */
-  --_glow: var(--tile-focus, var(--color-border-focus));
+  /* The glow is always half white, half the lightest step on the theme's primary color line
+     (color.border.focus-glow), so it reads as light in every theme (Sharon, Oct 14). */
+  --_glow: color-mix(in srgb, white 50%, var(--color-border-focus-glow));
 }
 .ds-tile[data-focus-visible]::after,
 .ds-tile[data-state='focus']::after {

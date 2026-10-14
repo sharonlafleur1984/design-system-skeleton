@@ -276,6 +276,7 @@
   "color-border-default": "#e7e4e3",
   "color-border-strong": "#a8a3a2",
   "color-border-focus": "#cb1b2c",
+  "color-border-focus-glow": "#fef2f1",
   "color-accent-base": "#cb1b2c",
   "color-accent-hover": "#a50c1f",
   "color-accent-surface": "#fef2f1",

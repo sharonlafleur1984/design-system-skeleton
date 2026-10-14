@@ -378,6 +378,7 @@
   "color-border-default": "rgba(253, 251, 241, 0.16)",
   "color-border-strong": "#8a817c",
   "color-border-focus": "#faf7f1",
+  "color-border-focus-glow": "#faf7f1",
   "color-accent-base": "#e8e2db",
   "color-accent-hover": "#ddd5cc",
   "color-accent-surface": "#3a3432",
