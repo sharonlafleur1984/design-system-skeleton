@@ -290,7 +290,7 @@
   pointer-events: none;
   opacity: 0;
   box-shadow:
-    0 0 3px 0 color-mix(in srgb, var(--_glow) 80%, transparent),
+    0 0 2px 0 color-mix(in srgb, var(--_glow) 80%, transparent),
     0 0 var(--space-3) 0 color-mix(in srgb, var(--_glow) 30%, transparent);
   /* A container on art (the page shell header) sets --tile-focus to its text color, since the theme's
      focus color can match the art. */
