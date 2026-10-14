@@ -125,6 +125,71 @@
   transform: translateY(1px);
 }
 
+/* Glass: only on artwork the design system controls (After Graduation's header, Life Hub's marble).
+   Lit by the shared glass recipe (glass.css) with the settings for glass on artwork, like action tiles.
+   With the lens on (glass-lens.css), the canvas draws the glass and the button's own fill steps aside. */
+.ds-button--glass {
+  --g-rim-color: var(--glass-rim-color);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  --g-highlight: var(--glass-highlight);
+  --g-shade: var(--glass-shade);
+  --g-cast: var(--glass-cast);
+  --g-contact: var(--glass-contact);
+  --g-cast-distance: var(--glass-cast-distance);
+  --g-cast-blur: var(--glass-cast-blur);
+  --g-radius: var(--radius-button);
+  --_bg: var(--color-surface-glass-on-art);
+  --_ink: var(--button-glass-ink);
+  --_shadow: var(--g-shadow);
+  position: relative;
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+}
+.ds-button--glass[data-hovered],
+.ds-button--glass[data-state='hover'] {
+  --light-k: 1;
+  --glass-lift: 1.5;
+}
+.ds-button--glass[data-pressed],
+.ds-button--glass[data-state='pressed'] {
+  scale: 0.985;
+}
+.ds-button--glass[data-pressed]::before,
+.ds-button--glass[data-disabled]::before,
+.ds-button--glass[data-pending]::before {
+  display: block;
+}
+.ds-button--glass[data-focus-visible] {
+  outline-color: var(--button-glass-ink);
+}
+.ds-button--glass[data-lens='on'] {
+  --_bg: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+/* Disabled glass stays glass, half see-through, like a disabled action tile. */
+.ds-button--glass[data-disabled],
+.ds-button--glass[data-pending] {
+  --_bg: var(--color-surface-glass-on-art);
+  --_ink: var(--button-glass-ink);
+  --_shadow: var(--g-shadow);
+  opacity: 0.5;
+}
+.ds-button--glass[data-lens='on'][data-disabled],
+.ds-button--glass[data-lens='on'][data-pending] {
+  --_bg: transparent;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ds-button--glass {
+    transition: scale var(--motion-duration-instant) var(--motion-easing-out);
+  }
+}
+
 /* Destructive: status error colors, never color alone (the label names the action) */
 .ds-button--destructive.ds-button--primary {
   --_bg: var(--color-status-error-accent-strong);

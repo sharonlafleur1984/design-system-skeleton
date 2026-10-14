@@ -14,6 +14,11 @@
     "shadow-secondary": {
       "$value": "0px 1px 2px 0px rgba(29,26,24,0.06), 0px 4px 12px 0px rgba(29,26,24,0.06), inset 0px 0px 0px 0px rgba(0,0,0,0)",
       "$description": "Same as before: rest and glass."
+    },
+    "glass-ink": {
+      "$type": "color",
+      "$value": "{color.ink.on-art}",
+      "$description": "Text on a glass button. After Graduation's glass buttons sit on the header's red, so white."
     }
   }
 }

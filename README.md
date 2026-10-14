@@ -23,7 +23,7 @@ Four automatic checks run on every pull request:
 - **The contract:** every theme defines every shared token name, so any component works in any theme.
 - **Readability:** every text color meets WCAG 2.2 AA contrast (4.5:1) on the surfaces it sits on.
 - **The token lock:** every token value for every theme is saved in `tests/token-lock/`. Any change shows up in the pull request as a before and after, and fails until it's approved with `npm run test:update`.
-- **Visual tests:** every Storybook story is screenshotted at phone, tablet and desktop and compared with the approved screenshots. If something looks different, the check comments on the pull request with a link to the images. To approve a change on purpose, add the `update-screenshots` label to the pull request.
+- **Visual tests:** every Storybook story is screenshotted at phone, tablet and desktop and compared with the approved screenshots. If something looks different, the check says so on the pull request. Add the `update-screenshots` label and the biggest changes appear right there, before and after. Nothing reaches `main` until you merge.
 
 ## Try it
 

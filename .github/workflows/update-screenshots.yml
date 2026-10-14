@@ -1,8 +1,8 @@
 # Approves new screenshots. Add the "update-screenshots" label to a pull request and
 # this takes fresh screenshots of every story, commits them to the pull request's
-# branch, reruns the checks on that commit, and removes the label. Review the new images in the pull request's
-# "Files changed" tab before merging. It also posts a short summary comment on the pull request
-# (scripts/screenshot-summary.mjs): what changed and by how much, so a review starts there.
+# branch, reruns the checks on that commit, and removes the label. It then posts a comment on the
+# pull request (scripts/screenshot-summary.mjs) showing the biggest changes before and after, with a
+# link to each story's preview. Look there before merging.
 name: Update screenshots
 on:
   pull_request:

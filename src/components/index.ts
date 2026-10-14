@@ -28,6 +28,9 @@ export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from '
 export type { ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
 export { useGlassLight } from './glass-light/glass-light';
 export type { GlassLightOptions } from './glass-light/glass-light';
+export { imageArt, shellArt } from './glass-lens/lens-art';
+export type { GlassArt, ImageArtOptions } from './glass-lens/lens-art';
+export type { LensOptions } from './glass-lens/lens';
 export { Select } from './select/select';
 export type { SelectProps, SelectOption } from './select/select';
 export { SettingsDialog, SettingsGroup, SettingRow } from './settings/settings';

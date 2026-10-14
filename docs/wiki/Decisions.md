@@ -19,6 +19,34 @@ Newest first.
 </details>
 
 <details>
+<summary><b>Oct 12, 2026:</b> Action tiles and glass buttons use lens glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** action tiles and glass buttons are lens glass. The lens bends the artwork behind the glass at its curved edge, strongest at the very edge and clear in the middle, with almost no blur. It never bends or blurs the text or icons; they stay crisp on top.
+- **Only on artwork the system controls:** After Graduation's header and Life Hub's marble backgrounds. Everything else keeps the current glass.
+- **The light model stays:** one light position (Oct 7), each glass lit from its own direction, softer with distance, and the reach setting.
+- **Look:** a 5% white body with a 4% theme tint, a 1px rim brightest facing the light, a soft highlight inside that edge, and a shadow 2px away from the light (24px blur, 20%). The edge curves 22px in, with a faint color split. All in `glass.lens` tokens, so each theme can tune them.
+- **Motion:** the glass moves over the art as the page scrolls. A pressed tile or button swells about 2%, text and all, and settles back in 300ms. Classic glass (no lens) keeps the button's small press shrink instead; the difference is fine (Oct 13). On phones, tilting nudges the light a little, then it eases back to rest. On iPhone, motion access is asked for on the first tap on a tile or button, never on load. Reduced motion, from the device or from Settings, turns all of it off.
+- **Fallbacks:** with no WebGL, a lost graphics context, Reduce transparency or Increase contrast, the glass shows the current recipe. Never a blank tile.
+- **Why:** Apple-style liquid glass that stays crisp and reliable. The SVG bend smeared the art in Chrome.
+- **Other options:** blur-only frosted glass; the SVG backdrop bend.
+- **How:** one WebGL canvas behind each group of glass paints the known art and draws every glass in it. New: Button `variant="glass"`, `useGlassLight`'s `lens` option, `shellArt` and `imageArt`, and the `glass.lens` and `button.glass-ink` tokens.
+- **Details:** Components, Action tile and Button in Storybook (lens glass stories, fallback and reduced motion).
+
+</details>
+
+<details>
+<summary><b>Oct 8, 2026:</b> Storybook backgrounds: artwork lives only in Page shell</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Storybook's built-in Backgrounds button offers two backgrounds per theme, made from tokens: **Page** (what a product's pages sit on) and **On artwork** (a plain color glass controls float on: After Graduation's header red, Life Hub's marble). Components made for artwork, like Action tile, open on On artwork. The full illustration (light, rays and wheel) lives only in Page shell, which shows the real tiles in context.
+- **Why:** Action tile's stories painted their own copy of the rays with hard-coded values, so tiles looked different there than in the page shell. One home for the art means nothing to keep in sync, and any future glass component gets the same backgrounds for free.
+- **How:** `storyBackgrounds` and `storyBackgroundsCss` in `story-helpers.tsx`; the side-by-side "Both" view uses the same Page background. No default, so other stories look the same as before.
+- **Source:** [Storybook backgrounds](https://storybook.js.org/docs/essentials/backgrounds)
+
+</details>
+
+<details>
 <summary><b>Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>
 
 - **Decided by:** Sharon

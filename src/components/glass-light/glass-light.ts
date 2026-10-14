@@ -1,9 +1,15 @@
 import { useLayoutEffect, type RefObject } from 'react';
+import { attachLens, type LensOptions } from '../glass-lens/lens';
 
 // Lights glass from one light source in a container, the way light works in real life:
 // each piece of glass gets a rim that is brightest on the side facing the light, and its edges
 // bend whatever is behind it (Chromium only; other browsers keep clear glass).
 // Used by After Graduation's header (the wheel is the light) and shared with Life Hub's cards.
+//
+// Lens glass (Oct 12): when the container passes its art (lens), action tiles and glass buttons on it
+// are drawn by one WebGL canvas instead (glass-lens/lens.ts): the art bends at their curved edges,
+// never their text. The light model here stays the same and drives both. Without WebGL, or with
+// Reduce transparency or Increase contrast, they keep this classic glass.
 
 /** A displacement map that bends what is behind the glass near its edges. */
 function bendMap(w: number, h: number, band: number, r: number) {
@@ -61,6 +67,32 @@ export interface GlassLightOptions {
   radius?: number;
   /** The light's strength right next to it (0 to 1). Defaults to 1. */
   peak?: number;
+  /**
+   * How far the light carries, as a share of the page's size. Highlights and shadows soften with
+   * distance; a shorter reach (night) softens them sooner, so far surfaces all look the same.
+   * Defaults to 0.9.
+   */
+  reach?: number;
+  /**
+   * Lens glass for glass on artwork the design system controls (action tiles and glass buttons):
+   * pass the art behind them (shellArt, imageArt). Leave out for the classic glass.
+   */
+  lens?: LensOptions | false;
+}
+
+type LightOptions = Pick<GlassLightOptions, 'light' | 'source'>;
+
+/** Where the light is, in viewport px: the source element's center, a point in the container, or the shared light tokens. */
+function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
+  const r = el.getBoundingClientRect();
+  const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
+  if (src) return { x: src.left + src.width / 2, y: src.top + src.height / 2 };
+  if (light) return { x: r.left + r.width * light.x, y: r.top + r.height * light.y };
+  // The shared light tokens: a percentage in from the right, and a distance down from the top.
+  const cs = getComputedStyle(el);
+  const fromRight = Number.parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
+  const top = Number.parseFloat(cs.getPropertyValue('--light-top')) || 0;
+  return { x: r.right - (r.width * fromRight) / 100, y: r.top + top };
 }
 
 /**
@@ -68,7 +100,14 @@ export interface GlassLightOptions {
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
  */
-export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1 }: GlassLightOptions) {
+export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1, reach: reachOption = 0.9, lens }: GlassLightOptions) {
+  // Lens glass: one canvas for the whole group, lit from the same light.
+  useLayoutEffect(() => {
+    const el = root.current;
+    if (!el || !lens) return;
+    return attachLens(el, { ...lens, light: () => lightPoint(el, { light, source }) });
+  }, [root, lens, light?.x, light?.y, source]);
+
   useLayoutEffect(() => {
     const el = root.current;
     if (!el) return;
@@ -85,23 +124,8 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
       const band = bandOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-band')) || 16);
       const bend = bendOption ?? (Number.parseFloat(cs.getPropertyValue('--material-refraction-max')) || 4);
       const r = el.getBoundingClientRect();
-      const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
-      let lx: number;
-      let ly: number;
-      if (src) {
-        lx = src.left + src.width / 2;
-        ly = src.top + src.height / 2;
-      } else if (light) {
-        lx = r.left + r.width * light.x;
-        ly = r.top + r.height * light.y;
-      } else {
-        // The shared light tokens: a percentage in from the right, and a distance down from the top.
-        const fromRight = Number.parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
-        const top = Number.parseFloat(cs.getPropertyValue('--light-top')) || 0;
-        lx = r.right - (r.width * fromRight) / 100;
-        ly = r.top + top;
-      }
-      const reach = Math.min(Math.max(r.width, r.height), 1400) * 0.9;
+      const { x: lx, y: ly } = lightPoint(el, { light, source });
+      const reach = Math.min(Math.max(r.width, r.height), 1400) * reachOption;
       svg.replaceChildren();
       el.querySelectorAll<HTMLElement>(selector).forEach((glass, i) => {
         const b = glass.getBoundingClientRect();
@@ -144,5 +168,5 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
       ro.disconnect();
       svg.remove();
     };
-  }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak]);
+  }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak, reachOption]);
 }

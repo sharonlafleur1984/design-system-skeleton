@@ -1,0 +1,23 @@
+/* Lens glass (lens.ts). The canvas sits behind a group of glass on artwork and draws the art bent at
+   each glass's curved edge, with its body, rim, highlight and shadow. While the lens is drawing a glass,
+   that glass has data-lens="on": its own fill, blur, rim and shadow step aside so only the canvas
+   shows, and its text and icons stay crisp HTML on top. Without data-lens, the classic recipe stays. */
+.ds-lens-canvas {
+  position: absolute;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+}
+
+/* The canvas draws the shadow and the rim. Doubled class to outrank each component's own rules. */
+.ds-lens.ds-lens[data-lens='on'] {
+  box-shadow: none;
+}
+.ds-lens.ds-lens[data-lens='on']::before {
+  display: none;
+}
+/* No press shrink: the lens swells a pressed glass instead (an inline scale on the element, which wins
+   over this while it runs), so the element and its drawn glass move as one. */
+.ds-lens.ds-lens[data-lens='on'][data-pressed] {
+  scale: none;
+}

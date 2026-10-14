@@ -15,6 +15,11 @@
     "shadow-secondary": {
       "$value": "inset 0 1px 0 rgba(248,240,232,0.05), 0px 1px 2px 0px rgba(0,0,0,0.4)",
       "$description": "shadow.rest: the top-edge light and a whisper of shadow. Also the selected segment's lens."
+    },
+    "glass-ink": {
+      "$type": "color",
+      "$value": "{color.ink.on-art}",
+      "$description": "Text on a glass button over artwork: cream, since the toolkit is always dark."
     }
   }
 }

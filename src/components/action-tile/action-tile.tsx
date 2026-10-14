@@ -12,6 +12,7 @@ import {
 } from 'react-aria-components';
 import '../material.css';
 import '../glass.css';
+import '../glass-lens/glass-lens.css';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -21,6 +22,10 @@ import './action-tile.css';
 // - With href, a tile goes to a page (Link).
 // - With onPress, a tile does an action (Button).
 // Each tile is one click target: never put a button inside a tile.
+//
+// On artwork the design system controls (the page shell's header), tiles are lens glass (Oct 12): the
+// container's useGlassLight draws them on one WebGL canvas that bends the art at their edges. The
+// tile's text stays HTML on top. Elsewhere, and as the fallback, tiles keep the classic glass.
 //
 // Tiles never stack. Tablet and up: three across. Phones (under 600px): the same tiles become the
 // bottom bar, each an icon and a short name, so it's one set of tabs with one selection on every screen.
@@ -120,20 +125,20 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
   const state = rest['data-state'];
   if (inSwitch) {
     return (
-      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
+      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
         {body}
       </AriaTab>
     );
   }
   if (href) {
     return (
-      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
+      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
         {body}
       </AriaLink>
     );
   }
   return (
-    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass" data-state={state}>
+    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
       {body}
     </AriaButton>
   );
