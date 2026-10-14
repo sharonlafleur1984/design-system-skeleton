@@ -1,0 +1,9 @@
+{
+  "action-tile": {
+    "chosen-frost": {
+      "$type": "color",
+      "$value": "rgba(250, 247, 241, 0.1)",
+      "$description": "At night the marble is dark and the text light, so the frost is lighter, keeping 4.5:1."
+    }
+  }
+}

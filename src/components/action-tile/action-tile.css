@@ -139,8 +139,8 @@
      fill (Glass: its edge catches more light instead).
    - Pressed: it sinks back slightly and the shadow tightens.
    - Chosen (switch tiles): it shows the theme's mark (Spotlight's star, a check elsewhere) and sits
-     flat. Default takes the theme's accent fill; Glass stays clear, with light pooled inside it and its
-     whole edge lit. Mark and fill change together, so color is never the only signal.
+     flat. Default takes the theme's accent fill; Glass turns milky (the theme's frost over a blur).
+     Mark and fill change together, so color is never the only signal.
    - Focus (keyboard): a soft glow around the tile in the theme's focus color, no ring. Densest right at
      the edge, so it still stands out from the page (WCAG 2.4.7).
    - Disabled: faded to half, with no shadow and no hover. */
@@ -171,8 +171,8 @@
   --tile-ink: var(--color-ink-primary);
   --tile-ink-soft: var(--color-ink-secondary);
 }
-/* A chosen Glass tile stays clear glass with the same text color: light pools inside it in the theme's
-   glow. Its edge is still lit by the page's light, like every other piece of glass. */
+/* A chosen Glass tile turns milky: a blur of what's behind it under the theme's frost. Only the glass
+   changes; the text sits on top at its usual color, untouched by the frost or the light. */
 .ds-tile--glass[data-selected],
 .ds-tile--glass[data-state='chosen'] {
   --tile-fill: transparent;
@@ -180,9 +180,12 @@
   --tile-ink-soft: currentColor;
 }
 .ds-tile--glass[data-selected] .ds-tile__glass,
-.ds-tile--glass[data-state='chosen'] .ds-tile__glass {
-  background: radial-gradient(120% 160% at 50% 50%, var(--action-tile-chosen-glow), transparent 80%);
-  box-shadow: inset 0 0 var(--space-5) var(--space-1) var(--action-tile-chosen-glow);
+.ds-tile--glass[data-state='chosen'] .ds-tile__glass,
+.ds-tile--glass[data-lens='on'][data-selected] .ds-tile__glass,
+.ds-tile--glass[data-lens='on'][data-state='chosen'] .ds-tile__glass {
+  background: var(--action-tile-chosen-frost);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  backdrop-filter: blur(var(--material-blur-on-art-selected));
 }
 /* The theme's mark for a chosen tile (Spotlight's star, a check elsewhere), or the tile's own chosenIcon. */
 .ds-tile__star {

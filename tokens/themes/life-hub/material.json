@@ -183,8 +183,8 @@
       },
       "rim-faint": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.18)",
-        "$description": "The rim everywhere else, so the edge never disappears."
+        "$value": "rgba(255, 255, 255, 0.04)",
+        "$description": "The rim away from the light: barely there, so the edge is drawn by the light as it moves, never as a fixed border."
       },
       "highlight": {
         "$type": "color",

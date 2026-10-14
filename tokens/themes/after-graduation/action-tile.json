@@ -5,10 +5,10 @@
       "$type": "string",
       "$description": "The star: After Graduation's mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
     },
-    "chosen-glow": {
-      "$value": "rgba(231, 165, 82, 0.28)",
+    "chosen-frost": {
+      "$value": "rgba(255, 255, 255, 0.22)",
       "$type": "color",
-      "$description": "Warm gold (the subtitle color), pooled inside a chosen Glass tile, so it shows on the header red. The glass stays clear; its text color doesn't change."
+      "$description": "A chosen Glass tile turns milky: this frost over a blur of what's behind it. White frost over the header red: strong enough to read as chosen, while the white text keeps 4.5:1. The text sits on top, untouched."
     }
   }
 }

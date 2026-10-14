@@ -5,10 +5,10 @@
       "$type": "string",
       "$description": "A check mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
     },
-    "chosen-glow": {
-      "$value": "rgba(176, 143, 60, 0.26)",
+    "chosen-frost": {
+      "$value": "rgba(255, 255, 255, 0.62)",
       "$type": "color",
-      "$description": "Warm gold (the secondary accent), pooled inside a chosen Glass tile. The glass stays clear; its text color doesn't change."
+      "$description": "A chosen Glass tile turns milky: this frost over a blur of what's behind it. Milky white frost over the light marble. The dark text stays as it is. The text sits on top, untouched."
     }
   }
 }
