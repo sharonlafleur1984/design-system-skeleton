@@ -67,6 +67,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Focus glow:** a soft line of light right at the tile's edge with a small bloom, instead of a wide halo, and still no ring. Its color (Sharon):
   - On dark or colored backgrounds (dark mode, Fireside, the page shell header): half white, half the lightest step on the theme's primary color line (`color.border.focus-glow-on-dark`).
   - On light backgrounds: the theme's primary color itself (Spotlight's red, Sunrise's charcoal), because a near-white glow disappears on a light page and keyboard users couldn't see focus (`color.border.focus-glow`).
+  - It surrounds the tile evenly and doesn't respond to the light: while focus shows, the tile's edge stops catching the light (its rim, inner highlight and shade, and the lens's edge light step aside), so the glow is the same all the way round (Sharon).
 
 </details>
 

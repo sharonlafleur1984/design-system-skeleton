@@ -301,6 +301,12 @@
 .ds-tile[data-state='focus']::after {
   opacity: 1;
 }
+/* Focus surrounds the tile evenly: while it shows, the edge stops catching the light, so the glow is
+   the same all the way round (Sharon, Oct 14). */
+.ds-tile[data-focus-visible],
+.ds-tile[data-state='focus'] {
+  --glass-edge-light: 0;
+}
 
 .ds-tile[data-disabled] {
   --g-extra-shadow: 0 0 0 0 transparent;

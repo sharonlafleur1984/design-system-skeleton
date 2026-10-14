@@ -300,7 +300,8 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       const k = el.offsetWidth > 0 ? b.width / el.offsetWidth : 1;
       const g = { x: b.left - ox, y: b.top - oy, w: b.width, h: b.height, r: clampRadius(num(cs.borderTopLeftRadius, 0) * k, b.width, b.height) };
       const target: Eased = {
-        k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1))),
+        // The edge light (rim and highlight) is off while something else outlines the glass (focus).
+        k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1) * num(cs.getPropertyValue('--glass-edge-light'), 1))),
         alpha: Math.min(1, Math.max(0, num(cs.opacity, 1))),
         lift: Math.max(0, num(cs.getPropertyValue('--glass-lift'), 1)),
         milk: Math.min(1, Math.max(0, num(cs.getPropertyValue('--glass-milk'), 0))),
