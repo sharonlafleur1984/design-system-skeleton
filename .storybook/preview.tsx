@@ -18,7 +18,7 @@ const preview: Preview = {
         title: 'Skin',
         icon: 'paintbrush',
         items: [
-          { value: 'after-graduation', title: 'After Graduation' },
+          { value: 'after-graduation', title: 'Spotlight' },
           { value: 'life-hub', title: 'Sunrise' },
           { value: 'designer-toolkit', title: 'Fireside' },
           { value: 'both', title: 'All, side by side' },
