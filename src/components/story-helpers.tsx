@@ -10,6 +10,8 @@ export type Theme = (typeof themeList)[number];
 /** The toolbar's Theme picker: one product, or 'both' to compare them all side by side. */
 export type ThemeChoice = Theme | 'both';
 export const ThemeContext = createContext<ThemeChoice>('after-graduation');
+/** The theme of the side-by-side panel a story is drawn in, or null outside one. */
+export const PanelThemeContext = createContext<Theme | null>(null);
 
 /** The theme to use when a story can only show one. 'Both' falls back to After Graduation. */
 export function singleTheme(choice: unknown): Theme {
@@ -37,7 +39,7 @@ const caption: CSSProperties = {
   textTransform: 'uppercase',
 };
 
-// The theme's name above its panel in "All, side by side": that theme's own title style, with a
+// The theme's name above its panel in "All": that theme's own title style, with a
 // line under it, so it reads as a heading and never as one of the gray row labels below it.
 const themeHeading: CSSProperties = {
   margin: 0,
@@ -99,13 +101,17 @@ export const themeNames: Record<Theme, string> = { 'after-graduation': 'Spotligh
  */
 export function BothThemes({ children }: { children: ReactNode }) {
   const choice = useContext(ThemeContext);
+  const inPanel = useContext(PanelThemeContext);
+  // With "All" picked, Storybook already draws every component story once per theme (preview.tsx),
+  // so a story that also asks for BothThemes just shows its content inside that theme's panel.
+  if (inPanel) return <>{children}</>;
   const shown = choice === 'both' ? themeList : [singleTheme(choice)];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
       {shown.map((theme) => (
         <section key={theme} data-theme={theme} style={{ ...panel, background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
           {shown.length > 1 && <p style={themeHeading}>{themeNames[theme]}</p>}
-          {children}
+          <PanelThemeContext.Provider value={theme}>{children}</PanelThemeContext.Provider>
         </section>
       ))}
     </div>

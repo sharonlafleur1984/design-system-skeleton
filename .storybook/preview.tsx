@@ -5,7 +5,7 @@ import '../build/css/designer-toolkit.css';
 import '../src/fonts/life-hub.css';
 import '../src/fonts/after-graduation.css';
 import '../src/base.css';
-import { ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
+import { BothThemes, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
 // Stories show one product at a time; "All" shows them side by side for comparing.
@@ -21,7 +21,7 @@ const preview: Preview = {
           { value: 'after-graduation', title: 'Spotlight' },
           { value: 'life-hub', title: 'Sunrise' },
           { value: 'designer-toolkit', title: 'Fireside' },
-          { value: 'both', title: 'All, side by side' },
+          { value: 'both', title: 'All' },
         ],
         dynamicTitle: true,
       },
@@ -46,10 +46,19 @@ const preview: Preview = {
       document.documentElement.setAttribute('data-theme', singleTheme(choice));
       // Always set, so screenshots don't change with the test machine's own light or dark setting.
       document.documentElement.setAttribute('data-mode', context.globals.mode === 'dark' ? 'dark' : 'light');
+      // With "All" picked, every component story is drawn once per theme, each labeled. Full-screen
+      // stories (a whole page) and the Foundations pages show one theme at a time.
+      const sideBySide = choice === 'both' && context.title.startsWith('Components/') && context.parameters.layout !== 'fullscreen';
       return (
         <ThemeContext.Provider value={choice}>
           <style>{storyBackgroundsCss}</style>
-          <Story />
+          {sideBySide ? (
+            <BothThemes>
+              <Story />
+            </BothThemes>
+          ) : (
+            <Story />
+          )}
         </ThemeContext.Provider>
       );
     },
