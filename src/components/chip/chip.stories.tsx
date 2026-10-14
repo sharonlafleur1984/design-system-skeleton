@@ -14,7 +14,7 @@ const meta: Meta<typeof ChipGroup> = {
         component: [
           'Filters, picks and tags in a group. Built on React Aria\'s TagGroup.',
           '',
-          '**When to use:** to filter a list ("Due this week"), to pick one or more options from a short set, or to show tags someone can remove.',
+          '**When to use:** to filter a list ("Unread"), to pick one or more options from a short set, or to show tags someone can remove.',
           '',
           '**When not to:** for an action, use a button. For more than about eight options, use a select.',
           '',
@@ -33,11 +33,11 @@ type Story = StoryObj<typeof ChipGroup>;
 export const Filters: Story = {
   render: () => (
     <BothThemes>
-      <ChipGroup label="Show" selectionMode="multiple" defaultSelectedKeys={['due']}>
-        <Chip id="due">Due this week</Chip>
-        <Chip id="overdue">Overdue</Chip>
-        <Chip id="done">Done</Chip>
-        <Chip id="mine">Assigned to me</Chip>
+      <ChipGroup label="Label" selectionMode="multiple" defaultSelectedKeys={['1']}>
+        <Chip id="1">Chip 1</Chip>
+        <Chip id="2">Chip 2</Chip>
+        <Chip id="3">Chip 3</Chip>
+        <Chip id="4">Chip 4</Chip>
       </ChipGroup>
     </BothThemes>
   ),
@@ -47,19 +47,19 @@ export const Filters: Story = {
 export const SingleChoice: Story = {
   render: () => (
     <BothThemes>
-      <ChipGroup label="Sort by" selectionMode="single" disallowEmptySelection defaultSelectedKeys={['date']}>
-        <Chip id="date">Date</Chip>
-        <Chip id="name">Name</Chip>
-        <Chip id="cost">Cost</Chip>
+      <ChipGroup label="Label" selectionMode="single" disallowEmptySelection defaultSelectedKeys={['1']}>
+        <Chip id="1">Chip 1</Chip>
+        <Chip id="2">Chip 2</Chip>
+        <Chip id="3">Chip 3</Chip>
       </ChipGroup>
     </BothThemes>
   ),
 };
 
 function RemovableDemo() {
-  const [tags, setTags] = useState(['FAFSA', 'Scholarships', 'Housing']);
+  const [tags, setTags] = useState(['Chip 1', 'Chip 2', 'Chip 3']);
   return (
-    <ChipGroup label="Topics" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
+    <ChipGroup label="Label" onRemove={(keys) => setTags((t) => t.filter((x) => !keys.has(x)))}>
       {tags.map((t) => (
         <Chip key={t} id={t}>
           {t}
@@ -99,10 +99,10 @@ export const OnACard: Story = {
   render: () => (
     <BothThemes>
       <Card>
-        <ChipGroup label="Show" selectionMode="multiple" defaultSelectedKeys={['due']}>
-          <Chip id="due">Due this week</Chip>
-          <Chip id="overdue">Overdue</Chip>
-          <Chip id="done">Done</Chip>
+        <ChipGroup label="Label" selectionMode="multiple" defaultSelectedKeys={['1']}>
+          <Chip id="1">Chip 1</Chip>
+          <Chip id="2">Chip 2</Chip>
+          <Chip id="3">Chip 3</Chip>
         </ChipGroup>
       </Card>
     </BothThemes>

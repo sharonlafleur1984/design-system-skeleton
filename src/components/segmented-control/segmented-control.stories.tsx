@@ -28,14 +28,14 @@ const meta: Meta<typeof SegmentedControl> = {
 export default meta;
 type Story = StoryObj<typeof SegmentedControl>;
 
-/** Show the calendar by week or month. */
+/** Pick one option; the content changes to match. */
 export const Default: Story = {
   render: () => (
     <BothThemes>
-      <SegmentedControl aria-label="Show by" defaultSelectedKeys={['week']}>
-        <Segment id="day">Day</Segment>
-        <Segment id="week">Week</Segment>
-        <Segment id="month">Month</Segment>
+      <SegmentedControl aria-label="Label" defaultSelectedKeys={['1']}>
+        <Segment id="1">Option 1</Segment>
+        <Segment id="2">Option 2</Segment>
+        <Segment id="3">Option 3</Segment>
       </SegmentedControl>
     </BothThemes>
   ),
@@ -61,9 +61,9 @@ export const OnACard: Story = {
   render: () => (
     <BothThemes>
       <Card>
-        <SegmentedControl aria-label="View" defaultSelectedKeys={['list']}>
-          <Segment id="list">List</Segment>
-          <Segment id="calendar">Calendar</Segment>
+        <SegmentedControl aria-label="Label" defaultSelectedKeys={['1']}>
+          <Segment id="1">Option 1</Segment>
+          <Segment id="2">Option 2</Segment>
         </SegmentedControl>
       </Card>
     </BothThemes>

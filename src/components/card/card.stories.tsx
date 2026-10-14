@@ -35,7 +35,7 @@ const Content = ({ title }: { title: string }) => (
   <>
     <strong style={{ fontSize: 'var(--type-heading-subheading-size)' }}>{title}</strong>
     <span style={{ color: 'var(--color-ink-secondary)', fontSize: 'var(--type-body-small-size)' }}>
-      Three things due this week.
+      Card description.
     </span>
   </>
 );
@@ -65,10 +65,10 @@ export const WithControls: Story = {
   render: () => (
     <BothThemes>
       <Card variant="translucent">
-        <Content title="Card with controls" />
+        <Content title="Card title" />
         <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-          <Button size="small">Open</Button>
-          <Button size="small" variant="secondary">Later</Button>
+          <Button size="small">Button</Button>
+          <Button size="small" variant="secondary">Button</Button>
         </div>
       </Card>
     </BothThemes>

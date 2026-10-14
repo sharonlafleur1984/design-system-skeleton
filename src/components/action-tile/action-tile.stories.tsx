@@ -18,7 +18,7 @@ const meta: Meta<typeof ActionTile> = {
         component: [
           'A glass tile you click to make something happen. One look, three behaviors, each on the React Aria piece that keeps it accessible.',
           '',
-          '**Switch:** in an `ActionTileGroup behavior="switch"`, tiles swap content shown elsewhere on the page, like After Graduation\'s episodes. **Link:** give it `href` to go to a page. **Action:** give it `onPress`.',
+          '**Switch:** in an `ActionTileGroup behavior="switch"`, tiles swap content shown elsewhere on the page, like After Graduation\'s tiles. **Link:** give it `href` to go to a page. **Action:** give it `onPress`.',
           '',
           '**When not to:** for views inside a card, use Tabs. For a plain action, use Button.',
           '',
@@ -38,7 +38,7 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**Fallback:** with no WebGL, a lost graphics context, Reduce transparency or Increase contrast, tiles show the classic glass recipe exactly (and solid glass for Reduce transparency and Increase contrast). Never a blank tile.',
           '',
-          '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. Hover only happens with a mouse; on phones the episodes move to a bottom bar.',
+          '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. Hover only happens with a mouse; on phones the tiles move to a bottom bar.',
         ].join('\n'),
       },
     },
@@ -82,10 +82,10 @@ const panelOnPage: CSSProperties = {
   color: 'var(--color-ink-primary)',
 };
 
-const episodes = [
-  { id: 'explore', label: 'Episode 1', title: 'Explore Schools', description: 'Select your favorites' },
-  { id: 'pay', label: 'Episode 2', title: 'Financial Planning', description: 'How will you pay for it?' },
-  { id: 'dates', label: 'Episode 3', title: 'Important Dates', description: "What's next, step by step" },
+const tiles = [
+  { id: 'explore', label: 'Label', title: 'Tile 1', description: 'Description' },
+  { id: 'pay', label: 'Label', title: 'Tile 2', description: 'Description' },
+  { id: 'dates', label: 'Label', title: 'Tile 3', description: 'Description' },
 ];
 
 /** Chosen, rest and disabled tiles on every test background at once: light, dark, mid-tone, a busy pattern and a gradient. */
@@ -95,29 +95,29 @@ export const EveryBackground: Story = {
     <OnEveryBackground>
       <OnHeader>
         <ActionTileGroup aria-label="Tiles">
-          <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
-          <ActionTile label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
-          <ActionTile isDisabled label="Disabled" title="Important Dates" description="What's next, step by step" onPress={() => {}} />
+          <ActionTile data-state="chosen" label="Chosen" title="Title" description="Description" onPress={() => {}} />
+          <ActionTile label="Rest" title="Title" description="Description" onPress={() => {}} />
+          <ActionTile isDisabled label="Disabled" title="Title" description="Description" onPress={() => {}} />
         </ActionTileGroup>
       </OnHeader>
     </OnEveryBackground>
   ),
 };
 
-/** Switch: three episodes, the first chosen. Use the arrow keys to move between them. */
+/** Switch: three tiles, the first chosen. Use the arrow keys to move between them. */
 export const Switch: Story = {
   render: () => (
     <ActionTileSwitch defaultSelectedKey="explore">
       <OnHeader>
-        <ActionTileGroup aria-label="Episodes" behavior="switch">
-          {episodes.map((e) => (
+        <ActionTileGroup aria-label="Navigation" behavior="switch">
+          {tiles.map((e) => (
             <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
           ))}
         </ActionTileGroup>
       </OnHeader>
-      {episodes.map((e) => (
+      {tiles.map((e) => (
         <ActionTilePanel key={e.id} id={e.id} style={panelOnPage}>
-          {e.title} goes here.
+          {e.title} content
         </ActionTilePanel>
       ))}
     </ActionTileSwitch>
@@ -128,10 +128,10 @@ export const Switch: Story = {
 export const LinksAndActions: Story = {
   render: () => (
     <OnHeader>
-      <ActionTileGroup aria-label="Next steps">
-        <ActionTile href="#fafsa" label="Link" title="Start the FAFSA" description="Opens the official site" />
-        <ActionTile onPress={() => {}} label="Action" title="Add a school" description="Puts a new car on the track" />
-        <ActionTile isDisabled label="Disabled" title="Compare aid offers" description="After your first offer arrives" />
+      <ActionTileGroup aria-label="Tiles">
+        <ActionTile href="#" label="Link" title="Title" description="Goes to another page" />
+        <ActionTile onPress={() => {}} label="Action" title="Title" description="Does something on this page" />
+        <ActionTile isDisabled label="Disabled" title="Title" description="Description" />
       </ActionTileGroup>
     </OnHeader>
   ),
@@ -141,7 +141,7 @@ type PlaygroundArgs = { showLabel: boolean; label: string; title: string; showDe
 
 /** Try it: turn the label and description on or off, and change the words. */
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { showLabel: true, label: 'Episode 1', title: 'Explore Schools', showDescription: true, description: 'Select your favorites' },
+  args: { showLabel: true, label: 'Label', title: 'Tile 1', showDescription: true, description: 'Description' },
   argTypes: {
     showLabel: { name: 'Label', control: 'boolean' },
     label: { name: 'Label text', if: { arg: 'showLabel' } },
@@ -176,11 +176,11 @@ export const States: Story = {
   render: () => (
     <OnHeader>
       <ActionTileGroup aria-label="States">
-        <ActionTile label="Rest" title="Explore Schools" description="Select your favorites" />
-        <ActionTile data-state="hover" label="Hover" title="Explore Schools" description="Select your favorites" />
-        <ActionTile data-state="focus" label="Keyboard focus" title="Explore Schools" description="Select your favorites" />
-        <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" />
-        <ActionTile isDisabled label="Disabled" title="Explore Schools" description="Select your favorites" />
+        <ActionTile label="Rest" title="Title" description="Description" />
+        <ActionTile data-state="hover" label="Hover" title="Title" description="Description" />
+        <ActionTile data-state="focus" label="Keyboard focus" title="Title" description="Description" />
+        <ActionTile data-state="chosen" label="Chosen" title="Title" description="Description" />
+        <ActionTile isDisabled label="Disabled" title="Title" description="Description" />
       </ActionTileGroup>
     </OnHeader>
   ),
@@ -191,20 +191,20 @@ function ShellWithTiles({ glassLens = true }: { glassLens?: boolean }) {
   return (
     <ActionTileSwitch defaultSelectedKey="explore">
       <PageShell
-        title="After Graduation"
-        subtitle="Alex, get ready for Season 2"
+        title="Page title"
+        subtitle="Subtitle"
         glassLens={glassLens}
         navigation={
-          <ActionTileGroup aria-label="Episodes" behavior="switch">
-            {episodes.map((e) => (
+          <ActionTileGroup aria-label="Navigation" behavior="switch">
+            {tiles.map((e) => (
               <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
             ))}
           </ActionTileGroup>
         }
       >
-        {episodes.map((e) => (
+        {tiles.map((e) => (
           <ActionTilePanel key={e.id} id={e.id}>
-            <p style={{ margin: 0 }}>{e.title} goes here.</p>
+            <p style={{ margin: 0 }}>{e.title} content</p>
           </ActionTilePanel>
         ))}
       </PageShell>

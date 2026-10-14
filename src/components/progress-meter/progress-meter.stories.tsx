@@ -6,7 +6,7 @@ const meta: Meta<typeof ProgressMeter> = {
   title: 'Components/ProgressMeter',
   component: ProgressMeter,
   tags: ['autodocs'],
-  args: { value: 3, max: 5, label: 'Senior year checklist', showLabel: true },
+  args: { value: 3, max: 5, label: 'Label', showLabel: true },
   parameters: {
     docs: {
       description: {
@@ -33,9 +33,9 @@ export const Playground: Story = {};
 export const Values: Story = {
   render: () => (
     <BothThemes>
-      <ProgressMeter value={0} max={5} label="Not started" showLabel />
-      <ProgressMeter value={3} max={5} label="Senior year checklist" showLabel />
-      <ProgressMeter value={100} label="Applications sent" showLabel />
+      <ProgressMeter value={0} max={5} label="Empty" showLabel />
+      <ProgressMeter value={3} max={5} label="Partway" showLabel />
+      <ProgressMeter value={100} label="Complete" showLabel />
       <ProgressMeter value={60} label="Bar only (label read by screen readers)" />
     </BothThemes>
   ),

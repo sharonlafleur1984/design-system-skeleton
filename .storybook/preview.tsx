@@ -15,14 +15,14 @@ import { ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type 
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Product theme',
+      description: 'Skin: each product has its own',
       toolbar: {
-        title: 'Theme',
+        title: 'Skin',
         icon: 'paintbrush',
         items: [
           { value: 'after-graduation', title: 'After Graduation' },
-          { value: 'life-hub', title: 'Life Hub' },
-          { value: 'designer-toolkit', title: 'Designer toolkit (Fireside)' },
+          { value: 'life-hub', title: 'Sunrise' },
+          { value: 'designer-toolkit', title: 'Fireside' },
           { value: 'both', title: 'All, side by side' },
         ],
         dynamicTitle: true,
@@ -59,6 +59,19 @@ const preview: Preview = {
   parameters: {
     a11y: { test: 'error' },
     layout: 'padded',
+    options: {
+      // Welcome comes first, so Storybook opens on it and every component starts collapsed.
+      // Inside a component, its stories come first and its Docs page last.
+      // Storybook copies this function as plain JavaScript, so it can't use anything from outside
+      // it or carry TypeScript types.
+      storySort: (a, b) => {
+        const wa = a.title === 'Welcome' ? 0 : 1;
+        const wb = b.title === 'Welcome' ? 0 : 1;
+        if (wa !== wb) return wa - wb;
+        if (a.title !== b.title) return 0;
+        return (a.type === 'docs' ? 1 : 0) - (b.type === 'docs' ? 1 : 0);
+      },
+    },
     // The paint bucket in the toolbar: Page or On artwork, in the theme picked (story-helpers).
     // No default, so stories keep their plain canvas unless they ask for one, like Action tile.
     backgrounds: { options: storyBackgrounds },
