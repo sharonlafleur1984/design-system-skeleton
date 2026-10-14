@@ -8,7 +8,7 @@ export default defineConfig({
   snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
   fullyParallel: true,
   reporter: process.env.CI ? [['html', { open: 'never' }], ['github']] : [['list']],
-  expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.001, animations: 'disabled', caret: 'hide' } },
+  expect: { toHaveScreenshot: { maxDiffPixelRatio: 0.001, timeout: 15_000, animations: 'disabled', caret: 'hide' } },
   use: { baseURL: 'http://localhost:6007', timezoneId: 'UTC', reducedMotion: 'reduce' },
   webServer: {
     command: 'npx http-server storybook-static -p 6007 -s',

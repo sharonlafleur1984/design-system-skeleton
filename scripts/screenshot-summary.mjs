@@ -5,12 +5,14 @@
 //
 // Prints the summary as Markdown. With GITHUB_TOKEN, GITHUB_REPOSITORY and PR_NUMBER set, it
 // also posts it on the pull request, replacing its own earlier comment.
+import { readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { PNG } from 'pngjs';
 import pixelmatch from 'pixelmatch';
 
 const DIR = 'tests/visual/__screenshots__';
 const LOOK = 5; // percent of pixels changed that earns a "look at this"
+const SHOW = 8; // most stories shown as pictures; the rest are listed
 const MARKER = '<!-- screenshot-summary -->';
 const [base, head = 'HEAD'] = process.argv.slice(2);
 if (!base) throw new Error('Usage: node scripts/screenshot-summary.mjs <base-ref> [head-ref]');
@@ -20,9 +22,18 @@ const mergeBase = git(['merge-base', base, head]).toString().trim();
 const headSha = git(['rev-parse', head]).toString().trim();
 const png = (ref, path) => PNG.sync.read(git(['show', `${ref}:${path}`]));
 
-// One story has a screenshot per product and screen size: group them by story.
-const story = (path) => path.split('/').pop().replace(/--(life-hub|after-graduation)--(phone|tablet|desktop)(-linux)?\.png$/, '');
-const variant = (path) => (path.match(/--((?:life-hub|after-graduation)--(?:phone|tablet|desktop))/) || [])[1] || '';
+// One story has a screenshot per theme and screen size: group them by story. Theme names come
+// from the theme folders, so a new theme needs no change here.
+const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const themes = readdirSync('tokens/themes', { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort((a, b) => b.length - a.length)
+  .map(escapeRegex);
+if (!themes.length) throw new Error('No themes found in tokens/themes');
+const themePattern = themes.join('|');
+const story = (path) => path.split('/').pop().replace(new RegExp(`--(${themePattern})--(phone|tablet|desktop)(-linux)?\\.png$`), '');
+const variant = (path) => (path.match(new RegExp(`--((?:${themePattern})--(?:phone|tablet|desktop))`)) || [])[1] || '';
 
 const rows = git(['diff', '--name-status', '--find-renames', `${mergeBase}...${headSha}`, '--', DIR])
   .toString().trim().split('\n').filter(Boolean).map((l) => l.split('\t'));
@@ -53,7 +64,11 @@ for (const [status, a, b] of rows) {
 for (const s of changed.keys()) added.delete(s);
 
 const repo = process.env.GITHUB_REPOSITORY;
-const link = (ref, path, text) => (repo ? `[${text}](https://github.com/${repo}/blob/${ref}/${path}?raw=1)` : text);
+const pr = process.env.PR_NUMBER;
+const raw = (ref, path) => `https://github.com/${repo}/blob/${ref}/${path}?raw=1`;
+const img = (ref, path, alt) => (repo ? `<img src="${raw(ref, path)}" alt="${alt}" width="320">` : alt);
+// Netlify builds a Storybook preview for every pull request.
+const preview = (name) => (pr ? `[${name}](https://deploy-preview-${pr}--designsystemskeleton.netlify.app/?path=/story/${name})` : name);
 const sorted = [...changed.entries()].sort((x, y) => y[1].pct - x[1].pct);
 const look = sorted.filter(([, s]) => s.resized || s.pct >= LOOK);
 const total = rows.length;
@@ -63,20 +78,23 @@ if (!total) md += 'No screenshots changed.\n';
 else {
   md += `${total} screenshots: ${changed.size} stories changed, ${added.size} new, ${removed.size} removed.\n\n`;
   if (look.length) {
-    md += `**Look at these first** (${LOOK}% or more changed, or a new size):\n\n| Story | Changed | Worst view | Before | After |\n|---|---|---|---|---|\n`;
-    for (const [name, s] of look)
-      md += `| ${name} | ${s.resized ? 'new size' : `${s.pct.toFixed(1)}%`} | ${variant(s.worst)} | ${link(mergeBase, s.worstFrom, 'before')} | ${link(headSha, s.worst, 'after')} |\n`;
-    md += '\n';
+    md += `**Look at these first** (${LOOK}% or more changed, or a new size). Each shows the view that changed most:\n\n`;
+    for (const [name, s] of look.slice(0, SHOW)) {
+      md += `#### ${preview(name)}\n${s.resized ? 'New size' : `${s.pct.toFixed(1)}% changed`}, ${variant(s.worst)}\n\n`;
+      md += `| Before | After |\n|---|---|\n| ${img(mergeBase, s.worstFrom, 'before')} | ${img(headSha, s.worst, 'after')} |\n\n`;
+    }
+    const rest = look.slice(SHOW);
+    if (rest.length) md += `**Also changed a lot:** ${rest.map(([n, s]) => `${preview(n)} ${s.resized ? 'new size' : `${s.pct.toFixed(1)}%`}`).join(', ')}\n\n`;
   }
   const small = sorted.filter(([, s]) => !s.resized && s.pct < LOOK);
   if (small.length) md += `**Small changes** (under ${LOOK}%): ${small.map(([n, s]) => `${n} ${s.pct.toFixed(1)}%`).join(', ')}\n\n`;
-  if (added.size) md += `**New:** ${[...added].sort().join(', ')}\n\n`;
+  if (added.size) md += `**New:** ${[...added].sort().map(preview).join(', ')}\n\n`;
   if (removed.size) md += `**Removed:** ${[...removed].sort().join(', ')}\n\n`;
   md += 'For each one, ask: did I mean this?\n';
 }
 console.log(md);
 
-const { GITHUB_TOKEN: token, PR_NUMBER: pr } = process.env;
+const { GITHUB_TOKEN: token } = process.env;
 if (token && repo && pr) {
   const api = (path, init = {}) =>
     fetch(`https://api.github.com/repos/${repo}${path}`, {
