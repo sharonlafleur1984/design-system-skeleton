@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag, TagGroup } from './tag';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 import { Card } from '../card/card';
 
 const meta: Meta<typeof TagGroup> = {
@@ -82,14 +82,16 @@ export const Removable: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <TagGroup aria-label="Tag states" selectionMode="multiple" defaultSelectedKeys={['selected', 'selected-hover']} disabledKeys={['disabled']}>
-        <Tag id="rest">Rest</Tag>
-        <Tag id="hover" data-state="hover">Hover</Tag>
-        <Tag id="focus" data-state="focus">Focus</Tag>
-        <Tag id="selected">Selected</Tag>
-        <Tag id="selected-hover" data-state="hover">Selected hover</Tag>
-        <Tag id="disabled">Disabled</Tag>
-      </TagGroup>
+      <StatePictures>
+        <TagGroup aria-label="Tag states" selectionMode="multiple" defaultSelectedKeys={['selected', 'selected-hover']} disabledKeys={['disabled']}>
+          <Tag id="rest">Rest</Tag>
+          <Tag id="hover" data-state="hover">Hover</Tag>
+          <Tag id="focus" data-state="focus">Focus</Tag>
+          <Tag id="selected">Selected</Tag>
+          <Tag id="selected-hover" data-state="hover">Selected hover</Tag>
+          <Tag id="disabled">Disabled</Tag>
+        </TagGroup>
+      </StatePictures>
     </BothThemes>
   ),
 };

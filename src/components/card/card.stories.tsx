@@ -4,7 +4,7 @@ import { Card } from './card';
 import { useGlassLight } from '../glass-light/glass-light';
 import { storyPageArt } from '../glass-lens/story-art';
 import { Button } from '../button/button';
-import { BothThemes, PanelThemeContext, ThemeContext, singleTheme } from '../story-helpers';
+import { BothThemes, PanelThemeContext, ThemeContext, singleTheme, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
@@ -60,8 +60,10 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <Card variant="opaque" interactive><Content title="Rest" /></Card>
-      <Card variant="opaque" interactive data-state="hover"><Content title="Hover" /></Card>
+      <StatePictures>
+        <Card variant="opaque" interactive><Content title="Rest" /></Card>
+        <Card variant="opaque" interactive data-state="hover"><Content title="Hover" /></Card>
+      </StatePictures>
     </BothThemes>
   ),
 };

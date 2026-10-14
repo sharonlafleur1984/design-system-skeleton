@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
-import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme } from '../story-helpers';
+import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme, StatePictures } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
 import type { Material } from '../material';
@@ -79,15 +79,17 @@ export const Sizes: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      {(['primary', 'secondary', 'tertiary'] as const).map((variant) => (
-        <Row key={variant} label={variant}>
-          <Button variant={variant}>Rest</Button>
-          <Button variant={variant} data-state="hover">Hover</Button>
-          <Button variant={variant} data-state="pressed">Pressed</Button>
-          <Button variant={variant} isDisabled>Disabled</Button>
-          <Button variant={variant} isPending>Loading</Button>
-        </Row>
-      ))}
+      <StatePictures>
+        {(['primary', 'secondary', 'tertiary'] as const).map((variant) => (
+          <Row key={variant} label={variant}>
+            <Button variant={variant}>Rest</Button>
+            <Button variant={variant} data-state="hover">Hover</Button>
+            <Button variant={variant} data-state="pressed">Pressed</Button>
+            <Button variant={variant} isDisabled>Disabled</Button>
+            <Button variant={variant} isPending>Loading</Button>
+          </Row>
+        ))}
+      </StatePictures>
     </BothThemes>
   ),
 };

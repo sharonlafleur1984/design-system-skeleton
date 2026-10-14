@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
 import { LIGHT_CHANGE } from '../glass-lens/lens';
-import { BothThemes, Row, WithReducedMotion } from '../story-helpers';
+import { BothThemes, Row, WithReducedMotion, StatePictures } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch, type ActionTileFill } from './action-tile';
 import { afterGraduationOnly } from '../product-only';
@@ -81,17 +81,19 @@ export const Fills: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      {(['default', 'glass'] as Material[]).map((m) => (
-        <Row key={m} label={m === 'glass' ? 'Glass' : 'Default'}>
-          <ActionTileGroup aria-label={`States, ${m}`}>
-            <ActionTile material={m} label="Rest" title="Title" description="Description" />
-            <ActionTile material={m} data-state="hover" label="Hover" title="Title" description="Description" />
-            <ActionTile material={m} data-state="focus" label="Focus" title="Title" description="Description" />
-            <ActionTile material={m} data-state="chosen" label="Chosen" title="Title" description="Description" />
-            <ActionTile material={m} isDisabled label="Disabled" title="Title" description="Description" />
-          </ActionTileGroup>
-        </Row>
-      ))}
+      <StatePictures>
+        {(['default', 'glass'] as Material[]).map((m) => (
+          <Row key={m} label={m === 'glass' ? 'Glass' : 'Default'}>
+            <ActionTileGroup aria-label={`States, ${m}`}>
+              <ActionTile material={m} label="Rest" title="Title" description="Description" />
+              <ActionTile material={m} data-state="hover" label="Hover" title="Title" description="Description" />
+              <ActionTile material={m} data-state="focus" label="Focus" title="Title" description="Description" />
+              <ActionTile material={m} data-state="chosen" label="Chosen" title="Title" description="Description" />
+              <ActionTile material={m} isDisabled label="Disabled" title="Title" description="Description" />
+            </ActionTileGroup>
+          </Row>
+        ))}
+      </StatePictures>
     </BothThemes>
   ),
 };

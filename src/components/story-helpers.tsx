@@ -124,6 +124,29 @@ export function BothThemes({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Storybook only: a States story's examples as still pictures. Each example is pinned to one state
+ * (data-state="hover" and so on), so they ignore the mouse and keyboard: hovering the "Hover" example
+ * never stacks a real hover on top. The Playground story is where the states can be tried for real.
+ */
+export function StatePictures({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <p style={note}>Still pictures of each state. To try them, use Playground.</p>
+      <div inert style={{ display: 'contents' }}>
+        {children}
+      </div>
+    </>
+  );
+}
+
+const note: CSSProperties = {
+  margin: 0,
+  color: 'var(--color-ink-secondary)',
+  fontSize: 'var(--type-body-small-size)',
+  lineHeight: 'var(--type-body-small-line-height)',
+};
+
 /** A labeled row, for galleries of variants and states. */
 export function Row({ label, children }: { label: string; children: ReactNode }) {
   return (

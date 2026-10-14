@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D44 | Oct 14, 2026 | States stories are still pictures; Playground is where states are tried |
 | D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
 | D42 | Oct 14, 2026 | Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles |
 | D41 | Oct 14, 2026 | Glass goes back to the shader demo, with its settings in every theme |
@@ -55,6 +56,15 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D44 · Oct 14, 2026:</b> States stories are still pictures; Playground is where states are tried</summary>
+
+- **Decided by:** Sharon ("It feels like I shouldn't get a hover if I have a hover")
+- **What:** each component's States story shows every state as a still picture. The examples ignore the mouse and keyboard, so hovering the "Hover" example no longer stacks a real hover on top of the pinned one. A line above them says so and points to Playground, where the states can be tried for real.
+- **Where:** `StatePictures` in `src/components/story-helpers.tsx`, used by the States stories of Action tile, Button, Card, Checkbox, Link, Tabs, Tag and Toggle button group.
+
+</details>
 
 <details>
 <summary><b>D42 · Oct 14, 2026:</b> Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles</summary>
