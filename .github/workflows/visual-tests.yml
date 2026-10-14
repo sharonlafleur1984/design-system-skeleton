@@ -4,10 +4,10 @@
 # a link to the "visual-report" file: before, after and the difference.
 # Meant the change? Add the "update-screenshots" label to the pull request to approve it.
 name: Visual tests
+# Runs on pull requests only: main changes only through them, so a second run after a merge
+# would check nothing new.
 on:
   pull_request:
-  push:
-    branches: [main]
   # Lets the update-screenshots job rerun this check on its own commit.
   workflow_dispatch:
 permissions:
@@ -20,13 +20,39 @@ jobs:
     container: mcr.microsoft.com/playwright:v1.56.1-noble
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+        with:
+          fetch-depth: 0
+      # Main requires this check, so it always runs, but it only takes screenshots when a change
+      # could alter a screen. Docs, the wiki, unit tests and workflows (other than this one and the
+      # screenshot approval) can't, so those pull requests pass in seconds.
+      - id: changes
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "${{ github.event_name }}" != "pull_request" ]; then echo "screens=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          screens=false
+          for f in $(git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"); do
+            case "$f" in
+              docs/*|README.md|CLAUDE.md|skills-lock.json) ;;
+              .github/pull_request_template.md|.github/workflows/ci.yml|.github/workflows/publish-wiki.yml) ;;
+              scripts/screenshot-summary.mjs) ;;
+              tests/visual/*) screens=true ;;
+              tests/*) ;;
+              *) screens=true ;;
+            esac
+          done
+          echo "screens=$screens" >> "$GITHUB_OUTPUT"
+          [ "$screens" = true ] || echo "No screen can change in this pull request, so no screenshots are needed."
+      - if: steps.changes.outputs.screens == 'true'
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build-storybook
-      - run: npx playwright test
+      - if: steps.changes.outputs.screens == 'true'
+        run: npm ci
+      - if: steps.changes.outputs.screens == 'true'
+        run: npm run build-storybook
+      - if: steps.changes.outputs.screens == 'true'
+        run: npx playwright test
         env:
           HOME: /root
       - if: failure()
