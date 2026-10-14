@@ -33,6 +33,9 @@ export interface LensDeps {
   createRenderer?: (canvas: HTMLCanvasElement) => LensRenderer | null;
 }
 
+/** Fired on window when the page's light moves on its own (not by scrolling or resizing), so glass relights. */
+export const LIGHT_CHANGE = 'ds-lightchange';
+
 const html = () => document.documentElement;
 const media = (q: string) => (typeof window !== 'undefined' && typeof window.matchMedia === 'function' ? window.matchMedia(q) : null);
 
@@ -454,6 +457,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
   const onScroll = () => invalidate();
   window.addEventListener('scroll', onScroll, { passive: true, capture: true });
   window.addEventListener('resize', onScroll);
+  window.addEventListener(LIGHT_CHANGE, onScroll);
   const onTransitionStart = () => {
     transitions++;
     transitionUntil = performance.now() + 1000;
@@ -485,6 +489,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     io?.disconnect();
     window.removeEventListener('scroll', onScroll, { capture: true });
     window.removeEventListener('resize', onScroll);
+    window.removeEventListener(LIGHT_CHANGE, onScroll);
     root.removeEventListener('transitionrun', onTransitionStart);
     root.removeEventListener('transitionend', onTransitionEnd);
     root.removeEventListener('transitioncancel', onTransitionEnd);

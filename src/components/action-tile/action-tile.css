@@ -41,7 +41,7 @@
   --g-contact: var(--card-glass-contact);
   --g-cast-distance: var(--card-glass-cast-distance);
   --g-cast-blur: var(--card-glass-cast-blur);
-  --g-extra-shadow: var(--shadow-rest), var(--_chosen-ring, 0 0 0 0 transparent);
+  --g-extra-shadow: var(--shadow-rest);
   position: relative;
   isolation: isolate;
   display: grid;
@@ -129,24 +129,57 @@
   letter-spacing: var(--type-body-small-letter-spacing);
 }
 
-/* Hover: the tile rises a little toward you, its shadow deepens and the edge catches the full light.
-   With reduced motion, the shadow and edge still show the hover. A chosen tile settles back down. */
-.ds-tile[data-hovered]:not([data-selected]),
+/* States (Oct 14). Soft light throughout: no state draws a hard line.
+   - Hover: the tile rises a little, its shadow deepens and a faint tint of its text color lies over the
+     fill (Glass: its edge catches more light instead).
+   - Pressed: it sinks back slightly and the shadow tightens.
+   - Chosen (switch tiles): it fills in and shows the star, and sits flat. Default takes the theme's
+     accent fill; Glass turns frosted, from the theme's glass tokens. Fill and star change together, so
+     color is never the only signal.
+   - Focus (keyboard): a soft glow around the tile in the theme's focus color, no ring. Densest right at
+     the edge, so it still stands out from the page (WCAG 2.4.7).
+   - Disabled: faded to half, with no shadow and no hover. */
+.ds-tile[data-hovered]:not([data-selected]):not([data-disabled]),
 .ds-tile[data-state='hover'] {
   --light-k: 1;
   --glass-lift: 1.5;
   --g-extra-shadow: var(--shadow-hover);
+  background: color-mix(in srgb, var(--tile-ink) 6%, var(--tile-fill));
   translate: 0 calc(-1 * var(--motion-lift-large));
 }
+.ds-tile--glass[data-hovered]:not([data-selected]),
+.ds-tile--glass[data-state='hover'] {
+  background: transparent;
+}
+.ds-tile[data-selected][data-hovered] {
+  --g-extra-shadow: var(--shadow-hover);
+}
 .ds-tile[data-pressed] {
+  --g-extra-shadow: var(--shadow-rest);
   scale: 0.985;
+  translate: none;
 }
 
-/* Chosen (switch tiles): an accent ring inside the edge and the star. The ring and the star change
-   together, so color is never the only signal. */
 .ds-tile[data-selected],
 .ds-tile[data-state='chosen'] {
-  --_chosen-ring: inset 0 0 0 2px var(--color-accent-base);
+  --tile-fill: var(--color-accent-surface);
+  --tile-ink: var(--color-ink-primary);
+  --tile-ink-soft: var(--color-ink-secondary);
+}
+.ds-tile--glass[data-selected],
+.ds-tile--glass[data-state='chosen'] {
+  --tile-fill: transparent;
+  --tile-ink: var(--color-ink-on-art-selected);
+  --tile-ink-soft: var(--color-ink-on-art-selected);
+  color: var(--color-ink-on-art-selected);
+}
+/* The frost behind a chosen Glass tile. With the lens drawing, the frost stays (and blurs the canvas),
+   so the dark text keeps its contrast on any art. */
+.ds-tile--glass[data-selected] .ds-tile__glass,
+.ds-tile--glass[data-state='chosen'] .ds-tile__glass {
+  background: var(--color-surface-glass-on-art-selected);
+  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art-selected));
 }
 .ds-tile__star {
   position: absolute;
@@ -157,8 +190,7 @@
   line-height: 1;
   visibility: hidden;
 }
-.ds-tile--glass .ds-tile__star,
-.ds-tile--fill-inverse .ds-tile__star {
+.ds-tile--glass .ds-tile__star {
   color: inherit;
 }
 .ds-tile[data-selected] .ds-tile__star,
@@ -166,16 +198,28 @@
   visibility: visible;
 }
 
-.ds-tile[data-focus-visible],
-.ds-tile[data-state='focus'] {
-  outline: var(--focus-ring-width) solid var(--color-border-focus);
-  outline-offset: var(--focus-ring-offset);
+/* Focus: a glow, drawn on its own layer so the lens (which takes over the tile's shadow) never hides it. */
+.ds-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow:
+    0 0 var(--space-2) var(--space-1) color-mix(in srgb, var(--_glow) 70%, transparent),
+    0 0 var(--space-5) var(--space-2) color-mix(in srgb, var(--_glow) 30%, transparent);
+  /* A container on art (the page shell header) sets --tile-focus to its text color, since the theme's
+     focus color can match the art. */
+  --_glow: var(--tile-focus, var(--color-border-focus));
 }
-.ds-tile--glass[data-focus-visible],
-.ds-tile--glass[data-state='focus'] {
-  outline-color: currentColor;
+.ds-tile[data-focus-visible]::after,
+.ds-tile[data-state='focus']::after {
+  opacity: 1;
 }
+
 .ds-tile[data-disabled] {
+  --g-extra-shadow: 0 0 0 0 transparent;
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -185,7 +229,11 @@
     transition:
       translate var(--motion-duration-fast) var(--motion-easing-out),
       box-shadow var(--motion-duration-fast) var(--motion-easing-out),
+      background-color var(--motion-duration-fast) var(--motion-easing-out),
       scale var(--motion-duration-instant) var(--motion-easing-out);
+  }
+  .ds-tile::after {
+    transition: opacity var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 
@@ -225,6 +273,7 @@
     scale: none;
   }
   .ds-tiles--switch .ds-tiles__list .ds-tile::before,
+  .ds-tiles--switch .ds-tiles__list .ds-tile::after,
   .ds-tiles--switch .ds-tiles__list .ds-tile__glass,
   .ds-tiles--switch .ds-tiles__list .ds-tile__label,
   .ds-tiles--switch .ds-tiles__list .ds-tile__title,

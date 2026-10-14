@@ -29,7 +29,7 @@ export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileS
 export type { Material } from './material';
 export { useGlassLight } from './glass-light/glass-light';
 export type { GlassLightOptions } from './glass-light/glass-light';
-export { imageArt, shellArt } from './glass-lens/lens-art';
+export { clearArt, imageArt, shellArt } from './glass-lens/lens-art';
 export type { GlassArt, ImageArtOptions } from './glass-lens/lens-art';
 export type { LensOptions } from './glass-lens/lens';
 export { Select } from './select/select';

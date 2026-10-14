@@ -1,5 +1,5 @@
 import { useLayoutEffect, type RefObject } from 'react';
-import { attachLens, type LensOptions } from '../glass-lens/lens';
+import { LIGHT_CHANGE, attachLens, type LensOptions } from '../glass-lens/lens';
 
 // Lights glass from one light source in a container, the way light works in real life:
 // each piece of glass gets a rim that is brightest on the side facing the light, and its edges
@@ -164,10 +164,13 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
       });
     };
     update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
+    // Every browser has ResizeObserver; test environments like jsdom may not.
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(update) : null;
+    ro?.observe(el);
+    window.addEventListener(LIGHT_CHANGE, update);
     return () => {
-      ro.disconnect();
+      ro?.disconnect();
+      window.removeEventListener(LIGHT_CHANGE, update);
       svg.remove();
     };
   }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak, reachOption]);

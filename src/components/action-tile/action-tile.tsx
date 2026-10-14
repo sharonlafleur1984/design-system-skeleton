@@ -1,4 +1,6 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useRef, type ReactNode } from 'react';
+import { useGlassLight } from '../glass-light/glass-light';
+import { clearArt } from '../glass-lens/lens-art';
 import {
   Button as AriaButton,
   Link as AriaLink,
@@ -63,8 +65,16 @@ export interface ActionTileGroupProps {
 }
 /** Three across on tablet and up. On phones, switch tiles become the bottom bar and action tiles stack. */
 export function ActionTileGroup({ behavior = 'actions', children, ...rest }: ActionTileGroupProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  // The page shell lights its own tiles (with its art). Anywhere else, the group lights its Glass tiles
+  // itself, on whatever plain color is behind it.
+  // Anywhere else the glass is fully clear (nothing to bend), and the lens draws only its light: the edge,
+  // highlight and shadow, which follow the page's light (the light tokens).
+  const inLitContainer = useContext(MaterialContext) !== null;
+  const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
+  useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens });
   return (
-    <div className={`ds-tiles ds-tiles--${behavior}`}>
+    <div ref={ref} className={`ds-tiles ds-tiles--${behavior}`}>
       {behavior === 'switch' ? (
         <SwitchContext.Provider value>
           <AriaTabList aria-label={rest['aria-label']} className="ds-tiles__list">

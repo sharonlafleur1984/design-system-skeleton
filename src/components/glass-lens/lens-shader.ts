@@ -79,7 +79,7 @@ float sdBox(vec2 p, vec2 b, float r) {
   vec2 q = abs(p) - b + r;
   return min(max(q.x, q.y), 0.) + length(max(q, 0.)) - r;
 }
-vec3 artAt(vec2 p) { return texture2D(art, clamp(p / res, 0., 1.)).rgb; }
+vec4 artAt(vec2 p) { return texture2D(art, clamp(p / res, 0., 1.)); }
 
 void main() {
   vec2 p = vec2(gl_FragCoord.x, res.y - gl_FragCoord.y);
@@ -96,6 +96,15 @@ void main() {
     float ds = sdBox(p - c - away, h, pr.x);
     sh = max(sh, (1. - smoothstep(0., max(shadowBlur * pr.w, 1.), ds)) * shadowColor.a * pr.z);
   }
+  // Shadows fall only outside the glass, so clear glass never shows its own shadow through it.
+  // (On art that fills the frame the glass covers them anyway.)
+  float inside = 0.;
+  for (int i = 0; i < MAX; i++) {
+    if (i >= count) break;
+    vec2 h = rects[i].zw * .5;
+    inside = max(inside, 1. - smoothstep(-dpr, 0., sdBox(p - rects[i].xy - h, h, props[i].x)));
+  }
+  sh *= 1. - inside;
   vec4 outc = vec4(shadowColor.rgb * sh, sh);
 
   // The glass: the art bent at the curved edge, a faint body and tint, a rim facing the light.
@@ -117,19 +126,26 @@ void main() {
       // A rounded bevel: the surface tilts most at the very edge, so the art bends most there.
       float tilt = 1. - sqrt(1. - t * t);
       vec2 off = -n * tilt * bz * bend;
-      vec3 g = vec3(artAt(p + off * (1. + split)).r, artAt(p + off).g, artAt(p + off * (1. - split)).b);
-      g = mix(g, body.rgb, body.a);
-      g = mix(g, tint.rgb, tint.a);
+      // The art can be clear (clearArt: glass on a background the system doesn't paint), so the glass is
+      // built premultiplied: the bent art, then the body and tint over it, then the light added on top.
+      vec4 mid = artAt(p + off);
+      vec4 q = vec4(vec3(artAt(p + off * (1. + split)).r, mid.g, artAt(p + off * (1. - split)).b) * mid.a, mid.a);
+      q = vec4(body.rgb * body.a, body.a) + q * (1. - body.a);
+      q = vec4(tint.rgb * tint.a, tint.a) + q * (1. - tint.a);
       // Light: the rim facing the light is brightest; a soft band inside it catches the light too.
       vec2 L = normalize(light - p + 1e-4);
       float facing = max(dot(n, L), 0.);
       float k = pr.y;
       float rim = 1. - smoothstep(0., rimWidth * 1.2, abs(d + rimWidth * .5));
       float band = smoothstep(.55, 1., t);
-      g += rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k);
-      g += band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
+      vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k)
+        + band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
+      // Light on clear glass shows as much as it's bright. On art that fills the frame (q.a is 1) this is
+      // the same as before: the art, body and tint, plus the light, clamped.
+      q.a = clamp(max(q.a, max(lit.r, max(lit.g, lit.b))), 0., 1.);
+      q.rgb = min(q.rgb + lit, vec3(q.a));
       float a = (1. - smoothstep(-.5 * dpr, .5 * dpr, d)) * pr.z;
-      outc = vec4(clamp(g, 0., 1.) * a, a) + outc * (1. - a);
+      outc = q * a + outc * (1. - q.a * a);
     }
   }
   gl_FragColor = outc;

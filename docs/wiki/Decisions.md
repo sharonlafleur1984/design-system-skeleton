@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D40 | Oct 14, 2026 | Action tile works in every theme; Glass is the lens and follows the light; states are soft light |
 | D39 | Oct 14, 2026 | Releases attach a ready-built package file |
 | D38 | Oct 14, 2026 | The repo follows how-i-work; ESLint checks the code |
 | D37 | Oct 14, 2026 | Adding a theme is one folder |
@@ -51,6 +52,19 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D40 · Oct 14, 2026:</b> Action tile works in every theme; Glass is the lens and follows the light; states are soft light</summary>
+
+- **Decided by:** Sharon
+- **Why:** Action tile was built for Spotlight's red header only. On anything else its text disappeared, and Sunrise and Fireside had no tile at all.
+- **Default:** a solid fill with an inviting shadow and light catching the edge (the cards' lighting). `fill` picks the inside color from the theme's own surfaces: card (the default), raised, sunken, accent or inverse. The text color switches with it, so every choice passes contrast in light and dark mode.
+- **Glass is the lens, everywhere.** The old frosted recipe is only the fallback when the lens can't draw (no WebGL, Reduce transparency, Increase contrast). On a plain background Glass is fully clear: nothing bends, but its edge, highlight and shadow face the page's light and follow it when it moves. On art the design system paints, it also bends the art. Its shadow falls only outside the glass.
+- **Page shell:** tiles on the header are Glass unless they ask for Default, so After Graduation's header keeps its glass tiles with no change in the app.
+- **States, soft light, no hard lines:** hover rises with a deeper shadow and a faint tint; pressed sinks back; chosen fills in (accent fill, or frosted for Glass), shows the star and sits flat; focus is a soft glow with no ring; disabled fades to half with no shadow.
+- **Open:** Sunrise's chosen Glass tile in dark mode needs a darker frost; its frost color is a theme token, so that's Sharon's call.
+
+</details>
 
 <details>
 <summary><b>D39 · Oct 14, 2026:</b> Releases attach a ready-built package file</summary>

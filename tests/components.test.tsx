@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
+import { ActionTile, ActionTileGroup, PageShell, Button, Card, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
 // The old names, kept as aliases so apps that use them keep working.
 import { ProgressMeter, Divider, Chip, ChipGroup, SegmentedControl, Segment } from '../src/components';
 
@@ -344,5 +344,52 @@ describe('material', () => {
     );
     expect(screen.getByRole('button', { name: 'One' }).classList.contains('ds-lens')).toBe(true);
     expect(screen.getByRole('button', { name: 'Two' }).classList.contains('ds-lens')).toBe(false);
+  });
+});
+
+describe('Action tile', () => {
+  // jsdom has no ResizeObserver; the page shell watches its size with one.
+  globalThis.ResizeObserver ??= class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+
+  it('is a button with a solid card fill by default', async () => {
+    const { container } = render(
+      <ActionTileGroup aria-label="Tiles">
+        <ActionTile onPress={() => {}} title="Title" />
+      </ActionTileGroup>,
+    );
+    const tile = screen.getByRole('button', { name: /Title/ });
+    expect(tile.className).toContain('ds-tile--fill-card');
+    await expectNoAxeViolations(container);
+  });
+
+  it('takes another theme surface with fill', () => {
+    render(
+      <ActionTileGroup aria-label="Tiles">
+        <ActionTile onPress={() => {}} fill="accent" title="Title" />
+      </ActionTileGroup>,
+    );
+    expect(screen.getByRole('button', { name: /Title/ }).className).toContain('ds-tile--fill-accent');
+  });
+
+  it('is Glass on the page shell header, unless it asks for Default', () => {
+    render(
+      <PageShell
+        title="Page title"
+        navigation={
+          <ActionTileGroup aria-label="Tiles">
+            <ActionTile onPress={() => {}} title="On the header" />
+            <ActionTile onPress={() => {}} material="default" title="Asked for default" />
+          </ActionTileGroup>
+        }
+      >
+        <p>Content</p>
+      </PageShell>,
+    );
+    expect(screen.getByRole('button', { name: /On the header/ }).className).toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Asked for default/ }).className).toContain('ds-tile--fill-card');
   });
 });
