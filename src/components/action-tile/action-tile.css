@@ -30,11 +30,9 @@
   grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 3)), 1fr));
 }
 /* Switch tiles share the row while each has room for its words, and wrap onto a new row before a word
-   would have to break (Sharon, Oct 14). Phones use the bottom bar instead (below). */
-@media (width >= 37.5rem) {
-  .ds-tiles--switch .ds-tiles__list {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--space-10) * 2.5)), 1fr));
-  }
+   would have to break (Sharon, Oct 14). Phones put them back in one row, as the bottom bar (below). */
+.ds-tiles--switch .ds-tiles__list {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--space-10) * 2.5)), 1fr));
 }
 .ds-tile__bar {
   display: none;
@@ -379,6 +377,7 @@
     gap: var(--space-2);
   }
   .ds-tiles--switch .ds-tiles__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     position: fixed;
     inset-inline: 0;
     inset-block-end: 0;
