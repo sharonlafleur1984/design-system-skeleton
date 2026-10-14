@@ -17,6 +17,8 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 - **Action tile in every theme:** a `fill` prop (card, raised, sunken, accent, inverse), soft-light states (focus is a glow; chosen shows the theme's mark, or `chosenIcon`, and Glass turns milky), and Glass that follows the page's light on a plain background. Tiles default to `material="default"`, except on the page shell header, where they're Glass.
 - **`clearArt`** (experimental): lens glass on a background the system doesn't paint.
+- **Glass card for empty states:** a card holding only an empty state can be `material="glass"`; it goes back to `default` once it has content.
+- **Glass light:** edges facing a neighbor catch less light, edges away from the light take the surroundings' colors, chosen (milky) tiles cast fuller shadows, daylight highlights are warm, and shadows take the color of the surface they fall on.
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
 - **Materials:** a `material` prop, `default` or `glass`, on Button (glass style), Action tile, Card, Tag, Toggle button group and Page shell.
@@ -28,6 +30,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 ### Changed
 
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
+- **Glass tiles with Reduce transparency or Increase contrast** turn solid, with a line and the mark on a chosen tile. Before, they had no fill when the lens was off.
 - A theme can't set spacing, sizes or corners; they always come from the base.
 
 ### Experimental

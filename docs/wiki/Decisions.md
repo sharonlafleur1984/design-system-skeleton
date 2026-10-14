@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D42 | Oct 14, 2026 | Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles |
 | D41 | Oct 14, 2026 | Glass goes back to the shader demo, with its settings in every theme |
 | D40 | Oct 14, 2026 | Action tile works in every theme; Glass is the lens and follows the light; states are soft light |
 | D39 | Oct 14, 2026 | Releases attach a ready-built package file |
@@ -53,6 +54,21 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D42 · Oct 14, 2026:</b> Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles</summary>
+
+- **Decided by:** Sharon (the empty-card idea, and yes to the light-physics review's fixes and the two items taken from the [liquid-glass skill](https://github.com/haider-nawaz/liquid-glass-skill))
+- **Gaps:** an edge facing a neighbor that sits between it and the light catches less light (up to 60% less, never all of it, since the light also comes from above).
+- **Edges take the surroundings' color:** away from the light, the very edge mirrors the colors around it, as real glass does at a glancing angle, instead of a white line.
+- **Milky glass:** a chosen Glass tile casts a fuller shadow (it scatters light instead of letting it through) and has a wider, softer highlight.
+- **Warm daylight:** the lit edge and highlight are warm white in Spotlight, Sunrise's light mode and Fireside; Sunrise at night stays neutral.
+- **Shadows are the surface, darker and cooler:** a shadow is mixed from the color it falls on (on a plain page, the page's own color), as a painter would, with the theme's shadow color only nudging the hue. It fades out gradually and never wraps onto the lit side.
+- **Glass on a card is for empty states only:** a card that holds just an empty state can be Glass, since there's nothing to read yet; once it has content, the app sets it back to Default. The [Card's Empty state story](https://designsystemskeleton.netlify.app/?path=/story/components-card--empty-state) shows both.
+- **Reduce transparency and Increase contrast on Glass tiles:** the tile turns solid in its theme's color and its text still passes; a chosen tile shows a line in its text color plus its mark, so it never depends on the fill. Increase contrast gives every Glass tile a firm edge. Before, a Glass tile had no fill at all when the lens was off.
+- **Not taken from the liquid-glass skill:** its code and Apple-only APIs. It has no light or shadow guidance.
+
+</details>
 
 <details>
 <summary><b>D41 · Oct 14, 2026:</b> Glass goes back to the shader demo, with its settings in every theme</summary>

@@ -13,7 +13,10 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
    * transparent: ambient, context. translucent: the default. opaque: primary, focused content.
    */
   variant?: CardVariant;
-  /** Default is the subtle frosted look. Glass bends the art behind the card, on artwork the system controls. */
+  /**
+   * Default is the subtle frosted look. Glass (the lens) is only for a card that holds an empty state:
+   * switch back to default once the card has content, so what people read sits on a steady surface.
+   */
   material?: Material;
   /** Lifts on hover. Use only when the whole card is a link or button inside. */
   interactive?: boolean;

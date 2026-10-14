@@ -6,40 +6,13 @@ import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
 import { PageShell } from '../page-shell/page-shell';
 import { singleTheme, type Theme } from '../story-helpers';
-import { imageArt, resolveColor, type GlassArt } from './lens-art';
+import { firesideArt, sunriseArt } from './story-art';
 import { LIGHT_CHANGE } from './lens';
 
 // Storybook only: the Glass playground. The glass sits on the real background of the theme picked in
 // the toolbar, in light or dark mode, and the sun is the page's one light: drag it (or use the arrow
 // keys) and every rim, highlight and shadow follows. In Spotlight the sun is the header's own light,
 // so the wheel and its rays move with it.
-
-/** Sunrise's page: the Dashboard marble under its night layer (clear in light mode), as its pages show it. */
-const sunriseArt = imageArt({ src: 'texture-sage-cream.jpg', overlay: 'var(--color-area-dashboard-night)' });
-
-/** Fireside's page: its dark surface with the warm glow from the top right, as its pages show it. */
-const firesideArt: GlassArt = {
-  paint(ctx, { width, height }, container) {
-    const color = (css: string) => {
-      const c = resolveColor(css, container) ?? [0, 0, 0, 0];
-      return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})`;
-    };
-    ctx.fillStyle = color('var(--color-surface-page)');
-    ctx.fillRect(0, 0, width, height);
-    // radial-gradient(90% 70% at 100% 0%, glow, transparent 70%): an ellipse, so scale a circle.
-    const rx = width * 0.9;
-    ctx.save();
-    ctx.translate(width, 0);
-    ctx.scale(1, (height * 0.7) / rx);
-    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
-    g.addColorStop(0, color('var(--shell-glow)'));
-    g.addColorStop(0.7, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = g;
-    ctx.fillRect(-width, 0, width, rx);
-    ctx.restore();
-    return true;
-  },
-};
 
 const pageBackground: Partial<Record<Theme, string>> = {
   'life-hub': "linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover",

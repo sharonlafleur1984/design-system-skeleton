@@ -178,7 +178,7 @@
       },
       "rim-lit": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.90)",
+        "$value": "rgba(255, 246, 226, 0.90)",
         "$description": "The rim where it faces the light, at its brightest."
       },
       "rim-faint": {
@@ -188,7 +188,7 @@
       },
       "highlight": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.14)",
+        "$value": "rgba(255, 246, 226, 0.14)",
         "$description": "The band of light just inside the edge that faces the light. Gentle on the light marble, so it never turns into frost."
       },
       "shadow-color": {

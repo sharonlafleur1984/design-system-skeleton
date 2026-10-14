@@ -9,7 +9,7 @@
 // transparency or Increase contrast, nothing is drawn and every glass keeps the classic recipe.
 import { clampRadius, capDpr, pressSwell, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
 import { createLensRenderer, MAX_LENS_RECTS, type LensLook, type LensRenderer, type Rgba } from './lens-shader';
-import { num, resolveColor, type GlassArt } from './lens-art';
+import { num, parseColor, resolveColor, type GlassArt } from './lens-art';
 import './glass-lens.css';
 
 /**
@@ -48,6 +48,15 @@ function lensBlocked() {
   if (transparency !== 'standard' && media('(prefers-reduced-transparency: reduce)')?.matches) return true;
   if (contrast !== 'standard' && media('(prefers-contrast: more)')?.matches) return true;
   return false;
+}
+
+/** The plain color behind the glass: the first solid background from the container up (white if none). */
+function groundColor(from: HTMLElement): [number, number, number] {
+  for (let el: HTMLElement | null = from; el; el = el.parentElement) {
+    const c = parseColor(getComputedStyle(el).backgroundColor);
+    if (c && c[3] > 0.5) return [c[0] / 255, c[1] / 255, c[2] / 255];
+  }
+  return [1, 1, 1];
 }
 
 /** Reduced motion, from the device or from Settings (usePreferences sets data-reduce-motion). Device "reduce" always wins. */
@@ -125,6 +134,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       bend: num(v('--glass-lens-bend'), 1),
       edgeDepth: num(v('--glass-lens-edge-depth'), 22) * dpr,
       split: num(v('--glass-lens-color-split'), 0.02),
+      ground: groundColor(root),
     };
     lookKey = key;
     return look;
@@ -266,6 +276,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
         k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1))),
         alpha: Math.min(1, Math.max(0, num(cs.opacity, 1))),
         lift: Math.max(0, num(cs.getPropertyValue('--glass-lift'), 1)),
+        milk: Math.min(1, Math.max(0, num(cs.getPropertyValue('--glass-milk'), 0))),
       };
     });
     let left = Infinity;
@@ -344,7 +355,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       light: [lx, ly],
       dpr,
       look: readLook(rootCs, dpr),
-      rects: boxes.map((b) => ({ x: (b.x - left) * dpr, y: (b.y - top) * dpr, w: b.w * dpr, h: b.h * dpr, r: clampRadius(b.r * dpr, b.w * dpr, b.h * dpr), k: b.k, alpha: b.alpha, lift: b.lift })),
+      rects: boxes.map((b) => ({ x: (b.x - left) * dpr, y: (b.y - top) * dpr, w: b.w * dpr, h: b.h * dpr, r: clampRadius(b.r * dpr, b.w * dpr, b.h * dpr), k: b.k, alpha: b.alpha, lift: b.lift, milk: b.milk })),
     });
     canvas.style.visibility = 'visible';
     els.forEach((el) => {

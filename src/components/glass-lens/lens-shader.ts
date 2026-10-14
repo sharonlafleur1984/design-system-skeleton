@@ -19,6 +19,8 @@ export interface LensRect {
   alpha: number;
   /** How far the shadow falls, as a multiple of the token (hover lifts the glass a little). */
   lift: number;
+  /** How milky the glass is (0 clear, 1 milky, like a chosen tile): milky glass lets less light through. */
+  milk?: number;
 }
 
 /** A color as 0 to 1 floats: red, green, blue and alpha (the alpha is the strength). */
@@ -38,6 +40,8 @@ export interface LensLook {
   bend: number;
   edgeDepth: number;
   split: number;
+  /** The plain color behind the glass, for where the art is clear: shadows there take its hue. */
+  ground?: [number, number, number];
 }
 
 export interface LensFrame {
@@ -71,9 +75,11 @@ uniform vec2 res;
 uniform vec2 light;
 uniform vec4 rects[MAX];
 uniform vec4 props[MAX]; // radius, light strength, opacity, lift
+uniform float milk[MAX];
 uniform int count;
 uniform float dpr, bend, bezel, split, rimWidth, shadowDist, shadowBlur;
 uniform vec4 body, tint, rimLit, rimFaint, highlight, shadowColor;
+uniform vec3 ground;
 
 float sdBox(vec2 p, vec2 b, float r) {
   vec2 q = abs(p) - b + r;
@@ -101,12 +107,13 @@ void main() {
     float d0 = sdBox(p - c, h, pr.x);
     float ds = sdBox(p - c - away, h, pr.x);
     // Nearer the thrown shape than the glass itself means the far side; the lit side gets nothing.
-    float far = smoothstep(-1.5 * dpr, 3. * dpr, d0 - ds);
+    float far = smoothstep(-.05 * blur, .6 * blur, d0 - ds);
     float soft = 1. - smoothstep(0., blur, ds);
-    float pass = mix(.6, 1., 1. - smoothstep(0., blur * .9, -ds));
+    // Milky glass scatters the light instead of letting it through: its shadow is full, not pale in the middle.
+    float pass = mix(mix(.6, 1., 1. - smoothstep(0., blur * .9, -ds)), 1., milk[i]);
     float contact = (1. - smoothstep(0., 2.5 * dpr, d0)) * far * .5;
     float s = max(soft * pass * far, contact);
-    sh = max(sh, s * shadowColor.a * pr.z);
+    sh = max(sh, s * shadowColor.a * pr.z * (1. + .3 * milk[i]));
   }
   // Shadows fall only outside the glass, so clear glass never shows its own shadow through it.
   // (On art that fills the frame the glass covers them anyway.)
@@ -117,7 +124,15 @@ void main() {
     inside = max(inside, 1. - smoothstep(-dpr, 0., sdBox(p - rects[i].xy - h, h, props[i].x)));
   }
   sh *= 1. - inside;
-  vec4 outc = vec4(shadowColor.rgb * sh, sh);
+  // The shadow is the surface it falls on, darker and a little cooler (lit only by the sky), as a
+  // painter would mix it: never a gray or a color laid on top. The theme's shadow color only nudges
+  // the hue. On a light surface it's a shade lighter, where any shadow already reads strongly.
+  vec4 under = artAt(p);
+  vec3 surface = mix(ground, under.rgb, under.a);
+  float lum = dot(surface, vec3(.2126, .7152, .0722));
+  vec3 shc = mix(surface * vec3(.5, .54, .64), shadowColor.rgb, .25);
+  sh *= 1. - .2 * lum;
+  vec4 outc = vec4(shc * sh, sh);
 
   // The glass: the art bent at the curved edge, a faint body and tint, a rim facing the light.
   for (int i = 0; i < MAX; i++) {
@@ -149,11 +164,31 @@ void main() {
       // Light: the rim facing the light is brightest; a soft band inside it catches the light too.
       vec2 L = normalize(light - p + 1e-4);
       float facing = max(dot(n, L), 0.);
-      float k = pr.y;
+      // A neighbor between this edge and the light blocks some of it, so the edges across a gap catch
+      // less light than the open outer edges. Look a short way toward the light: the nearer the
+      // neighbor, the more it blocks. Never all of it, since the light also comes from above.
+      float block = 0.;
+      for (int j = 0; j < MAX; j++) {
+        if (j >= count) break;
+        if (j == i) continue;
+        vec2 hj = rects[j].zw * .5;
+        vec2 cj = rects[j].xy + hj;
+        for (int s = 1; s <= 4; s++) {
+          float dist = float(s) * 8. * dpr;
+          float hit = 1. - smoothstep(-dpr, dpr, sdBox(p + L * dist - cj, hj, props[j].x));
+          block = max(block, hit * (1. - (float(s) - 1.) * .2) * props[j].z);
+        }
+      }
+      float k = pr.y * (1. - .6 * block);
       float rim = 1. - smoothstep(0., rimWidth * 1.2, abs(d + rimWidth * .5));
-      float band = smoothstep(.55, 1., t);
+      // Milky glass spreads the light: a wider, softer highlight that wraps further round the edge.
+      float band = smoothstep(.55 - .2 * milk[i], 1., t);
+      // Away from the light, the very edge mirrors what's around it (as real glass does at a glancing
+      // angle), so it takes the colors of the page, never a plain white line.
+      vec4 env = artAt(p + n * bz * .6);
+      q.rgb = mix(q.rgb, env.rgb * env.a * 1.08 * q.a, rim * .55 * (1. - facing) * env.a);
       vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k)
-        + band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
+        + band * highlight.rgb * highlight.a * pow(facing, 3. - milk[i]) * k * (1. - .55 * milk[i]);
       // Light on clear glass shows as much as it's bright. On art that fills the frame (q.a is 1) this is
       // the same as before: the art, body and tint, plus the light, clamped.
       q.a = clamp(max(q.a, max(lit.r, max(lit.g, lit.b))), 0., 1.);
@@ -213,7 +248,7 @@ export function createLensRenderer(canvas: HTMLCanvasElement): LensRenderer | nu
     program = pr;
     texture = tex;
     uniforms = {};
-    for (const n of ['art', 'res', 'light', 'rects', 'props', 'count', 'dpr', 'bend', 'bezel', 'split', 'rimWidth', 'shadowDist', 'shadowBlur', 'body', 'tint', 'rimLit', 'rimFaint', 'highlight', 'shadowColor'])
+    for (const n of ['art', 'res', 'light', 'rects', 'props', 'milk', 'count', 'dpr', 'bend', 'bezel', 'split', 'rimWidth', 'shadowDist', 'shadowBlur', 'body', 'tint', 'rimLit', 'rimFaint', 'highlight', 'shadowColor', 'ground'])
       uniforms[n] = g.getUniformLocation(pr, n);
     hasArt = false;
   };
@@ -235,6 +270,7 @@ export function createLensRenderer(canvas: HTMLCanvasElement): LensRenderer | nu
 
   const rects = new Float32Array(MAX_LENS_RECTS * 4);
   const props = new Float32Array(MAX_LENS_RECTS * 4);
+  const milks = new Float32Array(MAX_LENS_RECTS);
 
   return {
     get ok() {
@@ -257,10 +293,12 @@ export function createLensRenderer(canvas: HTMLCanvasElement): LensRenderer | nu
       const n = Math.min(list.length, MAX_LENS_RECTS);
       rects.fill(0);
       props.fill(0);
+      milks.fill(0);
       for (let i = 0; i < n; i++) {
         const r = list[i];
         rects.set([r.x, r.y, r.w, r.h], i * 4);
         props.set([r.r, r.k, r.alpha, r.lift], i * 4);
+        milks[i] = r.milk ?? 0;
       }
       const u = uniforms;
       g.uniform1i(u.art, 0);
@@ -268,6 +306,7 @@ export function createLensRenderer(canvas: HTMLCanvasElement): LensRenderer | nu
       g.uniform2f(u.light, light[0], light[1]);
       g.uniform4fv(u.rects, rects);
       g.uniform4fv(u.props, props);
+      g.uniform1fv(u.milk, milks);
       g.uniform1i(u.count, n);
       g.uniform1f(u.dpr, dpr);
       g.uniform1f(u.bend, look.bend);
@@ -281,6 +320,7 @@ export function createLensRenderer(canvas: HTMLCanvasElement): LensRenderer | nu
       g.uniform4fv(u.rimLit, look.rimLit);
       g.uniform4fv(u.rimFaint, look.rimFaint);
       g.uniform4fv(u.highlight, look.highlight);
+      g.uniform3fv(u.ground, look.ground ?? [1, 1, 1]);
       g.uniform4fv(u.shadowColor, look.shadow);
       g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
     },

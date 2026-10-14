@@ -103,6 +103,14 @@
   border-radius: inherit;
   backdrop-filter: var(--glass-bend, none);
 }
+/* Without the lens (no WebGL, or Reduce transparency or Increase contrast), the tile keeps the classic
+   glass: the theme's glass-on-art fill over a blur. Those two settings turn the fill solid and the blur
+   off (material.css), with the text's own color still passing on it. */
+.ds-tile--glass:not([data-lens='on']) .ds-tile__glass {
+  background: var(--color-surface-glass-on-art);
+  -webkit-backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+}
 /* While the lens draws the tile, the tile's own layer must not filter it again, or it smears the bend. */
 .ds-tile--glass[data-lens='on'] .ds-tile__glass {
   -webkit-backdrop-filter: none;
@@ -175,6 +183,8 @@
    changes; the text sits on top at its usual color, untouched by the frost or the light. */
 .ds-tile--glass[data-selected],
 .ds-tile--glass[data-state='chosen'] {
+  /* Tells the lens this glass is milky: a fuller shadow and a wider, softer highlight. */
+  --glass-milk: 1;
   --tile-fill: transparent;
   --tile-ink: currentColor;
   --tile-ink-soft: currentColor;
@@ -187,6 +197,40 @@
   -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
   backdrop-filter: blur(var(--material-blur-on-art-selected));
 }
+/* Reduce transparency or Increase contrast: no milk. A chosen Glass tile stays solid like the others and
+   shows a line in its text color around the edge, with its mark, so it never relies on the fill.
+   Increase contrast also gives every Glass tile a firm edge. */
+@media (prefers-reduced-transparency: reduce) {
+  :root:not([data-transparency='standard']) .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
+    background: var(--color-surface-glass-on-art);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 2px currentColor;
+  }
+}
+@media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-tile--glass .ds-tile__glass {
+    background: var(--color-surface-glass-on-art);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  :root:not([data-contrast='standard']) .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
+    box-shadow: inset 0 0 0 2px currentColor;
+  }
+}
+:root[data-transparency='reduce'] .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass,
+:root[data-contrast='more'] .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
+  background: var(--color-surface-glass-on-art);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+:root[data-contrast='more'] .ds-tile--glass:not([data-selected]):not([data-state='chosen']) .ds-tile__glass {
+  background: var(--color-surface-glass-on-art);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
 /* The theme's mark for a chosen tile (Spotlight's star, a check elsewhere), or the tile's own chosenIcon. */
 .ds-tile__star {
   position: absolute;

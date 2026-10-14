@@ -170,7 +170,7 @@
       },
       "rim-lit": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.90)",
+        "$value": "rgba(255, 246, 226, 0.90)",
         "$description": "The rim where it faces the light, at its brightest."
       },
       "rim-faint": {
@@ -180,7 +180,7 @@
       },
       "highlight": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.38)",
+        "$value": "rgba(255, 246, 226, 0.38)",
         "$description": "The soft band of light just inside the edge that faces the light."
       },
       "shadow-color": {

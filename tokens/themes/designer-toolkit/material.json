@@ -159,7 +159,7 @@
       },
       "rim-lit": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 1)",
+        "$value": "rgba(255, 244, 222, 1)",
         "$description": "The rim where it faces the light, at its brightest."
       },
       "rim-faint": {
@@ -169,7 +169,7 @@
       },
       "highlight": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.5)",
+        "$value": "rgba(255, 244, 222, 0.5)",
         "$description": "On the dark page light reads stronger: the band inside the edge facing the light is bright."
       },
       "shadow-color": {
