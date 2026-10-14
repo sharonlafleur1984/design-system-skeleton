@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D45 | Oct 14, 2026 | One light per page, shown in Storybook as a sun on every glass story; a softer focus glow |
 | D44 | Oct 14, 2026 | States stories are still pictures; Playground is where states are tried |
 | D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
 | D42 | Oct 14, 2026 | Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles |
@@ -56,6 +57,16 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D45 · Oct 14, 2026:</b> One light per page, shown in Storybook as a sun on every glass story; a softer focus glow</summary>
+
+- **Decided by:** Sharon ("we need to show a light source on any surface that shows glass"; "the focus is too much")
+- **One light per page:** an element marked `data-glass-light` is the page's light (`PAGE_LIGHT`). Glass with no light of its own is lit from the nearest one around it, so every glass on the page shares one light. Moving it (then firing `LIGHT_CHANGE`) moves every rim, highlight and shadow. A glass group's own `source` or `light` still wins, and with no page light the light tokens are used as before.
+- **Storybook:** every story that shows glass gets the page light as a small sun at the top right. Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
+- **Focus glow:** a soft line of the focus color right at the tile's edge with a small bloom, instead of a wide halo. Still easy to see with a keyboard, and still no ring.
+
+</details>
 
 <details>
 <summary><b>D44 · Oct 14, 2026:</b> States stories are still pictures; Playground is where states are tried</summary>

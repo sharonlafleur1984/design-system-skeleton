@@ -1,6 +1,7 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
+import { LIGHT_CHANGE } from './glass-lens/lens';
 import type { Material } from './material';
 import themes from '../../build/themes.json';
 
@@ -214,4 +215,79 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
     };
   }, []);
   return <>{children}</>;
+}
+
+/**
+ * Storybook only: the page's one light, shown as a sun, on every story that shows glass (glass can't
+ * be judged without seeing where its light comes from). Drag the sun, or focus it and use the arrow
+ * keys, and every rim, highlight and shadow follows. It's the page light (data-glass-light), so all
+ * glass in the story shares it. Stories with their own light (the Glass playground's sun, the page
+ * shell's wheel) keep theirs, and no sun is shown.
+ */
+export function LightScene({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  // Where the sun is, as a share of the scene: top right, above the content.
+  const [sun, setSun] = useState({ x: 0.97, y: 0 });
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-shell'));
+    check();
+    const mo = new MutationObserver(check);
+    mo.observe(el, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }, []);
+  useLayoutEffect(() => {
+    window.dispatchEvent(new Event(LIGHT_CHANGE));
+  }, [sun, show]);
+
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  const moveTo = (e: PointerEvent<HTMLElement>) => {
+    const r = ref.current!.getBoundingClientRect();
+    setSun({ x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) });
+  };
+  const onKey = (e: KeyboardEvent<HTMLElement>) => {
+    const step = e.shiftKey ? 0.1 : 0.02;
+    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
+    if (!d) return;
+    e.preventDefault();
+    setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
+  };
+  const sunStyle: CSSProperties = {
+    position: 'absolute',
+    zIndex: 5,
+    left: `${sun.x * 100}%`,
+    top: `${sun.y * 100}%`,
+    inlineSize: 'var(--space-5)',
+    blockSize: 'var(--space-5)',
+    marginInlineStart: 'calc(var(--space-5) / -2)',
+    marginBlockStart: 'calc(var(--space-5) / -2)',
+    padding: 0,
+    border: 'none',
+    borderRadius: '50%',
+    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
+    boxShadow: '0 0 24px 8px rgba(245, 197, 66, 0.35)',
+    cursor: 'grab',
+    touchAction: 'none',
+  };
+  return (
+    <div ref={ref} style={{ position: 'relative', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
+      {show && (
+        <button
+          type="button"
+          data-glass-light=""
+          aria-label="Light. Drag it, or use the arrow keys to move it."
+          style={sunStyle}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            moveTo(e);
+          }}
+          onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
+          onKeyDown={onKey}
+        />
+      )}
+      {children}
+    </div>
+  );
 }

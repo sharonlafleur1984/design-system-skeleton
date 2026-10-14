@@ -279,7 +279,9 @@
   visibility: visible;
 }
 
-/* Focus: a glow, drawn on its own layer so the lens (which takes over the tile's shadow) never hides it. */
+/* Focus: a soft glow, drawn on its own layer so the lens (which takes over the tile's shadow) never
+   hides it. A fine, bright line hugs the edge (what makes focus easy to see) with a small bloom around
+   it; quieter than a halo, so it reads as light, not a ring. */
 .ds-tile::after {
   content: '';
   position: absolute;
@@ -288,8 +290,8 @@
   pointer-events: none;
   opacity: 0;
   box-shadow:
-    0 0 var(--space-2) var(--space-1) color-mix(in srgb, var(--_glow) 70%, transparent),
-    0 0 var(--space-5) var(--space-2) color-mix(in srgb, var(--_glow) 30%, transparent);
+    0 0 3px 0 color-mix(in srgb, var(--_glow) 80%, transparent),
+    0 0 var(--space-3) 0 color-mix(in srgb, var(--_glow) 30%, transparent);
   /* A container on art (the page shell header) sets --tile-focus to its text color, since the theme's
      focus color can match the art. */
   --_glow: var(--tile-focus, var(--color-border-focus));

@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react-vite';
 import '../src/base.css';
 import themes from '../build/themes.json';
 import '../build/text-styles.css';
-import { BothThemes, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
+import { BothThemes, LightScene, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // Every theme's tokens and fonts, found by file name, so a new theme needs no change here.
 import.meta.glob('../build/css/*.css', { eager: true });
@@ -48,13 +48,16 @@ const preview: Preview = {
       return (
         <ThemeContext.Provider value={choice}>
           <style>{storyBackgroundsCss}</style>
-          {sideBySide ? (
-            <BothThemes>
+          {/* Every story that shows glass gets the page's light, as a sun you can move. */}
+          <LightScene>
+            {sideBySide ? (
+              <BothThemes>
+                <Story />
+              </BothThemes>
+            ) : (
               <Story />
-            </BothThemes>
-          ) : (
-            <Story />
-          )}
+            )}
+          </LightScene>
         </ThemeContext.Provider>
       );
     },

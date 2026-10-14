@@ -83,7 +83,7 @@ export const WithControls: Story = {
 };
 
 /**
- * Lights the glass in it from the top right of the theme panel it's drawn in. The panel itself is the
+ * Lights the glass in it from the page's light (the sun Storybook shows) in the theme panel it's drawn in. The panel itself is the
  * lens's root, so the glass bends the panel's real background, with no second layer.
  */
 function Lit({ children }: { children: ReactNode }) {
@@ -102,7 +102,7 @@ function Lit({ children }: { children: ReactNode }) {
     }
     panelRef.current = host;
   }, []);
-  useGlassLight(panelRef, { selector: '.ds-glass', lens, light: { x: 1, y: 0 } });
+  useGlassLight(panelRef, { selector: '.ds-glass', lens });
   return (
     <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
       {children}
