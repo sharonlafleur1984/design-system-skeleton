@@ -37,6 +37,20 @@ const caption: CSSProperties = {
   textTransform: 'uppercase',
 };
 
+// The theme's name above its panel in "All, side by side": that theme's own title style, with a
+// line under it, so it reads as a heading and never as one of the gray row labels below it.
+const themeHeading: CSSProperties = {
+  margin: 0,
+  paddingBlockEnd: 'var(--space-3)',
+  borderBlockEnd: '1px solid var(--color-border-subtle)',
+  color: 'var(--color-ink-primary)',
+  fontFamily: 'var(--type-heading-title-family)',
+  fontSize: 'var(--type-heading-title-size)',
+  fontWeight: 'var(--type-heading-title-weight)' as CSSProperties['fontWeight'],
+  lineHeight: 'var(--type-heading-title-line-height)',
+  letterSpacing: 'var(--type-heading-title-letter-spacing)',
+};
+
 // What a product's pages sit on, per theme, for BothThemes' panels. Life Hub pages sit on a marbled
 // texture (Figma: Background Texture, sage-cream for the Dashboard): a small preview image,
 // stretched; the real files are 6000 x 4000. In dark mode the Dashboard's night layer covers it
@@ -90,7 +104,7 @@ export function BothThemes({ children }: { children: ReactNode }) {
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
       {shown.map((theme) => (
         <section key={theme} data-theme={theme} style={{ ...panel, background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
-          {shown.length > 1 && <p style={caption}>{themeNames[theme]}</p>}
+          {shown.length > 1 && <p style={themeHeading}>{themeNames[theme]}</p>}
           {children}
         </section>
       ))}
