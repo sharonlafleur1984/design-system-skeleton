@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D41 | Oct 14, 2026 | Glass goes back to the shader demo, with its settings in every theme |
 | D40 | Oct 14, 2026 | Action tile works in every theme; Glass is the lens and follows the light; states are soft light |
 | D39 | Oct 14, 2026 | Releases attach a ready-built package file |
 | D38 | Oct 14, 2026 | The repo follows how-i-work; ESLint checks the code |
@@ -52,6 +53,17 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D41 · Oct 14, 2026:</b> Glass goes back to the shader demo, with its settings in every theme</summary>
+
+- **Decided by:** Sharon ("I am not going to be happy until I have this again")
+- **What:** the lens drawing code is the Oct 14 shader demo's (from #54) again, with only two fixes that don't change how it looks: it can draw on a clear background, and its shadow never shows through the glass. The experiments since (painted shadows, two-sided rims, caustics) are dropped.
+- **Settings:** matched side by side to Sharon's screenshot of the demo's grid panel and written into each theme's `glass.lens` tokens: a faintly milky body (10% white), no tint, a bright line on the edge facing the light, bend 1.5, edge depth 28px, a soft shadow 14px away from the light with a 34px blur. Shadow strength fits each background: 40% on Spotlight's red, 16% on Sunrise's light marble, 50% on Fireside.
+- **Fixes found while matching:** a Glass tile's own layer was filtering the lens again and smearing its bend (the marble barely bent); glass buttons drew their own border under the lens's edge, so they looked thicker than tiles.
+- **Open:** the chosen look for Glass tiles.
+
+</details>
 
 <details>
 <summary><b>D40 · Oct 14, 2026:</b> Action tile works in every theme; Glass is the lens and follows the light; states are soft light</summary>

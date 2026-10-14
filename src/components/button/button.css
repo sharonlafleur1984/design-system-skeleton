@@ -168,6 +168,8 @@
   outline-color: var(--button-glass-ink);
 }
 .ds-button--glass[data-lens='on'] {
+  /* The lens draws the edge; the button's own border would double it. */
+  --_ring: transparent;
   --_bg: transparent;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;

@@ -103,6 +103,11 @@
   border-radius: inherit;
   backdrop-filter: var(--glass-bend, none);
 }
+/* While the lens draws the tile, the tile's own layer must not filter it again, or it smears the bend. */
+.ds-tile--glass[data-lens='on'] .ds-tile__glass {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
 
 .ds-tile__label {
   color: var(--tile-ink-soft);

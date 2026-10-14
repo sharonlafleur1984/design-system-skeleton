@@ -84,9 +84,9 @@ function ThemePage({ theme, children }: { theme: Theme; children: ReactNode }) {
   );
 }
 
-type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: number; shadow: number };
+type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: number; shadow: number; themeSettings?: boolean };
 
-function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow }: Args & { theme: Theme }) {
+function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings }: Args & { theme: Theme }) {
   const ref = useRef<HTMLDivElement>(null);
   // Where the sun is, as a share of the page.
   const [sun, setSun] = useState({ x: 0.8, y: 0.12 });
@@ -116,21 +116,22 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     setSun((s) => ({ x: Math.min(1, Math.max(0, s.x + d[0])), y: Math.min(1, Math.max(0, s.y + d[1])) }));
   };
 
-  const tuning = {
+  // The Demo story shows each theme's own glass settings; the Playground's controls override them.
+  const tuning = themeSettings ? ({ position: 'relative' } as CSSProperties) : ({
     position: 'relative',
     ['--glass-lens-bend' as string]: String(bend),
     ['--glass-lens-edge-depth' as string]: `${edgeDepth}px`,
     ['--glass-lens-color-split' as string]: String(colorSplit),
-    ['--glass-lens-rim-width' as string]: '1.5px',
-    ['--glass-lens-rim-lit' as string]: 'rgba(255, 255, 255, 0.95)',
-    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
-    ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.32).toFixed(2)})`,
-    ['--glass-lens-body' as string]: 'rgba(255, 255, 255, 0)',
+    ['--glass-lens-rim-width' as string]: '1px',
+    ['--glass-lens-rim-lit' as string]: 'rgba(255, 255, 255, 0.9)',
+    ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
+    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.47).toFixed(2)})`,
+    ['--glass-lens-body' as string]: 'rgba(255, 255, 255, 0.1)',
     ['--glass-lens-tint' as string]: 'rgba(255, 255, 255, 0)',
     ['--glass-lens-shadow-color' as string]: `rgba(0, 0, 0, ${shadow.toFixed(2)})`,
-    ['--glass-lens-shadow-distance' as string]: '22px',
+    ['--glass-lens-shadow-distance' as string]: '14px',
     ['--glass-lens-shadow-blur' as string]: '34px',
-  } as CSSProperties;
+  } as CSSProperties);
   const sunStyle: CSSProperties = {
     position: 'absolute',
     left: `${sun.x * 100}%`,
@@ -192,13 +193,14 @@ const meta: Meta<Args> = {
       },
     },
   },
-  args: { bend: 1, edgeDepth: 22, colorSplit: 0.02, edgeLight: 0.1, shadow: 0.2 },
+  args: { bend: 1.5, edgeDepth: 28, colorSplit: 0.02, edgeLight: 0.38, shadow: 0.42 },
   argTypes: {
     bend: { name: 'Bend', control: { type: 'range', min: 0, max: 3, step: 0.1 } },
     edgeDepth: { name: 'Edge depth (px)', control: { type: 'range', min: 4, max: 64, step: 1 } },
     colorSplit: { name: 'Color split', control: { type: 'range', min: 0, max: 0.12, step: 0.005 } },
     edgeLight: { name: 'Edge light', control: { type: 'range', min: 0, max: 0.6, step: 0.02 } },
     shadow: { name: 'Shadow', control: { type: 'range', min: 0, max: 0.6, step: 0.02 } },
+    themeSettings: { table: { disable: true } },
   },
   render: (args, { globals }) => <GlassPlayground {...args} theme={singleTheme(globals.theme)} />,
 };
@@ -207,5 +209,5 @@ export default meta;
 /** Drag the sun, and tune the glass with the controls. */
 export const Playground: StoryObj<Args> = {};
 
-/** Matched side by side to real-glass references (Oct 14): a clear middle, the view bending at the rim, a thin bright edge lit on both sides, warm and cool fringes where it bends most, and a soft shadow falling away from the sun. */
-export const Demo: StoryObj<Args> = { args: { bend: 1.1, edgeDepth: 26, colorSplit: 0.08, edgeLight: 0.14, shadow: 0.58 } };
+/** Each theme's own glass, matched side by side to the Oct 14 shader demo: a faintly milky body, the view bending at the round ends, a bright line along the edge facing the sun, and a soft shadow falling away from it. */
+export const Demo: StoryObj<Args> = { args: { themeSettings: true }, argTypes: { bend: { table: { disable: true } }, edgeDepth: { table: { disable: true } }, colorSplit: { table: { disable: true } }, edgeLight: { table: { disable: true } }, shadow: { table: { disable: true } } } };

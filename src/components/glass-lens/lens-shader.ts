@@ -84,41 +84,20 @@ vec4 artAt(vec2 p) { return texture2D(art, clamp(p / res, 0., 1.)); }
 void main() {
   vec2 p = vec2(gl_FragCoord.x, res.y - gl_FragCoord.y);
 
-  // Shadows, the way a trained painter sees them. The glass floats a little above the page:
-  // - Key shadow: its shape, thrown away from the sun. The farther the sun, the longer the throw; the
-  //   higher the glass, the wider and softer the penumbra, and the smaller and paler the dark core.
-  // - Ambient occlusion: a broad, faint darkening right beneath it, where it blocks light from the sky.
-  // - Glass passes light, so its shadow is pale in the middle and darker along the outline, where the
-  //   thick edge bends the light away. Just inside that outline the bent light gathers (a caustic).
-  // - A shadow deepens the surface it falls on and keeps that surface's own color, a touch cooler.
+  // Soft shadows, cast away from the light.
   float sh = 0.;
-  float pool = 0.;
   for (int i = 0; i < MAX; i++) {
     if (i >= count) break;
     vec4 r = rects[i];
     vec4 pr = props[i];
     vec2 h = r.zw * .5;
     vec2 c = r.xy + h;
-    vec2 toward = c - light;
-    float far = length(toward) + 1e-4;
-    vec2 dir = toward / far;
-    float height = max(shadowDist * pr.w, dpr);
-    float len = clamp(height * far / (600. * dpr), height * .3, height * 2.5);
-    float soft = max(shadowBlur * pr.w, dpr);
-    float w = soft * 1.3 + len * .5;
-    float dk = sdBox(p - c - dir * len, max(h - w * .15, vec2(1.)), pr.x);
-    float key = 1. - smoothstep(-w, w * 1.2, dk);
-    float d0 = sdBox(p - c, h, pr.x);
-    float amb = 1. - smoothstep(-soft * .3, soft * 1.3, d0);
-    float bz = max(min(bezel, min(h.x, h.y) * .95), dpr);
-    float outline = 1. - smoothstep(-bz * .5, bz * 1.6, -dk);
-    float density = mix(.65, 1., outline);
-    float sI = 1. - (1. - key * density * .75) * (1. - amb * .25);
-    sh = max(sh, clamp(sI * shadowColor.a * .7, 0., .5) * pr.z);
-    float ring = smoothstep(0., bz * .6, -dk) * (1. - smoothstep(bz * .6, bz * 2.2, -dk));
-    pool = max(pool, ring * key * pr.y * pr.z);
+    vec2 away = normalize(c - light + 1e-4) * shadowDist * pr.w;
+    float ds = sdBox(p - c - away, h, pr.x);
+    sh = max(sh, (1. - smoothstep(0., max(shadowBlur * pr.w, 1.), ds)) * shadowColor.a * pr.z);
   }
-  // Shadows and the caustic fall only outside the glass, so clear glass never shows them through it.
+  // Shadows fall only outside the glass, so clear glass never shows its own shadow through it.
+  // (On art that fills the frame the glass covers them anyway.)
   float inside = 0.;
   for (int i = 0; i < MAX; i++) {
     if (i >= count) break;
@@ -126,12 +105,7 @@ void main() {
     inside = max(inside, 1. - smoothstep(-dpr, 0., sdBox(p - rects[i].xy - h, h, props[i].x)));
   }
   sh *= 1. - inside;
-  pool *= 1. - inside;
-  // Transparent dark keeps the surface's own hue as it deepens it; a little blue cools it. The caustic is
-  // warm light, like the sun.
-  vec3 warm = vec3(1., .93, .8);
-  vec3 caustic = warm * rimLit.a * pool * .4;
-  vec4 outc = vec4(vec3(.35, .45, .7) * sh * .1 + caustic, max(sh, max(caustic.r, max(caustic.g, caustic.b))));
+  vec4 outc = vec4(shadowColor.rgb * sh, sh);
 
   // The glass: the art bent at the curved edge, a faint body and tint, a rim facing the light.
   for (int i = 0; i < MAX; i++) {
@@ -155,8 +129,7 @@ void main() {
       // The art can be clear (clearArt: glass on a background the system doesn't paint), so the glass is
       // built premultiplied: the bent art, then the body and tint over it, then the light added on top.
       vec4 mid = artAt(p + off);
-      // Blue bends more than red, as in real glass, so the fringes run warm on one side and cool on the other.
-      vec4 q = vec4(vec3(artAt(p + off * (1. - split)).r, mid.g, artAt(p + off * (1. + split)).b) * mid.a, mid.a);
+      vec4 q = vec4(vec3(artAt(p + off * (1. + split)).r, mid.g, artAt(p + off * (1. - split)).b) * mid.a, mid.a);
       q = vec4(body.rgb * body.a, body.a) + q * (1. - body.a);
       q = vec4(tint.rgb * tint.a, tint.a) + q * (1. - tint.a);
       // Light: the rim facing the light is brightest; a soft band inside it catches the light too.
@@ -165,21 +138,8 @@ void main() {
       float k = pr.y;
       float rim = 1. - smoothstep(0., rimWidth * 1.2, abs(d + rimWidth * .5));
       float band = smoothstep(.55, 1., t);
-      // The edge of real glass: a thin bright line nearly all the way round (it reflects more at a grazing
-      // angle), brightest at two opposite points: where the light comes in, and across from it, where light
-      // that went through reflects back out from inside. The sides in between stay dimmer.
-      float align = dot(n, L);
-      float across = max(-align, 0.);
-      float spec = (1. - smoothstep(0., rimWidth * 2.5, abs(d + rimWidth))) * pow(facing, 12.) * k;
-      vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * (pow(facing, 2.) + .7 * pow(across, 2.)) * k)
-        + spec * rimLit.rgb * rimLit.a
-        + band * highlight.rgb * highlight.a * (pow(facing, 3.) + .5 * pow(across, 3.)) * k;
-      // Light that went through comes out just inside the far edge as a soft warm glow.
-      float exitGlow = exp(-pow((-d - bz * .15) / (bz * .12), 2.)) * pow(across, 2.) * k;
-      lit += vec3(1., .93, .8) * highlight.a * exitGlow * .25;
-      // The whole form turns from the light: a little lighter on the side that faces it.
-      float side = clamp(dot((p - c) / max(h, vec2(1.)), normalize(light - c + 1e-4)) * .5 + .5, 0., 1.);
-      lit += highlight.rgb * highlight.a * .1 * side * side * k;
+      vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k)
+        + band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
       // Light on clear glass shows as much as it's bright. On art that fills the frame (q.a is 1) this is
       // the same as before: the art, body and tint, plus the light, clamped.
       q.a = clamp(max(q.a, max(lit.r, max(lit.g, lit.b))), 0., 1.);
