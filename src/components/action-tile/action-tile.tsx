@@ -73,7 +73,8 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   const lit = useContext(LitContext);
   const inLitContainer = useContext(MaterialContext) !== null || lit;
   const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
-  useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens });
+  // Sunlight's long reach, as in the Glass playground: every tile in the group catches it evenly.
+  useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens, reach: 6 });
   return (
     <div ref={ref} className={`ds-tiles ds-tiles--${behavior}`}>
       {behavior === 'switch' ? (

@@ -133,7 +133,9 @@ export function BothThemes({ children }: { children: ReactNode }) {
 function ThemePanel({ theme, heading, children }: { theme: Theme; heading: boolean; children: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
   const lens = useMemo(() => ({ art: storyPageArt(theme) }), [theme]);
-  useGlassLight(ref, { selector: '.ds-glass', lens });
+  // The same long reach as the Glass playground: sunlight is even across the page, so every piece of
+  // glass catches it about as strongly wherever the sun is.
+  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6 });
   return (
     <section ref={ref} data-theme={theme} style={{ ...panel, position: 'relative', isolation: 'isolate', background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
       {heading && <p style={themeHeading}>{themeNames[theme]}</p>}
@@ -203,7 +205,7 @@ export function OnMarble({ marble = marbles[0], material = 'glass', children, la
   const ref = useRef<HTMLDivElement>(null);
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   const art = useMemo(() => (material === 'glass' ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [material, marble.texture, night]);
-  useGlassLight(ref, { selector: '.ds-glass', lens: art });
+  useGlassLight(ref, { selector: '.ds-glass', lens: art, reach: 6 });
   const style: CSSProperties = {
     position: 'relative',
     isolation: 'isolate',

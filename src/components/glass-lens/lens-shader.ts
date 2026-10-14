@@ -169,7 +169,9 @@ void main() {
       q = vec4(tint.rgb * tint.a, tint.a) + q * (1. - tint.a);
       // Light: the rim facing the light is brightest; a soft band inside it catches the light too.
       vec2 L = normalize(light - p + 1e-4);
-      float facing = max(dot(n, L), 0.);
+      // The light is above the page, not level with it, so every edge turned toward it at all catches
+      // some light, softly, with the brightest edge the one facing it most (light wrapping round).
+      float facing = clamp((dot(n, L) + .35) / 1.35, 0., 1.);
       // A neighbor between this edge and the light blocks some of it, so the edges across a gap catch
       // less light than the open outer edges. Look a short way toward the light: the nearer the
       // neighbor, the more it blocks. Never all of it, since the light also comes from above.

@@ -23,11 +23,13 @@
   --_soft: calc(1.6 - 0.6 * var(--_k));
   /* Kept in --g-shadow too, so a component with its own box-shadow rule (Button) can use the recipe. */
   box-shadow: var(--g-shadow);
+  /* An inset shadow shows on the edge opposite its offset, so the highlight is pushed away from the
+     light (it lands on the lit edge) and the shade toward it (it lands on the far edge). */
   --g-shadow:
     calc(var(--light-dx) * -1 * var(--_d) * var(--glass-lift)) calc(var(--light-dy) * -1 * var(--_d) * var(--glass-lift)) calc(var(--g-cast-blur) * var(--glass-lift) * var(--_soft)) color-mix(in srgb, var(--g-cast) calc(var(--_k) * 100%), transparent),
     calc(var(--light-dx) * -0.2 * var(--_d)) calc(var(--light-dy) * -0.2 * var(--_d)) calc(var(--_d) * 0.36 * var(--_soft)) color-mix(in srgb, var(--g-contact) calc(var(--_k) * 100%), transparent),
-    inset calc(var(--light-dx) * 0.4 * var(--_d)) calc(var(--light-dy) * 0.4 * var(--_d)) calc(var(--_d) * 0.7) calc(var(--_d) * -0.36) color-mix(in srgb, var(--g-highlight) calc(var(--_k) * var(--glass-edge-light) * 100%), transparent),
-    inset calc(var(--light-dx) * -0.35 * var(--_d)) calc(var(--light-dy) * -0.35 * var(--_d)) calc(var(--_d) * 0.62 * var(--_soft)) calc(var(--_d) * -0.36) color-mix(in srgb, var(--g-shade) calc(var(--_k) * var(--glass-edge-light) * 100%), transparent),
+    inset calc(var(--light-dx) * -0.4 * var(--_d)) calc(var(--light-dy) * -0.4 * var(--_d)) calc(var(--_d) * 0.7) calc(var(--_d) * -0.36) color-mix(in srgb, var(--g-highlight) calc(var(--_k) * var(--glass-edge-light) * 100%), transparent),
+    inset calc(var(--light-dx) * 0.35 * var(--_d)) calc(var(--light-dy) * 0.35 * var(--_d)) calc(var(--_d) * 0.62 * var(--_soft)) calc(var(--_d) * -0.36) color-mix(in srgb, var(--g-shade) calc(var(--_k) * var(--glass-edge-light) * 100%), transparent),
     var(--g-extra-shadow, 0 0 0 0 transparent);
 }
 
