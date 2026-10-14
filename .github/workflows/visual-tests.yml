@@ -1,15 +1,18 @@
 # Visual tests: screenshots every Storybook story at phone, tablet and desktop and
 # compares them with the approved screenshots in tests/visual/__screenshots__.
-# If something looks different, this check fails. Download the "visual-report" file
-# from the run to see before, after and the difference.
+# If something looks different, this check fails and comments on the pull request with
+# a link to the "visual-report" file: before, after and the difference.
 # Meant the change? Add the "update-screenshots" label to the pull request to approve it.
 name: Visual tests
+# Runs on pull requests only: main changes only through them, so a second run after a merge
+# would check nothing new.
 on:
   pull_request:
-  push:
-    branches: [main]
   # Lets the update-screenshots job rerun this check on its own commit.
   workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: write
 jobs:
   visual:
     runs-on: ubuntu-latest
@@ -17,18 +20,74 @@ jobs:
     container: mcr.microsoft.com/playwright:v1.56.1-noble
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v6
+        with:
+          fetch-depth: 0
+      # Main requires this check, so it always runs, but it only takes screenshots when a change
+      # could alter a screen. Docs, the wiki, unit tests and workflows (other than this one and the
+      # screenshot approval) can't, so those pull requests pass in seconds.
+      - id: changes
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "${{ github.event_name }}" != "pull_request" ]; then echo "screens=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          screens=false
+          for f in $(git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"); do
+            case "$f" in
+              docs/*|README.md|CLAUDE.md|skills-lock.json) ;;
+              .github/pull_request_template.md|.github/workflows/ci.yml|.github/workflows/publish-wiki.yml) ;;
+              scripts/screenshot-summary.mjs) ;;
+              tests/visual/*) screens=true ;;
+              tests/*) ;;
+              *) screens=true ;;
+            esac
+          done
+          echo "screens=$screens" >> "$GITHUB_OUTPUT"
+          [ "$screens" = true ] || echo "No screen can change in this pull request, so no screenshots are needed."
+      - if: steps.changes.outputs.screens == 'true'
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
-      - run: npm run build-storybook
-      - run: npx playwright test
+      - if: steps.changes.outputs.screens == 'true'
+        run: npm ci
+      - if: steps.changes.outputs.screens == 'true'
+        run: npm run build-storybook
+      - if: steps.changes.outputs.screens == 'true'
+        run: npx playwright test
         env:
           HOME: /root
       - if: failure()
+        id: report
         uses: actions/upload-artifact@v7
         with:
           name: visual-report
           path: playwright-report/
           retention-days: 14
+      # Puts a link to the images on the pull request, so there's nothing to hunt for.
+      # Updates its own comment instead of adding a new one each run.
+      - if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v8
+        env:
+          OUTCOME: ${{ job.status }}
+          REPORT_URL: ${{ steps.report.outputs.artifact-url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        with:
+          script: |
+            const marker = '<!-- visual-check -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = comments.find((c) => c.body.includes(marker));
+            const failed = process.env.OUTCOME !== 'success';
+            if (!failed && !mine) return;
+            const body = failed
+              ? [
+                  marker,
+                  '**Visual check: something looks different.**',
+                  '',
+                  `[Download the images](${process.env.REPORT_URL || process.env.RUN_URL}), then open \`index.html\` inside to see before, after and the difference.`,
+                  '',
+                  'Meant the change? Add the `update-screenshots` label to approve it.',
+                ].join('\n')
+              : `${marker}\n**Visual check: everything matches now.**`;
+            if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            else await github.rest.issues.createComment({ owner, repo, issue_number, body });

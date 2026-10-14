@@ -1,0 +1,577 @@
+/* Life Hub sky header: exploration. The sky's colors arrive as custom properties from sky.ts. They are
+   registered so the browser can blend them: following the real clock, each minute's change glides over
+   that minute, so sunset happens as slowly as the real one. */
+@property --sky-top { syntax: '<color>'; inherits: true; initial-value: #fdfbf9; }
+@property --sky-bottom { syntax: '<color>'; inherits: true; initial-value: #faf7f1; }
+@property --sky-glow { syntax: '<color>'; inherits: true; initial-value: #fdfbf1; }
+@property --sky-glow-a { syntax: '<number>'; inherits: true; initial-value: 0.9; }
+@property --sky-veil-ink { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-veil-paper { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-horizon { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --sky-a { syntax: '<number>'; inherits: true; initial-value: 1; }
+@property --sky-stars { syntax: '<number>'; inherits: true; initial-value: 0; }
+@property --twinkle { syntax: '<number>'; inherits: false; initial-value: 1; }
+
+.lh-sky {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  /* The buttons' bottom edge lines up with the greeting card's bottom edge. */
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  /* Border-box, so the minimum includes the padding and the space under the card matches the space above. */
+  box-sizing: border-box;
+  min-block-size: 193px;
+  /* Edge to edge across the top of the page, like After Graduation's header. The marble runs behind it
+     and continues below. */
+  padding: var(--space-6);
+  border-radius: 0;
+  background:
+    /* the light itself, on the orb. Wide and eased very gradually (close to a Gaussian falloff), so it reads
+       as warmth across the sky, never a visible patch of color. Colors and strengths are Sharon's Oct 8
+       settings; only the size and falloff changed when the light moved to the orb. */
+    radial-gradient(
+      90% 260% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 100%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 90%), transparent) 8%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 72%), transparent) 18%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 50%), transparent) 30%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 30%), transparent) 44%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 15%), transparent) 58%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 6%), transparent) 72%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 2%), transparent) 86%,
+      transparent 100%
+    ),
+    /* its wider bloom, eased the same way */
+    radial-gradient(
+      170% 380% at var(--sky-glow-x) var(--sky-glow-y),
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 38%), transparent) 0%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 28%), transparent) 20%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 16%), transparent) 40%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 7%), transparent) 60%,
+      color-mix(in srgb, var(--sky-glow) calc(var(--sky-glow-a) * 2%), transparent) 80%,
+      transparent 100%
+    ),
+    /* warm band along the bottom at sunrise and sunset */
+    linear-gradient(to top, color-mix(in srgb, var(--sky-glow) calc(var(--sky-horizon) * 55%), transparent), transparent 60%),
+    linear-gradient(
+      color-mix(in srgb, var(--sky-top) calc(var(--sky-a) * 100%), transparent),
+      color-mix(in srgb, var(--sky-bottom) calc(var(--sky-a) * 100%), transparent)
+    );
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  transition:
+    --sky-top 60s linear, --sky-bottom 60s linear, --sky-glow 60s linear, --sky-glow-a 60s linear,
+    --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear,
+    --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
+}
+/* Glass: the marble shows through, blurred, with a rim lit from the orb like the cards. */
+.lh-sky--glass {
+  backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
+  box-shadow: var(--card-shadow);
+}
+.lh-sky--glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: var(--card-rim);
+  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
+}
+.lh-sky--instant {
+  /* Scrubbing: the sky follows every frame. The tints still take 1.5 seconds, the same as the text, so
+     when the text switches between dark and light, its tint switches with it. */
+  transition: --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear;
+}
+
+/* The page's marble swirl continues through the sky as soft light, like clouds by day and the Milky Way
+   at night. It's plain white light shaped by the marble's own light and shade (a luminance mask), lined up
+   with the page's marble, so the sky keeps its color. Drawn without filters or blend modes: either one,
+   under the buttons' bending glass, left a visible seam. */
+.lh-sky__swirl {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: var(--sky-page-h, 100%);
+  z-index: -2;
+  pointer-events: none;
+  background: #fff;
+  -webkit-mask: var(--sky-swirl) center / cover;
+  mask: var(--sky-swirl) center / cover luminance;
+  /* An estimate: a whisper by day, a little more at night where it reads as the Milky Way. */
+  opacity: calc(0.06 + var(--sky-stars) * 0.1);
+}
+
+/* The divider between the header and the marble, lit from the orb (--edge-x is the orb's spot across).
+   Two styles (edge prop): clean, a lit rim with a shadow cast on the page; fade, the sky dissolves into
+   the page with no line at all.
+   Clean: near the light, a brighter rim and a short, dark, crisp shadow; farther away, a fainter rim and a
+   longer, softer shadow that still reads clearly under the greeting. The same glass tokens as every other
+   shadow (glass.css); the reach and falloff are estimates. */
+.lh-sky__edge {
+  position: relative;
+  z-index: 1;
+  block-size: 0;
+  pointer-events: none;
+}
+.lh-sky__edge::before,
+.lh-sky__edge::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+}
+/* Near the light */
+.lh-sky__edge::before {
+  block-size: calc(var(--glass-cast-distance) * 2);
+  background:
+    linear-gradient(var(--_rim, var(--glass-rim-color)), var(--_rim, var(--glass-rim-color))) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-contact), transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);
+}
+/* Farther away: longer and softer, reaching well under the greeting */
+.lh-sky__edge::after {
+  block-size: calc(var(--glass-cast-blur) * 1.8);
+  background:
+    linear-gradient(var(--glass-rim-faint), var(--glass-rim-faint)) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-cast), color-mix(in srgb, var(--glass-cast) 40%, transparent) 35%, transparent);
+  -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.75) 45%, black 100%);
+  mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, rgb(0 0 0 / 0.35), rgb(0 0 0 / 0.75) 45%, black 100%);
+}
+/* Fade: no edge; the sky melts into the page below, and the buttons line up with the top of the card
+   since there's no bottom line to anchor them to. */
+.lh-sky--fade {
+  align-items: flex-start;
+  /* A tall, slow fade that starts well below the greeting, so the card sits fully in the sky. */
+  padding-block-end: calc(var(--space-6) + 120px);
+  -webkit-mask: linear-gradient(black calc(100% - 150px), rgb(0 0 0 / 0.6) calc(100% - 90px), rgb(0 0 0 / 0.2) calc(100% - 40px), transparent);
+  mask: linear-gradient(black calc(100% - 150px), rgb(0 0 0 / 0.6) calc(100% - 90px), rgb(0 0 0 / 0.2) calc(100% - 40px), transparent);
+}
+.lh-sky--fade + .lh-sky__edge {
+  display: none;
+}
+
+/* Stars fade in at dusk and twinkle slowly. */
+.lh-sky__stars {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* Stars everywhere except behind the greeting card. The component measures the card into --sky-hole-*;
+     the fallback hole covers the card's usual spot. */
+  -webkit-mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat,
+    linear-gradient(black 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(black 0 0) var(--sky-hole-x, 8px) var(--sky-hole-y, 8px) / var(--sky-hole-w, 412px) var(--sky-hole-h, 182px) no-repeat exclude,
+    linear-gradient(black 0 0);
+}
+.lh-sky__star {
+  position: absolute;
+  border-radius: var(--radius-pill);
+  /* Starlight stays white in both modes (ink-inverse turns dark in dark mode). */
+  background: var(--palette-paper-warm);
+  opacity: calc(var(--sky-stars) * var(--b) * var(--twinkle));
+  /* A gentle twinkle: dimmer and a touch smaller, then back. */
+  scale: calc(0.8 + var(--twinkle) * 0.3);
+  animation: lh-twinkle 6s ease-in-out infinite alternate;
+}
+.lh-sky__star--bright {
+  box-shadow: 0 0 5px 1px color-mix(in srgb, var(--palette-paper-warm) 85%, transparent);
+}
+@keyframes lh-twinkle {
+  from { --twinkle: 1; }
+  to { --twinkle: 0.2; }
+}
+
+/* The greeting and the two buttons are glass on art, the same clear glass as After Graduation's episode
+   tabs: no fill, no frost, lit by the orb with the shared recipe (glass.css), with the tile settings for
+   glass on artwork. The sky is the art. At twilight only, a veil (computed in sky.ts) deepens or lightens
+   them just enough for the text to stay readable. The readability math in sky.ts uses the same clear
+   fill (a test checks they match). */
+.lh-sky {
+  --lh-sky-glass: transparent;
+}
+.lh-sky .lh-sky__card,
+.lh-sky__action {
+  /* Brighter light, brighter highlights: the rim and inner highlight follow the sky's light strength. */
+  --g-rim-color: color-mix(in srgb, white calc(70% + var(--sky-glow-a) * 30%), transparent);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  --g-highlight: color-mix(in srgb, var(--palette-paper-warm) calc(45% + var(--sky-glow-a) * 40%), transparent);
+  --g-shade: var(--glass-shade);
+  --g-cast: var(--glass-cast);
+  --g-contact: var(--glass-contact);
+  --g-cast-distance: var(--glass-cast-distance);
+  --g-cast-blur: var(--glass-cast-blur);
+  --g-extra-shadow: 0 0 0 0 transparent;
+}
+/* The card hugs its words: as wide as its longest line, wrapping only when the screen is narrower. */
+.lh-sky__card {
+  flex: 0 1 auto;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.lh-sky .lh-sky__card {
+  --card-frost: var(--lh-sky-glass);
+  --card-backdrop: blur(var(--material-blur-on-art));
+  border-color: transparent;
+  background-color: var(--lh-sky-glass);
+
+}
+
+/* Readability at sunrise and sunset: instead of tinting the glass, a soft glow hugs the letters for the
+   few minutes the sky is mid-tone, lit by the orb (--light-dx and --light-dy, set on each piece of glass by
+   the light helper). A dark glow is a shadow, so it falls away from the orb. A cream glow is light, so it
+   leans toward the orb, like a highlight.
+   Ink behind light text, paper behind dark text, as strong as sky.ts says the text needs (--sky-veil-*),
+   and nothing at all the rest of the day. */
+.lh-sky__card,
+.lh-sky__action {
+  --_halo-ink: color-mix(in srgb, var(--palette-ink-primary) calc(min(1, var(--sky-veil-ink) * 3.5) * 100%), transparent);
+  --_halo-paper: color-mix(in srgb, var(--palette-paper-off-white) calc(min(1, var(--sky-veil-paper) * 3.5) * 100%), transparent);
+  --_halo-x: calc(var(--light-dx, 0) * -2px);
+  --_halo-y: calc(var(--light-dy, 0) * -2px);
+}
+.lh-sky__meta,
+.lh-sky__title,
+.lh-sky__prompt,
+.lh-sky__action {
+  text-shadow:
+    0 0 3px var(--_halo-ink),
+    var(--_halo-x) var(--_halo-y) 5px var(--_halo-ink),
+    calc(var(--_halo-x) * 2) calc(var(--_halo-y) * 2) 14px var(--_halo-ink),
+    0 0 3px var(--_halo-paper),
+    calc(var(--_halo-x) * -1) calc(var(--_halo-y) * -1) 5px var(--_halo-paper),
+    calc(var(--_halo-x) * -2) calc(var(--_halo-y) * -2) 14px var(--_halo-paper);
+}
+
+/* Let's chat and Settings: glass pills on the right. */
+.lh-sky__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.lh-sky__action {
+  --g-radius: var(--radius-pill);
+  white-space: nowrap;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: var(--control-height-large);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-2) var(--space-5);
+  border: none;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-ink-primary);
+  font-family: var(--font-family-body);
+  font-size: var(--type-body-default-size);
+  font-weight: 600;
+  line-height: var(--type-body-default-line-height);
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.lh-sky__action-glass {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--lh-sky-glass);
+  /* Truly clear: no blur and no edge bending, so the stars and swirl show straight through. The bending
+     (glass-bend) pulled the sky across Chrome's drawing tiles and left a cross-shaped seam, most visible
+     at sunrise, so it's off here until the shared bend is fixed. */
+  backdrop-filter: none;
+}
+.lh-sky__action[data-hovered] {
+  --light-k: 1;
+  --glass-lift: 1.5;
+  translate: 0 calc(-1 * var(--motion-lift-large));
+}
+.lh-sky__action[data-pressed] {
+  scale: 0.985;
+}
+.lh-sky__action[data-focus-visible] {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* The greeting card and buttons use the action tile glass from the Action tile variants exploration
+   (storybook-backgrounds branch, Oct 8): one recipe for light mode, one for dark, picked by the sky's own
+   mode (data-mode on the header).
+   Light (day): no stroke, since a rim only shows as a gray outline on a light page. Soft, spread daylight
+   shadows, a bright highlight, and the sky behind lifted toward white but still sharp, as if seen
+   through the glass. */
+.lh-sky[data-mode='light'] .lh-sky__card,
+.lh-sky[data-mode='light'] .lh-sky__action {
+  --g-rim-base: transparent;
+  --g-rim-strength: 0;
+  --g-rim-glint: 0;
+  --g-highlight: rgb(253 251 241 / 0.8);
+  --g-shade: rgb(29 26 24 / 0.07);
+  --g-cast: rgb(29 26 24 / 0.075);
+  --g-contact: rgb(29 26 24 / 0.05);
+  --g-cast-distance: 11px;
+  --g-cast-blur: 36px;
+}
+.lh-sky[data-mode='light'] .lh-sky__card::after,
+.lh-sky[data-mode='light'] .lh-sky__action-glass {
+  -webkit-mask: none;
+  mask: none;
+  -webkit-backdrop-filter: contrast(0.55) brightness(1.3);
+  backdrop-filter: contrast(0.55) brightness(1.3);
+}
+/* Dark (night): the glass of After Graduation's settled header tiles, with black shadows. */
+.lh-sky[data-mode='dark'] .lh-sky__card,
+.lh-sky[data-mode='dark'] .lh-sky__action {
+  --g-rim-width: 1px;
+  --g-rim-color: rgb(255 255 255 / 0.8);
+  --g-rim-base: rgb(255 255 255 / 0.18);
+  --g-rim-strength: 1.25;
+  --g-rim-glint: 0.25;
+  --g-rim-spread-x: 70%;
+  --g-rim-spread-y: 150%;
+  --g-highlight: rgb(255 255 255 / 0.55);
+  --g-shade: rgb(0 0 0 / 0.3);
+  --g-cast: rgb(0 0 0 / 0.38);
+  --g-cast-distance: 8px;
+  --g-cast-blur: 22px;
+  --g-contact: rgb(0 0 0 / 0.38);
+}
+
+/* Narrow screens: once the buttons wrap below the greeting, they fill the card's width. Let's chat takes the larger
+   share, since it's the main action. */
+.lh-sky--stacked .lh-sky__actions {
+  /* As wide as the greeting card above, so the two line up on both edges. */
+  flex: 0 0 auto;
+  inline-size: var(--sky-card-w, 100%);
+  flex-wrap: nowrap;
+}
+.lh-sky--stacked .lh-sky__action {
+  /* Space is shared 3 to 2, but never narrower than the button's own label. */
+  flex: 2 1 0;
+  min-inline-size: max-content;
+  justify-content: center;
+  padding-inline-end: var(--space-4);
+}
+.lh-sky--stacked .lh-sky__action--lit-within {
+  flex-grow: 3;
+}
+/* Phones (under 600px, the compact screen size): Settings shows only its gear and count, like the
+   Life Hub page, and Let's chat fills the rest of the row. The label stays for screen readers. */
+@media (width < 37.5rem) {
+  .lh-sky--stacked .lh-sky__action:not(.lh-sky__action--lit-within) {
+    flex: none;
+    padding-inline: var(--space-2);
+  }
+  .lh-sky--stacked .lh-sky__action:not(.lh-sky__action--lit-within) .lh-sky__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .lh-sky--stacked .lh-sky__action--lit-within {
+    flex: 1 1 auto;
+  }
+}
+
+/* The orb: the header's light, in the page's own color. It keeps the swirl of Life Hub's original orb
+   (a still frame from its fullest swirl, so it never distracts), recolored into the page's color family: the swirl's
+   light and shade, tinted up to 400 (blend mode "color"), over a bright 100 center. Its light spills out as a
+   bloom of its own color, about the same by day and night, a little brighter at night. */
+.lh-sky__orb {
+  --_n: var(--sky-stars);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  flex: none;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(circle at 50% 50%, var(--orb-1) 0%, var(--orb-2) 70%, var(--orb-3) 100%);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--palette-ink-primary) 8%, transparent),
+    0 0 8px 2px color-mix(in srgb, var(--orb-2) 85%, transparent),
+    0 0 20px 7px color-mix(in srgb, var(--orb-3) calc(60% + var(--_n) * 10%), transparent),
+    0 0 40px 14px color-mix(in srgb, var(--orb-2) calc(28% + var(--_n) * 10%), transparent);
+}
+/* The swirl: a frame of the original orb's swirl, already gray and lifted into the light range (55 to
+   100% brightness), so it only ever shows light shades. */
+.lh-sky__orb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--orb-pattern) center / cover;
+  mix-blend-mode: luminosity;
+}
+/* The page's color laid over the swirl. Its hue and strength reach the 400 shade so the swirl shows color;
+   the swirl itself keeps the brightness, so the orb still reads as light. */
+.lh-sky__orb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, var(--orb-2), var(--orb-4));
+  mix-blend-mode: color;
+}
+
+/* Glass at its full lighting, as before the orb became the source: only the light's direction comes
+   from the orb, not a fade with distance. (The light helper sets --light-k inline, hence !important.) */
+.lh-sky .ds-glass {
+  --light-k: 1 !important;
+}
+/* Let's chat holds the light, so it is lit from within, the way a lamp inside glass looks: the rim
+   glows all the way round, brightest at the orb's end, and the shadow sits evenly underneath instead
+   of being pushed away from the light. */
+.lh-sky .lh-sky__action--lit-within {
+  --light-x: 8%;
+  --light-y: 50%;
+  --light-dx: 0;
+  --light-dy: 0;
+  --g-rim-spread-x: 160%;
+  --g-rim-spread-y: 260%;
+  --g-rim-glint: 0;
+  /* No inner shade: light from inside leaves no dark side, and an even shade all round reads as a fill. */
+  --g-shade: transparent;
+}
+
+.lh-sky__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 36px;
+  block-size: 36px;
+  border-radius: var(--radius-pill);
+}
+/* The count says how many updates are waiting, so the dot is never color alone. Berry pie 700 from the palette
+   until there is a badge token; the number on it passes 4.5:1. */
+.lh-sky__count {
+  /* The badge is its own solid shape; the text glow is only for text on the sky. */
+  text-shadow: none;
+  position: absolute;
+  inset-block-start: -2px;
+  inset-inline-end: -4px;
+  display: grid;
+  place-items: center;
+  min-inline-size: 18px;
+  block-size: 18px;
+  padding-inline: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--palette-berry-pie-700);
+  color: var(--palette-paper-off-white);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lh-sky__sr {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.lh-sky__meta {
+  margin: 0;
+  /* Secondary, not tertiary: it lets the glass stay clear all day (see readability in sky.ts). */
+  color: var(--color-ink-secondary);
+  font-size: var(--type-label-meta-size);
+  line-height: var(--type-label-meta-line-height);
+}
+.lh-sky__title {
+  margin: var(--space-1) 0 0;
+  font-family: var(--type-display-m-family);
+  font-size: var(--type-display-m-size);
+  font-weight: var(--type-display-m-weight);
+  line-height: var(--type-display-m-line-height);
+  letter-spacing: var(--type-display-m-letter-spacing);
+  color: var(--color-ink-primary);
+}
+.lh-sky__prompt {
+  margin: var(--space-2) 0 0;
+  color: var(--color-ink-secondary);
+  font-size: var(--type-body-default-size);
+  line-height: var(--type-body-default-line-height);
+}
+
+/* Text never pops. When the sky turns light or dark, text colors fade with it, and a new greeting
+   crossfades over the old one. About 1.5 seconds: well under the 5 seconds where motion needs a pause control,
+   and the settled text always meets contrast. */
+.lh-sky__meta,
+.lh-sky__title,
+.lh-sky__prompt {
+  transition: color 1.5s ease-in-out;
+}
+.lh-sky__action {
+  transition:
+    color 1.5s ease-in-out,
+    box-shadow var(--motion-duration-fast) var(--motion-easing-out),
+    translate var(--motion-duration-fast) var(--motion-easing-out),
+    scale var(--motion-duration-instant) var(--motion-easing-out);
+}
+.lh-fade--moving .lh-fade__item {
+  white-space: nowrap;
+}
+.lh-fade {
+  display: inline-grid;
+  max-inline-size: 100%;
+  vertical-align: top;
+  transition: width 1.5s ease-in-out;
+}
+.lh-fade__item {
+  grid-area: 1 / 1;
+  animation: lh-fade-in 1.5s ease-in-out both;
+}
+.lh-fade__item--out {
+  animation: lh-fade-out 1.5s ease-in-out both;
+}
+@keyframes lh-fade-in {
+  from { opacity: 0; }
+}
+@keyframes lh-fade-out {
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lh-fade__item,
+  .lh-fade__item--out {
+    animation-duration: var(--motion-duration-fast, 140ms);
+  }
+  .lh-sky {
+    transition: none;
+  }
+  .lh-fade {
+    transition-duration: var(--motion-duration-fast, 140ms);
+  }
+  .lh-sky__action {
+    transition: none;
+  }
+  .lh-sky__star {
+    animation: none;
+  }
+}
+
+/* The page's light and dark crossfade (Follow the sun): slow, easing in and out like dimming light. */
+html.lh-mode-fade::view-transition-old(root),
+html.lh-mode-fade::view-transition-new(root) {
+  animation-duration: 4s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+}
