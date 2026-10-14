@@ -10,6 +10,8 @@ import { ThemeContext } from '../../components/story-helpers';
 
 const meta: Meta = {
   title: 'Explorations/After Graduation crimson',
+  // Made for one theme, so the visual check screenshots it in that theme only.
+  tags: ['only:after-graduation'],
   parameters: {
     docs: {
       description: {

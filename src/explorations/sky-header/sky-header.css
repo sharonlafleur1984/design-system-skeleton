@@ -68,23 +68,11 @@
     --sky-veil-ink 1.5s linear, --sky-veil-paper 1.5s linear,
     --sky-horizon 60s linear, --sky-stars 60s linear, --sky-a 60s linear;
 }
-/* Glass: the marble shows through, blurred, with a rim lit from the orb like the cards. */
+/* Glass: the marble shows through, blurred. Its rim never drew (the token it used was renamed), so it's
+   left off until the Sunrise header is built (it should be lit from the orb like the cards). */
 .lh-sky--glass {
   backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
   box-shadow: var(--card-shadow);
-}
-.lh-sky--glass::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  background: var(--card-rim);
-  -webkit-mask: linear-gradient(black 0 0) content-box, linear-gradient(black 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(black 0 0) content-box exclude, linear-gradient(black 0 0);
 }
 .lh-sky--instant {
   /* Scrubbing: the sky follows every frame. The tints still take 1.5 seconds, the same as the text, so
@@ -133,7 +121,7 @@
 .lh-sky__edge::before {
   block-size: calc(var(--glass-cast-distance) * 2);
   background:
-    linear-gradient(var(--_rim, var(--glass-rim-color)), var(--_rim, var(--glass-rim-color))) top / 100% var(--glass-rim-width) no-repeat,
+    linear-gradient(var(--glass-rim-color), var(--glass-rim-color)) top / 100% var(--glass-rim-width) no-repeat,
     linear-gradient(var(--glass-contact), transparent);
   -webkit-mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);
   mask: radial-gradient(70% 400% at var(--edge-x, 85%) 0, black, rgb(0 0 0 / 0.55) 55%, rgb(0 0 0 / 0.25) 100%);

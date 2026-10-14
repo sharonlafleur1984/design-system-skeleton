@@ -62,9 +62,7 @@
     "./base.css": "./dist/base.css",
     "./components.css": "./dist/index.css",
     "./themes/*.css": "./build/css/*.css",
-    "./fonts/after-graduation.css": "./dist/fonts-after-graduation.css",
-    "./fonts/life-hub.css": "./dist/fonts-life-hub.css",
-    "./fonts/designer-toolkit.css": "./dist/fonts-designer-toolkit.css",
+    "./fonts/*.css": "./dist/fonts-*.css",
     "./text-styles.css": "./dist/text-styles.css"
   },
   "files": [

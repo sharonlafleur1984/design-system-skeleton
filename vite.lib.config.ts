@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -15,9 +16,8 @@ export default defineConfig({
       entry: {
         index: 'src/components/index.ts',
         base: 'src/base.css',
-        'fonts-after-graduation': 'src/fonts/after-graduation.css',
-        'fonts-life-hub': 'src/fonts/life-hub.css',
-        'fonts-designer-toolkit': 'src/fonts/designer-toolkit.css',
+        // One font file per theme, found by name (src/fonts/<theme>.css).
+        ...Object.fromEntries(readdirSync('src/fonts').filter((f) => f.endsWith('.css')).map((f) => [`fonts-${f.replace('.css', '')}`, `src/fonts/${f}`])),
         // Text style classes (.ds-text-body-default), generated from the tokens by npm run tokens.
         'text-styles': 'build/text-styles.css',
       },

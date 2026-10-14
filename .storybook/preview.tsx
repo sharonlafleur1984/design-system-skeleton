@@ -1,17 +1,16 @@
 import type { Preview } from '@storybook/react-vite';
-import '../build/css/life-hub.css';
-import '../build/css/after-graduation.css';
-import '../build/css/designer-toolkit.css';
-import '../src/fonts/life-hub.css';
-import '../src/fonts/after-graduation.css';
-import '../src/fonts/designer-toolkit.css';
 import '../src/base.css';
+import themes from '../build/themes.json';
 import '../build/text-styles.css';
-import { ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
+import { BothThemes, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
+
+// Every theme's tokens and fonts, found by file name, so a new theme needs no change here.
+import.meta.glob('../build/css/*.css', { eager: true });
+import.meta.glob('../src/fonts/*.css', { eager: true });
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
 // Stories show one product at a time; "All" shows them side by side for comparing.
-// Fireside (the designer toolkit) is always dark, so the Mode switch doesn't change it.
+// A theme marked alwaysDark in its theme.json (Fireside) doesn't change with the Mode switch.
 const preview: Preview = {
   globalTypes: {
     theme: {
@@ -19,12 +18,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
-        items: [
-          { value: 'after-graduation', title: 'Spotlight' },
-          { value: 'life-hub', title: 'Sunrise' },
-          { value: 'designer-toolkit', title: 'Fireside' },
-          { value: 'both', title: 'All, side by side' },
-        ],
+        items: [...themes.map((t) => ({ value: t.id, title: t.name })), { value: 'both', title: 'All' }],
         dynamicTitle: true,
       },
     },
@@ -41,10 +35,10 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { theme: 'after-graduation', mode: 'light' },
+  initialGlobals: { theme: themes[0].id, mode: 'light' },
   decorators: [
     (Story, context) => {
-      const choice = (context.globals.theme ?? 'after-graduation') as ThemeChoice;
+      const choice = (context.globals.theme ?? themes[0].id) as ThemeChoice;
       document.documentElement.setAttribute('data-theme', singleTheme(choice));
       // Always set, so screenshots don't change with the test machine's own light or dark setting.
       document.documentElement.setAttribute('data-mode', context.globals.mode === 'dark' ? 'dark' : 'light');

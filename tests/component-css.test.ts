@@ -42,3 +42,35 @@ describe('component CSS uses tokens only', () => {
     });
   }
 });
+
+// Every var(--name) must be a real token, or a custom property something in src sets itself
+// (like the glass recipe's --g-* or a component's private --_x). A missing token quietly falls back,
+// so the intended look never shows; this catches it.
+describe('component CSS only uses tokens that exist', () => {
+  const srcFiles = (dir: string): string[] =>
+    readdirSync(dir).flatMap((name) => {
+      const path = join(dir, name);
+      if (statSync(path).isDirectory()) return srcFiles(path);
+      return /\.(css|tsx?)$/.test(name) ? [path] : [];
+    });
+  const all = srcFiles('src');
+  const tokens = new Set(
+    readdirSync('build/json')
+      .filter((f) => f.endsWith('.json') && !f.endsWith('.screen-classes.json'))
+      .flatMap((f) => Object.keys(JSON.parse(readFileSync(`build/json/${f}`, 'utf8')))),
+  );
+  // Set in CSS (--x: ...), in a style object ('--x': ...) or from code (setProperty('--x', ...)).
+  const setInSrc = new Set(
+    all.flatMap((f) =>
+      [...readFileSync(f, 'utf8').matchAll(/(?:^|[\s{;'"`(])(--[a-zA-Z0-9_-]+)['"`]?\s*:|setProperty\(\s*['"`](--[a-zA-Z0-9_-]+)/g)].map((m) => (m[1] ?? m[2]).slice(2)),
+    ),
+  );
+  // Set by React Aria itself: the Select popover's width, matched to its button.
+  setInSrc.add('trigger-width');
+  for (const file of [...cssFiles('src/components'), ...cssFiles('src/explorations')]) {
+    it(`${file}: every var() is a token or set in src`, () => {
+      const used = [...withoutComments(readFileSync(file, 'utf8')).matchAll(/var\(\s*--([a-zA-Z0-9_-]+)/g)].map((m) => m[1]);
+      expect([...new Set(used.filter((n) => !tokens.has(n) && !setInSrc.has(n)))]).toEqual([]);
+    });
+  }
+});

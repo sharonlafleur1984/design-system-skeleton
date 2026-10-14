@@ -38,10 +38,10 @@
 }
 .ds-settings__title {
   margin: 0;
-  font-family: var(--type-heading-section-family, var(--type-heading-title-family));
-  font-size: var(--type-heading-section-size, var(--type-heading-title-size));
-  font-weight: var(--type-heading-section-weight, var(--type-heading-title-weight));
-  line-height: var(--type-heading-section-line-height, var(--type-heading-title-line-height));
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
 }
 .ds-settings__back {
   display: inline-flex;

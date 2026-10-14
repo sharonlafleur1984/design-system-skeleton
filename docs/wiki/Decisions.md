@@ -5,6 +5,18 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> Adding a theme is one folder</summary>
+
+- **Decided by:** Sharon
+- **Decision:** a theme is one folder in `tokens/themes/`, with a `theme.json` that names it, plus a fonts file. Storybook, the Foundations pages, the visual tests and the package find it on their own; no theme names are typed into code. Each theme's write-up lives here, on [Themes](Themes). Each product's own docs only name its theme and link here.
+- **New checks:** a component can't use a token that doesn't exist; a theme can't set the same token twice; a theme can't set spacing, sizes or corners, dark mode included; every theme has a `theme.json` and a fonts file.
+- **Explorations** are screenshotted only in the theme they were made for (84 fewer screenshots).
+- **Why:** before, a theme's name was typed into about 10 files, and a missed one failed quietly. The fourth theme is coming.
+- **How to:** [Add a theme](Add-a-theme).
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
 
 - **Decided by:** Sharon
