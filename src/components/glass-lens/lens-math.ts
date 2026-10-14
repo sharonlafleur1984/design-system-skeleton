@@ -87,18 +87,29 @@ export function capDpr(dpr: number | undefined) {
 }
 
 /**
- * Press: how swollen the glass is, 0 to 1, a given time after the press. It swells quickly (the first
- * quarter), then settles back to rest by the end. Returns 0 once the time is up.
+ * Press: how swollen the glass is, 0 to 1, a given time after the press. It swells over the first 40%
+ * and settles back to rest by the end, easing in and out both ways so nothing starts or stops abruptly.
+ * Returns 0 once the time is up.
  */
 export function pressSwell(elapsed: number, duration: number) {
   if (!(duration > 0) || elapsed < 0 || elapsed >= duration) return 0;
-  const rise = duration * 0.25;
+  const rise = duration * 0.4;
   if (elapsed < rise) {
     const t = elapsed / rise;
-    return 1 - (1 - t) * (1 - t); // ease out
+    return t * t * (3 - 2 * t); // smooth rise
   }
   const t = (elapsed - rise) / (duration - rise);
   return 1 - t * t * (3 - 2 * t); // smooth settle
+}
+
+/**
+ * Moves a value part of the way toward its target, so a change glides instead of jumping: after
+ * `tau` ms it has covered about 63% of the way, after 3 x tau about 95%. Frame-rate independent.
+ * A tau of 0 (reduced motion) jumps straight there.
+ */
+export function easeToward(current: number, target: number, dt: number, tau: number) {
+  if (!(tau > 0) || !(dt > 0)) return tau > 0 ? current : target;
+  return target + (current - target) * Math.exp(-dt / tau);
 }
 
 /** A rectangle grown around its center by a scale (the press swell), with its radius grown too and clamped. */

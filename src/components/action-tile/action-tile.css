@@ -305,16 +305,26 @@
   cursor: not-allowed;
 }
 
+/* Every state fades into the next: ease in and out (no sudden start or stop), on the base step for
+   moving and lighting and the slow step for fills, so a chosen tile turns milky at the same pace the
+   lens eases its light and milk (lens.ts). The press stays a little quicker so a tap still answers. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-tile {
     transition:
-      translate var(--motion-duration-fast) var(--motion-easing-out),
-      box-shadow var(--motion-duration-fast) var(--motion-easing-out),
-      background-color var(--motion-duration-fast) var(--motion-easing-out),
-      scale var(--motion-duration-instant) var(--motion-easing-out);
+      translate var(--motion-duration-base) var(--motion-easing-in-out),
+      box-shadow var(--motion-duration-base) var(--motion-easing-in-out),
+      background-color var(--motion-duration-slow) var(--motion-easing-in-out),
+      opacity var(--motion-duration-slow) var(--motion-easing-in-out),
+      scale var(--motion-duration-fast) var(--motion-easing-in-out);
   }
   .ds-tile::after {
-    transition: opacity var(--motion-duration-fast) var(--motion-easing-out);
+    transition: opacity var(--motion-duration-base) var(--motion-easing-in-out);
+  }
+  .ds-tile__glass {
+    transition:
+      background-color var(--motion-duration-slow) var(--motion-easing-in-out),
+      backdrop-filter var(--motion-duration-slow) var(--motion-easing-in-out),
+      -webkit-backdrop-filter var(--motion-duration-slow) var(--motion-easing-in-out);
   }
 }
 

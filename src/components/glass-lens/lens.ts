@@ -7,7 +7,7 @@
 // hover transition or the art's entrance) and pauses off screen. Motion (press swell and phone tilt)
 // is off with reduced motion, from the device or from Settings. With no WebGL, a lost context, Reduce
 // transparency or Increase contrast, nothing is drawn and every glass keeps the classic recipe.
-import { clampRadius, capDpr, pressSwell, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
+import { clampRadius, capDpr, easeToward, pressSwell, tiltMoving, tiltRest, tiltStep, type TiltState } from './lens-math';
 import { createLensRenderer, MAX_LENS_RECTS, type LensLook, type LensRenderer, type Rgba } from './lens-shader';
 import { num, parseColor, resolveColor, type GlassArt } from './lens-art';
 import './glass-lens.css';
@@ -95,6 +95,13 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
   let tiltReading: { beta: number | null; gamma: number | null } | null = null;
   let tiltListening = false;
   let lastFrame = 0;
+  // Every change the lens draws glides instead of jumping: each glass's light, lift, milk and opacity,
+  // and the light itself, ease toward their new values over the theme's motion timing.
+  type Eased = { k: number; lift: number; milk: number; alpha: number };
+  const eased = new WeakMap<HTMLElement, Eased>();
+  let easedLight: { x: number; y: number } | null = null;
+  let lastEase = 0;
+  let settling = false;
   let transitions = 0;
   let transitionUntil = 0;
   const restore: (() => void)[] = [];
@@ -211,7 +218,7 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
   // ---- Drawing.
   const animating = (now: number) =>
-    presses.size > 0 || (tiltListening && tiltMoving(tilt)) || (transitions > 0 && now < transitionUntil) || !!art.isAnimating?.(root);
+    presses.size > 0 || settling || (tiltListening && tiltMoving(tilt)) || (transitions > 0 && now < transitionUntil) || !!art.isAnimating?.(root);
 
   const invalidate = () => {
     if (disposed || raf) return;
@@ -229,10 +236,14 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     }
     draw(now);
     if (visible && active() && animating(now)) invalidate();
-    else lastFrame = 0;
+    else {
+      lastFrame = 0;
+      lastEase = 0;
+    }
   };
 
   const draw = (now: number) => {
+    settling = false;
     if (!canvas || !renderer) return;
     if (!active() || !renderer.ok) {
       canvas.style.visibility = 'hidden';
@@ -259,6 +270,23 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
     const margin = Math.ceil(token('shadow-distance', 2) + token('shadow-blur', 24) + 8);
     const swell = token('press-swell', 1.02);
     const pressDuration = token('press-duration', 300);
+    // How long changes take to glide: the slow motion step for the glass, the fast one for the light
+    // (it follows a drag closely but still glides between arrow-key steps). Reduced motion: no easing.
+    const still = motionReduced();
+    const ms = (name: string, fallback: number) => num(rootCs.getPropertyValue(`--motion-duration-${name}`), fallback);
+    const tauGlass = still ? 0 : ms('slow', 380) / 3;
+    const tauLight = still ? 0 : ms('fast', 140) / 3;
+    const dt = lastEase ? Math.min(64, now - lastEase) : 16;
+    lastEase = now;
+    let unsettled = false;
+    const glide = (current: number, target: number, tau: number) => {
+      const v = easeToward(current, target, dt, tau);
+      if (Math.abs(v - target) > 0.002) {
+        unsettled = true;
+        return v;
+      }
+      return target;
+    };
 
     // Where each glass is, relative to the container (CSS px).
     const boxes = els.map((el) => {
@@ -271,13 +299,19 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       const cs = getComputedStyle(el);
       const k = el.offsetWidth > 0 ? b.width / el.offsetWidth : 1;
       const g = { x: b.left - ox, y: b.top - oy, w: b.width, h: b.height, r: clampRadius(num(cs.borderTopLeftRadius, 0) * k, b.width, b.height) };
-      return {
-        ...g,
+      const target: Eased = {
         k: Math.min(1, Math.max(0, num(cs.getPropertyValue('--light-k'), 1))),
         alpha: Math.min(1, Math.max(0, num(cs.opacity, 1))),
         lift: Math.max(0, num(cs.getPropertyValue('--glass-lift'), 1)),
         milk: Math.min(1, Math.max(0, num(cs.getPropertyValue('--glass-milk'), 0))),
       };
+      const prev = eased.get(el);
+      // Glass seen for the first time starts where it is; after that, every change glides.
+      const now_: Eased = prev
+        ? { k: glide(prev.k, target.k, tauGlass), alpha: glide(prev.alpha, target.alpha, tauGlass), lift: glide(prev.lift, target.lift, tauGlass), milk: glide(prev.milk, target.milk, tauGlass) }
+        : target;
+      eased.set(el, now_);
+      return { ...g, ...now_ };
     });
     let left = Infinity;
     let top = Infinity;
@@ -347,9 +381,15 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
     // The light, nudged a little by the phone's tilt.
     const L = light();
+    // The light, relative to the container (so scrolling doesn't make it lag), gliding to where it is.
+    const tx = L.x - ox;
+    const ty = L.y - oy;
+    const far = !easedLight || Math.hypot(tx - easedLight.x, ty - easedLight.y) > Math.max(root.clientWidth, root.clientHeight) * 0.5;
+    easedLight = far ? { x: tx, y: ty } : { x: glide(easedLight!.x, tx, tauLight), y: glide(easedLight!.y, ty, tauLight) };
+    settling = unsettled;
     const reach = token('tilt-reach', 40);
-    const lx = (L.x - ox - left + tilt.x * reach) * dpr;
-    const ly = (L.y - oy - top + tilt.y * reach) * dpr;
+    const lx = (easedLight.x - left + tilt.x * reach) * dpr;
+    const ly = (easedLight.y - top + tilt.y * reach) * dpr;
 
     renderer.draw({
       light: [lx, ly],

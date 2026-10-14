@@ -54,6 +54,6 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-glass {
-    transition: box-shadow var(--motion-duration-fast) var(--motion-easing-out);
+    transition: box-shadow var(--motion-duration-base) var(--motion-easing-in-out);
   }
 }

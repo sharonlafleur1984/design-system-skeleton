@@ -196,8 +196,14 @@
   --_bg: transparent;
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Glass fades between states like the tiles: ease in and out, nothing sudden. */
   .ds-button--glass {
-    transition: scale var(--motion-duration-instant) var(--motion-easing-out);
+    transition:
+      scale var(--motion-duration-fast) var(--motion-easing-in-out),
+      background-color var(--motion-duration-slow) var(--motion-easing-in-out),
+      color var(--motion-duration-base) var(--motion-easing-in-out),
+      box-shadow var(--motion-duration-base) var(--motion-easing-in-out),
+      opacity var(--motion-duration-slow) var(--motion-easing-in-out);
   }
 }
 

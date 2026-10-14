@@ -18,6 +18,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 - **Action tile in every theme:** a `fill` prop (card, raised, sunken, accent, inverse), soft-light states (focus is a glow; chosen shows the theme's mark, or `chosenIcon`, and Glass turns milky), and Glass that follows the page's light on a plain background. Tiles default to `material="default"`, except on the page shell header, where they're Glass.
 - **`clearArt`** (experimental): lens glass on a background the system doesn't paint.
 - **Glass card for empty states:** a card holding only an empty state can be `material="glass"`; it goes back to `default` once it has content.
+- **Glass transitions glide:** every state change on Glass tiles, glass buttons and the lens eases in and out instead of jumping (off with reduced motion).
 - **Glass light:** edges facing a neighbor catch less light, edges away from the light take the surroundings' colors, chosen (milky) tiles are one even layer with a fuller shadow, daylight highlights are warm, and shadows take the color of the surface they fall on.
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
