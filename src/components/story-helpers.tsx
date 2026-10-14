@@ -71,6 +71,10 @@ export const storyBackgroundsCss = `
 .ds-story-panel > :not(.ds-lens-canvas) ~ :not(.ds-lens-canvas) {
   margin-block-start: var(--space-4);
 }
+/* The tile switch's wrapper is display: contents, so its own margin does nothing. Its first child takes the space instead, so the tiles don't touch the line under the theme's name. */
+.ds-story-panel > :not(.ds-lens-canvas) ~ .ds-tile-switch > :first-child {
+  margin-block-start: var(--space-4);
+}
 .ds-story-stack > * + * {
   margin-block-start: var(--space-7);
 }
