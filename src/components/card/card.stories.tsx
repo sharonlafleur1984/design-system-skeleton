@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useContext, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Card } from './card';
-import { useGlassLight } from '../glass-light/glass-light';
-import { storyPageArt } from '../glass-lens/story-art';
 import { Button } from '../button/button';
-import { BothThemes, PanelThemeContext, ThemeContext, singleTheme, StatePictures } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
@@ -82,32 +80,9 @@ export const WithControls: Story = {
   ),
 };
 
-/**
- * Lights the glass in it from the page's light (the sun Storybook shows) in the theme panel it's drawn in. The panel itself is the
- * lens's root, so the glass bends the panel's real background, with no second layer.
- */
+/** The two cards side by side. The theme panel lights the glass from its own background and the sun. */
 function Lit({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLElement | null>(null);
-  const panel = useContext(PanelThemeContext);
-  const choice = useContext(ThemeContext);
-  const theme = panel ?? singleTheme(choice);
-  const lens = useMemo(() => ({ art: storyPageArt(theme) }), [theme]);
-  // Runs before useGlassLight's own effect, so the light finds the panel.
-  useLayoutEffect(() => {
-    const host = ref.current?.closest<HTMLElement>('section[data-theme]') ?? ref.current;
-    if (host) {
-      host.style.position = 'relative';
-      host.style.isolation = 'isolate';
-    }
-    panelRef.current = host;
-  }, []);
-  useGlassLight(panelRef, { selector: '.ds-glass', lens });
-  return (
-    <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
-      {children}
-    </div>
-  );
+  return <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>{children}</div>;
 }
 
 /** Glass while the card is empty; the default material once it has content. */

@@ -15,7 +15,7 @@ import {
 import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
-import { MaterialContext, materialClass, type Material } from '../material';
+import { LitContext, MaterialContext, materialClass, type Material } from '../material';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -70,7 +70,8 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   // itself, on whatever plain color is behind it.
   // Anywhere else the glass is fully clear (nothing to bend), and the lens draws only its light: the edge,
   // highlight and shadow, which follow the page's light (the light tokens).
-  const inLitContainer = useContext(MaterialContext) !== null;
+  const lit = useContext(LitContext);
+  const inLitContainer = useContext(MaterialContext) !== null || lit;
   const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
   useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens });
   return (

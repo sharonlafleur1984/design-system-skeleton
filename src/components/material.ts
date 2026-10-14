@@ -12,3 +12,9 @@ export const materialClass = (material: Material) => (material === 'glass' ? 'ds
 
 /** A container's material for the components inside it, like the page shell header's tiles. A component's own material prop wins. */
 export const MaterialContext = createContext<Material | null>(null);
+
+/**
+ * True inside a container that lights its own glass with the art behind it (the page shell header, a
+ * page with its background art). Glass groups inside it don't light themselves.
+ */
+export const LitContext = createContext(false);

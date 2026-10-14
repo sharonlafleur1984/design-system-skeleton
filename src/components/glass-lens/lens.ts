@@ -108,6 +108,8 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
 
   const lensElements = () =>
     Array.from(root.querySelectorAll<HTMLElement>(selector)).filter((el) => {
+      // Inside a nested lens container, its own lens draws the glass (with its own art), not this one.
+      if (el.parentElement?.closest('[data-lens-root]') !== root) return false;
       if (getComputedStyle(el).getPropertyValue('--glass-lens').trim() === 'off') return false;
       const r = el.getBoundingClientRect();
       return r.width > 0 && r.height > 0;
@@ -420,6 +422,9 @@ export function attachLens(root: HTMLElement, options: LensControllerOptions, de
       root.style.position = 'relative';
       restore.push(() => (root.style.position = was));
     }
+    // Marks this container as a lens root, so an outer lens leaves the glass inside it alone.
+    root.setAttribute('data-lens-root', '');
+    restore.push(() => root.removeAttribute('data-lens-root'));
     // The canvas sits behind the container's content; the container has to be its own layer for that.
     if (cs.isolation !== 'isolate' && (cs.zIndex === 'auto' || cs.position === 'static')) {
       const was = root.style.isolation;

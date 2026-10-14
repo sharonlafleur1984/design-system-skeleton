@@ -2,7 +2,8 @@ import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, 
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
 import { LIGHT_CHANGE } from './glass-lens/lens';
-import type { Material } from './material';
+import { LitContext, type Material } from './material';
+import { storyPageArt } from './glass-lens/story-art';
 import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
@@ -116,12 +117,30 @@ export function BothThemes({ children }: { children: ReactNode }) {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
       {shown.map((theme) => (
-        <section key={theme} data-theme={theme} style={{ ...panel, background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
-          {shown.length > 1 && <p style={themeHeading}>{themeNames[theme]}</p>}
-          <PanelThemeContext.Provider value={theme}>{children}</PanelThemeContext.Provider>
-        </section>
+        <ThemePanel key={theme} theme={theme} heading={shown.length > 1}>
+          {children}
+        </ThemePanel>
       ))}
     </div>
+  );
+}
+
+/**
+ * One theme's panel: its real page background, and the glass on it lit and bent from that background,
+ * exactly as the Glass playground does it (the same art, the same light). Glass groups inside don't
+ * light themselves, so every glass story shows the glass as designed.
+ */
+function ThemePanel({ theme, heading, children }: { theme: Theme; heading: boolean; children: ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+  const lens = useMemo(() => ({ art: storyPageArt(theme) }), [theme]);
+  useGlassLight(ref, { selector: '.ds-glass', lens });
+  return (
+    <section ref={ref} data-theme={theme} style={{ ...panel, position: 'relative', isolation: 'isolate', background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
+      {heading && <p style={themeHeading}>{themeNames[theme]}</p>}
+      <PanelThemeContext.Provider value={theme}>
+        <LitContext.Provider value>{children}</LitContext.Provider>
+      </PanelThemeContext.Provider>
+    </section>
   );
 }
 
@@ -199,7 +218,7 @@ export function OnMarble({ marble = marbles[0], material = 'glass', children, la
   };
   return (
     <section ref={ref} data-theme="life-hub" style={style} aria-label={label ?? marble.name}>
-      {children}
+      <LitContext.Provider value>{children}</LitContext.Provider>
     </section>
   );
 }
