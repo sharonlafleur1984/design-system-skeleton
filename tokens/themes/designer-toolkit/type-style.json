@@ -1,0 +1,116 @@
+{
+  "type": {
+    "$description": "Fireside's type: Newsreader (serif) for titles and headings, Instrument Sans for everything else, JetBrains Mono for code. Calm and editorial for reading, crisp for the interface. Sizes and line heights live in type-size.json.",
+    "display-cover": {
+      "$description": "The biggest title, used once on a page, like a cover. Newsreader SemiBold, drawn a little tighter as it grows.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.01em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "display-xl": {
+      "$description": "A big display title. Newsreader SemiBold.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.01em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "display-l": {
+      "$description": "Page title, and the title at the top of the document editor. Newsreader SemiBold.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.005em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "display-m": {
+      "$description": "A smaller display title, like a dialog or welcome title. Newsreader SemiBold.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "heading-title": {
+      "$description": "Document title in a panel or card (the toolkit's doc title). Newsreader SemiBold.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "heading-heading": {
+      "$description": "First heading level inside a document. Newsreader SemiBold.",
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "heading-subheading": {
+      "$description": "Second heading level inside a document. Newsreader SemiBold, so it holds up at 14px.",
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.semibold}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.display}"
+      }
+    },
+    "label": {
+      "$description": "Section label, like PROPERTIES. Instrument Sans SemiBold in capitals, spaced out so small capitals stay readable. 10px, raised from the toolkit's 9px with Sharon's approval (Oct 14).",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0.08em"
+      }
+    },
+    "label-meta": {
+      "$description": "Dates and short metadata in capitals. Regular weight: Instrument Sans has no light weight, and faking one would blur it.",
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0.04em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      }
+    }
+  }
+}

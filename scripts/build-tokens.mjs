@@ -9,7 +9,7 @@
 //    The CSS adds media queries: medium under 840px, compact under 600px.
 import StyleDictionary from 'style-dictionary';
 import { formattedVariables } from 'style-dictionary/utils';
-import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs';
+import { appendFileSync, existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 
 const EXT = 'com.sharon.screen-class';
 const BASE_PX = 16;
@@ -149,3 +149,32 @@ for (const theme of themes) {
   }
 }
 console.log(`Built themes: ${themes.join(', ')}`);
+
+// Text style classes: one class per type role (.ds-text-body-default) and per control size
+// (.ds-text-control-medium), so an app can use a whole style by name instead of five variables.
+// Every class only points at variables, so one file works in every theme and follows screen
+// classes and the reader's text size. Roles come from tokens/base/type.json, so a new role
+// gets its class without anyone remembering to add it.
+const baseType = JSON.parse(readFileSync('tokens/base/type.json', 'utf8')).type;
+const typeRoles = Object.keys(baseType).filter((k) => !k.startsWith('$') && baseType[k].weight);
+const textClass = (cls, p, transform) =>
+  `.ds-text-${cls} {\n` +
+  `  font-family: var(--${p}-family, var(--font-family-body));\n` +
+  `  font-size: var(--${p}-size);\n` +
+  `  line-height: var(--${p}-line-height);\n` +
+  `  font-weight: var(--${p}-weight);\n` +
+  `  letter-spacing: var(--${p}-letter-spacing, 0em);\n` +
+  `  font-optical-sizing: var(--font-optical-sizing);\n` +
+  (transform ? `  text-transform: var(--${p}-transform);\n` : '') +
+  `}\n`;
+const controlSizes = ['small', 'medium', 'large'];
+const styles =
+  `/**\n * Do not edit directly, this file was generated from tokens (scripts/build-tokens.mjs).\n` +
+  ` * Text styles by name. Load a theme's CSS first; these classes use its variables.\n */\n\n` +
+  typeRoles.map((r) => textClass(r, `type-${r}`, Boolean(baseType[r].transform))).join('\n') +
+  '\n/* Control text: buttons, tabs, menus and fields, by control size. */\n' +
+  controlSizes.map((s) => textClass(`control-${s}`, `control-type-${s}`, false)).join('\n') +
+  '\n/* Buttons and tabs use the medium control text, like the Button and Tabs components. */\n' +
+  textClass('button', 'control-type-medium', false).replace('.ds-text-button', '.ds-text-button,\n.ds-text-tab');
+writeFileSync('build/text-styles.css', styles);
+console.log(`Built text styles: ${typeRoles.length} type roles, ${controlSizes.length} control sizes`);

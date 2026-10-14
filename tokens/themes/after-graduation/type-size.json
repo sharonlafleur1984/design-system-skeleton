@@ -220,6 +220,16 @@
         "$value": 1.33333
       }
     },
+    "code": {
+      "size": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.42857
+      }
+    },
     "$description": "After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are ratios (the W3C tokens format), each picked so size times ratio lands on a multiple of 4. 14px is the one size off the grid, for small UI text."
   }
 }

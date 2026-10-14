@@ -4,29 +4,49 @@
       "display": {
         "$type": "fontFamily",
         "$value": [
-          "Cinzel",
+          "Newsreader",
+          "Iowan Old Style",
+          "Palatino Linotype",
           "Georgia",
           "serif"
         ],
-        "$description": "Only for the main title (display-cover). Carved Roman capitals, for the dark-fantasy anime mood."
+        "$description": "Titles and headings only: display, page and document titles, and heading levels. Never tabs, buttons, labels or controls. Newsreader's optical-size axis picks the right cut for each size (font.optical-sizing)."
       },
       "body": {
         "$type": "fontFamily",
         "$value": [
-          "Atkinson Hyperlegible Next",
+          "Instrument Sans",
           "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
           "sans-serif"
         ],
-        "$description": "Every heading and all text. Made by the Braille Institute for legibility."
+        "$description": "All body text and every part of the interface: buttons, tabs, labels, menus and fields. Its I, l and 1 look alike, so codes and IDs use the code font."
       },
       "data": {
         "$type": "fontFamily",
         "$value": [
-          "Atkinson Hyperlegible Next",
+          "Instrument Sans",
           "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
           "sans-serif"
         ],
-        "$description": "No data font yet; uses the body font."
+        "$description": "Numbers and dates use the body font, so there is no extra typeface for them."
+      },
+      "code": {
+        "$type": "fontFamily",
+        "$value": [
+          "JetBrains Mono",
+          "ui-monospace",
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "monospace"
+        ],
+        "$description": "Code, IDs, file names and keyboard keys. JetBrains Mono keeps I, l, 1, O and 0 clearly apart, where Instrument Sans doesn't."
       }
     }
   }
