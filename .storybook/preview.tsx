@@ -4,7 +4,9 @@ import '../build/css/after-graduation.css';
 import '../build/css/designer-toolkit.css';
 import '../src/fonts/life-hub.css';
 import '../src/fonts/after-graduation.css';
+import '../src/fonts/designer-toolkit.css';
 import '../src/base.css';
+import '../build/text-styles.css';
 import { BothThemes, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.

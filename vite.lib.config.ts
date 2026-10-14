@@ -9,7 +9,7 @@ export default defineConfig({
     outDir: 'dist',
     emptyOutDir: true,
     copyPublicDir: false,
-    // One CSS file per entry: the components' styles, the base styles, and each theme's fonts.
+    // One CSS file per entry: the components' styles, the base styles, the text style classes, and each theme's fonts.
     cssCodeSplit: true,
     lib: {
       entry: {
@@ -17,6 +17,9 @@ export default defineConfig({
         base: 'src/base.css',
         'fonts-after-graduation': 'src/fonts/after-graduation.css',
         'fonts-life-hub': 'src/fonts/life-hub.css',
+        'fonts-designer-toolkit': 'src/fonts/designer-toolkit.css',
+        // Text style classes (.ds-text-body-default), generated from the tokens by npm run tokens.
+        'text-styles': 'build/text-styles.css',
       },
       formats: ['es'],
     },

@@ -57,6 +57,15 @@ import { Button } from 'design-system-skeleton';
 // <html data-theme="after-graduation">
 ```
 
+To use a text style by name, load the text style classes too, then put a class on any element:
+
+```ts
+import 'design-system-skeleton/text-styles.css';
+// <h1 class="ds-text-display-l">  <p class="ds-text-body-default">  <h2 class="ds-text-label">
+```
+
+There's one class per type style (`ds-text-display-cover` to `ds-text-code`), one per control size (`ds-text-control-small`, `-medium`, `-large`), and `ds-text-button` and `ds-text-tab`. They work in every theme. Every style is listed in Storybook under Foundations, Type, Text styles.
+
 Installing runs `npm run build:lib`, which turns `src/components` into the package in `dist/`. To release a change, merge it, then tag `main` with the next version.
 
 ## Where things are
@@ -64,9 +73,9 @@ Installing runs `npm run build:lib`, which turns `src/components` into the packa
 - `tokens/base/`: the shared base
 - `tokens/themes/<product>/`: each product's colors, fonts and shadows
 - After Graduation's color rules: [Decisions](../../wiki/Decisions)
-- `scripts/build-tokens.mjs`: turns the tokens into CSS variables, one file per theme
+- `scripts/build-tokens.mjs`: turns the tokens into CSS variables, one file per theme, and the text style classes (`build/text-styles.css`)
 - `src/components/`: the components, each with its Storybook page
-- `src/fonts/`: each theme's fonts
+- `src/fonts/`: each theme's fonts, served from the package (Fireside: Newsreader, Instrument Sans and JetBrains Mono)
 - `src/base.css`: the page's background, text color and body type
 - `src/tokens-docs/`: the Storybook pages for colors, type, space, radius and shadow
 - [Wiki](../../wiki): the Dashboard, Roadmap and Decisions
