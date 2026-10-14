@@ -128,8 +128,8 @@
 
 .ds-tile[data-focus-visible],
 .ds-tile[data-state='focus'] {
-  outline: 2px solid var(--color-ink-on-art);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-ink-on-art);
+  outline-offset: var(--focus-ring-offset);
 }
 .ds-tile[data-disabled] {
   opacity: 0.5;

@@ -48,8 +48,8 @@
 }
 .ds-toggle-group__option[data-focus-visible],
 .ds-toggle-group__option[data-state='focus'] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 1px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset-tight);
 }
 .ds-toggle-group__option[data-disabled] {
   color: var(--color-ink-disabled);

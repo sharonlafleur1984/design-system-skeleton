@@ -72,8 +72,8 @@
 
 .ds-tag[data-focus-visible],
 .ds-tag[data-state='focus'] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .ds-tag[data-disabled] {
@@ -112,8 +112,8 @@
   background: color-mix(in srgb, currentColor 12%, transparent);
 }
 .ds-tag__remove[data-focus-visible] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 1px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset-tight);
 }
 
 @media (prefers-reduced-motion: no-preference) {

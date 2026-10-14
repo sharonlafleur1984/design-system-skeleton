@@ -59,8 +59,8 @@
   outline: none;
 }
 .ds-settings__back[data-focus-visible] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 .ds-settings__back-arrow {
   inline-size: var(--space-2);
@@ -119,8 +119,8 @@
   box-shadow: inset 2px 0 0 var(--color-accent-base);
 }
 .ds-settings__nav-item[data-focus-visible] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: -2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset-inset);
 }
 .ds-settings__nav-arrow {
   inline-size: var(--space-2);
@@ -205,8 +205,8 @@
 }
 
 /* Phones: the dialog fills the screen, the list or the section shows one at a time, and rows stack. */
-/* 37.4375rem is 599px: the phone (compact) size from the layout tokens. CSS media queries can't read tokens. */
-@media (max-width: 37.4375rem) {
+/* Phones (under 600px): the same query as everywhere else (src/components/breakpoints.ts). */
+@media (width < 37.5rem) {
   .ds-settings-overlay {
     padding: 0;
   }

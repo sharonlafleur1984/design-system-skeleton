@@ -5,6 +5,20 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> The repo follows how-i-work; ESLint checks the code</summary>
+
+- **Decided by:** Sharon
+- **CLAUDE.md** gets the rules the how-i-work template added since this repo started: every commit names its Claude session, main is protected, work finishes with a pull request, and Netlify changes update "How everything connects." It also records this week's rules: one word (theme), spacing in the base, adding a theme is one folder, React Aria's names, plain labels in stories.
+- **`docs/voice.md`:** how the design system sounds, and the words it uses (theme, base, token, material, React Aria's component names, the status names).
+- **ESLint** runs on every pull request. It checks for code mistakes only: React hook rules, accessibility in JSX (jsx-a11y) and TypeScript's recommended rules. It found 4 errors, all fixed.
+- **Not added:** Prettier (it would reformat every file and protects nothing a reviewer needs) and Stylelint (the component CSS tests already ban raw colors, sizes and weights, and now unknown tokens and stray breakpoints).
+- **Focus ring tokens:** `focus.ring.width` and three offsets in the base, used by every component instead of hand-typed 2px. Nothing looks different.
+- **One breakpoint list:** `src/components/breakpoints.ts`, matching the token build. A test checks every media query uses it.
+- **Node 22** is declared (`.nvmrc` and `engines`).
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> Adding a theme is one folder</summary>
 
 - **Decided by:** Sharon
