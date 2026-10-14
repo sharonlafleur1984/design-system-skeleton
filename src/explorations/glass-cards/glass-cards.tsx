@@ -43,7 +43,7 @@ export function AreaScreen({ area, mode }: { area: Area; mode: Mode }) {
         <h3 className="lh-title">{title}</h3>
         <p className="lh-body">Three things due this week.</p>
         <p className="lh-meta">Updated 2 hours ago</p>
-        <Callout tone="due" className="lh-callout">
+        <Callout tone="warning" className="lh-callout">
           Water bill due in 3 days
         </Callout>
         <div className="lh-actions">

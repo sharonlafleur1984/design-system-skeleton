@@ -3,7 +3,9 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressMeter, Checkbox, Switch, Divider, Link, LinkButton, Chip, ChipGroup, Tabs, TabList, Tab, TabPanel, SegmentedControl, Segment } from '../src/components';
+import { Button, Card, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
+// The old names, kept as aliases so apps that use them keep working.
+import { ProgressMeter, Divider, Chip, ChipGroup, SegmentedControl, Segment } from '../src/components';
 
 // jsdom has no Web Animations API; React Aria's sliding selection indicator asks for it.
 if (!Element.prototype.getAnimations) Element.prototype.getAnimations = () => [];
@@ -27,8 +29,8 @@ describe('Button', () => {
     let clicks = 0;
     render(
       <>
-        <Button disabled onClick={() => clicks++}>Off</Button>
-        <Button loading onClick={() => clicks++}>Busy</Button>
+        <Button isDisabled onClick={() => clicks++}>Off</Button>
+        <Button isPending onClick={() => clicks++}>Busy</Button>
       </>,
     );
     await userEvent.click(screen.getByRole('button', { name: 'Off' }));
@@ -82,26 +84,26 @@ describe('Card', () => {
 
 describe('Callout', () => {
   it('says what the tone means in words, not just color', () => {
-    render(<Callout tone="overdue" title="2 days late">Recommendation letter.</Callout>);
-    expect(screen.getByText(/Overdue:/)).toBeTruthy();
+    render(<Callout tone="error" title="2 days late">Recommendation letter.</Callout>);
+    expect(screen.getByText(/Error:/)).toBeTruthy();
   });
 
   it('passes an accessibility scan', async () => {
-    const { container } = render(<Callout tone="due">Fee due Friday.</Callout>);
+    const { container } = render(<Callout tone="warning">Fee due Friday.</Callout>);
     await expectNoAxeViolations(container);
   });
 });
 
-describe('ProgressMeter', () => {
+describe('ProgressBar', () => {
   it('exposes its label and value to screen readers', () => {
-    render(<ProgressMeter value={3} max={5} label="Checklist" />);
+    render(<ProgressBar value={3} max={5} label="Checklist" />);
     const bar = screen.getByRole('progressbar', { name: 'Checklist' });
     expect(bar.getAttribute('aria-valuenow')).toBe('3');
     expect(bar.getAttribute('aria-valuetext')).toBe('3 of 5');
   });
 
   it('keeps the value between 0 and max', () => {
-    render(<ProgressMeter value={9} max={5} label="Too much" />);
+    render(<ProgressBar value={9} max={5} label="Too much" />);
     expect(screen.getByRole('progressbar').getAttribute('aria-valuenow')).toBe('5');
   });
 });
@@ -122,7 +124,7 @@ describe('Checkbox', () => {
   });
 
   it('passes an accessibility scan', async () => {
-    const { container } = render(<Checkbox label="Done" defaultChecked />);
+    const { container } = render(<Checkbox label="Done" defaultSelected />);
     await expectNoAxeViolations(container);
   });
 });
@@ -140,14 +142,14 @@ describe('Switch', () => {
   });
 
   it('passes an accessibility scan', async () => {
-    const { container } = render(<Switch label="Email reminders" defaultChecked />);
+    const { container } = render(<Switch label="Email reminders" defaultSelected />);
     await expectNoAxeViolations(container);
   });
 });
 
-describe('Divider', () => {
+describe('Separator', () => {
   it('is announced as a separator', () => {
-    render(<Divider />);
+    render(<Separator />);
     expect(screen.getByRole('separator')).toBeTruthy();
   });
 });
@@ -193,27 +195,27 @@ describe('Link', () => {
   });
 });
 
-describe('Chip', () => {
+describe('Tag', () => {
   it('selects with a click and shows a check mark, not only a color', async () => {
     render(
-      <ChipGroup label="Show" selectionMode="multiple">
-        <Chip id="due">Due this week</Chip>
-        <Chip id="done">Done</Chip>
-      </ChipGroup>,
+      <TagGroup label="Show" selectionMode="multiple">
+        <Tag id="due">Due this week</Tag>
+        <Tag id="done">Done</Tag>
+      </TagGroup>,
     );
     const due = screen.getByRole('row', { name: 'Due this week' });
     await userEvent.click(due);
     expect(due.getAttribute('aria-selected')).toBe('true');
-    expect(due.querySelector('.ds-chip__check')).toBeTruthy();
+    expect(due.querySelector('.ds-tag__check')).toBeTruthy();
   });
 
   it('removes with the remove button and with Delete', async () => {
     const removed: string[] = [];
     render(
-      <ChipGroup label="Topics" onRemove={(keys) => removed.push(...([...keys] as string[]))}>
-        <Chip id="fafsa">FAFSA</Chip>
-        <Chip id="housing">Housing</Chip>
-      </ChipGroup>,
+      <TagGroup label="Topics" onRemove={(keys) => removed.push(...([...keys] as string[]))}>
+        <Tag id="fafsa">FAFSA</Tag>
+        <Tag id="housing">Housing</Tag>
+      </TagGroup>,
     );
     await userEvent.click(screen.getByRole('button', { name: 'Remove FAFSA' }));
     screen.getByRole('row', { name: 'Housing' }).focus();
@@ -223,10 +225,10 @@ describe('Chip', () => {
 
   it('has no accessibility problems', async () => {
     const { container } = render(
-      <ChipGroup label="Show" selectionMode="multiple" defaultSelectedKeys={['due']}>
-        <Chip id="due">Due this week</Chip>
-        <Chip id="done">Done</Chip>
-      </ChipGroup>,
+      <TagGroup label="Show" selectionMode="multiple" defaultSelectedKeys={['due']}>
+        <Tag id="due">Due this week</Tag>
+        <Tag id="done">Done</Tag>
+      </TagGroup>,
     );
     await expectNoAxeViolations(container);
   });
@@ -260,12 +262,12 @@ describe('Tabs', () => {
   });
 });
 
-describe('SegmentedControl', () => {
+describe('ToggleButtonGroup', () => {
   const showBy = (onChange?: (keys: Set<unknown>) => void) => (
-    <SegmentedControl aria-label="Show by" defaultSelectedKeys={['week']} onSelectionChange={(k) => onChange?.(k as Set<unknown>)}>
-      <Segment id="week">Week</Segment>
-      <Segment id="month">Month</Segment>
-    </SegmentedControl>
+    <ToggleButtonGroup aria-label="Show by" defaultSelectedKeys={['week']} onSelectionChange={(k) => onChange?.(k as Set<unknown>)}>
+      <ToggleButton id="week">Week</ToggleButton>
+      <ToggleButton id="month">Month</ToggleButton>
+    </ToggleButtonGroup>
   );
 
   it('picks one option, shows the lens on it, and never clears', async () => {
@@ -275,8 +277,8 @@ describe('SegmentedControl', () => {
     const month = screen.getByRole('radio', { name: 'Month' });
     await userEvent.click(month);
     expect(month.getAttribute('aria-checked')).toBe('true');
-    expect(month.querySelector('.ds-segmented__lens')).toBeTruthy();
-    expect(week.querySelector('.ds-segmented__lens')).toBeNull();
+    expect(month.querySelector('.ds-toggle-group__indicator')).toBeTruthy();
+    expect(week.querySelector('.ds-toggle-group__indicator')).toBeNull();
     await userEvent.click(month);
     expect(month.getAttribute('aria-checked')).toBe('true');
     expect(changes.every((c) => c.length === 1 && c[0] === 'month')).toBe(true);
@@ -285,5 +287,36 @@ describe('SegmentedControl', () => {
   it('has no accessibility problems', async () => {
     const { container } = render(showBy());
     await expectNoAxeViolations(container);
+  });
+});
+
+// The old names keep working, so apps that use them don't break before they update.
+describe('old names still work', () => {
+  it('are the same components under their React Aria names', () => {
+    expect(ProgressMeter).toBe(ProgressBar);
+    expect(Divider).toBe(Separator);
+    expect(Chip).toBe(Tag);
+    expect(ChipGroup).toBe(TagGroup);
+    expect(SegmentedControl).toBe(ToggleButtonGroup);
+    expect(Segment).toBe(ToggleButton);
+  });
+
+  it('old prop names still work', () => {
+    render(<Button disabled>Off</Button>);
+    expect(screen.getByRole('button', { name: 'Off' }).hasAttribute('disabled')).toBe(true);
+    render(<Checkbox label="Old" defaultChecked />);
+    expect((screen.getByRole('checkbox', { name: 'Old' }) as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('old callout tones map to the new ones', () => {
+    const { container } = render(<Callout tone="overdue">Late</Callout>);
+    expect(container.querySelector('.ds-callout--error')).toBeTruthy();
+  });
+});
+
+describe('Select', () => {
+  it('a visible label names it for screen readers', () => {
+    render(<Select label="Year" options={[{ id: '1', label: 'Option 1' }]} defaultSelectedKey="1" />);
+    expect(screen.getByRole('button', { name: /Year/ })).toBeTruthy();
   });
 });

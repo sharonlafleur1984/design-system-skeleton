@@ -15,16 +15,16 @@
   box-shadow: var(--shadow-rest);
 }
 
-.ds-callout--due {
+.ds-callout--warning {
   --_tone: var(--color-status-warning-accent-strong);
 }
-.ds-callout--settled {
+.ds-callout--success {
   --_tone: var(--color-status-success-accent-strong);
 }
-.ds-callout--overdue {
+.ds-callout--error {
   --_tone: var(--color-status-error-accent-strong);
 }
-.ds-callout--quiet {
+.ds-callout--neutral {
   --_tone: var(--color-ink-muted);
   --_body: var(--color-ink-primary);
   --_fill: var(--color-surface-card);

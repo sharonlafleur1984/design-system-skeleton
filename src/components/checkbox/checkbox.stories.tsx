@@ -35,13 +35,13 @@ export const States: Story = {
         <Checkbox label="Rest" />
         <Checkbox label="Hover" data-state="hover" />
         <Checkbox label="Focus" data-state="focus" />
-        <Checkbox label="Disabled" disabled />
+        <Checkbox label="Disabled" isDisabled />
       </Row>
       <Row label="Checked">
-        <Checkbox label="Rest" defaultChecked />
-        <Checkbox label="Hover" defaultChecked data-state="hover" />
-        <Checkbox label="Focus" defaultChecked data-state="focus" />
-        <Checkbox label="Disabled" defaultChecked disabled />
+        <Checkbox label="Rest" defaultSelected />
+        <Checkbox label="Hover" defaultSelected data-state="hover" />
+        <Checkbox label="Focus" defaultSelected data-state="focus" />
+        <Checkbox label="Disabled" defaultSelected isDisabled />
       </Row>
     </BothThemes>
   ),

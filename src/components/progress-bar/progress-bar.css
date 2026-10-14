@@ -1,4 +1,4 @@
-/* ProgressMeter. A thin bar showing how much is done. */
+/* ProgressBar. A thin bar showing how much is done. */
 .ds-progress {
   display: flex;
   flex-direction: column;

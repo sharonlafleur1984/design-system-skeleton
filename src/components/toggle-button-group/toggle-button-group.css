@@ -1,6 +1,6 @@
-/* Segmented control. React Aria sets data-selected, data-hovered, data-pressed, data-focus-visible and
+/* Toggle button group. React Aria sets data-selected, data-hovered, data-pressed, data-focus-visible and
    data-disabled on each option. data-state="hover|focus" forces a look for Storybook. */
-.ds-segmented {
+.ds-toggle-group {
   display: inline-flex;
   align-self: flex-start;
   inline-size: max-content;
@@ -12,7 +12,7 @@
   background: var(--color-surface-sunken);
 }
 
-.ds-segmented__option {
+.ds-toggle-group__option {
   position: relative;
   flex: 1 1 0;
   display: inline-grid;
@@ -32,32 +32,32 @@
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
-.ds-segmented__label {
+.ds-toggle-group__label {
   position: relative;
   z-index: 1;
 }
-.ds-segmented__option[data-hovered]:not([data-selected]),
-.ds-segmented__option[data-state='hover']:not([data-selected]) {
-  /* Text only: hover must never look stronger than the chosen option's lens. */
+.ds-toggle-group__option[data-hovered]:not([data-selected]),
+.ds-toggle-group__option[data-state='hover']:not([data-selected]) {
+  /* Text only: hover must never look stronger than the chosen option's indicator. */
   color: var(--color-ink-primary);
 }
-.ds-segmented__option[data-selected] {
+.ds-toggle-group__option[data-selected] {
   color: var(--color-ink-primary);
   font-weight: var(--font-weight-semibold);
   cursor: default;
 }
-.ds-segmented__option[data-focus-visible],
-.ds-segmented__option[data-state='focus'] {
+.ds-toggle-group__option[data-focus-visible],
+.ds-toggle-group__option[data-state='focus'] {
   outline: 2px solid var(--color-border-focus);
   outline-offset: 1px;
 }
-.ds-segmented__option[data-disabled] {
+.ds-toggle-group__option[data-disabled] {
   color: var(--color-ink-disabled);
   cursor: not-allowed;
 }
 
-/* The lens: a glass pill over the chosen option, lit like a secondary button. */
-.ds-segmented__lens {
+/* The indicator: a glass pill over the chosen option, lit like a secondary button. */
+.ds-toggle-group__indicator {
   position: absolute;
   inset: 0;
   border: 1px solid var(--color-border-default);
@@ -66,7 +66,7 @@
   box-shadow: var(--button-shadow-secondary);
   backdrop-filter: blur(var(--material-blur)) saturate(var(--material-saturate));
 }
-.ds-segmented__lens::before {
+.ds-toggle-group__indicator::before {
   content: '';
   position: absolute;
   inset-block-start: 0;
@@ -77,15 +77,15 @@
   background: linear-gradient(to right, transparent, var(--button-kiss) 80%, color-mix(in srgb, var(--button-kiss) 60%, transparent));
 }
 @media (prefers-reduced-motion: no-preference) {
-  .ds-segmented__lens {
+  .ds-toggle-group__indicator {
     transition: translate var(--motion-duration-base) var(--motion-easing-in-out), width var(--motion-duration-base) var(--motion-easing-in-out);
   }
-  .ds-segmented__option {
+  .ds-toggle-group__option {
     transition: color var(--motion-duration-fast) var(--motion-easing-out), background-color var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .ds-segmented__lens {
+  .ds-toggle-group__indicator {
     backdrop-filter: none;
     background: var(--color-surface-card);
   }

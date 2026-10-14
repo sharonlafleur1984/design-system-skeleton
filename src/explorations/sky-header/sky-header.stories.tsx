@@ -4,7 +4,7 @@ import { SkyHeader } from './sky-header';
 import { mixColor, skyAt, type SkyMode } from './sky';
 import { skyHourFor, sunTimes, TWILIGHT_MINUTES } from './sun';
 import { appearanceFor, fadePageMode, modeLabels, type ModeSetting } from './mode';
-import { Segment, SegmentedControl } from '../../components/segmented-control/segmented-control';
+import { ToggleButton, ToggleButtonGroup } from '../../components/toggle-button-group/toggle-button-group';
 import { Button } from '../../components/button/button';
 import { areas } from '../glass-cards/areas';
 
@@ -194,13 +194,13 @@ function useAppearance() {
   const [setting, setSetting] = useState<ModeSetting>('device');
   const switcher = (
     <div style={{ padding: 'var(--space-3) var(--space-5) 0' }}>
-      <SegmentedControl aria-label="Appearance" selectedKeys={[setting]} onSelectionChange={(keys) => setSetting([...keys][0] as ModeSetting)}>
+      <ToggleButtonGroup aria-label="Appearance" selectedKeys={[setting]} onSelectionChange={(keys) => setSetting([...keys][0] as ModeSetting)}>
         {(Object.keys(modeLabels) as ModeSetting[]).map((k) => (
-          <Segment key={k} id={k}>
+          <ToggleButton key={k} id={k}>
             {modeLabels[k]}
-          </Segment>
+          </ToggleButton>
         ))}
-      </SegmentedControl>
+      </ToggleButtonGroup>
     </div>
   );
   return { setting, switcher };
