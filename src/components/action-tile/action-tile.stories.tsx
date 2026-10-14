@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
-import { OnEveryBackground, storyBackgrounds } from '../story-helpers';
+import { OnEveryBackground, WithReducedMotion, storyBackgrounds } from '../story-helpers';
+import { PageShell } from '../page-shell/page-shell';
 
 const onDark: CSSProperties = { padding: 'var(--space-4)', borderRadius: 'var(--radius-panel)', background: storyBackgrounds.dark.value };
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
@@ -23,9 +24,19 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**Do:** keep the description to one short line. **Don\'t:** put a button or link inside a tile; each tile is one click target.',
           '',
-          '**Accessibility:** switch tiles are one Tab stop, with arrow keys between them and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The chosen tile turns frosted white and shows a star, so color is never the only signal. White text on the header red passes 4.5:1.',
+          '**When to use:** on artwork the design system controls, like After Graduation\'s header. **When not to:** on a plain page or a photo the system doesn\'t control; use a Card or Button there.',
           '',
-          '**Light:** drawn with the shared glass recipe, the same one cards use. In the page shell the wheel is the light: rims are brightest facing it, shadows fall away from it, and the glass bends and softens the rays behind it (the bend shows in Chrome and Edge; other browsers show clear glass).',
+          '**Accessibility:** switch tiles are one Tab stop, with arrow keys between them and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The chosen tile turns frosted white and shows a star, so color is never the only signal. White text on the header red passes 4.5:1, with lens glass too. Text on glass has no shadow; it uses the same typography as everywhere else. The lens canvas is decorative and hidden from screen readers; focus rings, keyboard behavior and touch targets are the same as the classic glass.',
+          '',
+          '**Light:** lit from the page\'s one light (in the page shell, the wheel): rims are brightest facing it, shadows fall away from it, and light weakens with distance.',
+          '',
+          '**Lens glass (Oct 12):** on artwork the design system controls (After Graduation\'s header), tiles are lens glass. The art behind them bends at their curved edge, strongest at the very edge and clear in the middle, with almost no blur. Their text and icons never bend or blur: they stay crisp HTML on top. Anywhere else, tiles keep the classic glass recipe, the same one cards use.',
+          '',
+          '**How the lens works:** the page shell paints its art (the red, the rays and the wheel) into one WebGL canvas behind the row of tiles, not one per tile. For each tile the canvas works out how far each point is from the tile\'s rounded edge and treats the glass as a rounded bevel 22px deep (`glass-lens-edge-depth`): flat in the middle, tilting most at the edge, so the art shifts most there. It adds a faint color split, a 5% white body with a 4% warm tint, a 1px rim brightest facing the light, a soft highlight just inside that edge and a shadow 2px away from the light. While it draws, the tile\'s own fill steps aside (a chosen tile keeps its frosted white). It only redraws when something changes and pauses off screen.',
+          '',
+          '**Motion:** the glass moves over the art as you scroll; a pressed tile swells about 2%, text and all, and settles back over 300ms; on phones, tilting nudges the light so highlights drift, then ease back when the phone is still. On iPhone, motion access is asked for on your first tap on a tile, never on load. Reduced motion, from the device or Settings, turns all of it off.',
+          '',
+          '**Fallback:** with no WebGL, a lost graphics context, Reduce transparency or Increase contrast, tiles show the classic glass recipe exactly (and solid glass for Reduce transparency and Increase contrast). Never a blank tile.',
           '',
           '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. Hover only happens with a mouse; on phones the episodes move to a bottom bar.',
         ].join('\n'),
@@ -172,5 +183,63 @@ export const States: Story = {
         <ActionTile isDisabled label="Disabled" title="Explore Schools" description="Select your favorites" />
       </ActionTileGroup>
     </OnHeader>
+  ),
+};
+
+// Lens glass needs art the design system controls, so these stories use the real page shell header.
+function ShellWithTiles({ glassLens = true }: { glassLens?: boolean }) {
+  return (
+    <ActionTileSwitch defaultSelectedKey="explore">
+      <PageShell
+        title="After Graduation"
+        subtitle="Alex, get ready for Season 2"
+        glassLens={glassLens}
+        navigation={
+          <ActionTileGroup aria-label="Episodes" behavior="switch">
+            {episodes.map((e) => (
+              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
+            ))}
+          </ActionTileGroup>
+        }
+      >
+        {episodes.map((e) => (
+          <ActionTilePanel key={e.id} id={e.id}>
+            <p style={{ margin: 0 }}>{e.title} goes here.</p>
+          </ActionTilePanel>
+        ))}
+      </PageShell>
+    </ActionTileSwitch>
+  );
+}
+
+/**
+ * Lens glass on After Graduation's header art: the rays and the wheel bend at each tile's curved edge,
+ * clear in the middle, and the words stay crisp. Rims are brightest facing the wheel. Press a tile to see
+ * it swell and settle. (Life Hub has no action tile skin yet.)
+ */
+export const LensOnArtwork: Story = {
+  name: 'Lens glass on artwork',
+  parameters: { layout: 'fullscreen' },
+  render: () => <ShellWithTiles />,
+};
+
+/**
+ * The fallback: what people see without WebGL, after the graphics context is lost, or with Reduce
+ * transparency or Increase contrast (then the glass also turns solid). The classic glass recipe.
+ */
+export const LensFallback: Story = {
+  name: 'Lens glass: fallback',
+  parameters: { layout: 'fullscreen' },
+  render: () => <ShellWithTiles glassLens={false} />,
+};
+
+/** With Reduce motion on (Settings, or the device): the lens still bends the art, but presses don't swell and phone tilt is off. */
+export const LensReducedMotion: Story = {
+  name: 'Lens glass: reduced motion',
+  parameters: { layout: 'fullscreen' },
+  render: () => (
+    <WithReducedMotion>
+      <ShellWithTiles />
+    </WithReducedMotion>
   ),
 };

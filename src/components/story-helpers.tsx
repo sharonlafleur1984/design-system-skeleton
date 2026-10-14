@@ -1,4 +1,6 @@
-import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
+import { useGlassLight } from './glass-light/glass-light';
+import { imageArt } from './glass-lens/lens-art';
 
 // Storybook-only helpers. Not exported from the component library.
 
@@ -100,4 +102,63 @@ export function Row({ label, children }: { label: string; children: ReactNode })
       {children}
     </div>
   );
+}
+
+// Life Hub's marble backgrounds, one per area plus the spare (Figma: Background Texture). Small preview
+// images in .storybook/public; the real files are 6000 x 4000. In dark mode each area's night layer
+// covers its marble (transparent in light mode).
+export const marbles = [
+  { area: 'dashboard', name: 'Dashboard', texture: 'texture-sage-cream.jpg' },
+  { area: 'time', name: 'Time', texture: 'texture-seagull.jpg' },
+  { area: 'finance', name: 'Finance', texture: 'texture-sea-nymph.jpg' },
+  { area: 'parenting', name: 'Parenting', texture: 'texture-lilacs-lavender.jpg' },
+  { area: 'health', name: 'Health', texture: 'texture-berry-pie.jpg' },
+  { area: 'home', name: 'Home', texture: 'texture-morning-latte.jpg' },
+  { area: 'office', name: 'Office', texture: 'texture-gold-sand.jpg' },
+  { area: 'professional', name: 'Professional', texture: 'texture-nocturnal-navy.jpg' },
+  { area: 'growth', name: 'Personal growth', texture: 'texture-sunflower-medley.jpg' },
+  { area: null, name: 'Spare (future option B)', texture: 'texture-future-option-b.jpg' },
+] as const;
+export type Marble = (typeof marbles)[number];
+
+/**
+ * Storybook only: a piece of Life Hub's marble with glass on it, lit from the shared light (top right).
+ * The marble is the container's background, and the same image is the lens's art, so the glass bends
+ * exactly what's behind it. lens={false} shows the classic glass (the fallback).
+ */
+export function OnMarble({ marble = marbles[0], lens = true, children, label }: { marble?: Marble; lens?: boolean; children: ReactNode; label?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
+  const art = useMemo(() => (lens ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [lens, marble.texture, night]);
+  useGlassLight(ref, { selector: '.ds-glass', lens: art });
+  const style: CSSProperties = {
+    position: 'relative',
+    isolation: 'isolate',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 'var(--space-3)',
+    minBlockSize: '160px',
+    padding: 'var(--space-6)',
+    borderRadius: 'var(--radius-panel)',
+    background: `linear-gradient(${night}, ${night}), url('${marble.texture}') center / cover`,
+  };
+  return (
+    <section ref={ref} data-theme="life-hub" style={style} aria-label={label ?? marble.name}>
+      {children}
+    </section>
+  );
+}
+
+/** Storybook only: turns on the app's own Reduce motion setting (as Settings does) while the story is open. */
+export function WithReducedMotion({ children }: { children: ReactNode }) {
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const had = root.hasAttribute('data-reduce-motion');
+    root.setAttribute('data-reduce-motion', '');
+    return () => {
+      if (!had) root.removeAttribute('data-reduce-motion');
+    };
+  }, []);
+  return <>{children}</>;
 }
