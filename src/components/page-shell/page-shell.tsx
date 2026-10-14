@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
+import { shellArt } from '../glass-lens/lens-art';
 import './page-shell.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
@@ -13,6 +14,8 @@ import './page-shell.css';
 // rims brightest facing it, edges bending the rays behind them. When the page opens, the title slams
 // in, the rays burst, the subtitle fades down and the wheel turns, then rests (shell-entrance tokens).
 // Every glass surface on the page, cards included, is lit from the wheel, in light and dark mode.
+// Action tiles and glass buttons in the header are lens glass (Oct 12): one canvas paints this art
+// (shellArt) and bends it at their curved edges, never their text.
 
 export interface PageShellProps {
   /** The product name. The page's only h1. */
@@ -26,6 +29,11 @@ export interface PageShellProps {
   /** The page itself, shown on the sheet. */
   children: ReactNode;
   className?: string;
+  /**
+   * Lens glass for the action tiles and glass buttons in the header (on by default). Off shows the
+   * classic glass, the same look people get without WebGL or with Reduce transparency.
+   */
+  glassLens?: boolean;
 }
 
 const Wheel = () => (
@@ -41,9 +49,10 @@ const Wheel = () => (
   </svg>
 );
 
-export function PageShell({ title, subtitle, navigation, actions, children, className }: PageShellProps) {
+export function PageShell({ title, subtitle, navigation, actions, children, className, glassLens = true }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
-  useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass' });
+  const lens = useMemo(() => (glassLens ? { art: shellArt(), selector: '.ds-shell__header .ds-lens' } : false), [glassLens]);
+  useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass', lens });
   // Where the header's glass tiles sit, so the rays fade behind them (shell-art-ray-behind-glass).
   useLayoutEffect(() => {
     const el = shell.current;

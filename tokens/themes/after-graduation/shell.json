@@ -61,8 +61,8 @@
       },
       "wheel-duration": {
         "$type": "duration",
-        "$value": "20s",
-        "$description": "The wheel turns as the page opens, then eases to a stop over this long (Oct 7: 20s, half again as fast as 30s, since it always comes to rest). Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
+        "$value": "30s",
+        "$description": "The wheel turns as the page opens, then eases to a stop over this long (Oct 13: back to 30s; Oct 7 had tried 20s). Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
       },
       "wheel-angle": {
         "$type": "number",
@@ -94,8 +94,8 @@
       },
       "wheel": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.22)",
-        "$description": "The wheel's lines: faint, so it reads as light, not a picture."
+        "$value": "rgba(255, 255, 255, 0.16)",
+        "$description": "The wheel's lines: faint, so it reads as light, not a picture (Oct 13: 0.22 to 0.16, quieter beside the lens glass)."
       },
       "wheel-min": {
         "$type": "dimension",
