@@ -1,5 +1,11 @@
-/* Action tile. React Aria sets data-selected (switch tiles), data-hovered, data-pressed,
-   data-focus-visible and data-disabled. data-state forces a look for Storybook.
+/* Action tile: a card you can press, in every theme. React Aria sets data-selected (switch tiles),
+   data-hovered, data-pressed, data-focus-visible and data-disabled. data-state forces a look for
+   Storybook.
+   Two materials (Oct 14):
+   - default: a solid fill (the theme's card surface, or another of its surfaces with fill="..."), a soft
+     shadow, and light catching the edge, using the cards' lighting (card.glass tokens).
+   - glass: fully clear. Only the edge light and the shadow show, so it looks the same in every theme
+     and takes its text color from what it sits on. On artwork the lens bends the art at its edges.
    Light: a container with a light source (the page shell's wheel) sets --light-x, --light-y, --light-k
    and --glass-bend on each tile. Without one, the light comes from the top right. */
 .ds-tile-switch {
@@ -18,20 +24,24 @@
 }
 
 .ds-tile {
-  /* Lit by the shared glass recipe (glass.css), with the settings for glass on artwork. */
-  --g-rim-color: var(--glass-rim-color);
-  --g-rim-width: var(--glass-rim-width);
-  --g-rim-strength: var(--glass-rim-strength);
-  --g-rim-glint: var(--glass-rim-glint);
-  --g-rim-spread-x: var(--glass-rim-spread-x);
-  --g-rim-spread-y: var(--glass-rim-spread-y);
-  --g-rim-base: var(--glass-rim-faint);
-  --g-highlight: var(--glass-highlight);
-  --g-shade: var(--glass-shade);
-  --g-cast: var(--glass-cast);
-  --g-contact: var(--glass-contact);
-  --g-cast-distance: var(--glass-cast-distance);
-  --g-cast-blur: var(--glass-cast-blur);
+  /* The fill and its text colors. fill="..." swaps all three together, so text always passes contrast. */
+  --tile-fill: var(--color-surface-card);
+  --tile-ink: var(--color-ink-primary);
+  --tile-ink-soft: var(--color-ink-secondary);
+  /* The shared lighting recipe (glass.css), with the cards' settings. */
+  --g-rim-color: var(--card-glass-rim-color);
+  --g-rim-strength: var(--card-glass-rim-strength);
+  --g-rim-glint: var(--card-glass-rim-glint);
+  --g-rim-spread-x: var(--card-glass-rim-spread-x);
+  --g-rim-spread-y: var(--card-glass-rim-spread-y);
+  --g-rim-base: var(--card-glass-rim-base);
+  --g-highlight: var(--card-glass-highlight);
+  --g-shade: var(--card-glass-shade);
+  --g-cast: var(--card-glass-cast);
+  --g-contact: var(--card-glass-contact);
+  --g-cast-distance: var(--card-glass-cast-distance);
+  --g-cast-blur: var(--card-glass-cast-blur);
+  --g-extra-shadow: var(--shadow-rest), var(--_chosen-ring, 0 0 0 0 transparent);
   position: relative;
   isolation: isolate;
   display: grid;
@@ -40,10 +50,10 @@
   min-block-size: var(--control-height-large);
   padding-block: var(--space-3);
   padding-inline: var(--space-4) var(--space-7);
-  border: none;
+  border: 1px solid var(--card-border);
   border-radius: var(--radius-card);
-  background: transparent;
-  color: var(--color-ink-on-art);
+  background: var(--tile-fill);
+  color: var(--tile-ink);
   font-family: var(--font-family-body);
   text-align: start;
   text-decoration: none;
@@ -52,19 +62,50 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* The glass itself: clear, bending the art behind it at its edges. Nothing tints it; on the page shell
-   the rays fade behind the tiles at their source instead (shell-art-ray-behind-glass). */
-.ds-tile__glass {
+/* The fills a designer can pick: the theme's own surfaces, each with text that passes contrast in
+   light and dark (checked in tests/tokens.test.ts). */
+.ds-tile--fill-raised {
+  --tile-fill: var(--color-surface-raised);
+}
+.ds-tile--fill-sunken {
+  --tile-fill: var(--color-surface-sunken);
+}
+.ds-tile--fill-accent {
+  --tile-fill: var(--color-accent-surface);
+}
+.ds-tile--fill-inverse {
+  --tile-fill: var(--color-surface-inverse);
+  --tile-ink: var(--color-ink-inverse);
+  --tile-ink-soft: var(--color-ink-inverse);
+}
+
+/* Glass: fully clear, with the brighter edge of glass on artwork and the cards' soft shadow. Text takes its color from
+   whatever the tile sits on (white on After Graduation's red header, dark on a light page). */
+.ds-tile--glass {
+  --tile-fill: transparent;
+  --tile-ink: currentColor;
+  --tile-ink-soft: currentColor;
+  --g-rim-color: var(--glass-rim-color);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  border-color: transparent;
+  color: inherit;
+}
+/* The lens (glass-lens.css) draws its canvas under the tile; it needs nothing from the tile's fill. */
+.ds-tile--glass .ds-tile__glass {
   position: absolute;
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: var(--color-surface-glass-on-art);
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art));
-  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
+  backdrop-filter: var(--glass-bend, none);
 }
 
 .ds-tile__label {
+  color: var(--tile-ink-soft);
   font-family: var(--type-label-family);
   font-size: var(--type-label-size);
   font-weight: var(--type-label-weight);
@@ -80,6 +121,7 @@
   letter-spacing: var(--type-heading-title-letter-spacing);
 }
 .ds-tile__description {
+  color: var(--tile-ink-soft);
   font-family: var(--type-body-small-family);
   font-size: var(--type-body-small-size);
   font-weight: var(--type-body-small-weight);
@@ -87,39 +129,37 @@
   letter-spacing: var(--type-body-small-letter-spacing);
 }
 
-/* Hover: the tile rises a little toward you, its shadow deepens and the rim catches the full light.
-   No underline: tiles are switches and buttons, not links. With reduced motion, the shadow and rim
-   still show the hover. The fill stays clear, so white text keeps its contrast. A chosen tile settles
-   back down. */
+/* Hover: the tile rises a little toward you, its shadow deepens and the edge catches the full light.
+   With reduced motion, the shadow and edge still show the hover. A chosen tile settles back down. */
 .ds-tile[data-hovered]:not([data-selected]),
 .ds-tile[data-state='hover'] {
   --light-k: 1;
   --glass-lift: 1.5;
+  --g-extra-shadow: var(--shadow-hover);
   translate: 0 calc(-1 * var(--motion-lift-large));
 }
 .ds-tile[data-pressed] {
   scale: 0.985;
 }
 
-/* Chosen (switch tiles): frosted white, deep red text, and the star. The star and the fill change
+/* Chosen (switch tiles): an accent ring inside the edge and the star. The ring and the star change
    together, so color is never the only signal. */
 .ds-tile[data-selected],
 .ds-tile[data-state='chosen'] {
-  color: var(--color-ink-on-art-selected);
-}
-.ds-tile[data-selected] .ds-tile__glass,
-.ds-tile[data-state='chosen'] .ds-tile__glass {
-  background: var(--color-surface-glass-on-art-selected);
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
-  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art-selected));
+  --_chosen-ring: inset 0 0 0 2px var(--color-accent-base);
 }
 .ds-tile__star {
   position: absolute;
   inset-block-start: var(--space-3);
   inset-inline-end: var(--space-4);
+  color: var(--color-accent-text);
   font-size: var(--type-heading-title-size);
   line-height: 1;
   visibility: hidden;
+}
+.ds-tile--glass .ds-tile__star,
+.ds-tile--fill-inverse .ds-tile__star {
+  color: inherit;
 }
 .ds-tile[data-selected] .ds-tile__star,
 .ds-tile[data-state='chosen'] .ds-tile__star {
@@ -128,38 +168,24 @@
 
 .ds-tile[data-focus-visible],
 .ds-tile[data-state='focus'] {
-  outline: var(--focus-ring-width) solid var(--color-ink-on-art);
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: var(--focus-ring-offset);
+}
+.ds-tile--glass[data-focus-visible],
+.ds-tile--glass[data-state='focus'] {
+  outline-color: currentColor;
 }
 .ds-tile[data-disabled] {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Lens glass (glass-lens.css): while the canvas draws a tile, its own glass layer is clear and unblurred,
-   so only the canvas shows. A chosen tile keeps its frosted white (and its blur of the canvas), so its
-   dark red text keeps its contrast. */
-.ds-tile.ds-lens[data-lens='on']:not([data-selected]):not([data-state='chosen']) .ds-tile__glass {
-  background: transparent;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-.ds-tile.ds-lens[data-lens='on'][data-selected] .ds-tile__glass,
-.ds-tile.ds-lens[data-lens='on'][data-state='chosen'] .ds-tile__glass {
-  -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
-  backdrop-filter: blur(var(--material-blur-on-art-selected));
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .ds-tile {
     transition:
-      color var(--motion-duration-fast) var(--motion-easing-out),
       translate var(--motion-duration-fast) var(--motion-easing-out),
       box-shadow var(--motion-duration-fast) var(--motion-easing-out),
       scale var(--motion-duration-instant) var(--motion-easing-out);
-  }
-  .ds-tile__glass {
-    transition: background-color var(--motion-duration-fast) var(--motion-easing-out);
   }
 }
 

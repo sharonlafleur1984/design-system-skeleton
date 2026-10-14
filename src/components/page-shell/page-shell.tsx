@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { shellArt } from '../glass-lens/lens-art';
-import type { Material } from '../material';
+import { MaterialContext, type Material } from '../material';
 import './page-shell.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
@@ -97,7 +97,11 @@ export function PageShell({ title, subtitle, navigation, actions, children, clas
             {actions && <div className="ds-shell__actions">{actions}</div>}
           </div>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}
-          {navigation && <div className="ds-shell__nav">{navigation}</div>}
+          {navigation && (
+            <div className="ds-shell__nav">
+              <MaterialContext.Provider value={glass ? 'glass' : 'default'}>{navigation}</MaterialContext.Provider>
+            </div>
+          )}
         </div>
       </header>
       <main className="ds-shell__sheet">

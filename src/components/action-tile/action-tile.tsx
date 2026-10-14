@@ -13,7 +13,7 @@ import {
 import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
-import { materialClass, type Material } from '../material';
+import { MaterialContext, materialClass, type Material } from '../material';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -80,6 +80,9 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   );
 }
 
+/** The theme surfaces a tile can be filled with. Each switches its text color with it. */
+export type ActionTileFill = 'card' | 'raised' | 'sunken' | 'accent' | 'inverse';
+
 export interface ActionTileProps {
   /** Optional. Small line above the title, like "Episode 1". */
   label?: ReactNode;
@@ -98,14 +101,21 @@ export interface ActionTileProps {
   /** Does this when clicked. */
   onPress?: () => void;
   isDisabled?: boolean;
-  /** Glass bends the art behind the tile (today's look). Default is the subtle frosted look. */
+  /** default: a solid fill (the default, except on the page shell header, where tiles are glass) with a soft shadow. glass: fully clear, only the edge light and shadow show; on artwork it bends the art at its edges. */
   material?: Material;
+  /** The inside color, from the theme's own surfaces, for the default material. Text color follows, so it always passes contrast. Defaults to card. */
+  fill?: ActionTileFill;
   /** Storybook only: forces a look for the state gallery. */
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, material = 'glass', ...rest }: ActionTileProps) {
-  const className = ['ds-tile', 'ds-glass', materialClass(material)].filter(Boolean).join(' ');
+export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, material: ownMaterial, fill = 'card', ...rest }: ActionTileProps) {
+  // On the page shell header, tiles are Glass unless they ask for Default.
+  const containerMaterial = useContext(MaterialContext);
+  const material = ownMaterial ?? containerMaterial ?? 'default';
+  const className = ['ds-tile', 'ds-glass', material === 'glass' ? 'ds-tile--glass' : `ds-tile--fill-${fill}`, materialClass(material)]
+    .filter(Boolean)
+    .join(' ');
   const inSwitch = useContext(SwitchContext);
   const body = (
     <>

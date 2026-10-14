@@ -1,3 +1,5 @@
+import { createContext } from 'react';
+
 // The two looks a glass component can have (Oct 14). Glass only shows on artwork the design system
 // controls (a theme's header art, Life Hub's marble); on a plain page both look the same.
 // - default: the subtle frosted look (the shared recipe in glass.css).
@@ -7,3 +9,6 @@ export type Material = 'default' | 'glass';
 
 /** The class that opts an element into the glass canvas. */
 export const materialClass = (material: Material) => (material === 'glass' ? 'ds-lens' : null);
+
+/** A container's material for the components inside it, like the page shell header's tiles. A component's own material prop wins. */
+export const MaterialContext = createContext<Material | null>(null);
