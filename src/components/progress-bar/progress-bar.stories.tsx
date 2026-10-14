@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ProgressMeter } from './progress-meter';
+import { ProgressBar } from './progress-bar';
 import { BothThemes } from '../story-helpers';
 
-const meta: Meta<typeof ProgressMeter> = {
-  title: 'Components/ProgressMeter',
-  component: ProgressMeter,
+const meta: Meta<typeof ProgressBar> = {
+  title: 'Components/Progress bar',
+  component: ProgressBar,
   tags: ['autodocs'],
   args: { value: 3, max: 5, label: 'Label', showLabel: true },
   parameters: {
     docs: {
       description: {
         component: [
-          'Shows how much of something is done. From the Figma "ProgressMeter" set.',
+          'Shows how much of something is done. Built on React Aria\'s ProgressBar. Called "ProgressMeter" in Figma.',
           '',
           '**When to use:** Progress toward a clear finish line, like a checklist.',
           '',
@@ -26,17 +26,17 @@ const meta: Meta<typeof ProgressMeter> = {
   },
 };
 export default meta;
-type Story = StoryObj<typeof ProgressMeter>;
+type Story = StoryObj<typeof ProgressBar>;
 
 export const Playground: Story = {};
 
 export const Values: Story = {
   render: () => (
     <BothThemes>
-      <ProgressMeter value={0} max={5} label="Empty" showLabel />
-      <ProgressMeter value={3} max={5} label="Partway" showLabel />
-      <ProgressMeter value={100} label="Complete" showLabel />
-      <ProgressMeter value={60} label="Bar only (label read by screen readers)" />
+      <ProgressBar value={0} max={5} label="Empty" showLabel />
+      <ProgressBar value={3} max={5} label="Partway" showLabel />
+      <ProgressBar value={100} label="Complete" showLabel />
+      <ProgressBar value={60} label="Bar only (label read by screen readers)" />
     </BothThemes>
   ),
 };

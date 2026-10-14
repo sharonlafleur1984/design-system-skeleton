@@ -13,8 +13,7 @@ import './button.css';
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'glass';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
-export interface ButtonProps
-  extends Omit<AriaButtonProps, 'children' | 'className' | 'style' | 'isDisabled' | 'isPending'> {
+export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'className' | 'style'> {
   /** Figma "Style". One primary button per screen, for the main action. Glass is only for artwork. */
   variant?: ButtonVariant;
   /** Figma "Size". */
@@ -23,9 +22,13 @@ export interface ButtonProps
   destructive?: boolean;
   /** Figma "Show Icon". Decorative: the label always says what the button does. */
   icon?: ReactNode;
-  /** Shows a busy state, announces it, and blocks repeat presses. The button stays focusable. */
+  /** Shows a busy state, announces it, and blocks repeat presses. The button stays focusable. (React Aria's name.) */
+  isPending?: boolean;
+  /** Figma "Is Enabled = False". (React Aria's name.) */
+  isDisabled?: boolean;
+  /** @deprecated Use isPending, React Aria's name. */
   loading?: boolean;
-  /** Figma "Is Enabled = False". */
+  /** @deprecated Use isDisabled, React Aria's name. */
   disabled?: boolean;
   className?: string;
   /** Storybook only: forces a look ("hover" or "pressed") for the state gallery. */
@@ -38,12 +41,15 @@ export function Button({
   size = 'medium',
   destructive = false,
   icon,
-  loading = false,
-  disabled = false,
+  isPending,
+  isDisabled,
+  loading,
+  disabled,
   className,
   children,
   ...rest
 }: ButtonProps) {
+  const pending = isPending ?? loading ?? false;
   const classes = ['ds-button', `ds-button--${variant}`, `ds-button--${size}`];
   if (variant === 'glass') classes.push('ds-glass', 'ds-lens');
   if (destructive) classes.push('ds-button--destructive');
@@ -52,10 +58,10 @@ export function Button({
     <AriaButton
       {...rest}
       className={classes.join(' ')}
-      isDisabled={disabled}
-      isPending={loading}
+      isDisabled={isDisabled ?? disabled ?? false}
+      isPending={pending}
     >
-      {loading ? (
+      {pending ? (
         <span className="ds-button__spinner" aria-hidden="true" />
       ) : (
         icon && (

@@ -33,11 +33,11 @@ export const States: Story = {
     <BothThemes>
       <Row label="Off">
         <Switch label="Label" />
-        <Switch label="Disabled" disabled />
+        <Switch label="Disabled" isDisabled />
       </Row>
       <Row label="On">
-        <Switch label="Label" defaultChecked />
-        <Switch label="Disabled" defaultChecked disabled />
+        <Switch label="Label" defaultSelected />
+        <Switch label="Disabled" defaultSelected isDisabled />
       </Row>
     </BothThemes>
   ),

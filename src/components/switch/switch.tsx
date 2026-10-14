@@ -7,22 +7,23 @@ import './switch.css';
 // Built on React Aria's Switch: a real, visually hidden input with role="switch" inside the label,
 // so keyboard, touch and screen readers work the same everywhere. This file only adds the look.
 export interface SwitchProps
-  extends Omit<AriaSwitchProps, 'children' | 'className' | 'style' | 'isSelected' | 'defaultSelected' | 'isDisabled'> {
+  extends Omit<AriaSwitchProps, 'children' | 'className' | 'style'> {
   /** The visible label, for example "Email reminders". */
   label: ReactNode;
-  /** Controlled on or off. Leave out to let the switch manage itself. */
+  /** @deprecated Use isSelected, React Aria's name. */
   checked?: boolean;
-  /** Starting value when uncontrolled. */
+  /** @deprecated Use defaultSelected, React Aria's name. */
   defaultChecked?: boolean;
+  /** @deprecated Use isDisabled, React Aria's name. */
   disabled?: boolean;
   className?: string;
 }
 
-export function Switch({ label, checked, defaultChecked, disabled, className, ...rest }: SwitchProps) {
+export function Switch({ label, isSelected, defaultSelected, isDisabled, checked, defaultChecked, disabled, className, ...rest }: SwitchProps) {
   const classes = ['ds-switch'];
   if (className) classes.push(className);
   return (
-    <AriaSwitch {...rest} className={classes.join(' ')} isSelected={checked} defaultSelected={defaultChecked} isDisabled={disabled}>
+    <AriaSwitch {...rest} className={classes.join(' ')} isSelected={isSelected ?? checked} defaultSelected={defaultSelected ?? defaultChecked} isDisabled={isDisabled ?? disabled}>
       <span className="ds-switch__track" aria-hidden="true">
         <span className="ds-switch__knob" />
       </span>

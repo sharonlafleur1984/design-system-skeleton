@@ -15,9 +15,9 @@ import { ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type 
 const preview: Preview = {
   globalTypes: {
     theme: {
-      description: 'Skin: each product has its own',
+      description: 'Theme: each product has its own',
       toolbar: {
-        title: 'Skin',
+        title: 'Theme',
         icon: 'paintbrush',
         items: [
           { value: 'after-graduation', title: 'Spotlight' },

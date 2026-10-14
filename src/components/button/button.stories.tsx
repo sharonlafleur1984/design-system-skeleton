@@ -83,8 +83,8 @@ export const States: Story = {
           <Button variant={variant}>Rest</Button>
           <Button variant={variant} data-state="hover">Hover</Button>
           <Button variant={variant} data-state="pressed">Pressed</Button>
-          <Button variant={variant} disabled>Disabled</Button>
-          <Button variant={variant} loading>Loading</Button>
+          <Button variant={variant} isDisabled>Disabled</Button>
+          <Button variant={variant} isPending>Loading</Button>
         </Row>
       ))}
     </BothThemes>
@@ -115,7 +115,7 @@ const glassRow = (
     <Button variant="glass" size="large" icon={<Plus />}>Button</Button>
     <Button variant="glass">Button</Button>
     <Button variant="glass" size="small">Small</Button>
-    <Button variant="glass" disabled>Disabled</Button>
+    <Button variant="glass" isDisabled>Disabled</Button>
   </>
 );
 

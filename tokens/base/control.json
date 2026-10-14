@@ -56,7 +56,7 @@
     "meter": {
       "$type": "dimension",
       "$value": "8px",
-      "$description": "ProgressMeter track height."
+      "$description": "Progress bar track height."
     },
     "gap": {
       "$type": "dimension",

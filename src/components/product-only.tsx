@@ -6,7 +6,7 @@ import { singleTheme, themeNames } from './story-helpers';
 
 /**
  * For components only After Graduation has so far. With another theme picked in the toolbar, the
- * story shows only a message that that theme's skin hasn't been made yet, so a missing skin never
+ * story shows only a message that that theme's version hasn't been made yet, so a missing one never
  * looks like a broken theme switcher. "All" and After Graduation show the After Graduation component.
  */
 export const afterGraduationOnly: Decorator = (Story, context) => {
@@ -14,7 +14,7 @@ export const afterGraduationOnly: Decorator = (Story, context) => {
   if (theme !== 'after-graduation') {
     return (
       <div style={{ padding: 'var(--space-4)' }}>
-        <Callout tone="info">The {themeNames[theme]} skin for this component hasn't been created yet.</Callout>
+        <Callout tone="info">This component hasn't been made for the {themeNames[theme]} theme yet.</Callout>
       </div>
     );
   }

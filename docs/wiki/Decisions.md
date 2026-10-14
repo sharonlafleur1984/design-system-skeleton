@@ -5,6 +5,29 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
+
+- **Decided by:** Sharon
+- **One word: theme.** It's what React Aria, Storybook and most design systems call it, so any designer recognizes it. Not "skin."
+- **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (the designer toolkit). Each is a kind of light. The folders under `tokens/themes/` keep their product names.
+- **Component names follow React Aria** where one exists, so a designer coming in knows what each one is:
+
+  | Was | Now |
+  |---|---|
+  | Chip, ChipGroup | Tag, TagGroup |
+  | Segmented control (SegmentedControl, Segment) | Toggle button group (ToggleButtonGroup, ToggleButton) |
+  | Divider | Separator, now built on React Aria's Separator |
+  | ProgressMeter | ProgressBar, now built on React Aria's ProgressBar |
+  | Callout tones due, settled, overdue, quiet | warning, success, error, neutral (the status color names) |
+
+- **Prop names follow React Aria too:** `isDisabled`, `isSelected`, `defaultSelected` and `isPending` replace `disabled`, `checked`, `defaultChecked` and `loading`.
+- **Nothing breaks:** the old names still work as aliases, marked deprecated, so apps can update when they're ready.
+- **Error callouts** get their own symbol (×), so they never differ from warnings by color alone.
+- **Storybook:** it opens on a Welcome page with every component collapsed. Inside a component, stories come first and Docs last. Component stories use plain labels (Button, Label, Tab 1) instead of one product's copy.
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> Fireside type: Newsreader for titles, Instrument Sans for everything else</summary>
 
 - **Decided by:** Sharon
