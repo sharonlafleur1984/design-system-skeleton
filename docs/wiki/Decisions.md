@@ -60,6 +60,19 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
+<summary><b>D47 · Oct 14, 2026:</b> Sunrise's status colors come from its own palette; callouts can be glass; neutral is darker than a card</summary>
+
+- **Decided by:** Sharon ("The callouts for Spotlight and sunrise are the same colors they shouldn't be"; "there should be a glass version of callouts as well"; "neutral needs to be at least a little darker so it doesn't look like a card")
+- **Why they matched:** Spotlight's status colors started as a copy of Sunrise's. The Oct 7 crimson tuning moved error to rust but only nudged the others, so info, success, warning and neutral stayed nearly the same in both themes.
+- **Sunrise:** each status takes a ramp from its own palette: error is berry pie, warning sunflower, success earth moss, info seagull, neutral morning latte. Dark mode keeps the same lightness as before, in those hues.
+- **Spotlight:** keeps its rust error and its green, blue and gold, which are now clearly apart from Sunrise's. Neutral uses Spotlight's own warm greys instead of Sunrise's.
+- **Glass callout:** `material="glass"` for a callout on light artwork the design system controls. The fill is frosted and tinted by the tone, so text stays readable (5.3:1 or more on the story art, measured). Reduce transparency and Increase contrast turn it back into the solid callout.
+- **Neutral callout:** uses the theme's neutral status surface, a little darker than a card, so it never reads as one. Sunrise's dark neutral surface is a shade deeper than its dark card for the same reason.
+- **Rules kept:** every status keeps its icon and label, and text passes 4.5:1 in light and dark.
+
+</details>
+
+<details>
 <summary><b>D46 · Oct 14, 2026:</b> Action tile titles one size smaller; action tiles fit their space</summary>
 
 - **Decided by:** Sharon ("that text feels too big")

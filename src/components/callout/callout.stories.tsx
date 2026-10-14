@@ -15,6 +15,8 @@ const meta: Meta<typeof Callout> = {
           '',
           '**Tones:** info (good to know), warning (needs attention soon), success (done), error (something went wrong or is late), neutral (a side note). The same names as the status colors. The old names (due, settled, overdue, quiet) still work.',
           '',
+          '**Glass:** `material="glass"` for a callout on light artwork the design system controls, like Life Hub\'s marble or a page with background art. The art bends at its edge, the sun lights it, and its tone tints the glass. Its fill is frosted, so the text reads as easily as on the solid one. On a plain page, use the default. With Reduce transparency or Increase contrast it turns solid.',
+          '',
           '**When not to:** For errors about a form field, show the message next to the field. For a message that needs a decision, use a dialog.',
           '',
           '**Do:** Lead with the fact, then the next step. **Don\'t:** Stack several callouts; pick the most important.',
@@ -38,6 +40,19 @@ export const Tones: Story = {
       <Callout tone="success" title="Success">Description</Callout>
       <Callout tone="error" title="Error">Description</Callout>
       <Callout tone="neutral" title="Neutral">Description</Callout>
+    </BothThemes>
+  ),
+};
+
+/** Glass on the theme's page art. Move the sun to see the light change. */
+export const Glass: Story = {
+  render: () => (
+    <BothThemes>
+      <Callout material="glass" tone="info" title="Info">Description</Callout>
+      <Callout material="glass" tone="warning" title="Warning">Description</Callout>
+      <Callout material="glass" tone="success" title="Success">Description</Callout>
+      <Callout material="glass" tone="error" title="Error">Description</Callout>
+      <Callout material="glass" tone="neutral" title="Neutral">Description</Callout>
     </BothThemes>
   ),
 };

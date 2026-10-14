@@ -1,95 +1,95 @@
 {
   "color": {
     "status": {
-      "$description": "Life Hub's status colors, from its Figma library. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1); the values are this theme's own.",
+      "$description": "Life Hub's status colors, from its own palette (Oct 14): error is berry pie, warning sunflower, success earth moss, info seagull, neutral morning latte, so they never match another theme's. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1); the values are this theme's own.",
       "error": {
         "surface": {
           "$type": "color",
-          "$value": "#fce8e5"
+          "$value": "{palette.berry-pie.100}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#cc584d"
+          "$value": "{palette.berry-pie.600}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#b34039"
+          "$value": "{palette.berry-pie.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#963130"
+          "$value": "{palette.berry-pie.800}"
         }
       },
       "warning": {
         "surface": {
           "$type": "color",
-          "$value": "#fdf5e2"
+          "$value": "{palette.sunflower-medley.50}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#dba034"
+          "$value": "{palette.sunflower-medley.500}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#855919"
+          "$value": "{palette.sunflower-medley.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#6b4815"
+          "$value": "{palette.sunflower-medley.800}"
         }
       },
       "success": {
         "surface": {
           "$type": "color",
-          "$value": "#e8f4ec"
+          "$value": "{palette.earth-moss.100}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#44a06d"
+          "$value": "{palette.earth-moss.500}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#286d45"
+          "$value": "{palette.earth-moss.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#215838"
+          "$value": "{palette.earth-moss.800}"
         }
       },
       "info": {
         "surface": {
           "$type": "color",
-          "$value": "#ebf0fa"
+          "$value": "{palette.seagull.100}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#5173b8"
+          "$value": "{palette.seagull.600}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#405d96"
+          "$value": "{palette.seagull.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#364c78"
+          "$value": "{palette.seagull.800}"
         }
       },
       "neutral": {
         "surface": {
           "$type": "color",
-          "$value": "#f1efef"
+          "$value": "{palette.morning-latte.100}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#a39996"
+          "$value": "{palette.morning-latte.500}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#716764"
+          "$value": "{palette.morning-latte.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#5f5755"
+          "$value": "{palette.morning-latte.800}"
         }
       }
     }

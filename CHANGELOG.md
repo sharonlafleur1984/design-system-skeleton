@@ -17,6 +17,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 - **Action tile in every theme:** a `fill` prop (card, raised, sunken, accent, inverse), soft-light states (focus is a glow; chosen shows the theme's mark, or `chosenIcon`, and Glass turns milky), and Glass that follows the page's light on a plain background. Tiles default to `material="default"`, except on the page shell header, where they're Glass.
 - **`clearArt`** (experimental): lens glass on a background the system doesn't paint.
+- **Glass callout:** `material="glass"` for a callout on light artwork; frosted and tinted by its tone, solid again with Reduce transparency or Increase contrast.
 - **Glass card for empty states:** a card holding only an empty state can be `material="glass"`; it goes back to `default` once it has content.
 - **One light per page** (experimental): mark an element `data-glass-light` (`PAGE_LIGHT`) and every glass around it is lit from it; fire `LIGHT_CHANGE` after moving it. Both are exported.
 - **Glass transitions glide:** every state change on Glass tiles, glass buttons and the lens eases in and out instead of jumping (off with reduced motion).
@@ -31,6 +32,8 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Changed
 
+- **Status colors:** Sunrise's come from its own palette (berry pie, sunflower, earth moss, seagull, morning latte), so they no longer match Spotlight's. Spotlight's neutral uses its own warm greys.
+- **Neutral callout** is a little darker than a card, so it never reads as one.
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
 - **Glass tiles with Reduce transparency or Increase contrast** turn solid with almost no edge, and a chosen tile shows a line and its mark. Increase contrast also drops their shadows, and glass buttons' too. Before, they had no fill when the lens was off.
 - A theme can't set spacing, sizes or corners; they always come from the base.

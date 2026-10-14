@@ -1,8 +1,10 @@
-/* Callout. A short message inside a page, tinted by what it means. Content, so solid, never glass. */
+/* Callout. A short message inside a page, tinted by what it means. Solid by default; glass on artwork
+   (Sharon, Oct 14), with a frosted fill so the message reads as easily as on the solid one. */
 .ds-callout {
   --_tone: var(--color-status-info-accent-strong);
   --_body: var(--color-ink-secondary);
-  --_fill: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-card));
+  --_solid: color-mix(in srgb, var(--_tone) 8%, var(--color-surface-card));
+  --_fill: var(--_solid);
 
   display: flex;
   align-items: flex-start;
@@ -27,7 +29,8 @@
 .ds-callout--neutral {
   --_tone: var(--color-ink-muted);
   --_body: var(--color-ink-primary);
-  --_fill: var(--color-surface-card);
+  /* A little darker than a card, so a neutral callout never looks like one (Sharon, Oct 14). */
+  --_solid: var(--color-status-neutral-surface);
 }
 
 .ds-callout__icon {
@@ -67,4 +70,68 @@
   color: var(--_body);
   font-size: var(--type-body-small-size);
   line-height: 1.4;
+}
+
+/* Glass: the shared recipe (glass.css) with the settings for glass on artwork, like glass buttons. The
+   fill is frosted (half the card color) and tinted by the tone, so the text keeps its contrast while
+   the art shows through and bends at the edge. With the lens on (glass-lens.css), the canvas draws
+   the edge, rim and shadow, and the callout's own border, blur and shadow step aside. */
+.ds-callout--glass {
+  --g-rim-color: var(--glass-rim-color);
+  --g-rim-width: var(--glass-rim-width);
+  --g-rim-strength: var(--glass-rim-strength);
+  --g-rim-glint: var(--glass-rim-glint);
+  --g-rim-spread-x: var(--glass-rim-spread-x);
+  --g-rim-spread-y: var(--glass-rim-spread-y);
+  --g-rim-base: var(--glass-rim-faint);
+  --g-highlight: var(--glass-highlight);
+  --g-shade: var(--glass-shade);
+  --g-cast: var(--glass-cast);
+  --g-contact: var(--glass-contact);
+  --g-cast-distance: var(--glass-cast-distance);
+  --g-cast-blur: var(--glass-cast-blur);
+  --g-radius: var(--radius-lg);
+  --g-extra-shadow: var(--shadow-rest);
+  --_fill: color-mix(in srgb, var(--_tone) 10%, color-mix(in srgb, var(--color-surface-card) 55%, transparent));
+  position: relative;
+  border-color: transparent;
+  box-shadow: var(--g-shadow);
+  -webkit-backdrop-filter: blur(var(--material-blur));
+  backdrop-filter: var(--glass-bend, none) blur(var(--material-blur));
+}
+.ds-callout--glass[data-lens='on'] {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* Reduce transparency or Increase contrast: the lens is off and the callout is its solid self again,
+   with no painted rim (Increase contrast also drops the shadow), like glass action tiles. */
+@media (prefers-reduced-transparency: reduce) {
+  :root:not([data-transparency='standard']) .ds-callout--glass {
+    --_fill: var(--_solid);
+    border-color: color-mix(in srgb, var(--_tone) 20%, transparent);
+  }
+  :root:not([data-transparency='standard']) .ds-callout--glass::before {
+    display: none;
+  }
+}
+@media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-callout--glass {
+    --_fill: var(--_solid);
+    border-color: color-mix(in srgb, var(--_tone) 20%, transparent);
+    box-shadow: none;
+  }
+  :root:not([data-contrast='standard']) .ds-callout--glass::before {
+    display: none;
+  }
+}
+:root:is([data-transparency='reduce'], [data-contrast='more']) .ds-callout--glass {
+  --_fill: var(--_solid);
+  border-color: color-mix(in srgb, var(--_tone) 20%, transparent);
+}
+:root:is([data-transparency='reduce'], [data-contrast='more']) .ds-callout--glass::before {
+  display: none;
+}
+:root[data-contrast='more'] .ds-callout--glass {
+  box-shadow: none;
 }

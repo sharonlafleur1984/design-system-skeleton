@@ -67,7 +67,8 @@ const themeHeading: CSSProperties = {
 // top right (transparent in light mode). Written as a string, not a CSS file, so the texture's
 // address stays relative to the page, as the build expects.
 export const storyBackgroundsCss = `
-.ds-story-panel > * + * {
+/* Space between the items in a theme panel. The lens canvas sits behind them, so it is left out (a margin would draw the glass off its element). */
+.ds-story-panel > :not(.ds-lens-canvas) ~ :not(.ds-lens-canvas) {
   margin-block-start: var(--space-4);
 }
 [data-theme="life-hub"] {

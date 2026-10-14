@@ -1,7 +1,7 @@
 {
   "color": {
     "status": {
-      "$description": "After Graduation's status colors, tuned to crimson (Oct 7): error is rust, so it never looks like the crimson button; warning, success and info sit with the gold. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1).",
+      "$description": "After Graduation's status colors, tuned to crimson (Oct 7): error is rust, so it never looks like the crimson button; warning, success and info sit with the gold. Neutral uses this theme's own warm grays (Oct 14). The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1).",
       "error": {
         "surface": {
           "$type": "color",
@@ -77,19 +77,19 @@
       "neutral": {
         "surface": {
           "$type": "color",
-          "$value": "#f1efef"
+          "$value": "{palette.neutral.200}"
         },
         "accent": {
           "$type": "color",
-          "$value": "#a39996"
+          "$value": "{palette.neutral.500}"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#716764"
+          "$value": "{palette.neutral.700}"
         },
         "ink": {
           "$type": "color",
-          "$value": "#5f5755"
+          "$value": "{palette.neutral.800}"
         }
       }
     }

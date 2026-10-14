@@ -138,91 +138,91 @@
     "status": {
       "error": {
         "surface": {
-          "$value": "#3a1d1a",
+          "$value": "#3a1c1f",
           "$type": "color"
         },
         "accent": {
-          "$value": "#e57c70",
+          "$value": "#e47a85",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#f09a90",
+          "$value": "#ef98a0",
           "$type": "color"
         },
         "ink": {
-          "$value": "#f4b6ad",
+          "$value": "#f4b5b9",
           "$type": "color"
         }
       },
       "warning": {
         "surface": {
-          "$value": "#352810",
+          "$value": "#332a0c",
           "$type": "color"
         },
         "accent": {
-          "$value": "#dba034",
+          "$value": "#e3b00f",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#dba034",
+          "$value": "#f2c60f",
           "$type": "color"
         },
         "ink": {
-          "$value": "#f2d08a",
+          "$value": "#faee8e",
           "$type": "color"
         }
       },
       "success": {
         "surface": {
-          "$value": "#16301f",
+          "$value": "#222e15",
           "$type": "color"
         },
         "accent": {
-          "$value": "#55b582",
+          "$value": "#86ad5b",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#7cc99d",
+          "$value": "#a0c27e",
           "$type": "color"
         },
         "ink": {
-          "$value": "#a3dbb6",
+          "$value": "#bbd6a1",
           "$type": "color"
         }
       },
       "info": {
         "surface": {
-          "$value": "#1b2742",
+          "$value": "#082b3f",
           "$type": "color"
         },
         "accent": {
-          "$value": "#7c9be0",
+          "$value": "#54a6d7",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#9db4ea",
+          "$value": "#82bde3",
           "$type": "color"
         },
         "ink": {
-          "$value": "#b8caef",
+          "$value": "#a8d0ea",
           "$type": "color"
         }
       },
       "neutral": {
         "surface": {
-          "$value": "#342e2c",
+          "$value": "#2b2624",
           "$type": "color"
         },
         "accent": {
-          "$value": "#8a817c",
+          "$value": "#8a817d",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#a39996",
+          "$value": "#a39995",
           "$type": "color"
         },
         "ink": {
-          "$value": "#d6cec7",
+          "$value": "#d7cdc9",
           "$type": "color"
         }
       }
