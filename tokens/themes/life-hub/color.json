@@ -499,8 +499,13 @@
       },
       "focus-glow": {
         "$type": "color",
-        "$value": "{palette.ink.inverse}",
-        "$description": "The lightest step on the theme's primary color line. The keyboard focus glow is half white, half this (Sharon, Oct 14)."
+        "$value": "{palette.ink.primary}",
+        "$description": "The keyboard focus glow on light backgrounds: the theme's primary color, so the glow shows (Sharon, Oct 14)."
+      },
+      "focus-glow-on-dark": {
+        "$type": "color",
+        "$value": "#fdfbf8",
+        "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.ink.inverse, the lightest step on the theme's primary color line (Sharon, Oct 14)."
       }
     },
     "accent": {

@@ -93,6 +93,11 @@
       "focus": {
         "$value": "#faf7f1",
         "$type": "color"
+      },
+      "focus-glow": {
+        "$type": "color",
+        "$value": "#fdfbf8",
+        "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.ink.inverse, the lightest step on the theme's primary color line (Sharon, Oct 14)."
       }
     },
     "accent": {

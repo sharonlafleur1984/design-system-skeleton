@@ -292,9 +292,10 @@
   box-shadow:
     0 0 2px 0 color-mix(in srgb, var(--_glow) 80%, transparent),
     0 0 var(--space-3) 0 color-mix(in srgb, var(--_glow) 30%, transparent);
-  /* The glow is always half white, half the lightest step on the theme's primary color line
-     (color.border.focus-glow), so it reads as light in every theme (Sharon, Oct 14). */
-  --_glow: color-mix(in srgb, white 50%, var(--color-border-focus-glow));
+  /* The glow (Sharon, Oct 14): on dark or colored backgrounds, half white and half the lightest step on
+     the theme's primary color line; on light backgrounds, the primary color itself, so it still shows.
+     A container on art (the page shell header) asks for the light one with --tile-focus-glow. */
+  --_glow: var(--tile-focus-glow, var(--color-border-focus-glow));
 }
 .ds-tile[data-focus-visible]::after,
 .ds-tile[data-state='focus']::after {

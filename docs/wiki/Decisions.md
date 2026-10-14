@@ -64,7 +64,9 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decided by:** Sharon ("we need to show a light source on any surface that shows glass"; "the focus is too much")
 - **One light per page:** an element marked `data-glass-light` is the page's light (`PAGE_LIGHT`). Glass with no light of its own is lit from the nearest one around it, so every glass on the page shares one light. Moving it (then firing `LIGHT_CHANGE`) moves every rim, highlight and shadow. A glass group's own `source` or `light` still wins, and with no page light the light tokens are used as before.
 - **Storybook:** every story that shows glass gets the page light as a small sun at the top right. Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
-- **Focus glow:** a soft line of the focus color right at the tile's edge with a small bloom, instead of a wide halo. Still easy to see with a keyboard, and still no ring.
+- **Focus glow:** a soft line of light right at the tile's edge with a small bloom, instead of a wide halo, and still no ring. Its color (Sharon):
+  - On dark or colored backgrounds (dark mode, Fireside, the page shell header): half white, half the lightest step on the theme's primary color line (`color.border.focus-glow-on-dark`).
+  - On light backgrounds: the theme's primary color itself (Spotlight's red, Sunrise's charcoal), because a near-white glow disappears on a light page and keyboard users couldn't see focus (`color.border.focus-glow`).
 
 </details>
 
