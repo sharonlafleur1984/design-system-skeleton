@@ -9,7 +9,7 @@
 //    The CSS adds media queries: medium under 840px, compact under 600px.
 import StyleDictionary from 'style-dictionary';
 import { formattedVariables } from 'style-dictionary/utils';
-import { appendFileSync, existsSync, readFileSync, readdirSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 
 const EXT = 'com.sharon.screen-class';
 const BASE_PX = 16;
@@ -88,14 +88,30 @@ StyleDictionary.registerFormat({
   },
 });
 
+// Start clean, so a renamed or removed theme never lingers in build/ (and in the tests that read it).
+rmSync('build', { recursive: true, force: true });
+
+// Every folder in tokens/themes is a theme. Its theme.json names it (not a token file, so it isn't built):
+// the name people see ("Spotlight"), the product it's for, its place in Storybook's picker, and whether it's always dark.
 const themes = readdirSync('tokens/themes');
+const themeList = themes
+  .map((id) => {
+    const metaFile = `tokens/themes/${id}/theme.json`;
+    if (!existsSync(metaFile)) throw new Error(`${metaFile} is missing. Every theme needs one: see docs/wiki/Add-a-theme.md.`);
+    return { id, ...JSON.parse(readFileSync(metaFile, 'utf8')) };
+  })
+  .sort((a, b) => a.order - b.order);
+mkdirSync('build', { recursive: true });
+writeFileSync('build/themes.json', JSON.stringify(themeList, null, 2) + '\n');
+// Token files in a theme folder: everything except theme.json.
+const themeFiles = (theme) => [`tokens/themes/${theme}/!(dark)/**/*.json`, `tokens/themes/${theme}/!(theme).json`];
 
 for (const theme of themes) {
   const sd = new StyleDictionary({
     usesDtcg: true,
     preprocessors: ['color/legacy-alpha'],
     // A theme's dark folder holds dark mode overrides; it is built separately below.
-    source: ['tokens/base/**/*.json', `tokens/themes/${theme}/!(dark)/**/*.json`, `tokens/themes/${theme}/*.json`],
+    source: ['tokens/base/**/*.json', ...themeFiles(theme)],
     log: { verbosity: 'default' },
     platforms: {
       css: {
@@ -128,18 +144,22 @@ for (const theme of themes) {
     const dark = new StyleDictionary({
       usesDtcg: true,
       preprocessors: ['color/legacy-alpha'],
-      source: ['tokens/base/**/*.json', `tokens/themes/${theme}/*.json`, `${darkDir}/**/*.json`],
+      source: ['tokens/base/**/*.json', ...themeFiles(theme), `${darkDir}/**/*.json`],
       log: { verbosity: 'silent', warnings: 'disabled' },
       platforms: {
         json: { transformGroup: 'css', buildPath: 'build/json-dark/', files: [{ destination: `${theme}.json`, format: 'json/flat' }] },
+        // The same values as the CSS writes them (sizes in rem), for the dark CSS rows below.
+        css: { transformGroup: 'css', transforms: ['size/px-to-rem-scaling'], buildPath: 'build/json-dark-css/', files: [{ destination: `${theme}.json`, format: 'json/flat' }] },
       },
     });
     await dark.buildAllPlatforms();
     const light = JSON.parse(readFileSync(`build/json/${theme}.json`, 'utf8'));
     const darkTokens = JSON.parse(readFileSync(`build/json-dark/${theme}.json`, 'utf8'));
+    const darkCss = JSON.parse(readFileSync(`build/json-dark-css/${theme}.json`, 'utf8'));
+    // Compared in px (the JSON), written as the CSS writes it (sizes in rem).
     const rows = Object.entries(darkTokens)
       .filter(([name, value]) => light[name] !== value)
-      .map(([name, value]) => `  --${name}: ${value};`);
+      .map(([name]) => `  --${name}: ${darkCss[name]};`);
     const t = `[data-theme="${theme}"]`;
     const css =
       `\n/* Dark mode: the device setting, unless something forces light. */\n` +

@@ -29,6 +29,8 @@ type Args = { hour: number; background: string; version: Version; edge: 'clean' 
 
 const meta: Meta<Args> = {
   title: 'Explorations/Life Hub sky header',
+  // Made for one theme, so the visual check screenshots it in that theme only.
+  tags: ['only:life-hub'],
   // Life Hub only: lock the toolbar's theme so the page around it is Life Hub too.
   globals: { theme: 'life-hub' },
   parameters: {

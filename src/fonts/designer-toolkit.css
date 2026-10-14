@@ -1,0 +1,6 @@
+/*
+ * Fireside's fonts. Its typeface isn't chosen yet, so it uses Spotlight's (After Graduation's) for now:
+ * Cinzel for the main title, Atkinson Hyperlegible Next for everything else. Swap this file when it is.
+ * Until then the package serves Spotlight's font file for Fireside too (package.json "exports").
+ */
+@import './after-graduation.css';
