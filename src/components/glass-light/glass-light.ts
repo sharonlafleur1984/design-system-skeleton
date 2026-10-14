@@ -85,7 +85,8 @@ type LightOptions = Pick<GlassLightOptions, 'light' | 'source'>;
 /** Where the light is, in viewport px: the source element's center, a point in the container, or the shared light tokens. */
 function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
   const r = el.getBoundingClientRect();
-  const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
+  // The source can sit inside the container (the page shell's wheel) or anywhere on the page.
+  const src = source ? (el.querySelector<Element>(source) ?? document.querySelector<Element>(source))?.getBoundingClientRect() : undefined;
   if (src) return { x: src.left + src.width / 2, y: src.top + src.height / 2 };
   if (light) return { x: r.left + r.width * light.x, y: r.top + r.height * light.y };
   // The shared light tokens: a percentage in from the right, and a distance down from the top.
