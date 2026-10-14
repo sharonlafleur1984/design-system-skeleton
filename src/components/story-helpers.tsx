@@ -4,13 +4,16 @@ import { imageArt } from './glass-lens/lens-art';
 
 // Storybook-only helpers. Not exported from the component library.
 
-/** The toolbar's Theme picker: one product, or 'both' to compare them side by side. */
-export type ThemeChoice = 'after-graduation' | 'life-hub' | 'both';
+/** Every product theme, in the order the toolbar and the side-by-side view show them. */
+export const themeList = ['after-graduation', 'life-hub', 'designer-toolkit'] as const;
+export type Theme = (typeof themeList)[number];
+/** The toolbar's Theme picker: one product, or 'both' to compare them all side by side. */
+export type ThemeChoice = Theme | 'both';
 export const ThemeContext = createContext<ThemeChoice>('after-graduation');
 
 /** The theme to use when a story can only show one. 'Both' falls back to After Graduation. */
-export function singleTheme(choice: unknown): 'after-graduation' | 'life-hub' {
-  return choice === 'life-hub' ? 'life-hub' : 'after-graduation';
+export function singleTheme(choice: unknown): Theme {
+  return themeList.includes(choice as Theme) ? (choice as Theme) : 'after-graduation';
 }
 
 const panel: CSSProperties = {
@@ -44,7 +47,8 @@ export const storyBackgroundsCss = `
 [data-theme="life-hub"] {
   --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page);
 }
-[data-theme="after-graduation"] {
+[data-theme="after-graduation"],
+[data-theme="designer-toolkit"] {
   --story-bg-page: radial-gradient(90% 70% at 100% 0%, var(--shell-glow), transparent 70%), var(--color-surface-page);
 }`;
 
@@ -73,15 +77,15 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
   );
 }
 
-const themeNames = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub' } as const;
+export const themeNames: Record<Theme, string> = { 'after-graduation': 'After Graduation', 'life-hub': 'Life Hub', 'designer-toolkit': 'Designer toolkit (Fireside)' };
 
 /**
- * Shows the content in the theme picked in the toolbar. Pick "Both" to see
+ * Shows the content in the theme picked in the toolbar. Pick "All" to see
  * every product side by side; otherwise only one product shows at a time.
  */
 export function BothThemes({ children }: { children: ReactNode }) {
   const choice = useContext(ThemeContext);
-  const shown = choice === 'both' ? (['life-hub', 'after-graduation'] as const) : [singleTheme(choice)];
+  const shown = choice === 'both' ? themeList : [singleTheme(choice)];
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
       {shown.map((theme) => (

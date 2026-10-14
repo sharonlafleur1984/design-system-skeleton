@@ -1,0 +1,8 @@
+{
+  "shell": {
+    "glow": {
+      "$type": "color",
+      "$value": "rgba(170, 97, 64, 0.22)"
+    }
+  }
+}

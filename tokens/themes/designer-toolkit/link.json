@@ -1,0 +1,29 @@
+{
+  "link": {
+    "$description": "This theme's link colors and quiet-link size. Names come from tokens/base/link.json.",
+    "inline": {
+      "color": {
+        "$type": "color",
+        "$value": "#f8f0e8"
+      },
+      "color-hover": {
+        "$type": "color",
+        "$value": "#d4a997"
+      }
+    },
+    "quiet": {
+      "color": {
+        "$type": "color",
+        "$value": "#b9b3ad"
+      },
+      "color-hover": {
+        "$type": "color",
+        "$value": "#d4a997"
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "0.875rem"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "motion": {
+    "arrive": {
+      "$description": "Borrowed from After Graduation (energetic) until the designer toolkit picks its own motion.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.mood.energetic.arrive-duration}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.mood.energetic.arrive-easing}"
+      },
+      "distance": {
+        "$type": "dimension",
+        "$value": "{motion.mood.energetic.arrive-distance}"
+      }
+    },
+    "celebrate": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.mood.energetic.celebrate-duration}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.mood.energetic.celebrate-easing}"
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{motion.mood.energetic.celebrate-scale}"
+      }
+    }
+  }
+}
