@@ -33,19 +33,19 @@
     "surface": {
       "glass": {
         "$type": "color",
-        "$value": "rgba(248, 240, 232, 0.06)"
+        "$value": "rgba(246, 242, 225, 0.06)"
       },
       "glass-strong": {
         "$type": "color",
-        "$value": "#4b4743"
+        "$value": "#2b4148"
       },
       "glass-on-art": {
         "$type": "color",
-        "$value": "rgba(51, 48, 44, 0.72)"
+        "$value": "rgba(26, 44, 49, 0.72)"
       },
       "glass-on-art-selected": {
         "$type": "color",
-        "$value": "rgba(75, 71, 67, 0.88)"
+        "$value": "rgba(43, 65, 72, 0.88)"
       }
     },
     "border": {}
@@ -69,7 +69,7 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(60,0,15,0.28)",
+          "color": "rgba(5, 16, 19, 0.35)",
           "offsetX": "0px",
           "offsetY": "6px",
           "blur": "18px",
@@ -88,11 +88,11 @@
       },
       "color": {
         "$type": "color",
-        "$value": "rgba(248, 240, 232, 0.12)"
+        "$value": "rgba(246, 242, 225, 0.12)"
       },
       "faint": {
         "$type": "color",
-        "$value": "rgba(248, 240, 232, 0.04)"
+        "$value": "rgba(246, 242, 225, 0.04)"
       },
       "strength": {
         "$type": "number",
@@ -116,15 +116,15 @@
     },
     "highlight": {
       "$type": "color",
-      "$value": "rgba(248, 240, 232, 0.08)"
+      "$value": "rgba(246, 242, 225, 0.08)"
     },
     "shade": {
       "$type": "color",
-      "$value": "rgba(13, 11, 9, 0.4)"
+      "$value": "rgba(5, 16, 19, 0.4)"
     },
     "cast": {
       "$type": "color",
-      "$value": "rgba(13, 11, 9, 0.45)"
+      "$value": "rgba(5, 16, 19, 0.45)"
     },
     "cast-distance": {
       "$type": "dimension",
@@ -138,7 +138,7 @@
     },
     "contact": {
       "$type": "color",
-      "$value": "rgba(13, 11, 9, 0.3)"
+      "$value": "rgba(5, 16, 19, 0.3)"
     },
     "lens": {
       "$description": "Lens glass (Oct 12): action tiles and glass buttons on artwork the design system controls. A WebGL canvas bends the art at the glass's curved edge, never its text. Tuned by Sharon. Used only while the lens is drawing; otherwise the glass keeps the classic recipe above.",
@@ -149,7 +149,7 @@
       },
       "tint": {
         "$type": "color",
-        "$value": "rgba(233, 206, 181, 0.04)"
+        "$value": "rgba(225, 163, 111, 0.04)"
       },
       "rim-width": {
         "$type": "dimension",
@@ -173,7 +173,7 @@
       },
       "shadow-color": {
         "$type": "color",
-        "$value": "rgba(13, 11, 9, 0.35)"
+        "$value": "rgba(5, 16, 19, 0.35)"
       },
       "shadow-distance": {
         "$type": "dimension",

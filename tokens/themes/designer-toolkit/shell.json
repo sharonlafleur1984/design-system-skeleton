@@ -1,6 +1,6 @@
 {
   "shell": {
-    "$description": "After Graduation's page shell, kept so its stories work in Fireside, with a rust frame instead of red. Theme-only. The toolkit's real shell lives in designer-toolkit-code.",
+    "$description": "After Graduation's page shell, kept so its stories work in Fireside, with a teal frame instead of red. Theme-only. The toolkit's real shell lives in designer-toolkit-code.",
     "sheet-inset": {
       "$type": "dimension",
       "$value": "24px",
@@ -30,7 +30,7 @@
     },
     "frame": {
       "$type": "color",
-      "$value": "#482617"
+      "$value": "#173e48"
     },
     "entrance": {
       "$description": "The header's entrance when a page opens, from the prototype: the title slams in, speed lines burst behind it, the subtitle fades down and the magic circle turns. Slowed to about 1.4 times the prototype's speed, which felt too fast. Its own tokens so the header can be dramatic while cards and lists keep the quicker energetic arrival.",
@@ -114,7 +114,7 @@
     },
     "subtitle": {
       "$type": "color",
-      "$value": "{palette.peach.200}"
+      "$value": "#e2d8a5"
     }
   }
 }

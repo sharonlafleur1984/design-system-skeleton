@@ -15,8 +15,7 @@
     },
     "glass-ink": {
       "$type": "color",
-      "$value": "{color.ink.on-art}",
-      "$description": "Text on a glass button: cream, because the toolkit is always dark."
+      "$value": "#f6f2e1"
     }
   }
 }
