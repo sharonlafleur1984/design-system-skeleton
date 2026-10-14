@@ -15,6 +15,8 @@ Private files aren't here. They're listed in Sharon's private Notion document in
 | [Decisions](Decisions) | Checking why something was decided |
 | [Themes](Themes) | You need to know what makes each theme (Spotlight, Sunrise, Fireside) look the way it does |
 | [Add a theme](Add-a-theme) | Adding a theme for a new product |
+| [Add a component](Add-a-component) | Building a new component, or renaming one |
+| [How it fits together](Architecture) | Changing the build, or a value shows up in one place and not another |
 
 ## In the repository
 
