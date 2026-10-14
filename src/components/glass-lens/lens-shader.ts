@@ -121,7 +121,9 @@ void main() {
       vec2 n = normalize(vec2(
         sdBox(p - c + vec2(e, 0.), h, rad) - sdBox(p - c - vec2(e, 0.), h, rad),
         sdBox(p - c + vec2(0., e), h, rad) - sdBox(p - c - vec2(0., e), h, rad)) + 1e-5);
-      float bz = max(min(bezel, min(h.x, h.y) * .95), 1e-3);
+      // The bevel scales with the piece: a short button gets a shallow edge, so it stays clear in the middle
+      // like a tile instead of turning milky all over.
+      float bz = max(min(bezel, min(h.x, h.y) * .55), 1e-3);
       float t = clamp(1. - (-d) / bz, 0., 1.);
       // A rounded bevel: the surface tilts most at the very edge, so the art bends most there.
       float tilt = 1. - sqrt(1. - t * t);

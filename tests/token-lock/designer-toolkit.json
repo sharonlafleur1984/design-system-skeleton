@@ -360,7 +360,7 @@
   "glass-cast-distance": "8px",
   "glass-cast-blur": "22px",
   "glass-contact": "rgba(5, 16, 19, 0.3)",
-  "glass-lens-body": "rgba(255, 255, 255, 0.1)",
+  "glass-lens-body": "rgba(255, 255, 255, 0.04)",
   "glass-lens-tint": "rgba(255, 255, 255, 0)",
   "glass-lens-rim-width": "1px",
   "glass-lens-rim-lit": "rgba(255, 255, 255, 0.9)",
