@@ -13,7 +13,7 @@
       },
       "shadow-color": {
         "$type": "color",
-        "$value": "rgba(0, 0, 0, 0.40)",
+        "$value": "rgba(0, 0, 0, 0.45)",
         "$description": "On the dark marble a shadow needs more strength to show."
       }
     }

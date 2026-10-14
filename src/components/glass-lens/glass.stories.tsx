@@ -46,6 +46,28 @@ const pageBackground: Partial<Record<Theme, string>> = {
   'designer-toolkit': 'radial-gradient(90% 70% at 100% 0%, var(--shell-glow), transparent 70%), var(--color-surface-page)',
 };
 
+// Storybook only: three ways a chosen Glass tile could look, for Sharon to pick from (Oct 14).
+const chosenLooksCss = `
+.chosen-looks .ds-tile--glass[data-state='chosen'] .ds-tile__glass { box-shadow: none; background: none; }
+.chosen-looks .ds-tile--glass[data-state='chosen']:nth-child(1) { --glass-lift: 2.2; }
+.chosen-looks .ds-tile--glass[data-state='chosen']:nth-child(2) .ds-tile__glass { background: var(--action-tile-chosen-glow); }
+.chosen-looks .ds-tile--glass[data-state='chosen']:nth-child(3) .ds-tile__glass { background: rgba(255, 255, 255, 0.24); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+`;
+
+/** The three chosen looks side by side: raised toward the sun, tinted like stained glass, or milky. */
+function ChosenLooks() {
+  return (
+    <div className="chosen-looks">
+      <style>{chosenLooksCss}</style>
+      <ActionTileGroup aria-label="Chosen options">
+        {['Raised', 'Tinted', 'Milky'].map((name) => (
+          <ActionTile key={name} onPress={() => {}} data-state="chosen" label={name} title="Title" description="Description" />
+        ))}
+      </ActionTileGroup>
+    </div>
+  );
+}
+
 /** The glass to try: two tiles (one chosen) and three glass buttons. */
 function GlassSet() {
   return (
@@ -84,9 +106,10 @@ function ThemePage({ theme, children }: { theme: Theme; children: ReactNode }) {
   );
 }
 
-type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: number; shadow: number; themeSettings?: boolean };
+type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: number; shadow: number; themeSettings?: boolean; chosenLooks?: boolean };
 
-function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings }: Args & { theme: Theme }) {
+function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings, chosenLooks }: Args & { theme: Theme }) {
+  const set = chosenLooks ? <ChosenLooks /> : <GlassSet />;
   const ref = useRef<HTMLDivElement>(null);
   // Where the sun is, as a share of the page.
   const [sun, setSun] = useState({ x: 0.8, y: 0.12 });
@@ -129,8 +152,8 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-body' as string]: 'rgba(255, 255, 255, 0.1)',
     ['--glass-lens-tint' as string]: 'rgba(255, 255, 255, 0)',
     ['--glass-lens-shadow-color' as string]: `rgba(0, 0, 0, ${shadow.toFixed(2)})`,
-    ['--glass-lens-shadow-distance' as string]: '14px',
-    ['--glass-lens-shadow-blur' as string]: '34px',
+    ['--glass-lens-shadow-distance' as string]: '4px',
+    ['--glass-lens-shadow-blur' as string]: '14px',
   } as CSSProperties);
   const sunStyle: CSSProperties = {
     position: 'absolute',
@@ -166,16 +189,14 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
         onKeyDown={onKey}
       />
       {spotlight ? (
-        <PageShell title="Glass" subtitle="Drag the sun" navigation={<GlassSet />}>
+        <PageShell title="Glass" subtitle="Drag the sun" navigation={set}>
           <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} In Spotlight the sun is the header&apos;s own light, so the wheel and its rays follow it.</p>
         </PageShell>
       ) : (
         <ThemePage theme={theme}>
           <h1 style={{ margin: 0, fontFamily: 'var(--type-heading-title-family)' }}>Glass</h1>
           <p style={{ maxInlineSize: '60ch', marginBlockEnd: 'var(--space-6)' }}>{intro}</p>
-          <MaterialContext.Provider value="glass">
-            <GlassSet />
-          </MaterialContext.Provider>
+          <MaterialContext.Provider value="glass">{set}</MaterialContext.Provider>
         </ThemePage>
       )}
     </div>
@@ -201,6 +222,7 @@ const meta: Meta<Args> = {
     edgeLight: { name: 'Edge light', control: { type: 'range', min: 0, max: 0.6, step: 0.02 } },
     shadow: { name: 'Shadow', control: { type: 'range', min: 0, max: 0.6, step: 0.02 } },
     themeSettings: { table: { disable: true } },
+    chosenLooks: { table: { disable: true } },
   },
   render: (args, { globals }) => <GlassPlayground {...args} theme={singleTheme(globals.theme)} />,
 };
@@ -211,3 +233,6 @@ export const Playground: StoryObj<Args> = {};
 
 /** Each theme's own glass, matched side by side to the Oct 14 shader demo: a faintly milky body, the view bending at the round ends, a bright line along the edge facing the sun, and a soft shadow falling away from it. */
 export const Demo: StoryObj<Args> = { args: { themeSettings: true }, argTypes: { bend: { table: { disable: true } }, edgeDepth: { table: { disable: true } }, colorSplit: { table: { disable: true } }, edgeLight: { table: { disable: true } }, shadow: { table: { disable: true } } } };
+
+/** Three ways a chosen Glass tile could look, on each theme's real background: raised toward the sun, tinted like stained glass, or milky. */
+export const ChosenOptions: StoryObj<Args> = { name: 'Chosen: three options', args: { ...Demo.args, chosenLooks: true }, argTypes: Demo.argTypes };

@@ -185,18 +185,18 @@
       },
       "shadow-color": {
         "$type": "color",
-        "$value": "rgba(40, 0, 10, 0.40)",
+        "$value": "rgba(40, 0, 10, 0.42)",
         "$description": "The shadow the glass casts away from the light (the alpha is its strength)."
       },
       "shadow-distance": {
         "$type": "dimension",
-        "$value": "14px",
-        "$description": "How far the shadow falls away from the light."
+        "$value": "4px",
+        "$description": "How far the shadow falls away from the light. Short, so the glass rests near the page instead of floating high above it."
       },
       "shadow-blur": {
         "$type": "dimension",
-        "$value": "34px",
-        "$description": "How soft the shadow is."
+        "$value": "14px",
+        "$description": "How soft the shadow is: tight enough to read as glass close to the surface."
       },
       "bend": {
         "$type": "number",
