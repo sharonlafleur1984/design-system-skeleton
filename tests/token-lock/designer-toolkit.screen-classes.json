@@ -25,19 +25,19 @@
     "expanded": "124px"
   },
   "type-display-cover-line-height": {
-    "compact": 1.14286,
-    "medium": 1.16667,
-    "expanded": 1.15385
+    "compact": 1.125,
+    "medium": 1.08333,
+    "expanded": 1.07143
   },
   "type-display-cover-size": {
-    "compact": "28px",
+    "compact": "32px",
     "medium": "48px",
-    "expanded": "52px"
+    "expanded": "56px"
   },
   "type-display-xl-line-height": {
     "compact": 1.14286,
-    "medium": 1.2,
-    "expanded": 1.16667
+    "medium": 1.1,
+    "expanded": 1.08333
   },
   "type-display-xl-size": {
     "compact": "28px",

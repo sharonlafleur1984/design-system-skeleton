@@ -1,23 +1,24 @@
 {
   "type": {
+    "$description": "Fireside's type scale. Sizes sit on the 4-point grid (14px is the one exception for UI text, 10px the one for the small capital section label). Line heights are ratios picked so size times ratio lands on a multiple of 4. Titles get smaller on tablets and phones; text inside the interface never does.",
     "display-cover": {
       "size": {
         "$type": "dimension",
-        "$value": "52px",
+        "$value": "56px",
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": "28px",
+            "compact": "32px",
             "medium": "48px"
           }
         }
       },
       "line-height": {
         "$type": "number",
-        "$value": 1.15385,
+        "$value": 1.07143,
         "$extensions": {
           "com.sharon.screen-class": {
-            "compact": 1.14286,
-            "medium": 1.16667
+            "compact": 1.125,
+            "medium": 1.08333
           }
         }
       }
@@ -35,11 +36,11 @@
       },
       "line-height": {
         "$type": "number",
-        "$value": 1.16667,
+        "$value": 1.08333,
         "$extensions": {
           "com.sharon.screen-class": {
             "compact": 1.14286,
-            "medium": 1.2
+            "medium": 1.1
           }
         }
       }
@@ -133,16 +134,6 @@
     "body-large": {
       "size": {
         "$type": "dimension",
-        "$value": "20px"
-      },
-      "line-height": {
-        "$type": "number",
-        "$value": 1.4
-      }
-    },
-    "body-default": {
-      "size": {
-        "$type": "dimension",
         "$value": "16px"
       },
       "line-height": {
@@ -150,7 +141,7 @@
         "$value": 1.5
       }
     },
-    "body-small": {
+    "body-default": {
       "size": {
         "$type": "dimension",
         "$value": "14px"
@@ -158,6 +149,16 @@
       "line-height": {
         "$type": "number",
         "$value": 1.42857
+      }
+    },
+    "body-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "body-micro": {
@@ -173,11 +174,11 @@
     "label": {
       "size": {
         "$type": "dimension",
-        "$value": "12px"
+        "$value": "10px"
       },
       "line-height": {
         "$type": "number",
-        "$value": 1.33333
+        "$value": 1.6
       }
     },
     "label-meta": {
@@ -193,21 +194,21 @@
     "data-default": {
       "size": {
         "$type": "dimension",
-        "$value": "16px"
-      },
-      "line-height": {
-        "$type": "number",
-        "$value": 1.5
-      }
-    },
-    "data-small": {
-      "size": {
-        "$type": "dimension",
         "$value": "14px"
       },
       "line-height": {
         "$type": "number",
         "$value": 1.42857
+      }
+    },
+    "data-small": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.33333
       }
     },
     "data-micro": {
@@ -220,6 +221,15 @@
         "$value": 1.33333
       }
     },
-    "$description": "Borrowed from After Graduation until the designer toolkit picks its typeface (Skin: Still open). After Graduation type scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are ratios (the W3C tokens format), each picked so size times ratio lands on a multiple of 4. 14px is the one size off the grid, for small UI text."
+    "code": {
+      "size": {
+        "$type": "dimension",
+        "$value": "12px"
+      },
+      "line-height": {
+        "$type": "number",
+        "$value": 1.66667
+      }
+    }
   }
 }

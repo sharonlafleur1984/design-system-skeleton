@@ -27,6 +27,25 @@
         "$value": 800,
         "$description": "Only for a display font whose design needs it, like Cinzel in After Graduation's title."
       }
+    },
+    "family": {
+      "code": {
+        "$type": "fontFamily",
+        "$value": [
+          "ui-monospace",
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "Liberation Mono",
+          "monospace"
+        ],
+        "$description": "Code, IDs and keyboard keys: anything where I, l and 1 or O and 0 must never look alike. The device's own monospace font by default; a theme can load its own."
+      }
+    },
+    "optical-sizing": {
+      "$type": "string",
+      "$value": "auto",
+      "$description": "Fonts with an optical-size axis (Newsreader, Fraunces) use the cut drawn for the size they're shown at: finer details on big titles, sturdier shapes on small text. auto is the browser's default; the text style classes set it so nothing switches it off by accident."
     }
   },
   "type": {
@@ -333,6 +352,25 @@
       "family": {
         "$type": "fontFamily",
         "$value": "{font.family.data}"
+      }
+    },
+    "code": {
+      "$description": "Code, IDs, file names and keyboard keys, in the monospace font.",
+      "line-height": {
+        "$type": "number",
+        "$value": 1.5
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "0em"
+      },
+      "weight": {
+        "$type": "fontWeight",
+        "$value": "{font.weight.regular}"
+      },
+      "family": {
+        "$type": "fontFamily",
+        "$value": "{font.family.code}"
       }
     }
   }

@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
     "@fontsource-variable/newsreader": "^5.3.0",
     "@fontsource/archivo": "^5.3.0",
     "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
@@ -62,7 +63,9 @@
     "./components.css": "./dist/index.css",
     "./themes/*.css": "./build/css/*.css",
     "./fonts/after-graduation.css": "./dist/fonts-after-graduation.css",
-    "./fonts/life-hub.css": "./dist/fonts-life-hub.css"
+    "./fonts/life-hub.css": "./dist/fonts-life-hub.css",
+    "./fonts/designer-toolkit.css": "./dist/fonts-designer-toolkit.css",
+    "./text-styles.css": "./dist/text-styles.css"
   },
   "files": [
     "dist",

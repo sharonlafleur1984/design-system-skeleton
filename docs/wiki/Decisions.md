@@ -5,6 +5,28 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> Fireside type: Newsreader for titles, Instrument Sans for everything else</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the designer toolkit's theme (Fireside) uses **Newsreader** for titles only: display, page and document titles, and headings. Its optical-size axis is on, so big titles get the fine display cut and small headings the sturdier text cut. **Instrument Sans** is for all body text and the whole interface. Newsreader is never used for tabs, buttons, labels or controls. **JetBrains Mono** is for code, IDs, file names and keyboard keys. All three are free (OFL) and served from this package.
+- **The mood:** editorial and calm for reading, crisp for the interface. Taken from Sharon's sample: a SemiBold Newsreader display, Instrument Sans body, interface text from 12 to 14px in weights 400, 500 and 600.
+- **Sizes (desktop):** cover title 56 on 60, page and editor title 32 on 40 (`display-l`), document title 20 on 28 (`heading-title`), headings 16 on 24 and 14 on 20, reading text 16 on 24 (`body-large`), interface text 14 on 20 (`body-default`), notes 12 on 16 (`body-small`), dates 12 on 16 (`label-meta`), section labels 10 on 16 (`label`), code 12 on 20. Titles shrink on tablets and phones. Sharon is fine with adjusting sizes later; the hierarchy is the point.
+- **Keeps the toolkit's hierarchy:** section label < meta < body < headings < document title < page title, the same order as today's toolkit (9, 11, 12, 13, 15px). A test checks the order.
+- **Section labels are 10px, up from the toolkit's 9px.** Sharon approved raising it (Oct 14). Instrument Sans in capitals at 9px ran together; 10px is the smallest size that reads well, checked in Storybook, with the letters spaced out (0.08em). It's the one size off the 4-point grid besides 14px, and only for this label.
+- **Sample sizes moved to the grid:** the sample's 58 on 60 display, 18 on 27 body, 28px editor title and 11px interface text became 56 on 60, 16 on 24, 32 (28 on tablets) and 12, so every size follows the shared 4-point rule (Oct 4 and Oct 6).
+- **I, l and 1 look alike in Instrument Sans,** and so do O and 0. Fine in words, but wherever one character matters (codes, IDs, file names, versions, keyboard keys), use the code style. Shown in Foundations, Type, Small text legibility.
+- **Dates in capitals use regular weight (400),** not light. Instrument Sans has no light weight, and a faked one blurs.
+- **New for every theme:** a `code` text style and `font.family.code`. After Graduation and Life Hub use the device's own monospace font, so nothing loads and nothing they show changes. `font.optical-sizing` (auto) is shared too.
+- **New: text style classes.** One class per style, like `ds-text-body-default`, generated from the tokens into `text-styles.css`, so an app can use a whole style by name. They work in every theme and follow screen sizes. One composite token per style was considered, but a single value can't follow the phone and tablet sizes, so each style stays a group of tokens (size, line height, weight, letter spacing, family) with a class on top.
+- **Replaces:** "Borrowed for now: type" in Oct 14, "Fireside is the third theme." Cinzel and Atkinson Hyperlegible Next are gone from Fireside.
+- **Other options:** keeping the 9px label (too small in Instrument Sans capitals); the sample's exact sizes (off the shared grid); Newsreader for buttons and tabs (Sharon ruled it out).
+- **Not done yet:** the toolkit itself still uses its own sizes. Adopting these styles there is a separate step.
+- **Details:** Foundations, Type in Storybook (Text styles, Light and dark, Small text legibility, Do and don't, In context).
+- **Sources:** [Newsreader](https://fonts.google.com/specimen/Newsreader), [Instrument Sans](https://fonts.google.com/specimen/Instrument+Sans), [JetBrains Mono](https://www.jetbrains.com/lp/mono/), [MDN font-optical-sizing](https://developer.mozilla.org/en-US/docs/Web/CSS/font-optical-sizing), [Design Tokens Format 2025.10, typography](https://designtokens.org/TR/2025.10/format/)
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> Fireside is the third theme, for the designer toolkit</summary>
 
 - **Decided by:** Sharon
