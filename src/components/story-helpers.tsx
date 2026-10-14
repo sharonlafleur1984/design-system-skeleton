@@ -77,7 +77,7 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
   );
 }
 
-export const themeNames: Record<Theme, string> = { 'after-graduation': 'After Graduation', 'life-hub': 'Sunrise', 'designer-toolkit': 'Fireside' };
+export const themeNames: Record<Theme, string> = { 'after-graduation': 'Spotlight', 'life-hub': 'Sunrise', 'designer-toolkit': 'Fireside' };
 
 /**
  * Shows the content in the theme picked in the toolbar. Pick "All" to see
