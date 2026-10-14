@@ -121,11 +121,13 @@
   backdrop-filter: none;
 }
 
+/* The label sits quietly above the title: the theme's label size and spacing, in the lighter weight of its
+   meta style, so the title stays the first thing read (Sharon, Oct 14). */
 .ds-tile__label {
   color: var(--tile-ink-soft);
   font-family: var(--type-label-family);
   font-size: var(--type-label-size);
-  font-weight: var(--type-label-weight);
+  font-weight: var(--type-label-meta-weight);
   line-height: var(--type-label-line-height);
   letter-spacing: var(--type-label-letter-spacing);
   text-transform: var(--type-label-transform);

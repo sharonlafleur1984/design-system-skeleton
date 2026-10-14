@@ -64,6 +64,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 - **Decided by:** Sharon ("that text feels too big")
 - **Title size:** a tile's title uses the theme's heading style (one step below its title style): 16px in Spotlight and Fireside, 20px in Sunrise. Long words wrap inside the tile instead of spilling out.
+- **Label:** the label above the title keeps the theme's label size and spacing but uses the lighter weight of its meta style, so it sits quietly and the title is read first (Sharon: the label was too big for the hierarchy).
 - **Layout:** action tiles sit as many across as fit at 12rem or more each, so a narrow column gets fewer, roomier tiles instead of squeezed ones. Page-switching tiles keep D31: three across on tablet and up, the bottom bar on phones.
 
 </details>
