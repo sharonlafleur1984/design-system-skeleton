@@ -104,6 +104,8 @@ export interface ImageArtOptions {
 /**
  * An image that covers its frame (background-size: cover), with an optional color laid over it.
  * Life Hub's marble backgrounds: the container shows the same image with the same CSS.
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function imageArt({ src, overlay, position = { x: 0.5, y: 0.5 }, attachment = 'scroll' }: ImageArtOptions): GlassArt {
   let img: HTMLImageElement | null = null;
@@ -188,6 +190,8 @@ let scratch: HTMLCanvasElement | null = null;
  * of glass tiles), and the wheel at its current angle. Reads every value from the shell's tokens, so
  * dark mode and screen sizes follow. During the entrance (the rays burst, the wheel turns) it keeps
  * repainting so the art inside the glass moves with the art around it.
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function shellArt(): GlassArt {
   return {
