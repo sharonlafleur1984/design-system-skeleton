@@ -25,11 +25,11 @@ export function singleTheme(choice: unknown): Theme {
   return themeList.includes(choice as Theme) ? (choice as Theme) : themeList[0];
 }
 
+// Normal page flow, not a stretching column: buttons and other inline controls keep their own size,
+// and full-width things (tile groups, cards) still fill the panel. Space between items: .ds-story-panel.
 const panel: CSSProperties = {
   flex: '1 1 320px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'var(--space-4)',
+  display: 'flow-root',
   padding: 'var(--space-6)',
   borderRadius: 'var(--radius-panel)',
   background: 'var(--color-surface-page)',
@@ -67,6 +67,9 @@ const themeHeading: CSSProperties = {
 // top right (transparent in light mode). Written as a string, not a CSS file, so the texture's
 // address stays relative to the page, as the build expects.
 export const storyBackgroundsCss = `
+.ds-story-panel > * + * {
+  margin-block-start: var(--space-4);
+}
 [data-theme="life-hub"] {
   --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page);
 }
@@ -137,7 +140,7 @@ function ThemePanel({ theme, heading, children }: { theme: Theme; heading: boole
   // glass catches it about as strongly wherever the sun is.
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6 });
   return (
-    <section ref={ref} data-theme={theme} style={{ ...panel, position: 'relative', isolation: 'isolate', background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
+    <section ref={ref} className="ds-story-panel" data-theme={theme} style={{ ...panel, position: 'relative', isolation: 'isolate', background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
       {heading && <p style={themeHeading}>{themeNames[theme]}</p>}
       <PanelThemeContext.Provider value={theme}>
         <LitContext.Provider value>{children}</LitContext.Provider>

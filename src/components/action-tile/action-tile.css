@@ -15,6 +15,12 @@
 /* Page-switching tiles never stack: three across on tablet and up (D31); on phones they become the bottom
    bar, at the end of this file. Action tiles fit their space: as many across as fit at 12rem or more each,
    so a narrow column gets fewer, roomier tiles instead of squeezed ones. */
+/* A group fills the space it's given, even as an item in a row (next to a label), so its tiles never
+   shrink below a comfortable width. */
+.ds-tiles {
+  flex: 1 1 auto;
+  min-inline-size: min(100%, calc(var(--space-10) * 3));
+}
 .ds-tiles__list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
