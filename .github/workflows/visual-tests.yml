@@ -3,6 +3,10 @@
 # If something looks different, this check fails and says so on the pull request. Adding the
 # "update-screenshots" label then shows each changed screen before and after, right on the pull
 # request (scripts/screenshot-summary.mjs). The full report is still kept as a download.
+#
+# The screenshots are split across 4 machines that run at the same time (Playwright "shards"),
+# so a full check takes about 2 minutes instead of 7. The "visual" job at the end collects their
+# results; it's the check main requires.
 name: Visual tests
 # Runs on pull requests only: main changes only through them, so a second run after a merge
 # would check nothing new.
@@ -10,14 +14,20 @@ on:
   pull_request:
   # Lets the update-screenshots job rerun this check on its own commit.
   workflow_dispatch:
+    inputs:
+      approved:
+        description: The head commit only adds screenshots just taken from this same code.
+        type: boolean
+        default: false
 permissions:
   contents: read
   pull-requests: write
 jobs:
-  visual:
+  # Decides whether screenshots are needed at all.
+  changes:
     runs-on: ubuntu-latest
-    # The same browser and fonts every time, so screenshots only change when the design does.
-    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    outputs:
+      screens: ${{ steps.changes.outputs.screens }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -25,9 +35,19 @@ jobs:
       # Main requires this check, so it always runs, but it only takes screenshots when a change
       # could alter a screen. Docs, the wiki, unit tests and workflows (other than this one and the
       # screenshot approval) can't, so those pull requests pass in seconds.
+      # Right after the update-screenshots job commits, there's nothing left to check either: its
+      # screenshots were taken from this exact code, so a full rerun could only pass.
       - id: changes
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [ "${{ inputs.approved }}" = "true" ]; then
+            files=$(git diff --name-only HEAD~1 HEAD)
+            msg=$(git log -1 --format=%s)
+            if [ "$msg" = "Approve new screenshots" ] && ! echo "$files" | grep -qv '^tests/visual/__screenshots__/'; then
+              echo "screens=false" >> "$GITHUB_OUTPUT"
+              echo "This commit only adds screenshots taken from this same code, so there's nothing new to check."
+              exit 0
+            fi
+          fi
           if [ "${{ github.event_name }}" != "pull_request" ]; then echo "screens=true" >> "$GITHUB_OUTPUT"; exit 0; fi
           screens=false
           for f in $(git diff --name-only "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}"); do
@@ -42,33 +62,53 @@ jobs:
           done
           echo "screens=$screens" >> "$GITHUB_OUTPUT"
           [ "$screens" = true ] || echo "No screen can change in this pull request, so no screenshots are needed."
-      - if: steps.changes.outputs.screens == 'true'
-        uses: actions/setup-node@v6
+
+  # Each machine takes a quarter of the screenshots.
+  shard:
+    needs: changes
+    if: needs.changes.outputs.screens == 'true'
+    runs-on: ubuntu-latest
+    # The same browser and fonts every time, so screenshots only change when the design does.
+    container: mcr.microsoft.com/playwright:v1.56.1-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
-      - if: steps.changes.outputs.screens == 'true'
-        run: npm ci
-      - if: steps.changes.outputs.screens == 'true'
-        run: npm run build-storybook
-      - if: steps.changes.outputs.screens == 'true'
-        run: npx playwright test
+      - run: npm ci
+      - run: npm run build-storybook
+      - run: npx playwright test --shard=${{ matrix.shard }}/4
         env:
           HOME: /root
       - if: failure()
-        id: report
         uses: actions/upload-artifact@v7
         with:
-          name: visual-report
+          name: visual-report-${{ matrix.shard }}
           path: playwright-report/
           retention-days: 14
+
+  # The check main requires. Passes when every shard passed, or when no screenshots were needed.
+  visual:
+    needs: [changes, shard]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - id: result
+        run: |
+          if [ "${{ needs.changes.result }}" != "success" ]; then echo "The change check didn't finish."; exit 1; fi
+          if [ "${{ needs.changes.outputs.screens }}" != "true" ]; then exit 0; fi
+          [ "${{ needs.shard.result }}" = "success" ]
       # Says what to do next on the pull request, so there's nothing to hunt for.
       # Updates its own comment instead of adding a new one each run.
       - if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v8
         env:
-          OUTCOME: ${{ job.status }}
-          REPORT_URL: ${{ steps.report.outputs.artifact-url }}
+          OUTCOME: ${{ steps.result.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         with:
           script: |
@@ -86,7 +126,7 @@ jobs:
                   '',
                   'To see it, add the `update-screenshots` label. The before and after pictures then appear in a comment here. Nothing reaches `main` until you merge.',
                   '',
-                  `<sub>Full report, if you need it: [download](${process.env.REPORT_URL || process.env.RUN_URL})</sub>`,
+                  `<sub>Full report, if you need it: [download from this run](${process.env.RUN_URL})</sub>`,
                 ].join('\n')
               : `${marker}\n**Visual check: everything matches now.**`;
             if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });

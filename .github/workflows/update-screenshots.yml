@@ -3,6 +3,9 @@
 # branch, reruns the checks on that commit, and removes the label. It then posts a comment on the
 # pull request (scripts/screenshot-summary.mjs) showing the biggest changes before and after, with a
 # link to each story's preview. Look there before merging.
+#
+# Like the visual check, the screenshots are split across 4 machines that run at the same time.
+# Each one hands back only the screenshots that changed, and the "update" job commits them together.
 name: Update screenshots
 on:
   pull_request:
@@ -12,48 +15,97 @@ permissions:
   pull-requests: write
   actions: write
 jobs:
-  update:
+  shard:
     if: github.event.label.name == 'update-screenshots'
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:v1.56.1-noble
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build-storybook
-      - run: npx playwright test --update-snapshots
+      - run: npx playwright test --update-snapshots --shard=${{ matrix.shard }}/4
         env:
           HOME: /root
-      - name: Commit the new screenshots
+      # Hands back only new and changed screenshots, not all of them.
+      - name: Collect the changed screenshots
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p changed
+          git ls-files --modified --others --exclude-standard tests/visual/__screenshots__ | while read -r f; do cp "$f" changed/; done
+          echo "$(ls changed | wc -l) screenshots changed in this quarter."
+      - uses: actions/upload-artifact@v7
+        with:
+          name: screenshots-${{ matrix.shard }}
+          path: changed/
+          if-no-files-found: ignore
+          retention-days: 1
+
+  update:
+    needs: shard
+    if: always() && github.event.label.name == 'update-screenshots'
+    runs-on: ubuntu-latest
+    steps:
+      - if: needs.shard.result != 'success'
+        run: |
+          echo "Taking the screenshots failed, so nothing was approved. Open the failed shard to see why."
+          exit 1
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: screenshots-*
+          path: tests/visual/__screenshots__
+          merge-multiple: true
+      - name: Commit the new screenshots
+        id: commit
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add tests/visual/__screenshots__
-          git diff --cached --quiet && echo "No screenshot changes." && exit 0
+          if git diff --cached --quiet; then echo "No screenshot changes."; echo "pushed=false" >> "$GITHUB_OUTPUT"; exit 0; fi
           git commit -m "Approve new screenshots"
           git push
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      # Only for the summary's image comparison; nothing here builds or runs the app.
+      - run: npm ci --ignore-scripts
       - name: Post the screenshot summary
-        run: node scripts/screenshot-summary.mjs "origin/${{ github.event.pull_request.base.ref }}" HEAD
+        run: node scripts/screenshot-summary.mjs "origin/$BASE_REF" HEAD
         env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
       # A commit pushed by this job doesn't start other checks on its own (GitHub's rule),
-      # so start them here. Otherwise required checks would wait forever.
+      # so start them here. Otherwise required checks would wait forever. The visual check is told
+      # the commit only adds screenshots, so it confirms that and passes without redrawing them all.
+      # The branch name goes in through an environment variable and jq, never pasted into the
+      # script, so an odd branch name can't run as a command.
       - name: Rerun the checks on the new commit
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          PUSHED: ${{ steps.commit.outputs.pushed }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          API: https://api.github.com/repos/${{ github.repository }}/actions/workflows
         run: |
-          for wf in ci.yml visual-tests.yml; do
-            curl -fsS -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/${{ github.repository }}/actions/workflows/$wf/dispatches" \
-              -d '{"ref":"${{ github.event.pull_request.head.ref }}"}'
-          done
+          curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
+            "$API/ci.yml/dispatches" -d "$(jq -nc --arg ref "$HEAD_REF" '{ref: $ref}')"
+          curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
+            "$API/visual-tests.yml/dispatches" \
+            -d "$(jq -nc --arg ref "$HEAD_REF" --arg approved "$PUSHED" '{ref: $ref, inputs: {approved: $approved}}')"
       - name: Remove the label
         if: always()
         run: |
