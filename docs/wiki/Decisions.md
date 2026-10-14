@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D46 | Oct 14, 2026 | Action tile titles one size smaller; action tiles fit their space |
 | D45 | Oct 14, 2026 | One light per page, shown in Storybook as a sun on every glass story; a softer focus glow |
 | D44 | Oct 14, 2026 | States stories are still pictures; Playground is where states are tried |
 | D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
@@ -57,6 +58,15 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D46 · Oct 14, 2026:</b> Action tile titles one size smaller; action tiles fit their space</summary>
+
+- **Decided by:** Sharon ("that text feels too big")
+- **Title size:** a tile's title uses the theme's heading style (one step below its title style): 16px in Spotlight and Fireside, 20px in Sunrise. Long words wrap inside the tile instead of spilling out.
+- **Layout:** action tiles sit as many across as fit at 12rem or more each, so a narrow column gets fewer, roomier tiles instead of squeezed ones. Page-switching tiles keep D31: three across on tablet and up, the bottom bar on phones.
+
+</details>
 
 <details>
 <summary><b>D45 · Oct 14, 2026:</b> One light per page, shown in Storybook as a sun on every glass story; a softer focus glow</summary>

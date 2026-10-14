@@ -12,12 +12,16 @@
   display: contents;
 }
 
-/* Tiles never stack: three across on tablet and up (titles may wrap to two lines on small tablets).
-   On phones, switch tiles become the bottom bar and action tiles stack, at the end of this file. */
+/* Page-switching tiles never stack: three across on tablet and up (D31); on phones they become the bottom
+   bar, at the end of this file. Action tiles fit their space: as many across as fit at 12rem or more each,
+   so a narrow column gets fewer, roomier tiles instead of squeezed ones. */
 .ds-tiles__list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-3);
+}
+.ds-tiles--actions .ds-tiles__list {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 3)), 1fr));
 }
 .ds-tile__bar {
   display: none;
@@ -126,12 +130,21 @@
   letter-spacing: var(--type-label-letter-spacing);
   text-transform: var(--type-label-transform);
 }
+/* The theme's heading style (one step below its title style), so a tile's name reads clearly without
+   crowding the tile (Sharon, Oct 14). Long words wrap inside the tile instead of spilling out. */
 .ds-tile__title {
-  font-family: var(--type-heading-title-family);
-  font-size: var(--type-heading-title-size);
-  font-weight: var(--type-heading-title-weight);
-  line-height: var(--type-heading-title-line-height);
-  letter-spacing: var(--type-heading-title-letter-spacing);
+  font-family: var(--type-heading-heading-family);
+  font-size: var(--type-heading-heading-size);
+  font-weight: var(--type-heading-heading-weight);
+  line-height: var(--type-heading-heading-line-height);
+  letter-spacing: var(--type-heading-heading-letter-spacing);
+}
+.ds-tile__label,
+.ds-tile__title,
+.ds-tile__description {
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .ds-tile__description {
   color: var(--tile-ink-soft);
