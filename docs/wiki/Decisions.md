@@ -5,6 +5,20 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> Two materials: Default and Glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** every component with a glass look has a `material` setting with two looks. **Default** is the subtle frosted look (the shared recipe in `glass.css`). **Glass** bends the art behind it at its edge (until now called "lens glass").
+- **Which components:** Button (its glass style), Action tile, Card, Tag, Toggle button group (its sliding indicator) and Page shell (the tiles and buttons in its header).
+- **Starting looks stay the same:** action tiles, glass buttons and the page shell start as Glass; cards, tags and toggle button groups start as Default. Nothing changes until someone switches.
+- **Where it shows:** Glass only shows on artwork the system controls (a theme's header art, Life Hub's marble). On a plain page both look the same.
+- **Why:** "lens" and "classic glass" were confusing names, and Glass doesn't read as glass as much as hoped. Clear names now; a deeper look later.
+- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)).
+- **Details:** `src/components/material.ts`; stories "Glass on artwork" and "Default on artwork" under Button and Action tile.
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
 
 - **Decided by:** Sharon

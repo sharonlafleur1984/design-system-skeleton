@@ -1,6 +1,7 @@
 import { createContext, useContext, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
+import type { Material } from './material';
 
 // Storybook-only helpers. Not exported from the component library.
 
@@ -148,12 +149,12 @@ export type Marble = (typeof marbles)[number];
 /**
  * Storybook only: a piece of Life Hub's marble with glass on it, lit from the shared light (top right).
  * The marble is the container's background, and the same image is the lens's art, so the glass bends
- * exactly what's behind it. lens={false} shows the classic glass (the fallback).
+ * exactly what's behind it. material="default" shows the subtle frosted look.
  */
-export function OnMarble({ marble = marbles[0], lens = true, children, label }: { marble?: Marble; lens?: boolean; children: ReactNode; label?: string }) {
+export function OnMarble({ marble = marbles[0], material = 'glass', children, label }: { marble?: Marble; material?: Material; children: ReactNode; label?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  const art = useMemo(() => (lens ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [lens, marble.texture, night]);
+  const art = useMemo(() => (material === 'glass' ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [material, marble.texture, night]);
   useGlassLight(ref, { selector: '.ds-glass', lens: art });
   const style: CSSProperties = {
     position: 'relative',

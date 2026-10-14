@@ -320,3 +320,29 @@ describe('Select', () => {
     expect(screen.getByRole('button', { name: /Year/ })).toBeTruthy();
   });
 });
+
+// Default is the subtle frosted look; Glass opts an element into the glass canvas (the ds-lens class).
+describe('material', () => {
+  it('cards start as Default and can switch to Glass', () => {
+    const { container } = render(
+      <>
+        <Card>A</Card>
+        <Card material="glass">B</Card>
+      </>,
+    );
+    const [a, b] = Array.from(container.querySelectorAll('.ds-card'));
+    expect(a.classList.contains('ds-lens')).toBe(false);
+    expect(b.classList.contains('ds-lens')).toBe(true);
+  });
+
+  it('glass buttons start as Glass and can switch to Default', () => {
+    render(
+      <>
+        <Button variant="glass">One</Button>
+        <Button variant="glass" material="default">Two</Button>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'One' }).classList.contains('ds-lens')).toBe(true);
+    expect(screen.getByRole('button', { name: 'Two' }).classList.contains('ds-lens')).toBe(false);
+  });
+});

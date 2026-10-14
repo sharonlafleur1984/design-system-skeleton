@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import {
   SelectionIndicator,
   ToggleButton as AriaToggleButton,
@@ -9,6 +9,9 @@ import {
 } from 'react-aria-components';
 import '../material.css';
 import './toggle-button-group.css';
+import { materialClass, type Material } from '../material';
+
+const MaterialContext = createContext<Material>('default');
 
 // Toggle button group (Figma: "Segmented control"): pick one of two to five options that change how
 // the same content shows ("Week" or "Month"). Built on React Aria's ToggleButtonGroup, which handles
@@ -20,16 +23,18 @@ export interface ToggleButtonGroupProps
   extends Omit<AriaToggleButtonGroupProps, 'className' | 'style' | 'children' | 'selectionMode' | 'orientation'> {
   /** Required: names the group for screen readers, for example "Show by". */
   'aria-label': string;
+  /** The sliding indicator's look. Default is the subtle frosted look. Glass bends the art behind it, on artwork the system controls. */
+  material?: Material;
   className?: string;
   children: ReactNode;
 }
 
-export function ToggleButtonGroup({ className, children, disallowEmptySelection = true, ...rest }: ToggleButtonGroupProps) {
+export function ToggleButtonGroup({ className, children, material = 'default', disallowEmptySelection = true, ...rest }: ToggleButtonGroupProps) {
   const classes = ['ds-toggle-group'];
   if (className) classes.push(className);
   return (
     <AriaToggleButtonGroup {...rest} selectionMode="single" disallowEmptySelection={disallowEmptySelection} className={classes.join(' ')}>
-      {children}
+      <MaterialContext.Provider value={material}>{children}</MaterialContext.Provider>
     </AriaToggleButtonGroup>
   );
 }
@@ -44,11 +49,12 @@ export interface ToggleButtonProps extends Omit<AriaToggleButtonProps, 'classNam
 }
 
 export function ToggleButton({ className, children, ...rest }: ToggleButtonProps) {
+  const indicator = ['ds-toggle-group__indicator', materialClass(useContext(MaterialContext))].filter(Boolean).join(' ');
   const classes = ['ds-toggle-group__option'];
   if (className) classes.push(className);
   return (
     <AriaToggleButton {...rest} className={classes.join(' ')}>
-      <SelectionIndicator className="ds-toggle-group__indicator" />
+      <SelectionIndicator className={indicator} />
       <span className="ds-toggle-group__label">{children}</span>
     </AriaToggleButton>
   );

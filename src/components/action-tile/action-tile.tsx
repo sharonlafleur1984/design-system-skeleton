@@ -13,6 +13,7 @@ import {
 import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
+import { materialClass, type Material } from '../material';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -97,11 +98,14 @@ export interface ActionTileProps {
   /** Does this when clicked. */
   onPress?: () => void;
   isDisabled?: boolean;
+  /** Glass bends the art behind the tile (today's look). Default is the subtle frosted look. */
+  material?: Material;
   /** Storybook only: forces a look for the state gallery. */
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, material = 'glass', ...rest }: ActionTileProps) {
+  const className = ['ds-tile', 'ds-glass', materialClass(material)].filter(Boolean).join(' ');
   const inSwitch = useContext(SwitchContext);
   const body = (
     <>
@@ -125,20 +129,20 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
   const state = rest['data-state'];
   if (inSwitch) {
     return (
-      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaTab id={id} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaTab>
     );
   }
   if (href) {
     return (
-      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaLink href={href} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaLink>
     );
   }
   return (
-    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+    <AriaButton onPress={onPress} isDisabled={isDisabled} className={className} data-state={state}>
       {body}
     </AriaButton>
   );
