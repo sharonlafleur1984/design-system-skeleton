@@ -29,6 +29,13 @@
 .ds-tiles--actions .ds-tiles__list {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 3)), 1fr));
 }
+/* Switch tiles share the row while each has room for its words, and wrap onto a new row before a word
+   would have to break (Sharon, Oct 14). Phones use the bottom bar instead (below). */
+@media (width >= 37.5rem) {
+  .ds-tiles--switch .ds-tiles__list {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--space-10) * 2.5)), 1fr));
+  }
+}
 .ds-tile__bar {
   display: none;
 }
@@ -283,7 +290,8 @@
   inset-block-start: var(--space-3);
   inset-inline-end: var(--space-4);
   color: var(--color-accent-text);
-  font-size: var(--type-heading-title-size);
+  /* The standard icon size in every theme, so the mark never outgrows the tile's label (Sharon, Oct 14). */
+  font-size: var(--control-icon);
   line-height: 1;
   visibility: hidden;
 }
