@@ -99,6 +99,8 @@ function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
  * Sets, on every glass piece: --light-x and --light-y (where the light hits its rim, as percentages),
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1, reach: reachOption = 0.9, lens }: GlassLightOptions) {
   // Lens glass: one canvas for the whole group, lit from the same light.

@@ -5,6 +5,19 @@
 Newest first.
 
 <details>
+<summary><b>Oct 14, 2026:</b> Releases attach a ready-built package file</summary>
+
+- **Decided by:** Sharon (approved with the audit list)
+- **Why:** installing from a GitHub tag downloads the whole repo (about 280 MB with its screenshots) and builds it on the app's machine. A release file has only the built components, theme CSS and fonts.
+- **How:** a version tag (`v0.4.0`) runs `.github/workflows/release.yml`. It runs the tests, packs the package with `npm pack` and attaches the file to a GitHub Release. Apps install that file's link.
+- **First release file:** v0.4.0. A workflow only runs from the tagged commit, so v0.3.0 and earlier keep installing from their tag.
+- **CHANGELOG.md** lists what changed in each version. Every release pull request moves the Unreleased notes under its version.
+- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)). They may change in any version.
+- **Not yet:** fonts as separate files. The package build inlines font files into the font CSS; changing that could break how After Graduation loads its fonts, so it waits for its own pull request.
+
+</details>
+
+<details>
 <summary><b>Oct 14, 2026:</b> The repo follows how-i-work; ESLint checks the code</summary>
 
 - **Decided by:** Sharon
