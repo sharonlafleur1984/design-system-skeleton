@@ -30,7 +30,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 ### Changed
 
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
-- **Glass tiles with Reduce transparency or Increase contrast** turn solid, with a line and the mark on a chosen tile. Before, they had no fill when the lens was off.
+- **Glass tiles with Reduce transparency or Increase contrast** turn solid with almost no edge, and a chosen tile shows a line and its mark. Before, they had no fill when the lens was off.
 - A theme can't set spacing, sizes or corners; they always come from the base.
 
 ### Experimental

@@ -197,10 +197,14 @@
   -webkit-backdrop-filter: blur(var(--material-blur-on-art-selected));
   backdrop-filter: blur(var(--material-blur-on-art-selected));
 }
-/* Reduce transparency or Increase contrast: no milk. A chosen Glass tile stays solid like the others and
-   shows a line in its text color around the edge, with its mark, so it never relies on the fill.
-   Increase contrast also gives every Glass tile a firm edge. */
+/* Reduce transparency or Increase contrast: the lens is off, so there's no light, and the tile drops
+   the painted rim that stands in for it. An unchosen Glass tile is just its solid fill (Increase
+   contrast adds only a faint edge). A chosen one stays solid too, with a line in its text color and its
+   mark, so it never relies on the fill. */
 @media (prefers-reduced-transparency: reduce) {
+  :root:not([data-transparency='standard']) .ds-tile--glass::before {
+    display: none;
+  }
   :root:not([data-transparency='standard']) .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
     background: var(--color-surface-glass-on-art);
     -webkit-backdrop-filter: none;
@@ -209,15 +213,22 @@
   }
 }
 @media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-tile--glass::before {
+    display: none;
+  }
   :root:not([data-contrast='standard']) .ds-tile--glass .ds-tile__glass {
     background: var(--color-surface-glass-on-art);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    box-shadow: inset 0 0 0 1px currentColor;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 20%, transparent);
   }
   :root:not([data-contrast='standard']) .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
     box-shadow: inset 0 0 0 2px currentColor;
   }
+}
+:root[data-transparency='reduce'] .ds-tile--glass::before,
+:root[data-contrast='more'] .ds-tile--glass::before {
+  display: none;
 }
 :root[data-transparency='reduce'] .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass,
 :root[data-contrast='more'] .ds-tile--glass:is([data-selected], [data-state='chosen']) .ds-tile__glass {
@@ -228,7 +239,7 @@
 }
 :root[data-contrast='more'] .ds-tile--glass:not([data-selected]):not([data-state='chosen']) .ds-tile__glass {
   background: var(--color-surface-glass-on-art);
-  box-shadow: inset 0 0 0 1px currentColor;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 20%, transparent);
 }
 
 /* The theme's mark for a chosen tile (Spotlight's star, a check elsewhere), or the tile's own chosenIcon. */
