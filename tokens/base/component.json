@@ -12,6 +12,16 @@
     "icon": {
       "$type": "dimension",
       "$value": "18px"
+    },
+    "title-line-height": {
+      "$type": "number",
+      "$value": 1.1,
+      "$description": "Callout title: tight, so a one-line title sits level with the icon. From the Figma Callout."
+    },
+    "body-line-height": {
+      "$type": "number",
+      "$value": 1.4,
+      "$description": "Callout message text. From the Figma Callout."
     }
   },
   "bottom-bar": {
