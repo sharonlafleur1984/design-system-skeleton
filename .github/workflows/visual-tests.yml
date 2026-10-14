@@ -1,8 +1,8 @@
 # Visual tests: screenshots every Storybook story at phone, tablet and desktop and
 # compares them with the approved screenshots in tests/visual/__screenshots__.
-# If something looks different, this check fails and comments on the pull request with
-# a link to the "visual-report" file: before, after and the difference.
-# Meant the change? Add the "update-screenshots" label to the pull request to approve it.
+# If something looks different, this check fails and says so on the pull request. Adding the
+# "update-screenshots" label then shows each changed screen before and after, right on the pull
+# request (scripts/screenshot-summary.mjs). The full report is still kept as a download.
 name: Visual tests
 # Runs on pull requests only: main changes only through them, so a second run after a merge
 # would check nothing new.
@@ -62,7 +62,7 @@ jobs:
           name: visual-report
           path: playwright-report/
           retention-days: 14
-      # Puts a link to the images on the pull request, so there's nothing to hunt for.
+      # Says what to do next on the pull request, so there's nothing to hunt for.
       # Updates its own comment instead of adding a new one each run.
       - if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v8
@@ -84,9 +84,9 @@ jobs:
                   marker,
                   '**Visual check: something looks different.**',
                   '',
-                  `[Download the images](${process.env.REPORT_URL || process.env.RUN_URL}), then open \`index.html\` inside to see before, after and the difference.`,
+                  'To see it, add the `update-screenshots` label. The before and after pictures then appear in a comment here. Nothing reaches `main` until you merge.',
                   '',
-                  'Meant the change? Add the `update-screenshots` label to approve it.',
+                  `<sub>Full report, if you need it: [download](${process.env.REPORT_URL || process.env.RUN_URL})</sub>`,
                 ].join('\n')
               : `${marker}\n**Visual check: everything matches now.**`;
             if (mine) await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
