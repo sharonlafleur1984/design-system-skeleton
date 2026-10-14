@@ -39,7 +39,8 @@ for (const story of stories) {
         await page.locator('#storybook-root').waitFor();
         await page.evaluate(() => document.fonts.ready);
         await page.evaluate(imagesReady);
-        await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });
+        // Tall stories full of images (the sky header on every marble) take over the default 5s.
+        await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, timeout: 20_000 });
       });
     }
   }

@@ -377,7 +377,8 @@
     "accent": {
       "base": {
         "$value": "#e1a36f",
-        "$type": "color"
+        "$type": "color",
+        "$description": "Peach copper, the primary color (Retro): the main button, focus and the selected item. Near-black text on it."
       },
       "hover": {
         "$value": "#f2b37e",
