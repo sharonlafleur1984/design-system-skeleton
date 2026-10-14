@@ -121,10 +121,10 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-bend' as string]: String(bend),
     ['--glass-lens-edge-depth' as string]: `${edgeDepth}px`,
     ['--glass-lens-color-split' as string]: String(colorSplit),
-    ['--glass-lens-rim-width' as string]: '1.5px',
-    ['--glass-lens-rim-lit' as string]: `rgba(255, 255, 255, ${Math.min(1, edgeLight * 3.4).toFixed(2)})`,
+    ['--glass-lens-rim-width' as string]: '2px',
+    ['--glass-lens-rim-lit' as string]: `rgba(255, 255, 255, ${Math.min(1, edgeLight * 3.6).toFixed(2)})`,
     ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
-    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.57).toFixed(2)})`,
+    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.18).toFixed(2)})`,
     ['--glass-lens-shadow-color' as string]: `rgba(0, 0, 0, ${shadow.toFixed(2)})`,
     ['--glass-lens-shadow-distance' as string]: '22px',
     ['--glass-lens-shadow-blur' as string]: '34px',
@@ -206,4 +206,4 @@ export default meta;
 export const Playground: StoryObj<Args> = {};
 
 /** Matched to the Oct 14 shader demo: a deeper edge, a stronger bend, a bright edge facing the sun, and a soft shadow that falls away from it. */
-export const Demo: StoryObj<Args> = { args: { bend: 1.5, edgeDepth: 28, colorSplit: 0.02, edgeLight: 0.28, shadow: 0.38 } };
+export const Demo: StoryObj<Args> = { args: { bend: 1.5, edgeDepth: 28, colorSplit: 0.02, edgeLight: 0.32, shadow: 0.38 } };

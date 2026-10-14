@@ -145,6 +145,9 @@ void main() {
       float band = smoothstep(.55, 1., t);
       vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k)
         + band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
+      // The side away from the light is darker, like real glass: its edge and bevel turn from the light.
+      float away = max(dot(n, -L), 0.) * k;
+      q.rgb *= 1. - (rim * .5 + band * .22) * away;
       // Light on clear glass shows as much as it's bright. On art that fills the frame (q.a is 1) this is
       // the same as before: the art, body and tint, plus the light, clamped.
       q.a = clamp(max(q.a, max(lit.r, max(lit.g, lit.b))), 0., 1.);

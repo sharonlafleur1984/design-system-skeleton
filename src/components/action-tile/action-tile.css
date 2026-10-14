@@ -167,7 +167,7 @@
   --tile-ink-soft: var(--color-ink-secondary);
 }
 /* A chosen Glass tile stays clear glass with the same text color: light pools inside it in the theme's
-   glow, and its whole edge holds the light. */
+   glow. Its edge is still lit by the page's light, like every other piece of glass. */
 .ds-tile--glass[data-selected],
 .ds-tile--glass[data-state='chosen'] {
   --tile-fill: transparent;
@@ -177,9 +177,7 @@
 .ds-tile--glass[data-selected] .ds-tile__glass,
 .ds-tile--glass[data-state='chosen'] .ds-tile__glass {
   background: radial-gradient(120% 160% at 50% 50%, var(--action-tile-chosen-glow), transparent 80%);
-  box-shadow:
-    inset 0 0 var(--space-5) var(--space-1) var(--action-tile-chosen-glow),
-    inset 0 0 var(--space-2) 0 var(--glass-lens-rim-lit);
+  box-shadow: inset 0 0 var(--space-5) var(--space-1) var(--action-tile-chosen-glow);
 }
 /* The theme's mark for a chosen tile (Spotlight's star, a check elsewhere), or the tile's own chosenIcon. */
 .ds-tile__star {
