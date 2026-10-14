@@ -12,7 +12,7 @@ const meta: Meta<typeof Tabs> = {
         component: [
           'Switch between views of the same thing. Built on React Aria\'s Tabs.',
           '',
-          '**When to use:** two to six related views on one page, like "Upcoming" and "Paid".',
+          '**When to use:** two to six related views on one page, like "Overview" and "Details".',
           '',
           '**When not to:** to change how one list shows ("Week" or "Month"), use a segmented control. To go to another page, use a link.',
           '',
@@ -29,19 +29,19 @@ type Story = StoryObj<typeof Tabs>;
 
 const panel = { margin: 0, color: 'var(--color-ink-secondary)' };
 
-/** Three views of the bills list. */
+/** Three tabs, each with its own panel. */
 export const Default: Story = {
   render: () => (
     <BothThemes>
-      <Tabs defaultSelectedKey="upcoming">
-        <TabList aria-label="Bills">
-          <Tab id="upcoming">Upcoming</Tab>
-          <Tab id="paid">Paid</Tab>
-          <Tab id="all">All bills</Tab>
+      <Tabs defaultSelectedKey="1">
+        <TabList aria-label="Label">
+          <Tab id="1">Tab 1</Tab>
+          <Tab id="2">Tab 2</Tab>
+          <Tab id="3">Tab 3</Tab>
         </TabList>
-        <TabPanel id="upcoming"><p style={panel}>Three bills due this week.</p></TabPanel>
-        <TabPanel id="paid"><p style={panel}>Nine bills paid this month.</p></TabPanel>
-        <TabPanel id="all"><p style={panel}>Twelve bills in all.</p></TabPanel>
+        <TabPanel id="1"><p style={panel}>Tab 1 content</p></TabPanel>
+        <TabPanel id="2"><p style={panel}>Tab 2 content</p></TabPanel>
+        <TabPanel id="3"><p style={panel}>Tab 3 content</p></TabPanel>
       </Tabs>
     </BothThemes>
   ),

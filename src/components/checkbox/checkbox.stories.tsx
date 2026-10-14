@@ -6,7 +6,7 @@ const meta: Meta<typeof Checkbox> = {
   title: 'Components/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
-  args: { label: 'Ask for a fee waiver' },
+  args: { label: 'Label' },
   parameters: {
     docs: {
       description: {

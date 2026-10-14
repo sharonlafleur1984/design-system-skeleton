@@ -6,7 +6,7 @@ const meta: Meta<typeof Callout> = {
   title: 'Components/Callout',
   component: Callout,
   tags: ['autodocs'],
-  args: { tone: 'info', title: 'FAFSA opens Oct 1', children: 'File early. Some aid is first come, first served.' },
+  args: { tone: 'info', title: 'Title', children: 'Description' },
   parameters: {
     docs: {
       description: {
@@ -33,11 +33,11 @@ export const Playground: Story = {};
 export const Tones: Story = {
   render: () => (
     <BothThemes>
-      <Callout tone="info" title="FAFSA opens Oct 1">File early. Some aid is first come, first served.</Callout>
-      <Callout tone="due" title="Due in 5 days">Application fee for State U.</Callout>
-      <Callout tone="settled" title="Transcript sent">State U confirmed it arrived.</Callout>
-      <Callout tone="overdue" title="2 days late">Recommendation letter request.</Callout>
-      <Callout tone="quiet" title="Tip">You can change your list anytime.</Callout>
+      <Callout tone="info" title="Info">Description</Callout>
+      <Callout tone="due" title="Due">Description</Callout>
+      <Callout tone="settled" title="Settled">Description</Callout>
+      <Callout tone="overdue" title="Overdue">Description</Callout>
+      <Callout tone="quiet" title="Quiet">Description</Callout>
     </BothThemes>
   ),
 };
@@ -45,8 +45,8 @@ export const Tones: Story = {
 export const WithoutTitle: Story = {
   render: () => (
     <BothThemes>
-      <Callout tone="info">File early. Some aid is first come, first served.</Callout>
-      <Callout tone="quiet">You can change your list anytime.</Callout>
+      <Callout tone="info">Description</Callout>
+      <Callout tone="quiet">Description</Callout>
     </BothThemes>
   ),
 };

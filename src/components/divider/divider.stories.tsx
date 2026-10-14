@@ -30,13 +30,13 @@ export const Playground: Story = {};
 export const Orientations: Story = {
   render: () => (
     <BothThemes>
-      <span>This week</span>
+      <span>Item 1</span>
       <Divider />
-      <span>Later</span>
+      <span>Item 2</span>
       <div style={{ display: 'flex', gap: 'var(--space-3)', blockSize: '24px' }}>
-        <span>Schools</span>
+        <span>Item 1</span>
         <Divider orientation="vertical" />
-        <span>Money</span>
+        <span>Item 2</span>
       </div>
     </BothThemes>
   ),
