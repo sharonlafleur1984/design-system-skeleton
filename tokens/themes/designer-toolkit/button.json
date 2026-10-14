@@ -1,0 +1,22 @@
+{
+  "button": {
+    "kiss": {
+      "$value": "rgba(0, 0, 0, 0)",
+      "$type": "color"
+    },
+    "tertiary-decoration": {
+      "$value": "none"
+    },
+    "shadow-primary": {
+      "$value": "0px 1px 2px 0px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.18)"
+    },
+    "shadow-secondary": {
+      "$value": "0px 1px 2px 0px rgba(0,0,0,0.25)"
+    },
+    "glass-ink": {
+      "$type": "color",
+      "$value": "{color.ink.on-art}",
+      "$description": "Text on a glass button: cream, because the toolkit is always dark."
+    }
+  }
+}

@@ -9,7 +9,7 @@ const index = JSON.parse(readFileSync('storybook-static/index.json', 'utf8')) as
 const stories = Object.values(index.entries).filter((e) => e.type === 'story');
 
 const screens = { phone: 390, tablet: 768, desktop: 1280 } as const;
-const themes = ['after-graduation', 'life-hub'];
+const themes = ['after-graduation', 'life-hub', 'designer-toolkit'];
 const screenshotTime = new Date('2026-10-13T06:53:00Z');
 
 // Waits until every image on the page has loaded and decoded, including CSS backgrounds like Life

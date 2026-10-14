@@ -1,0 +1,220 @@
+{
+  "material": {
+    "$description": "Two kinds of glass, both for controls only, never content. 'glass' is a control on a page. 'glass-on-art' is a control floating on artwork (a header illustration, a race lane). Life Hub uses glass for both; After Graduation keeps page controls solid and uses glass only over artwork.",
+    "blur": {
+      "$type": "dimension",
+      "$value": "0px"
+    },
+    "saturate": {
+      "$type": "number",
+      "$value": 1
+    },
+    "blur-on-art": {
+      "$type": "dimension",
+      "$value": "0px",
+      "$description": "Unselected glass on artwork is perfectly clear; the art shows through sharp and bends at the edges."
+    },
+    "blur-on-art-selected": {
+      "$type": "dimension",
+      "$value": "10px",
+      "$description": "Frosted glass scatters what is behind it, so selected controls all look the same."
+    },
+    "refraction-band": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "refraction-max": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Dark mode bends more, since the art behind is harder to see."
+    }
+  },
+  "color": {
+    "surface": {
+      "glass": {
+        "$type": "color",
+        "$value": "rgba(248, 240, 232, 0.06)"
+      },
+      "glass-strong": {
+        "$type": "color",
+        "$value": "#4b4743"
+      },
+      "glass-on-art": {
+        "$type": "color",
+        "$value": "rgba(51, 48, 44, 0.72)"
+      },
+      "glass-on-art-selected": {
+        "$type": "color",
+        "$value": "rgba(75, 71, 67, 0.88)"
+      }
+    },
+    "border": {}
+  },
+  "shadow": {
+    "glass": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(0,0,0,0)",
+          "offsetX": "0px",
+          "offsetY": "0px",
+          "blur": "0px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "Inner light along the edges of a glass surface."
+    },
+    "glass-on-art": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "rgba(60,0,15,0.28)",
+          "offsetX": "0px",
+          "offsetY": "6px",
+          "blur": "18px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Soft shadow under glass on artwork. No inner glow: every highlight needs a light source."
+    }
+  },
+  "glass": {
+    "rim": {
+      "$description": "The lit edge of glass on artwork. Unselected: the brightest edge faces the scene's light source, with a faint glint on the opposite edge. Selected: lit by its own star in the top-right corner. Eased in and out, 1px.",
+      "width": {
+        "$type": "dimension",
+        "$value": "1px"
+      },
+      "color": {
+        "$type": "color",
+        "$value": "rgba(248, 240, 232, 0.12)"
+      },
+      "faint": {
+        "$type": "color",
+        "$value": "rgba(248, 240, 232, 0.04)"
+      },
+      "strength": {
+        "$type": "number",
+        "$value": 1.25,
+        "$description": "How bright the rim gets where it faces the light (1 is the rim color at full strength)."
+      },
+      "glint": {
+        "$type": "number",
+        "$value": 0.25,
+        "$description": "The faint glint on the far corner, where light leaves the glass."
+      },
+      "spread-x": {
+        "$type": "dimension",
+        "$value": "70%",
+        "$description": "How far the lit part of the rim reaches across the glass."
+      },
+      "spread-y": {
+        "$type": "dimension",
+        "$value": "150%"
+      }
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "rgba(248, 240, 232, 0.08)"
+    },
+    "shade": {
+      "$type": "color",
+      "$value": "rgba(13, 11, 9, 0.4)"
+    },
+    "cast": {
+      "$type": "color",
+      "$value": "rgba(13, 11, 9, 0.45)"
+    },
+    "cast-distance": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "How far the shadow falls from the glass, away from the light."
+    },
+    "cast-blur": {
+      "$type": "dimension",
+      "$value": "22px",
+      "$description": "How soft the cast shadow is."
+    },
+    "contact": {
+      "$type": "color",
+      "$value": "rgba(13, 11, 9, 0.3)"
+    },
+    "lens": {
+      "$description": "Lens glass (Oct 12): action tiles and glass buttons on artwork the design system controls. A WebGL canvas bends the art at the glass's curved edge, never its text. Tuned by Sharon. Used only while the lens is drawing; otherwise the glass keeps the classic recipe above.",
+      "body": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.05)",
+        "$description": "The glass's body: white at this strength over the art."
+      },
+      "tint": {
+        "$type": "color",
+        "$value": "rgba(233, 206, 181, 0.04)"
+      },
+      "rim-width": {
+        "$type": "dimension",
+        "$value": "1px",
+        "$description": "The lit rim along the glass's edge."
+      },
+      "rim-lit": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.55)",
+        "$description": "The rim where it faces the light, at its brightest."
+      },
+      "rim-faint": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.10)",
+        "$description": "The rim everywhere else, so the edge never disappears."
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.10)",
+        "$description": "The soft band of light just inside the edge that faces the light."
+      },
+      "shadow-color": {
+        "$type": "color",
+        "$value": "rgba(13, 11, 9, 0.35)"
+      },
+      "shadow-distance": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "How far the shadow falls away from the light."
+      },
+      "shadow-blur": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "How soft the shadow is."
+      },
+      "bend": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "How strongly the edge bends the art (1 is a true rounded bevel)."
+      },
+      "edge-depth": {
+        "$type": "dimension",
+        "$value": "22px",
+        "$description": "How far in from the edge the glass curves and bends the art. Never more than 95% of half the glass's height; the middle stays clear."
+      },
+      "color-split": {
+        "$type": "number",
+        "$value": 0.02,
+        "$description": "A faint color split where the art bends, like real glass."
+      },
+      "press-swell": {
+        "$type": "number",
+        "$value": 1.02,
+        "$description": "How much the glass swells when pressed, before it settles back."
+      },
+      "press-duration": {
+        "$type": "duration",
+        "$value": "300ms",
+        "$description": "How long the press swell takes to settle back to rest."
+      },
+      "tilt-reach": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "How far tilting a phone moves the light, at most. The light eases back when the phone is still."
+      }
+    }
+  }
+}

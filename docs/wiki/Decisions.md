@@ -1,8 +1,21 @@
 # Decisions
 
-**Last updated:** October 12, 2026
+**Last updated:** October 14, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 14, 2026:</b> Fireside is the third theme, for the designer toolkit</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the designer toolkit's Fireside skin is a theme here, `tokens/themes/designer-toolkit`, and appears in Storybook's Theme picker as "Designer toolkit (Fireside)". It is always dark, so it has no dark folder and the Mode switch doesn't change it.
+- **Colors:** Fireside's palette and color jobs as decided in the toolkit on Oct 12 ([Skin](https://github.com/sharonlafleur1984/designer-toolkit/wiki/Skin)): near-black frame, cream text, peach for supporting text, one bright rust accent used rarely, fire red for danger, lake green for success, honey for warnings only. Every text pair passes 4.5:1 (tests/tokens.test.ts).
+- **Borrowed for now:** type, sizes and motion come from After Graduation until the toolkit picks its own (Skin: Still open).
+- **Not made yet:** Fireside skins for Action tile, Page shell and Settings, and Fireside's glass. Those stories say so when Fireside is picked, the same way they do for Life Hub.
+- **Why:** the toolkit's Skin page says Fireside is a theme in this design system, but it only existed as a copy inside designer-toolkit-code, so it never showed in Storybook.
+- **How:** "Both, side by side" is now "All, side by side" and shows all three themes. Visual tests screenshot every story in Fireside too.
+
+</details>
 
 <details>
 <summary><b>Oct 12, 2026:</b> Action tiles and glass buttons use lens glass</summary>
