@@ -121,10 +121,12 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-bend' as string]: String(bend),
     ['--glass-lens-edge-depth' as string]: `${edgeDepth}px`,
     ['--glass-lens-color-split' as string]: String(colorSplit),
-    ['--glass-lens-rim-width' as string]: '2px',
-    ['--glass-lens-rim-lit' as string]: `rgba(255, 255, 255, ${Math.min(1, edgeLight * 3.6).toFixed(2)})`,
-    ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
-    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.18).toFixed(2)})`,
+    ['--glass-lens-rim-width' as string]: '1.5px',
+    ['--glass-lens-rim-lit' as string]: 'rgba(255, 255, 255, 0.95)',
+    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
+    ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.32).toFixed(2)})`,
+    ['--glass-lens-body' as string]: 'rgba(255, 255, 255, 0)',
+    ['--glass-lens-tint' as string]: 'rgba(255, 255, 255, 0)',
     ['--glass-lens-shadow-color' as string]: `rgba(0, 0, 0, ${shadow.toFixed(2)})`,
     ['--glass-lens-shadow-distance' as string]: '22px',
     ['--glass-lens-shadow-blur' as string]: '34px',
@@ -205,5 +207,5 @@ export default meta;
 /** Drag the sun, and tune the glass with the controls. */
 export const Playground: StoryObj<Args> = {};
 
-/** Matched to the Oct 14 shader demo: a deeper edge, a stronger bend, a bright edge facing the sun, and a soft shadow that falls away from it. */
-export const Demo: StoryObj<Args> = { args: { bend: 1.5, edgeDepth: 28, colorSplit: 0.02, edgeLight: 0.32, shadow: 0.38 } };
+/** Matched side by side to real-glass references (Oct 14): a clear middle, the view bending at the rim, a thin bright edge lit on both sides, warm and cool fringes where it bends most, and a soft shadow falling away from the sun. */
+export const Demo: StoryObj<Args> = { args: { bend: 1.1, edgeDepth: 26, colorSplit: 0.08, edgeLight: 0.14, shadow: 0.58 } };
