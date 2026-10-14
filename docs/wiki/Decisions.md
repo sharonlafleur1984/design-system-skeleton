@@ -63,7 +63,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 <summary><b>D46 · Oct 14, 2026:</b> Action tile titles one size smaller; action tiles fit their space</summary>
 
 - **Decided by:** Sharon ("that text feels too big")
-- **Title size:** a tile's title uses the theme's heading style (one step below its title style): 16px in Spotlight and Fireside, 20px in Sunrise. Long words wrap inside the tile instead of spilling out.
+- **Title size:** each theme picks (`action-tile.title-large`). Sunrise and Fireside use their heading style (20px and 16px); Spotlight uses its title style (20px), because its heading is no bigger than its body text. Long words wrap inside the tile instead of spilling out.
+- **Fireside text color:** a tile's label and description use `action-tile.ink-soft`. Fireside's is its warm grey (#bebbad), not its honey-yellow secondary, which read wrong next to the cream title. Spotlight and Sunrise keep their secondary text color.
 - **Label:** the label above the title keeps the theme's label size and spacing but uses the lighter weight of its meta style, so it sits quietly and the title is read first (Sharon: the label was too big for the hierarchy).
 - **Layout:** action tiles sit as many across as fit at 12rem or more each, so a narrow column gets fewer, roomier tiles instead of squeezed ones. Page-switching tiles keep D31: three across on tablet and up, the bottom bar on phones.
 

@@ -199,6 +199,8 @@
   "type-code-size": "14px",
   "action-tile-chosen-mark": "\"✦\"",
   "action-tile-chosen-frost": "rgba(255, 255, 255, 0.22)",
+  "action-tile-title-large": 1,
+  "action-tile-ink-soft": "#3b3736",
   "button-kiss": "rgba(0, 0, 0, 0)",
   "button-tertiary-decoration": "none",
   "button-shadow-primary": "0px 1px 2px 0px rgba(29,26,24,0.06), 0px 4px 12px 0px rgba(29,26,24,0.06), inset 0px 0px 0px 0px rgba(0,0,0,0), inset 0 1px 0 rgba(255,255,255,0.25)",

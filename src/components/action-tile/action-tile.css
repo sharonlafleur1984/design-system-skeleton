@@ -31,7 +31,7 @@
   /* The fill and its text colors. fill="..." swaps all three together, so text always passes contrast. */
   --tile-fill: var(--color-surface-card);
   --tile-ink: var(--color-ink-primary);
-  --tile-ink-soft: var(--color-ink-secondary);
+  --tile-ink-soft: var(--action-tile-ink-soft);
   /* The shared lighting recipe (glass.css), with the cards' settings. */
   --g-rim-color: var(--card-glass-rim-color);
   --g-rim-strength: var(--card-glass-rim-strength);
@@ -133,13 +133,16 @@
   text-transform: var(--type-label-transform);
 }
 /* The theme's heading style (one step below its title style), so a tile's name reads clearly without
-   crowding the tile (Sharon, Oct 14). Long words wrap inside the tile instead of spilling out. */
+   crowding the tile, or its title style where the theme says so (action-tile.title-large: Spotlight,
+   whose heading is no bigger than its body text) (Sharon, Oct 14). Long words wrap inside the tile. */
 .ds-tile__title {
+  --_t: var(--action-tile-title-large);
   font-family: var(--type-heading-heading-family);
-  font-size: var(--type-heading-heading-size);
-  font-weight: var(--type-heading-heading-weight);
-  line-height: var(--type-heading-heading-line-height);
-  letter-spacing: var(--type-heading-heading-letter-spacing);
+  font-size: calc(var(--type-heading-heading-size) * (1 - var(--_t)) + var(--type-heading-title-size) * var(--_t));
+  --_weight: calc(var(--type-heading-heading-weight) * (1 - var(--_t)) + var(--type-heading-title-weight) * var(--_t));
+  font-weight: var(--_weight);
+  line-height: calc(var(--type-heading-heading-line-height) * (1 - var(--_t)) + var(--type-heading-title-line-height) * var(--_t));
+  letter-spacing: calc(var(--type-heading-heading-letter-spacing) * (1 - var(--_t)) + var(--type-heading-title-letter-spacing) * var(--_t));
 }
 .ds-tile__label,
 .ds-tile__title,
@@ -192,7 +195,7 @@
 .ds-tile[data-state='chosen'] {
   --tile-fill: var(--color-accent-surface);
   --tile-ink: var(--color-ink-primary);
-  --tile-ink-soft: var(--color-ink-secondary);
+  --tile-ink-soft: var(--action-tile-ink-soft);
 }
 /* A chosen Glass tile turns milky: a blur of what's behind it under the theme's frost. Only the glass
    changes; the text sits on top at its usual color, untouched by the frost or the light. */

@@ -199,6 +199,8 @@
   "type-code-size": "14px",
   "action-tile-chosen-mark": "\"✓\"",
   "action-tile-chosen-frost": "rgba(250, 247, 241, 0.1)",
+  "action-tile-title-large": 0,
+  "action-tile-ink-soft": "#e8e2db",
   "color-area-dashboard-card-frost": "none",
   "color-area-dashboard-night": "rgba(45, 50, 36, 0.82)",
   "color-area-dashboard-card-glass-rim-color": "#fdfbf1",
