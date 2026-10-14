@@ -1,0 +1,14 @@
+{
+  "action-tile": {
+    "chosen-mark": {
+      "$value": "\"✦\"",
+      "$type": "string",
+      "$description": "The star: After Graduation's mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
+    },
+    "chosen-glow": {
+      "$value": "rgba(231, 165, 82, 0.28)",
+      "$type": "color",
+      "$description": "Warm gold (the subtitle color), pooled inside a chosen Glass tile, so it shows on the header red. The glass stays clear; its text color doesn't change."
+    }
+  }
+}

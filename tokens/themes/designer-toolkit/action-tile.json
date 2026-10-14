@@ -1,0 +1,14 @@
+{
+  "action-tile": {
+    "chosen-mark": {
+      "$value": "\"✓\"",
+      "$type": "string",
+      "$description": "A check mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
+    },
+    "chosen-glow": {
+      "$value": "rgba(225, 163, 111, 0.26)",
+      "$type": "color",
+      "$description": "Peach copper, pooled inside a chosen Glass tile. The glass stays clear; its text color doesn't change."
+    }
+  }
+}

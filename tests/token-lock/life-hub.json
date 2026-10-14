@@ -190,6 +190,8 @@
   "type-data-micro-weight": 500,
   "type-data-micro-family": "Figtree, system-ui, sans-serif",
   "type-data-micro-size": "12px",
+  "action-tile-chosen-mark": "\"✓\"",
+  "action-tile-chosen-glow": "rgba(176, 143, 60, 0.26)",
   "color-area-dashboard-card-frost": "radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / 0.91), rgb(253 251 249 / 0.83) 55%, rgb(250 247 241 / 0.83))",
   "color-area-dashboard-night": "rgba(0, 0, 0, 0)",
   "color-area-dashboard-card-glass-rim-color": "#fdfbf1",

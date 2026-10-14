@@ -100,6 +100,8 @@ export interface ActionTileProps {
   title: ReactNode;
   /** Optional. One short line about what happens there. */
   description?: ReactNode;
+  /** Shown when the tile is chosen, in place of the theme's mark (Spotlight's star, a check elsewhere). Any icon works. Decorative: screen readers hear "selected". */
+  chosenIcon?: ReactNode;
   /** The tile's icon in the phone bottom bar. Decorative: the name next to it is what's read out. */
   icon?: ReactNode;
   /** One or two words for the phone bottom bar, like "Schools". Falls back to the title. */
@@ -119,7 +121,7 @@ export interface ActionTileProps {
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, material: ownMaterial, fill = 'card', ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, chosenIcon, shortTitle, id, href, onPress, isDisabled, material: ownMaterial, fill = 'card', ...rest }: ActionTileProps) {
   // On the page shell header, tiles are Glass unless they ask for Default.
   const containerMaterial = useContext(MaterialContext);
   const material = ownMaterial ?? containerMaterial ?? 'default';
@@ -134,7 +136,7 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
       <span className="ds-tile__title">{title}</span>
       {description && <span className="ds-tile__description">{description}</span>}
       <span className="ds-tile__star" aria-hidden="true">
-        ✦
+        {chosenIcon}
       </span>
       <span className="ds-tile__bar">
         {icon && (
