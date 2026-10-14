@@ -174,6 +174,15 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
+/* Increase contrast: glass buttons are solid (material.css) and cast no shadow, so nothing is soft. */
+@media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-button--glass {
+    --_shadow: none;
+  }
+}
+:root[data-contrast='more'] .ds-button--glass {
+  --_shadow: none;
+}
 /* Disabled glass stays glass, half see-through, like a disabled action tile. */
 .ds-button--glass[data-disabled],
 .ds-button--glass[data-pending] {

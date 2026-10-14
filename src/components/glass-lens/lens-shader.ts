@@ -154,11 +154,17 @@ void main() {
       float t = clamp(1. - (-d) / bz, 0., 1.);
       // A rounded bevel: the surface tilts most at the very edge, so the art bends most there.
       float tilt = 1. - sqrt(1. - t * t);
-      vec2 off = -n * tilt * bz * bend;
+      // Milky glass scatters the light, so what's behind it barely bends: it reads as one even, solid layer.
+      vec2 off = -n * tilt * bz * bend * (1. - .85 * milk[i]);
       // The art can be clear (clearArt: glass on a background the system doesn't paint), so the glass is
       // built premultiplied: the bent art, then the body and tint over it, then the light added on top.
       vec4 mid = artAt(p + off);
       vec4 q = vec4(vec3(artAt(p + off * (1. + split)).r, mid.g, artAt(p + off * (1. - split)).b) * mid.a, mid.a);
+      // Milky glass is one even layer: no bending and no shading inside, just the average of what's behind.
+      if (milk[i] > 0.) {
+        vec4 avg = (artAt(c) + artAt(c - h * .6) + artAt(c + h * .6) + artAt(c + vec2(h.x, -h.y) * .6) + artAt(c + vec2(-h.x, h.y) * .6)) * .2;
+        q = mix(q, vec4(avg.rgb * avg.a, avg.a), milk[i]);
+      }
       q = vec4(body.rgb * body.a, body.a) + q * (1. - body.a);
       q = vec4(tint.rgb * tint.a, tint.a) + q * (1. - tint.a);
       // Light: the rim facing the light is brightest; a soft band inside it catches the light too.
@@ -182,13 +188,14 @@ void main() {
       float k = pr.y * (1. - .6 * block);
       float rim = 1. - smoothstep(0., rimWidth * 1.2, abs(d + rimWidth * .5));
       // Milky glass spreads the light: a wider, softer highlight that wraps further round the edge.
-      float band = smoothstep(.55 - .2 * milk[i], 1., t);
+      // No inner highlight band on milky glass: only its edge catches the light.
+      float band = smoothstep(.55, 1., t) * (1. - milk[i]);
       // Away from the light, the very edge mirrors what's around it (as real glass does at a glancing
       // angle), so it takes the colors of the page, never a plain white line.
       vec4 env = artAt(p + n * bz * .6);
       q.rgb = mix(q.rgb, env.rgb * env.a * 1.08 * q.a, rim * .55 * (1. - facing) * env.a);
       vec3 lit = rim * (rimFaint.rgb * rimFaint.a + rimLit.rgb * rimLit.a * pow(facing, 2.) * k)
-        + band * highlight.rgb * highlight.a * pow(facing, 3. - milk[i]) * k * (1. - .55 * milk[i]);
+        + band * highlight.rgb * highlight.a * pow(facing, 3.) * k;
       // Light on clear glass shows as much as it's bright. On art that fills the frame (q.a is 1) this is
       // the same as before: the art, body and tint, plus the light, clamped.
       q.a = clamp(max(q.a, max(lit.r, max(lit.g, lit.b))), 0., 1.);
