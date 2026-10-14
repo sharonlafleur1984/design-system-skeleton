@@ -12,6 +12,8 @@ import './action-tile-surface.css';
 
 const meta: Meta = {
   title: 'Explorations/Action tile variants',
+  // Made for one theme, so the visual check screenshots it in that theme only.
+  tags: ['only:after-graduation'],
   parameters: {
     layout: 'padded',
     docs: {

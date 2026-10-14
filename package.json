@@ -14,9 +14,11 @@
     "typecheck": "tsc --noEmit",
     "test:update": "npm run tokens && vitest run -u",
     "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:visual:update": "playwright test --update-snapshots",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@fontsource-variable/fraunces": "^5.3.0",
     "@fontsource-variable/instrument-sans": "^5.3.0",
     "@fontsource-variable/newsreader": "^5.3.0",
@@ -30,7 +32,6 @@
     "@storybook/addon-docs": "^10.6.0",
     "@storybook/addon-mcp": "^10.6.1",
     "@storybook/react-vite": "^10.6.0",
-    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
     "@types/node": "^22.20.4",
@@ -38,6 +39,10 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "axe-core": "^4.13.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
     "http-server": "^14.1.1",
     "jsdom": "^30.1.1",
     "pixelmatch": "^7.2.0",
@@ -47,6 +52,7 @@
     "storybook": "^10.6.0",
     "style-dictionary": "^5.5.5",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.2",
     "vite": "^8.3.1",
     "vitest": "^5.0.2",
     "wcag-contrast": "^3.0.0"
@@ -62,9 +68,7 @@
     "./base.css": "./dist/base.css",
     "./components.css": "./dist/index.css",
     "./themes/*.css": "./build/css/*.css",
-    "./fonts/after-graduation.css": "./dist/fonts-after-graduation.css",
-    "./fonts/life-hub.css": "./dist/fonts-life-hub.css",
-    "./fonts/designer-toolkit.css": "./dist/fonts-designer-toolkit.css",
+    "./fonts/*.css": "./dist/fonts-*.css",
     "./text-styles.css": "./dist/text-styles.css"
   },
   "files": [
@@ -77,5 +81,8 @@
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

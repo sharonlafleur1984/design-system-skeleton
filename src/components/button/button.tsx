@@ -4,12 +4,14 @@ import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import './button.css';
+import { materialClass, type Material } from '../material';
 
 // Mirrors the Figma "Button" component set: Style, Size, Destructive, Is Enabled, Show Icon.
 // Built on React Aria's Button, which handles press, keyboard, focus and the busy
 // announcement the same way on mouse, touch and screen readers. This file only adds the look.
-// Glass (Oct 12): for buttons on artwork the design system controls (After Graduation's header, Life
-// Hub's marble). The container's useGlassLight lights it and, with lens on, draws it as lens glass.
+// The glass style (Oct 12): for buttons on artwork the design system controls (a theme's header, Life
+// Hub's marble). The container's useGlassLight lights it. Its material picks the look: Glass bends the
+// art at its edge, Default is the subtle frosted look.
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'glass';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
@@ -20,6 +22,8 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'classNa
   size?: ButtonSize;
   /** Figma "Destructive". For actions that remove or undo something. */
   destructive?: boolean;
+  /** Only for the glass style: Glass bends the art behind it, Default is the subtle look. */
+  material?: Material;
   /** Figma "Show Icon". Decorative: the label always says what the button does. */
   icon?: ReactNode;
   /** Shows a busy state, announces it, and blocks repeat presses. The button stays focusable. (React Aria's name.) */
@@ -40,6 +44,7 @@ export function Button({
   variant = 'primary',
   size = 'medium',
   destructive = false,
+  material = 'glass',
   icon,
   isPending,
   isDisabled,
@@ -51,7 +56,7 @@ export function Button({
 }: ButtonProps) {
   const pending = isPending ?? loading ?? false;
   const classes = ['ds-button', `ds-button--${variant}`, `ds-button--${size}`];
-  if (variant === 'glass') classes.push('ds-glass', 'ds-lens');
+  if (variant === 'glass') classes.push('ds-glass', ...[materialClass(material)].filter((c): c is string => !!c));
   if (destructive) classes.push('ds-button--destructive');
   if (className) classes.push(className);
   return (

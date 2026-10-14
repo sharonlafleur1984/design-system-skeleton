@@ -61,7 +61,7 @@ export function resolveColor(css: string, within: HTMLElement): [number, number,
 }
 
 /** A computed CSS color as numbers, through the canvas so every color syntax the browser knows works. */
-function parseColor(css: string): [number, number, number, number] | null {
+export function parseColor(css: string): [number, number, number, number] | null {
   const m = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(css.trim());
   if (m) {
     const a = m[4] == null ? 1 : m[4].endsWith('%') ? Number.parseFloat(m[4]) / 100 : Number(m[4]);
@@ -104,6 +104,8 @@ export interface ImageArtOptions {
 /**
  * An image that covers its frame (background-size: cover), with an optional color laid over it.
  * Life Hub's marble backgrounds: the container shows the same image with the same CSS.
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function imageArt({ src, overlay, position = { x: 0.5, y: 0.5 }, attachment = 'scroll' }: ImageArtOptions): GlassArt {
   let img: HTMLImageElement | null = null;
@@ -188,6 +190,8 @@ let scratch: HTMLCanvasElement | null = null;
  * of glass tiles), and the wheel at its current angle. Reads every value from the shell's tokens, so
  * dark mode and screen sizes follow. During the entrance (the rays burst, the wheel turns) it keeps
  * repainting so the art inside the glass moves with the art around it.
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function shellArt(): GlassArt {
   return {
@@ -319,4 +323,13 @@ export function shellArt(): GlassArt {
       });
     },
   };
+}
+
+/**
+ * Nothing to bend: the glass is fully clear, and the lens draws only its light (the edge, highlight and
+ * shadow), which follow the light when it moves. Glass on any background the design system doesn't paint.
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
+ */
+export function clearArt(): GlassArt {
+  return { paint: () => true };
 }

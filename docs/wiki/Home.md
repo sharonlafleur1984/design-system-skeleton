@@ -1,6 +1,6 @@
 # Design system: Dashboard
 
-**Last updated:** October 11, 2026
+**Last updated:** October 14, 2026
 
 One design system for all of Sharon's products: a shared base, with a theme for each product.
 
@@ -14,15 +14,17 @@ One design system for all of Sharon's products: a shared base, with a theme for 
 
 | | |
 |---|---|
-| **Where we are** | [Storybook is live](https://designsystemskeleton.netlify.app/) with 13 components and a Settings pattern, built on React Aria. After Graduation uses the system ([pinned to v0.2.0](https://github.com/sharonlafleur1984/after-graduation/blob/main/package.json)). Life Hub doesn't use it yet. |
-| **Themes** | Life Hub, After Graduation, and the designer toolkit (Fireside, always dark). |
+| **Where we are** | [Storybook is live](https://designsystemskeleton.netlify.app/) with 14 components (Select is new; four now use React Aria's names) and a Settings pattern, built on React Aria. After Graduation uses the system ([pinned to v0.2.0](https://github.com/sharonlafleur1984/after-graduation/blob/main/package.json)). Life Hub doesn't use it yet. From v0.4.0, apps install a small release file instead of the whole repo. |
+| **Themes** | Spotlight (After Graduation), Sunrise (Life Hub) and Fireside (the designer toolkit, always dark). What makes each one: [Themes](Themes). |
 | **Next up** | What After Graduation's pages need next: a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42). No dates set. |
 
 Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Decisions). Every task: [Issues](https://github.com/sharonlafleur1984/design-system-skeleton/issues).
 
 ## Needs your decision
 
-- Nothing right now.
+- **Fireside's font:** Fireside uses After Graduation's fonts until you pick one.
+- **A header for every theme:** a proposal is coming, built from Spotlight's page shell, the Sunrise sky header and the Fireside toolbar.
+- **Tag v0.3.0:** the tag was never created. It goes on the commit that bumped the version, so apps can pin it.
 
 ## Links
 

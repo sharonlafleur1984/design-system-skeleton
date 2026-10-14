@@ -194,23 +194,61 @@ describe('see-through colors keep their transparency', () => {
 
 // Spacing, sizes and corners live in the shared base (tokens/base), so a change there reaches every
 // product. A theme changes how things look (color, type, depth), never the space between or around them.
-const sourceTokens = (dir: string): string[] => {
-  const paths: string[] = [];
-  const walk = (node: unknown, path: string[]) => {
+// Every token path in a folder's token files, subfolders (like dark/) included, with the file it's in.
+// theme.json names the theme and holds no tokens, so it's skipped.
+const sourceTokenFiles = (dir: string, onlyTop = false): { path: string; file: string }[] => {
+  const found: { path: string; file: string }[] = [];
+  const walk = (node: unknown, path: string[], file: string) => {
     if (!node || typeof node !== 'object') return;
-    if ('$value' in node) return void paths.push(path.join('.'));
-    for (const [k, v] of Object.entries(node)) if (!k.startsWith('$')) walk(v, [...path, k]);
+    if ('$value' in node) return void found.push({ path: path.join('.'), file });
+    for (const [k, v] of Object.entries(node)) if (!k.startsWith('$')) walk(v, [...path, k], file);
   };
-  for (const f of readdirSync(dir).filter((f) => f.endsWith('.json'))) walk(JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')), []);
-  return paths;
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const full = `${dir}/${entry.name}`;
+    if (entry.isDirectory() && !onlyTop) found.push(...sourceTokenFiles(full));
+    else if (entry.isFile() && entry.name.endsWith('.json') && entry.name !== 'theme.json') walk(JSON.parse(readFileSync(full, 'utf8')), [], full);
+  }
+  return found;
 };
-const baseOnly = /^(space|layout|radius|control\.(height|padding-inline|icon|gap)|callout|bottom-bar|dialog|settings)\./;
+const sourceTokens = (dir: string): string[] => sourceTokenFiles(dir).map((t) => t.path);
+const baseOnly = /^(space|layout|radius|focus|control\.(height|padding-inline|icon|gap)|callout|bottom-bar|dialog|settings)\./;
 
 describe('spacing and sizes stay in the base', () => {
   const base = new Set(sourceTokens('tokens/base'));
   for (const t of readdirSync('tokens/themes')) {
     it(`${t} doesn't override base spacing, sizes or corners`, () => {
       expect(sourceTokens(`tokens/themes/${t}`).filter((p) => base.has(p) && baseOnly.test(p))).toEqual([]);
+    });
+  }
+});
+
+// A theme sets each token once. Two files in the same theme setting one token means an edit to one
+// can be quietly overridden by the other. (dark/ overrides light on purpose, so it's checked on its own.)
+describe('each token is set once per theme', () => {
+  for (const t of readdirSync('tokens/themes')) {
+    for (const dir of [`tokens/themes/${t}`, `tokens/themes/${t}/dark`].filter((d) => existsSync(d))) {
+      it(`${dir} sets no token in two files`, () => {
+        const seen = new Map<string, string>();
+        const twice: string[] = [];
+        for (const { path, file } of sourceTokenFiles(dir, true)) {
+          if (seen.has(path) && seen.get(path) !== file) twice.push(`${path}: ${seen.get(path)} and ${file}`);
+          seen.set(path, file);
+        }
+        expect(twice).toEqual([]);
+      });
+    }
+  }
+});
+
+// Adding a theme is one folder: it needs a theme.json (its name and place in the picker) and a fonts file.
+describe('every theme has what Storybook and the package need', () => {
+  for (const t of readdirSync('tokens/themes')) {
+    it(`${t} has a theme.json with a name`, () => {
+      const meta = JSON.parse(readFileSync(`tokens/themes/${t}/theme.json`, 'utf8'));
+      expect(typeof meta.name).toBe('string');
+    });
+    it(`${t} has a fonts file (src/fonts/${t}.css)`, () => {
+      expect(existsSync(`src/fonts/${t}.css`)).toBe(true);
     });
   }
 });

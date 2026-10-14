@@ -11,6 +11,7 @@ import {
 } from 'react-aria-components';
 import '../material.css';
 import './tag.css';
+import { materialClass, type Material } from '../material';
 
 // Tags: filters, picks and labels someone can remove (Figma: "Chip"). Built on React Aria's TagGroup, which handles arrow keys between tags,
 // selection, Delete and Backspace to remove, and screen reader announcements. This file only adds the look.
@@ -38,6 +39,8 @@ export function TagGroup({ label, className, children, ...rest }: TagGroupProps)
 export interface TagProps extends Omit<AriaTagProps, 'children' | 'className' | 'style' | 'id'> {
   /** Unique within its group. Selection and removal report this id. */
   id: Key;
+  /** Default is the subtle frosted look. Glass bends the art behind the tag, on artwork the system controls. */
+  material?: Material;
   /** Storybook only: forces a look ("hover" or "focus") for the state gallery. */
   'data-state'?: 'hover' | 'focus';
   className?: string;
@@ -56,8 +59,10 @@ const Remove = () => (
   </svg>
 );
 
-export function Tag({ id, className, children, ...rest }: TagProps) {
+export function Tag({ id, className, material = 'default', children, ...rest }: TagProps) {
   const classes = ['ds-tag'];
+  const lens = materialClass(material);
+  if (lens) classes.push(lens);
   if (className) classes.push(className);
   const textValue = typeof children === 'string' ? children : undefined;
   return (

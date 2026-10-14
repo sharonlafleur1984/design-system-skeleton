@@ -4,8 +4,157 @@
 
 Newest first.
 
+## Contents
+
+Each decision has an ID (D1 is the oldest), so a pull request or another document can point to it: "see D12." A new decision takes the next number.
+
+| ID | Date | Decision |
+|---|---|---|
+| D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
+| D42 | Oct 14, 2026 | Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles |
+| D41 | Oct 14, 2026 | Glass goes back to the shader demo, with its settings in every theme |
+| D40 | Oct 14, 2026 | Action tile works in every theme; Glass is the lens and follows the light; states are soft light |
+| D39 | Oct 14, 2026 | Releases attach a ready-built package file |
+| D38 | Oct 14, 2026 | The repo follows how-i-work; ESLint checks the code |
+| D37 | Oct 14, 2026 | Adding a theme is one folder |
+| D36 | Oct 14, 2026 | Two materials: Default and Glass |
+| D35 | Oct 14, 2026 | Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside |
+| D34 | Oct 14, 2026 | Fireside is the third theme, for the designer toolkit |
+| D33 | Oct 12, 2026 | Action tiles and glass buttons use lens glass |
+| D32 | Oct 8, 2026 | Storybook backgrounds: artwork lives only in Page shell |
+| D31 | Oct 8, 2026 | Page-switching tiles never stack; on phones they become the bottom bar |
+| D30 | Oct 7, 2026 | Max content width is 1024px, shared by every product |
+| D29 | Oct 7, 2026 | Running text stops at a 70-character measure |
+| D28 | Oct 7, 2026 | Page shell: the sheet is as wide as the header's content, with a margin on every screen size |
+| D27 | Oct 7, 2026 | Settings: a full-size dialog, opened from the top right of the header |
+| D26 | Oct 7, 2026 | One light position and one glass recipe for every product |
+| D25 | Oct 7, 2026 | After Graduation's red is crimson |
+| D24 | Oct 7, 2026 | Each theme picks its own status colors |
+| D23 | Oct 7, 2026 | Motion: one timing scale, two moods (calm and energetic) |
+| D22 | Oct 7, 2026 | Home and Office trade colors |
+| D21 | Oct 7, 2026 | After Graduation's dark mode is warm charcoal |
+| D20 | Oct 7, 2026 | Life Hub's new look: glass cards, one sun, warm neutral buttons, Fraunces and Figtree |
+| D19 | Oct 7, 2026 | Dark mode follows the device, and each theme designs its own |
+| D18 | Oct 6, 2026 | Apps install the design system from GitHub, pinned to a version |
+| D17 | Oct 6, 2026 | Controls get their own type style; Large buttons are 40px tall |
+| D16 | Oct 6, 2026 | Life Hub follows the same type rule as After Graduation |
+| D15 | Oct 4, 2026 | After Graduation's React rebuild uses React Aria Components |
+| D14 | Oct 4, 2026 | After Graduation page shell: the page is a sheet rising out of the header |
+| D13 | Oct 4, 2026 | After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next |
+| D12 | Oct 4, 2026 | After Graduation uses glass for controls on artwork |
+| D11 | Oct 4, 2026 | Big spaces shrink to about two thirds on phones; new layout-title-gap |
+| D10 | Oct 3, 2026 | Label styles named by purpose: label and label-meta |
+| D9 | Oct 3, 2026 | Two link levels, set in the skeleton, colored by each theme |
+| D8 | Oct 3, 2026 | Storybook is the source of truth, guarded by a token lock and visual tests |
+| D7 | Oct 3, 2026 | Each theme sets its own text sizes, and headings shrink on phones |
+| D6 | Sep 27, 2026 | Life Hub glass is for controls only |
+| D5 | Sep 26, 2026 | After Graduation is quiet by default: color only communicates |
+| D4 | Sep 26, 2026 | Life Hub's Figma library doesn't change |
+| D3 | Sep 26, 2026 | Code is the source of truth for tokens |
+| D2 | Sep 26, 2026 | One shared base, a theme for each product, in its own repo |
+| D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
+
+## Decisions
+
 <details>
-<summary><b>Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
+<summary><b>D42 · Oct 14, 2026:</b> Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles</summary>
+
+- **Decided by:** Sharon (the empty-card idea, and yes to the light-physics review's fixes and the two items taken from the [liquid-glass skill](https://github.com/haider-nawaz/liquid-glass-skill))
+- **Gaps:** an edge facing a neighbor that sits between it and the light catches less light (up to 60% less, never all of it, since the light also comes from above).
+- **Edges take the surroundings' color:** away from the light, the very edge mirrors the colors around it, as real glass does at a glancing angle, instead of a white line.
+- **Milky glass is one even layer:** a chosen Glass tile casts a fuller shadow (it scatters light instead of letting it through), but nothing shades its inside: no bending, no blur pulling its shadow in, no inner highlight band, just the average of what's behind under the theme's frost. Only its edge catches the light (Sharon: no inner shadow).
+- **Warm daylight:** the lit edge and highlight are warm white in Spotlight, Sunrise's light mode and Fireside; Sunrise at night stays neutral.
+- **Shadows are the surface, darker and cooler:** a shadow is mixed from the color it falls on (on a plain page, the page's own color), as a painter would, with the theme's shadow color only nudging the hue. It fades out gradually and never wraps onto the lit side.
+- **Glass on a card is for empty states only:** a card that holds just an empty state can be Glass, since there's nothing to read yet; once it has content, the app sets it back to Default. The [Card's Empty state story](https://designsystemskeleton.netlify.app/?path=/story/components-card--empty-state) shows both.
+- **Reduce transparency and Increase contrast on Glass tiles:** the lens is off, so there's no light: the tile turns solid in its theme's color, its text still passes, and it drops the painted rim. An unchosen tile has no edge, and a chosen tile shows a line in its text color plus its mark, so it never depends on the fill. Increase contrast looks the same with no shadows at all, on tiles and glass buttons (Sharon's call). Before, a Glass tile had no fill at all when the lens was off.
+- **Every change glides (Sharon: "smooth as glass, nothing jarring or quick"):** the lens eases each glass's light, lift, milk and opacity over the slow motion step, and the light itself over the fast step, so hovering, choosing, disabling and moving the sun all fade instead of jumping. CSS state changes on tiles and glass buttons ease in and out on the base and slow steps (fills on the slow step, in time with the lens); the press stays on the fast step so a tap still answers, and its swell now rises gently too. Reduced motion skips all of it. The look is unchanged.
+- **Not taken from the liquid-glass skill:** its code and Apple-only APIs. It has no light or shadow guidance.
+
+</details>
+
+<details>
+<summary><b>D41 · Oct 14, 2026:</b> Glass goes back to the shader demo, with its settings in every theme</summary>
+
+- **Decided by:** Sharon ("I am not going to be happy until I have this again")
+- **What:** the lens drawing code is the Oct 14 shader demo's (from #54) again, with only two fixes that don't change how it looks: it can draw on a clear background, and its shadow never shows through the glass. The experiments since (painted shadows, two-sided rims, caustics) are dropped.
+- **Settings:** matched side by side to Sharon's screenshot of the demo's grid panel and written into each theme's `glass.lens` tokens: a faintly milky body (10% white), no tint, a bright line on the edge facing the light, bend 1.5, edge depth 28px, a soft shadow 14px away from the light with a 34px blur. Shadow strength fits each background: 40% on Spotlight's red, 16% on Sunrise's light marble, 50% on Fireside.
+- **Fixes found while matching:** a Glass tile's own layer was filtering the lens again and smearing its bend (the marble barely bent); glass buttons drew their own border under the lens's edge, so they looked thicker than tiles.
+- **Clear, not frosted (follow-up):** white reads as light on a dark page but as frost on a light one. Sunrise's light mode has no white body and a gentle inner band; its dark mode keeps the demo's sheen; Spotlight and Fireside use a 4% body. The bevel scales with the piece (at most just over half its height), so short buttons stay clear in the middle instead of turning milky.
+- **Edges drawn by light only:** the rim away from the light is down to 4% white, so there's no fixed border; the edge brightens and fades as the light moves.
+- **Shadows rest close:** 4px from the light with a 14px blur, so glass reads as lying near the page, not floating high above it. The shadow appears only on the side away from the light (never a halo on the lit side), with a fine deeper line where the glass meets the page, and is paler in the middle because glass lets light through.
+- **Light behaves differently in the dark:** on dark backgrounds (Sunrise at night, Fireside) shadow has little to darken, so the glass is shown by light: almost no white film, a bright edge where the light hits, and faint shadows. On light backgrounds the shadow carries more of the form.
+- **Chosen Glass is milky** (Sharon's pick): frost strength per theme, measured so the text keeps at least 4.5:1 (Sunrise 13.5, Sunrise at night 4.7, Fireside 8.3, Spotlight 4.7).
+
+</details>
+
+<details>
+<summary><b>D40 · Oct 14, 2026:</b> Action tile works in every theme; Glass is the lens and follows the light; states are soft light</summary>
+
+- **Decided by:** Sharon
+- **Why:** Action tile was built for Spotlight's red header only. On anything else its text disappeared, and Sunrise and Fireside had no tile at all.
+- **Default:** a solid fill with an inviting shadow and light catching the edge (the cards' lighting). `fill` picks the inside color from the theme's own surfaces: card (the default), raised, sunken, accent or inverse. The text color switches with it, so every choice passes contrast in light and dark mode.
+- **Glass is the lens, everywhere.** The old frosted recipe is only the fallback when the lens can't draw (no WebGL, Reduce transparency, Increase contrast). On a plain background Glass is fully clear: nothing bends, but its edge, highlight and shadow face the page's light and follow it when it moves. On art the design system paints, it also bends the art. Its shadow falls only outside the glass.
+- **Page shell:** tiles on the header are Glass unless they ask for Default, so After Graduation's header keeps its glass tiles with no change in the app.
+- **States, soft light, no hard lines:** hover rises with a deeper shadow and a faint tint; pressed sinks back; chosen shows the theme's mark (Spotlight's star, a check in Sunrise and Fireside, or any icon through `chosenIcon`) and sits flat: Default takes the accent fill, Glass turns milky, the theme's frost (`action-tile.chosen-frost`) over a blur of what's behind it, chosen by Sharon over raised and tinted on Oct 14; its text sits on top at its usual color, untouched by the frost or the light; focus is a soft glow with no ring; disabled fades to half with no shadow.
+- **Foundations → Glass:** a playground on the real background of the theme picked in the toolbar, in light and dark mode (Spotlight's header, Sunrise's marble, Fireside's page). Drag the sun, or use the arrow keys, and every rim, highlight and shadow follows; in Spotlight the sun is the header's own light, so the wheel and rays move too. Sliders for bend, edge depth, color split, edge light and shadow; the values Sharon picks become each theme's glass-lens tokens.
+
+</details>
+
+<details>
+<summary><b>D39 · Oct 14, 2026:</b> Releases attach a ready-built package file</summary>
+
+- **Decided by:** Sharon (approved with the audit list)
+- **Why:** installing from a GitHub tag downloads the whole repo (about 280 MB with its screenshots) and builds it on the app's machine. A release file has only the built components, theme CSS and fonts.
+- **How:** a version tag (`v0.4.0`) runs `.github/workflows/release.yml`. It runs the tests, packs the package with `npm pack` and attaches the file to a GitHub Release. Apps install that file's link.
+- **First release file:** v0.4.0. A workflow only runs from the tagged commit, so v0.3.0 and earlier keep installing from their tag.
+- **CHANGELOG.md** lists what changed in each version. Every release pull request moves the Unreleased notes under its version.
+- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)). They may change in any version.
+- **Not yet:** fonts as separate files. The package build inlines font files into the font CSS; changing that could break how After Graduation loads its fonts, so it waits for its own pull request.
+
+</details>
+
+<details>
+<summary><b>D38 · Oct 14, 2026:</b> The repo follows how-i-work; ESLint checks the code</summary>
+
+- **Decided by:** Sharon
+- **CLAUDE.md** gets the rules the how-i-work template added since this repo started: every commit names its Claude session, main is protected, work finishes with a pull request, and Netlify changes update "How everything connects." It also records this week's rules: one word (theme), spacing in the base, adding a theme is one folder, React Aria's names, plain labels in stories.
+- **`docs/voice.md`:** how the design system sounds, and the words it uses (theme, base, token, material, React Aria's component names, the status names).
+- **ESLint** runs on every pull request. It checks for code mistakes only: React hook rules, accessibility in JSX (jsx-a11y) and TypeScript's recommended rules. It found 4 errors, all fixed.
+- **Not added:** Prettier (it would reformat every file and protects nothing a reviewer needs) and Stylelint (the component CSS tests already ban raw colors, sizes and weights, and now unknown tokens and stray breakpoints).
+- **Focus ring tokens:** `focus.ring.width` and three offsets in the base, used by every component instead of hand-typed 2px. Nothing looks different.
+- **One breakpoint list:** `src/components/breakpoints.ts`, matching the token build. A test checks every media query uses it.
+- **Node 22** is declared (`.nvmrc` and `engines`).
+
+</details>
+
+<details>
+<summary><b>D37 · Oct 14, 2026:</b> Adding a theme is one folder</summary>
+
+- **Decided by:** Sharon
+- **Decision:** a theme is one folder in `tokens/themes/`, with a `theme.json` that names it, plus a fonts file. Storybook, the Foundations pages, the visual tests and the package find it on their own; no theme names are typed into code. Each theme's write-up lives here, on [Themes](Themes). Each product's own docs only name its theme and link here.
+- **New checks:** a component can't use a token that doesn't exist; a theme can't set the same token twice; a theme can't set spacing, sizes or corners, dark mode included; every theme has a `theme.json` and a fonts file.
+- **Explorations** are screenshotted only in the theme they were made for (84 fewer screenshots).
+- **Why:** before, a theme's name was typed into about 10 files, and a missed one failed quietly. The fourth theme is coming.
+- **How to:** [Add a theme](Add-a-theme).
+
+</details>
+
+<details>
+<summary><b>D36 · Oct 14, 2026:</b> Two materials: Default and Glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** every component with a glass look has a `material` setting with two looks. **Default** is the subtle frosted look (the shared recipe in `glass.css`). **Glass** bends the art behind it at its edge (until now called "lens glass").
+- **Which components:** Button (its glass style), Action tile, Card, Tag, Toggle button group (its sliding indicator) and Page shell (the tiles and buttons in its header).
+- **Starting looks stay the same:** action tiles, glass buttons and the page shell start as Glass; cards, tags and toggle button groups start as Default. Nothing changes until someone switches.
+- **Where it shows:** Glass only shows on artwork the system controls (a theme's header art, Life Hub's marble). On a plain page both look the same.
+- **Why:** "lens" and "classic glass" were confusing names, and Glass doesn't read as glass as much as hoped. Clear names now; a deeper look later.
+- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)).
+- **Details:** `src/components/material.ts`; stories "Glass on artwork" and "Default on artwork" under Button and Action tile.
+
+</details>
+
+<details>
+<summary><b>D35 · Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
 
 - **Decided by:** Sharon
 - **One word: theme.** It's what React Aria, Storybook and most design systems call it, so any designer recognizes it. Not "skin."
@@ -28,7 +177,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 14, 2026:</b> Fireside type: Newsreader for titles, Instrument Sans for everything else</summary>
+<summary><b>D43 · Oct 14, 2026:</b> Fireside type: Newsreader for titles, Instrument Sans for everything else</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the designer toolkit's theme (Fireside) uses **Newsreader** for titles only: display, page and document titles, and headings. Its optical-size axis is on, so big titles get the fine display cut and small headings the sturdier text cut. **Instrument Sans** is for all body text and the whole interface. Newsreader is never used for tabs, buttons, labels or controls. **JetBrains Mono** is for code, IDs, file names and keyboard keys. All three are free (OFL) and served from this package.
@@ -41,7 +190,7 @@ Newest first.
 - **Dates in capitals use regular weight (400),** not light. Instrument Sans has no light weight, and a faked one blurs.
 - **New for every theme:** a `code` text style and `font.family.code`. After Graduation and Life Hub use the device's own monospace font, so nothing loads and nothing they show changes. `font.optical-sizing` (auto) is shared too.
 - **New: text style classes.** One class per style, like `ds-text-body-default`, generated from the tokens into `text-styles.css`, so an app can use a whole style by name. They work in every theme and follow screen sizes. One composite token per style was considered, but a single value can't follow the phone and tablet sizes, so each style stays a group of tokens (size, line height, weight, letter spacing, family) with a class on top.
-- **Replaces:** "Borrowed for now: type" in Oct 14, "Fireside is the third theme." Cinzel and Atkinson Hyperlegible Next are gone from Fireside.
+- **Replaces:** "Borrowed for now: type" in D34 (Fireside is the third theme). Cinzel and Atkinson Hyperlegible Next are gone from Fireside.
 - **Other options:** keeping the 9px label (too small in Instrument Sans capitals); the sample's exact sizes (off the shared grid); Newsreader for buttons and tabs (Sharon ruled it out).
 - **Not done yet:** the toolkit itself still uses its own sizes. Adopting these styles there is a separate step.
 - **Details:** Foundations, Type in Storybook (Text styles, Light and dark, Small text legibility, Do and don't, In context).
@@ -50,7 +199,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 14, 2026:</b> Fireside is the third theme, for the designer toolkit</summary>
+<summary><b>D34 · Oct 14, 2026:</b> Fireside is the third theme, for the designer toolkit</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the designer toolkit's Fireside skin is a theme here, `tokens/themes/designer-toolkit`, and appears in Storybook's Theme picker as "Designer toolkit (Fireside)". It is always dark, so it has no dark folder and the Mode switch doesn't change it.
@@ -65,7 +214,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 12, 2026:</b> Action tiles and glass buttons use lens glass</summary>
+<summary><b>D33 · Oct 12, 2026:</b> Action tiles and glass buttons use lens glass</summary>
 
 - **Decided by:** Sharon
 - **Decision:** action tiles and glass buttons are lens glass. The lens bends the artwork behind the glass at its curved edge, strongest at the very edge and clear in the middle, with almost no blur. It never bends or blurs the text or icons; they stay crisp on top.
@@ -82,7 +231,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 8, 2026:</b> Storybook backgrounds: artwork lives only in Page shell</summary>
+<summary><b>D32 · Oct 8, 2026:</b> Storybook backgrounds: artwork lives only in Page shell</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Storybook's built-in Backgrounds button offers two backgrounds per theme, made from tokens: **Page** (what a product's pages sit on) and **On artwork** (a plain color glass controls float on: After Graduation's header red, Life Hub's marble). Components made for artwork, like Action tile, open on On artwork. The full illustration (light, rays and wheel) lives only in Page shell, which shows the real tiles in context.
@@ -93,7 +242,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>
+<summary><b>D31 · Oct 8, 2026:</b> Page-switching tiles never stack; on phones they become the bottom bar</summary>
 
 - **Decided by:** Sharon
 - **Decision:** tiles that switch pages stay three across on tablet and up, with titles wrapping to two lines on small tablets if needed. On phones (under 600px) the same tiles become the bottom bar: an icon and a short name each, with a soft pill behind the chosen one. Tiles that are plain links or buttons still stack on phones. The switch is by screen size, not by the width of the tile row.
@@ -104,7 +253,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Max content width is 1024px, shared by every product</summary>
+<summary><b>D30 · Oct 7, 2026:</b> Max content width is 1024px, shared by every product</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the max content width (how wide a page's content gets) is 1024px, as `layout.content-max` in the shared base. It replaces After Graduation's `shell.content-max` (920px, which had no recorded source).
@@ -115,7 +264,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Running text stops at a 70-character measure</summary>
+<summary><b>D29 · Oct 7, 2026:</b> Running text stops at a 70-character measure</summary>
 
 - **Decided by:** Sharon
 - **Decision:** paragraphs and list items are never wider than `type.measure`, 70ch (about 70 characters), in every product. The page's max content width is separate: tiles, tables and cards still use the full width.
@@ -126,7 +275,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Page shell: the sheet is as wide as the header's content, with a margin on every screen size</summary>
+<summary><b>D28 · Oct 7, 2026:</b> Page shell: the sheet is as wide as the header's content, with a margin on every screen size</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the page sheet is never wider than the header's content. On wide screens both cap at the max content width. On every screen size the sheet sits in from the screen sides by the same space as the header's content, so the two always line up. This replaces the Oct 4 rule that the sheet ran edge to edge on tablet and phone.
@@ -137,7 +286,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Settings: a full-size dialog, opened from the top right of the header</summary>
+<summary><b>D27 · Oct 7, 2026:</b> Settings: a full-size dialog, opened from the top right of the header</summary>
 
 - **Decided by:** Sharon
 - **Decision:** app-wide settings open in a full-size dialog, modeled on Claude's, from a Settings button at the top right of the header on every screen size. Eight sections: Account, Appearance, Accessibility, Plan, Family, Notifications, Privacy and data, Help and legal. On phones the section list comes first and each section opens with a Back button. Changes apply right away, with no Save button. Anything the device can tell us defaults to Match device; if the device asks for reduced motion, motion stays reduced.
@@ -148,7 +297,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> One light position and one glass recipe for every product</summary>
+<summary><b>D26 · Oct 7, 2026:</b> One light position and one glass recipe for every product</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the light source sits in one shared place (`light-from-right`, `light-top`): After Graduation's wheel and Life Hub's sun. Every glass surface on a page, cards and tiles, in light and dark mode, is lit from it with one shared recipe (glass.css): rim, glint, highlight, shade and shadow. Each theme sets the recipe's settings in tokens. Glass on artwork bends the art behind it and softens it a little.
@@ -158,7 +307,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> After Graduation's red is crimson</summary>
+<summary><b>D25 · Oct 7, 2026:</b> After Graduation's red is crimson</summary>
 
 - **Decided by:** Sharon
 - **Decision:** After Graduation's red ramp moves from cherry to crimson (600 is #cb1b2c), with the same steps, so components don't change. Its status colors are tuned to match: error moves to rust (#ca5d34) so it never looks like the crimson button, and warning, success and info sit with the gold. Dark mode follows.
@@ -169,7 +318,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Each theme picks its own status colors</summary>
+<summary><b>D24 · Oct 7, 2026:</b> Each theme picks its own status colors</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the base keeps the status names (error, warning, success, info, neutral) and the rules: always with an icon and a label, and text that passes 4.5:1. Each theme picks its own status values, so they fit its palette, type and card styling. Life Hub keeps today's set, which matches its Figma library. After Graduation gets a set tuned to its palette.
@@ -180,7 +329,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Motion: one timing scale, two moods (calm and energetic)</summary>
+<summary><b>D23 · Oct 7, 2026:</b> Motion: one timing scale, two moods (calm and energetic)</summary>
 
 - **Decided by:** Sharon
 - **Decision:** every product shares one timing scale for controls (80, 140, 220 and 380ms, two easings, a 60ms stagger), so buttons, toggles and tabs feel the same on every page. Arrivals and celebrations use a mood: calm (settles, never bounces) or energetic (snaps in and overshoots). Life Hub defaults to calm, After Graduation to energetic, and any page can switch with `data-motion`. Reduced motion always gets calm, with fades only. After Graduation's header entrance gets its own slower tokens (about 1.4 times the prototype's speed) so it can stay dramatic while cards and lists keep the quicker energetic arrival.
@@ -191,7 +340,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Home and Office trade colors</summary>
+<summary><b>D22 · Oct 7, 2026:</b> Home and Office trade colors</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Home is now Morning Latte and Office is now Gold Sand. Each area's marble, glass tuning and dark layer moved with its colors.
@@ -200,7 +349,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> After Graduation's dark mode is warm charcoal</summary>
+<summary><b>D21 · Oct 7, 2026:</b> After Graduation's dark mode is warm charcoal</summary>
 
 - **Decided by:** Sharon
 - **Decision:** After Graduation's dark mode uses warm charcoal surfaces. The deep red stays on buttons and the header, so it is the one thing that stands out, and the header's red glows faintly down from the top right. Text is the theme's light page color (#fcf9f8). Red links and text use a lighter red so they pass on charcoal. Cards are glass in dark mode, lit from the header's light; light mode cards stay solid.
@@ -211,7 +360,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Life Hub's new look: glass cards, one sun, warm neutral buttons, Fraunces and Figtree</summary>
+<summary><b>D20 · Oct 7, 2026:</b> Life Hub's new look: glass cards, one sun, warm neutral buttons, Fraunces and Figtree</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Life Hub cards are glass on each area's marble. One sun in the header (top right) lights everything: rims are brightest facing it, shadows fall away from it, and light weakens with distance. Light mode shows the light as shade and shadow; dark mode as highlights. Buttons are warm neutral (ink in light, light warm gray in dark) with a thin line of light on the top edge, at about half the card's light. Color is kept for meaning (status) and place (the marble). Titles use Fraunces with its Soft axis; everything else, numbers included, uses Figtree.
@@ -223,7 +372,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 7, 2026:</b> Dark mode follows the device, and each theme designs its own</summary>
+<summary><b>D19 · Oct 7, 2026:</b> Dark mode follows the device, and each theme designs its own</summary>
 
 - **Decided by:** Sharon
 - **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review.
@@ -234,7 +383,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 6, 2026:</b> Apps install the design system from GitHub, pinned to a version</summary>
+<summary><b>D18 · Oct 6, 2026:</b> Apps install the design system from GitHub, pinned to a version</summary>
 
 - **Decided by:** Sharon
 - **Decision:** After Graduation (and later Life Hub) installs this design system straight from GitHub, pinned to a version tag. Updating the design system is a deliberate pull request in the app. Every component is built here first, on React Aria, with a Storybook page; apps only arrange components on a page and own the data.
@@ -245,7 +394,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 6, 2026:</b> Controls get their own type style; Large buttons are 40px tall</summary>
+<summary><b>D17 · Oct 6, 2026:</b> Controls get their own type style; Large buttons are 40px tall</summary>
 
 - **Decided by:** Sharon
 - **Decision:** each theme sets a size, line height and weight for Small, Medium and Large controls. For now both themes use the same values: 12 on 16, 14 on 20 and 16 on 24, medium weight. Large buttons are 40px tall instead of 48. Checkbox and Switch labels use Medium.
@@ -257,7 +406,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 6, 2026:</b> Life Hub follows the same type rule as After Graduation</summary>
+<summary><b>D16 · Oct 6, 2026:</b> Life Hub follows the same type rule as After Graduation</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Life Hub's type follows the Oct 4 After Graduation rule. Sizes follow a modular scale rounded to the 4-point grid, and line heights are ratios picked so size times ratio is a multiple of 4. Life Hub keeps its own fonts and its own sizes within that rule.
@@ -269,7 +418,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 4, 2026:</b> After Graduation's React rebuild uses React Aria Components</summary>
+<summary><b>D15 · Oct 4, 2026:</b> After Graduation's React rebuild uses React Aria Components</summary>
 
 - **Decided by:** Sharon
 - **Decision:** interactive components in the After Graduation rebuild (accordion rows, tabs, bottom navigation, dialogs, date pickers) are built on React Aria Components and styled with our tokens. One library everywhere; no mixing.
@@ -282,7 +431,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 4, 2026:</b> After Graduation page shell: the page is a sheet rising out of the header</summary>
+<summary><b>D14 · Oct 4, 2026:</b> After Graduation page shell: the page is a sheet rising out of the header</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the header runs edge to edge and the page is a sheet that rises over its bottom edge. On desktop the sheet sits 16px in from the screen sides, so the header's red frames the page all the way down. On tablet and phone the sheet runs edge to edge.
@@ -293,7 +442,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 4, 2026:</b> After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next</summary>
+<summary><b>D13 · Oct 4, 2026:</b> After Graduation type: a real scale, Cinzel title, Atkinson Hyperlegible Next</summary>
 
 - **Decided by:** Sharon
 - **Decision:** After Graduation's sizes follow a modular scale: base 16px, steps of about 1.25, rounded to the 4-point grid. Line heights are stored as ratios, the W3C tokens standard, each picked so size times ratio is a multiple of 4, the way Carbon does it (14px is the one size off the grid, for small UI text). Cinzel is only for the main title (display-cover), like a logo. Every other heading and all text use Atkinson Hyperlegible Next. Section titles are bold so they stand out from bold labels.
@@ -307,7 +456,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 4, 2026:</b> After Graduation uses glass for controls on artwork</summary>
+<summary><b>D12 · Oct 4, 2026:</b> After Graduation uses glass for controls on artwork</summary>
 
 - **Decided by:** Sharon
 - **Decision:** controls that float on artwork (header episode buttons, lane school tags, bottom navigation) are glass. Page controls and content stay solid. This updates the Sep 27 rule that After Graduation stays solid everywhere.
@@ -324,7 +473,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 4, 2026:</b> Big spaces shrink to about two thirds on phones; new layout-title-gap</summary>
+<summary><b>D11 · Oct 4, 2026:</b> Big spaces shrink to about two thirds on phones; new layout-title-gap</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the rule for responsive tokens: the bigger something is, the more it shrinks on a phone, to about two thirds of desktop. Page edges, section spacing and big headings change by screen class. Body text, small headings and spacing inside components never do. `layout-section` is now 24 / 32 / 40px (was 32 / 48 / 64; Sharon then took it one step smaller than the first proposal, 32 / 40 / 48, because it felt like too much space). Every layout value must be a step on the space scale, checked by a test. New `layout-title-gap` is the space under a page title: 16 / 20 / 24px.
@@ -334,14 +483,14 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
+<summary><b>D10 · Oct 3, 2026:</b> Label styles named by purpose: label and label-meta</summary>
 
 - **Decided by:** Sharon
 - **Decision:** `label-caps` is renamed `label` (introduces a section, like NEXT STEPS). New `label-meta` describes an item: every date and short piece of metadata, in capitals, gray, at a new light weight (300), one step lighter than body text. Never below 300. `label-banner` is removed: it did the same job as `label` and nothing used it. Styles are named by what they're for, not how they look. Pick a style, never a weight: a test fails if a component sets a raw font weight.
 - **Why:** dates were using the bold section-label style, so they competed with the task name. "caps" described a look that every label shares.
 - **Other options:** `label-caps` and `label-caps-meta`; dates in `data-small` (sentence case, no new style).
 - **Figma:** rename "Label/Caps" to "Label" and remove "Label/Banner" in the Life Hub library next time it's open.
-<summary><b>Oct 3, 2026:</b> Two link levels, set in the skeleton, colored by each theme</summary>
+<summary><b>D9 · Oct 3, 2026:</b> Two link levels, set in the skeleton, colored by each theme</summary>
 
 - **Decided by:** Sharon
 - **Decision:** links have two levels. Inline: inside a sentence, at its size. Quiet: side trips and small controls (View task, Show full year, sources), one step smaller and gray. The skeleton sets the names, underline and behavior; each theme sets colors and the quiet size. Links never bold. Page actions that look like links (Show full year) are buttons: `LinkButton`.
@@ -351,7 +500,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 3, 2026:</b> Storybook is the source of truth, guarded by a token lock and visual tests</summary>
+<summary><b>D8 · Oct 3, 2026:</b> Storybook is the source of truth, guarded by a token lock and visual tests</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Figma is for ideas; the exact rules live in code and Storybook. Two checks guard against drift: a token lock (every token value saved in the repo, any change shown and approved in the pull request) and visual tests (every story screenshotted at phone, tablet and desktop, compared with approved screenshots). The Life Hub Figma export test is retired; the token lock replaces it and covers both themes.
@@ -362,7 +511,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Oct 3, 2026:</b> Each theme sets its own text sizes, and headings shrink on phones</summary>
+<summary><b>D7 · Oct 3, 2026:</b> Each theme sets its own text sizes, and headings shrink on phones</summary>
 
 - **Decided by:** Sharon
 - **Decision:** text sizes move from the shared base into each theme. Life Hub keeps its 16 Figma sizes. After Graduation gets sizes measured from its site (biggest is 48px, not 112px). Display and title sizes, plus page gutter and section spacing, get phone, tablet and desktop values using Material 3 screen classes (under 600px, 600 to 839px, 840px and up). Text sizes and spacing are written in rem so they grow with the reader's own text-size setting.
@@ -374,7 +523,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
+<summary><b>D6 · Sep 27, 2026:</b> Life Hub glass is for controls only</summary>
 
 - **Decided by:** Sharon
 - **Decision:** liquid glass goes on controls: buttons, the top bar, navigation and pills. Content cards and callouts stay solid or lightly translucent, with no blur, so there is never glass on glass. After Graduation stays solid everywhere (updated Oct 4: glass for controls on artwork).
@@ -385,7 +534,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 26, 2026:</b> After Graduation is quiet by default: color only communicates</summary>
+<summary><b>D5 · Sep 26, 2026:</b> After Graduation is quiet by default: color only communicates</summary>
 
 - **Decided by:** Sharon
 - **Decision:** neutral screens. Cherry red (#d03656; crimson #cb1b2c since Oct 7) marks the one next step: the main button, the current step, focus. Gold marks a real win. Status colors mean status, always with an icon and a label. Everything else is neutral. Paths and categories use icons and labels, not colors. Cards sit on shadows instead of borders.
@@ -396,7 +545,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 26, 2026:</b> Life Hub's Figma library doesn't change</summary>
+<summary><b>D4 · Sep 26, 2026:</b> Life Hub's Figma library doesn't change</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the Life Hub theme matches the Figma library exactly: all 112 colors including Sunflower Medley, every semantic mapping, spacing, radius, and all 16 text styles under their Figma names. A test checks this on every pull request.
@@ -405,7 +554,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 26, 2026:</b> Code is the source of truth for tokens</summary>
+<summary><b>D3 · Sep 26, 2026:</b> Code is the source of truth for tokens</summary>
 
 - **Decided by:** Sharon
 - **Decision:** tokens live in code. Figma follows the code.
@@ -415,7 +564,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 26, 2026:</b> One shared base, a theme for each product, in its own repo</summary>
+<summary><b>D2 · Sep 26, 2026:</b> One shared base, a theme for each product, in its own repo</summary>
 
 - **Decided by:** Sharon
 - **Decision:** a shared base (structure, naming, scales, status colors, accessibility) with a theme per product, in its own repo. (Updated Oct 7: status colors moved to each theme; the base keeps their names and rules.)
@@ -425,7 +574,7 @@ Newest first.
 </details>
 
 <details>
-<summary><b>Sep 26, 2026:</b> Structure taken from the Life Hub Library</summary>
+<summary><b>D1 · Sep 26, 2026:</b> Structure taken from the Life Hub Library</summary>
 
 - **Decided by:** Sharon
 - **Decision:** the base copies the Life Hub Library's structure: a 4-point spacing scale, radius by purpose, ink, surface, border and accent names, one status set (updated Oct 7: one set of status names; each theme picks the values), and the type roles (display, heading, body, label, data).

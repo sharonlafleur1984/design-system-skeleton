@@ -1,5 +1,5 @@
 import { useLayoutEffect, type RefObject } from 'react';
-import { attachLens, type LensOptions } from '../glass-lens/lens';
+import { LIGHT_CHANGE, attachLens, type LensOptions } from '../glass-lens/lens';
 
 // Lights glass from one light source in a container, the way light works in real life:
 // each piece of glass gets a rim that is brightest on the side facing the light, and its edges
@@ -85,7 +85,8 @@ type LightOptions = Pick<GlassLightOptions, 'light' | 'source'>;
 /** Where the light is, in viewport px: the source element's center, a point in the container, or the shared light tokens. */
 function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
   const r = el.getBoundingClientRect();
-  const src = source ? el.querySelector<Element>(source)?.getBoundingClientRect() : undefined;
+  // The source can sit inside the container (the page shell's wheel) or anywhere on the page.
+  const src = source ? (el.querySelector<Element>(source) ?? document.querySelector<Element>(source))?.getBoundingClientRect() : undefined;
   if (src) return { x: src.left + src.width / 2, y: src.top + src.height / 2 };
   if (light) return { x: r.left + r.width * light.x, y: r.top + r.height * light.y };
   // The shared light tokens: a percentage in from the right, and a distance down from the top.
@@ -99,6 +100,8 @@ function lightPoint(el: HTMLElement, { light, source }: LightOptions) {
  * Sets, on every glass piece: --light-x and --light-y (where the light hits its rim, as percentages),
  * --light-dx and --light-dy (the direction the light comes from), --light-k (0 to 1, weaker with
  * distance) and --glass-bend (an SVG filter for backdrop-filter).
+ *
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
  */
 export function useGlassLight(root: RefObject<HTMLElement | null>, { light, source, selector, band: bandOption, bend: bendOption, radius: radiusOption, peak = 1, reach: reachOption = 0.9, lens }: GlassLightOptions) {
   // Lens glass: one canvas for the whole group, lit from the same light.
@@ -162,10 +165,13 @@ export function useGlassLight(root: RefObject<HTMLElement | null>, { light, sour
       });
     };
     update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
+    // Every browser has ResizeObserver; test environments like jsdom may not.
+    const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(update) : null;
+    ro?.observe(el);
+    window.addEventListener(LIGHT_CHANGE, update);
     return () => {
-      ro.disconnect();
+      ro?.disconnect();
+      window.removeEventListener(LIGHT_CHANGE, update);
       svg.remove();
     };
   }, [root, light?.x, light?.y, source, selector, bandOption, bendOption, radiusOption, peak, reachOption]);

@@ -1,0 +1,14 @@
+{
+  "action-tile": {
+    "chosen-mark": {
+      "$value": "\"✓\"",
+      "$type": "string",
+      "$description": "A check mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
+    },
+    "chosen-frost": {
+      "$value": "rgba(255, 255, 255, 0.62)",
+      "$type": "color",
+      "$description": "A chosen Glass tile turns milky: this frost over a blur of what's behind it. Milky white frost over the light marble. The dark text stays as it is. The text sits on top, untouched."
+    }
+  }
+}

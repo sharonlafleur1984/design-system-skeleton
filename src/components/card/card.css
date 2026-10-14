@@ -70,8 +70,8 @@
   translate: 0 calc(-1 * var(--motion-lift-large));
 }
 .ds-card--interactive:focus-within {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -80,6 +80,17 @@
       box-shadow var(--motion-duration-fast) var(--motion-easing-out),
       translate var(--motion-duration-fast) var(--motion-easing-out);
   }
+}
+
+/* Glass (the lens) is for empty cards only (Oct 14): while the card holds just an empty state, the lens
+   draws it and its own fill, frost and edge step aside. Once it has content, the app sets it back to the
+   default material, so what people read sits on a steady surface. */
+.ds-card.ds-lens[data-lens='on'] {
+  border-color: transparent;
+  background: transparent;
+}
+.ds-card.ds-lens[data-lens='on']::after {
+  display: none;
 }
 
 /* Never glass on glass: controls inside a card drop their own blur and use the card's. */

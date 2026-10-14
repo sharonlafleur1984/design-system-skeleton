@@ -1,0 +1,26 @@
+{
+  "glass": {
+    "lens": {
+      "body": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.03)",
+        "$description": "At night only a trace of white: in the dark, a film turns the glass dull gray. The light on its edge does the work."
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.5)",
+        "$description": "In the dark, light reads stronger: the band inside the edge facing the light is bright."
+      },
+      "shadow-color": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0.28)",
+        "$description": "On the dark marble a shadow needs more strength to show."
+      },
+      "rim-lit": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 1)",
+        "$description": "The edge facing the light, at full brightness against the dark marble."
+      }
+    }
+  }
+}

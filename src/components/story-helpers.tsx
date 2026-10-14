@@ -1,21 +1,26 @@
 import { createContext, useContext, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
+import type { Material } from './material';
+import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
 
-/** Every product theme, in the order the toolbar and the side-by-side view show them. */
-export const themeList = ['after-graduation', 'life-hub', 'designer-toolkit'] as const;
-export type Theme = (typeof themeList)[number];
+/**
+ * Every theme, in the order the toolbar and the side-by-side view show them. Read from the token build
+ * (each tokens/themes/<id>/theme.json), so a new theme folder shows up here with no code change.
+ */
+export const themeList: string[] = themes.map((t) => t.id);
+export type Theme = string;
 /** The toolbar's Theme picker: one product, or 'both' to compare them all side by side. */
 export type ThemeChoice = Theme | 'both';
 export const ThemeContext = createContext<ThemeChoice>('after-graduation');
 /** The theme of the side-by-side panel a story is drawn in, or null outside one. */
 export const PanelThemeContext = createContext<Theme | null>(null);
 
-/** The theme to use when a story can only show one. 'Both' falls back to After Graduation. */
+/** The theme to use when a story can only show one. 'Both' falls back to the first theme. */
 export function singleTheme(choice: unknown): Theme {
-  return themeList.includes(choice as Theme) ? (choice as Theme) : 'after-graduation';
+  return themeList.includes(choice as Theme) ? (choice as Theme) : themeList[0];
 }
 
 const panel: CSSProperties = {
@@ -93,7 +98,8 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
   );
 }
 
-export const themeNames: Record<Theme, string> = { 'after-graduation': 'Spotlight', 'life-hub': 'Sunrise', 'designer-toolkit': 'Fireside' };
+/** Each theme's name as people see it, like Spotlight. */
+export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
 /**
  * Shows the content in the theme picked in the toolbar. Pick "All" to see
@@ -148,12 +154,12 @@ export type Marble = (typeof marbles)[number];
 /**
  * Storybook only: a piece of Life Hub's marble with glass on it, lit from the shared light (top right).
  * The marble is the container's background, and the same image is the lens's art, so the glass bends
- * exactly what's behind it. lens={false} shows the classic glass (the fallback).
+ * exactly what's behind it. material="default" shows the subtle frosted look.
  */
-export function OnMarble({ marble = marbles[0], lens = true, children, label }: { marble?: Marble; lens?: boolean; children: ReactNode; label?: string }) {
+export function OnMarble({ marble = marbles[0], material = 'glass', children, label }: { marble?: Marble; material?: Material; children: ReactNode; label?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  const art = useMemo(() => (lens ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [lens, marble.texture, night]);
+  const art = useMemo(() => (material === 'glass' ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [material, marble.texture, night]);
   useGlassLight(ref, { selector: '.ds-glass', lens: art });
   const style: CSSProperties = {
     position: 'relative',

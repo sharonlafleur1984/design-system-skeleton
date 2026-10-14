@@ -6,6 +6,8 @@ type Args = { area: string; mode: Mode };
 
 const meta: Meta<Args> = {
   title: 'Explorations/Life Hub glass cards',
+  // Made for one theme, so the visual check screenshots it in that theme only.
+  tags: ['only:life-hub'],
   // Life Hub only: lock the toolbar's theme so the page around it is Life Hub too.
   globals: { theme: 'life-hub' },
   parameters: {

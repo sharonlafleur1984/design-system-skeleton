@@ -1,0 +1,11 @@
+{
+  "focus": {
+    "$description": "The keyboard focus ring, the same in every theme. Its color is color.border.focus, at least 3:1 on what's behind it (WCAG 2.2, 2.4.13).",
+    "ring": {
+      "width": { "$type": "dimension", "$value": "2px", "$description": "How thick the ring is." },
+      "offset": { "$type": "dimension", "$value": "2px", "$description": "The gap between a control and its ring." },
+      "offset-tight": { "$type": "dimension", "$value": "1px", "$description": "A smaller gap, for small pieces inside a control, like a tag's remove button." },
+      "offset-inset": { "$type": "dimension", "$value": "-2px", "$description": "Drawn inside the edge, for rows that touch their neighbors." }
+    }
+  }
+}

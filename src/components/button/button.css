@@ -51,8 +51,8 @@
 }
 
 .ds-button[data-focus-visible] {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Sizes: Small 24, Medium 32, Large 40 tall. Each size has its own control type style. */
@@ -168,9 +168,20 @@
   outline-color: var(--button-glass-ink);
 }
 .ds-button--glass[data-lens='on'] {
+  /* The lens draws the edge; the button's own border would double it. */
+  --_ring: transparent;
   --_bg: transparent;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+/* Increase contrast: glass buttons are solid (material.css) and cast no shadow, so nothing is soft. */
+@media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-button--glass {
+    --_shadow: none;
+  }
+}
+:root[data-contrast='more'] .ds-button--glass {
+  --_shadow: none;
 }
 /* Disabled glass stays glass, half see-through, like a disabled action tile. */
 .ds-button--glass[data-disabled],
@@ -185,8 +196,14 @@
   --_bg: transparent;
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Glass fades between states like the tiles: ease in and out, nothing sudden. */
   .ds-button--glass {
-    transition: scale var(--motion-duration-instant) var(--motion-easing-out);
+    transition:
+      scale var(--motion-duration-fast) var(--motion-easing-in-out),
+      background-color var(--motion-duration-slow) var(--motion-easing-in-out),
+      color var(--motion-duration-base) var(--motion-easing-in-out),
+      box-shadow var(--motion-duration-base) var(--motion-easing-in-out),
+      opacity var(--motion-duration-slow) var(--motion-easing-in-out);
   }
 }
 
