@@ -14,6 +14,8 @@ const sizes = (name: string) => (sc[name] ? [sc[name].compact, sc[name].medium, 
 const loaded: Record<string, number[]> = {
   Cinzel: [800],
   'Atkinson Hyperlegible Next': [300, 400, 500, 600, 700],
+  // Code uses the device's own monospace font (font.family.code in the base), in its regular weight.
+  'ui-monospace': [400],
 };
 
 const roles = [

@@ -20,6 +20,7 @@
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
     "@fontsource-variable/newsreader": "^5.3.0",
     "@fontsource/archivo": "^5.3.0",
     "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
@@ -67,8 +68,8 @@
     "./base.css": "./dist/base.css",
     "./components.css": "./dist/index.css",
     "./themes/*.css": "./build/css/*.css",
-    "./fonts/designer-toolkit.css": "./dist/fonts-after-graduation.css",
-    "./fonts/*.css": "./dist/fonts-*.css"
+    "./fonts/*.css": "./dist/fonts-*.css",
+    "./text-styles.css": "./dist/text-styles.css"
   },
   "files": [
     "dist",
