@@ -9,7 +9,8 @@ Newest first.
 
 - **Decided by:** Sharon
 - **Decision:** the designer toolkit's Fireside skin is a theme here, `tokens/themes/designer-toolkit`, and appears in Storybook's Theme picker as "Designer toolkit (Fireside)". It is always dark, so it has no dark folder and the Mode switch doesn't change it.
-- **Colors:** Fireside's palette and color jobs as decided in the toolkit on Oct 12 ([Skin](https://github.com/sharonlafleur1984/designer-toolkit/wiki/Skin)): near-black frame, cream text, peach for supporting text, one bright rust accent used rarely, fire red for danger, lake green for success, honey for warnings only. Every text pair passes 4.5:1 (tests/tokens.test.ts).
+- **Colors:** Retro, the colors Sharon picked to update Fireside (the toolkit's shell preview, Oct 13): a deep teal-black page (#08161A), teal panels, cream text, soft yellow for supporting text, and one peach-orange accent (#E1A36F) used rarely. Status colors keep their jobs: red for danger, green for success, yellow for warnings. Every text pair passes 4.5:1 (tests/tokens.test.ts).
+- **Kept from the first Fireside palette:** the color ramps on Foundations, Colors, Palette (near-black, cream, peach, rust, fire red, lake green, honey). Retro has no ramps yet, and no component uses a ramp directly.
 - **Borrowed for now:** type, sizes and motion come from After Graduation until the toolkit picks its own (Skin: Still open).
 - **Not made yet:** Fireside skins for Action tile, Page shell and Settings, and Fireside's glass. Those stories say so when Fireside is picked, the same way they do for Life Hub.
 - **Why:** the toolkit's Skin page says Fireside is a theme in this design system, but it only existed as a copy inside designer-toolkit-code, so it never showed in Storybook.

@@ -1,7 +1,7 @@
 {
   "card": {
     "surface": {
-      "$value": "#33302c",
+      "$value": "{color.surface.card}",
       "$type": "color"
     },
     "frost": {
@@ -15,7 +15,7 @@
       "$type": "dimension"
     },
     "border": {
-      "$value": "rgba(248, 240, 232, 0.08)",
+      "$value": "rgba(246, 242, 225, 0.08)",
       "$type": "color"
     },
     "shadow": {

@@ -1,11 +1,11 @@
 {
   "color": {
     "status": {
-      "$description": "Fireside's status colors (designer toolkit, Oct 12): fire red for danger, lake green for success, honey for warnings only. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1).",
+      "$description": "Fireside's status colors, with Retro's surfaces and text (Oct 13): red for danger, green for success, yellow for warnings only. The names and rules are shared by every theme (always with an icon and a label, text passes 4.5:1).",
       "error": {
         "surface": {
           "$type": "color",
-          "$value": "#5c0f01"
+          "$value": "#4e2521"
         },
         "accent": {
           "$type": "color",
@@ -17,13 +17,13 @@
         },
         "ink": {
           "$type": "color",
-          "$value": "#f4c9bf"
+          "$value": "#f1d3cf"
         }
       },
       "warning": {
         "surface": {
           "$type": "color",
-          "$value": "#e1c167"
+          "$value": "#473c1e"
         },
         "accent": {
           "$type": "color",
@@ -35,13 +35,13 @@
         },
         "ink": {
           "$type": "color",
-          "$value": "#1a1612"
+          "$value": "#f0e0ba"
         }
       },
       "success": {
         "surface": {
           "$type": "color",
-          "$value": "#243432"
+          "$value": "#1b3f3d"
         },
         "accent": {
           "$type": "color",
@@ -53,13 +53,13 @@
         },
         "ink": {
           "$type": "color",
-          "$value": "#d1d5d5"
+          "$value": "#cbe4e2"
         }
       },
       "info": {
         "surface": {
           "$type": "color",
-          "$value": "#50463c"
+          "$value": "#173e48"
         },
         "accent": {
           "$type": "color",
@@ -71,25 +71,25 @@
         },
         "ink": {
           "$type": "color",
-          "$value": "#e9ceb5"
+          "$value": "#cee2e8"
         }
       },
       "neutral": {
         "surface": {
           "$type": "color",
-          "$value": "#4b4743"
+          "$value": "#2b4148"
         },
         "accent": {
           "$type": "color",
-          "$value": "#7a7774"
+          "$value": "#677f86"
         },
         "accent-strong": {
           "$type": "color",
-          "$value": "#979592"
+          "$value": "#8a9a9e"
         },
         "ink": {
           "$type": "color",
-          "$value": "#dad3cc"
+          "$value": "#dbd8c9"
         }
       }
     }

@@ -278,144 +278,144 @@
   "color": {
     "ink": {
       "primary": {
-        "$value": "#f8f0e8",
+        "$value": "#f6f2e1",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#e9ceb5",
+        "$value": "#e2d8a5",
         "$type": "color"
       },
       "tertiary": {
-        "$value": "#b9b3ad",
+        "$value": "#bebbad",
         "$type": "color"
       },
       "muted": {
-        "$value": "#7b7772",
+        "$value": "#8a9a9e",
         "$type": "color"
       },
       "disabled": {
-        "$value": "#63605c",
+        "$value": "#4f646b",
         "$type": "color"
       },
       "inverse": {
-        "$value": "#1a1612",
+        "$value": "#051013",
         "$type": "color"
       },
       "on-art": {
         "$type": "color",
-        "$value": "#f8f0e8"
+        "$value": "#f6f2e1"
       },
       "on-art-selected": {
         "$type": "color",
-        "$value": "#f8f0e8"
+        "$value": "#f6f2e1"
       }
     },
     "surface": {
       "page": {
-        "$value": "#1a1612",
+        "$value": "#08161a",
         "$type": "color"
       },
       "card": {
-        "$value": "#33302c",
+        "$value": "#1a2c31",
         "$type": "color"
       },
       "raised": {
-        "$value": "#4b4743",
+        "$value": "#2b4148",
         "$type": "color"
       },
       "sunken": {
-        "$value": "#171615",
+        "$value": "#051013",
         "$type": "color"
       },
       "hover": {
-        "$value": "#4b4743",
+        "$value": "#2b4148",
         "$type": "color"
       },
       "overlay": {
-        "$value": "#4b4743",
+        "$value": "#2b4148",
         "$type": "color"
       },
       "inverse": {
-        "$value": "#f8f0e8",
+        "$value": "#f6f2e1",
         "$type": "color"
       },
       "scrim": {
         "$type": "color",
-        "$value": "rgba(13, 11, 9, 0.6)"
+        "$value": "rgba(5, 16, 19, 0.6)"
       },
       "glass-on-art-solid": {
         "$type": "color",
-        "$value": "#33302c"
+        "$value": "#1a2c31"
       },
       "glass": {
-        "$value": "rgba(248, 240, 232, 0.06)",
+        "$value": "rgba(246, 242, 225, 0.06)",
         "$type": "color"
       },
       "glass-strong": {
-        "$value": "#4b4743",
+        "$value": "#2b4148",
         "$type": "color"
       }
     },
     "border": {
       "subtle": {
-        "$value": "rgba(248, 240, 232, 0.08)",
+        "$value": "rgba(246, 242, 225, 0.08)",
         "$type": "color"
       },
       "default": {
-        "$value": "rgba(248, 240, 232, 0.08)",
+        "$value": "rgba(246, 242, 225, 0.1)",
         "$type": "color"
       },
       "strong": {
-        "$value": "#7a7774",
+        "$value": "#677f86",
         "$type": "color"
       },
       "focus": {
-        "$value": "#d4a997",
+        "$value": "#f3c097",
         "$type": "color"
       }
     },
     "accent": {
       "base": {
-        "$value": "#d06c3e",
+        "$value": "#e1a36f",
         "$type": "color"
       },
       "hover": {
-        "$value": "#de784b",
+        "$value": "#f2b37e",
         "$type": "color"
       },
       "surface": {
-        "$value": "#482617",
+        "$value": "#3f2b1b",
         "$type": "color"
       },
       "soft": {
-        "$value": "#683924",
+        "$value": "#5c3d24",
         "$type": "color"
       },
       "ink": {
-        "$value": "#1a1612",
+        "$value": "#051013",
         "$type": "color"
       },
       "text": {
-        "$value": "#d4a997",
+        "$value": "#f3c097",
         "$type": "color"
       },
       "text-hover": {
-        "$value": "#e7cec3",
+        "$value": "#f8d6b8",
         "$type": "color"
       },
       "contrast": {
-        "$value": "#e7cec3",
+        "$value": "#f8d6b8",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#c7af9a",
+        "$value": "#e2d8a5",
         "$type": "color"
       }
     },
     "status": {
       "error": {
         "surface": {
-          "$value": "#5c0f01",
+          "$value": "#4e2521",
           "$type": "color"
         },
         "accent": {
@@ -427,13 +427,13 @@
           "$type": "color"
         },
         "ink": {
-          "$value": "#f4c9bf",
+          "$value": "#f1d3cf",
           "$type": "color"
         }
       },
       "warning": {
         "surface": {
-          "$value": "#e1c167",
+          "$value": "#473c1e",
           "$type": "color"
         },
         "accent": {
@@ -445,13 +445,13 @@
           "$type": "color"
         },
         "ink": {
-          "$value": "#1a1612",
+          "$value": "#f0e0ba",
           "$type": "color"
         }
       },
       "success": {
         "surface": {
-          "$value": "#243432",
+          "$value": "#1b3f3d",
           "$type": "color"
         },
         "accent": {
@@ -463,13 +463,13 @@
           "$type": "color"
         },
         "ink": {
-          "$value": "#d1d5d5",
+          "$value": "#cbe4e2",
           "$type": "color"
         }
       },
       "info": {
         "surface": {
-          "$value": "#50463c",
+          "$value": "#173e48",
           "$type": "color"
         },
         "accent": {
@@ -481,25 +481,25 @@
           "$type": "color"
         },
         "ink": {
-          "$value": "#e9ceb5",
+          "$value": "#cee2e8",
           "$type": "color"
         }
       },
       "neutral": {
         "surface": {
-          "$value": "#4b4743",
+          "$value": "#2b4148",
           "$type": "color"
         },
         "accent": {
-          "$value": "#7a7774",
+          "$value": "#677f86",
           "$type": "color"
         },
         "accent-strong": {
-          "$value": "#979592",
+          "$value": "#8a9a9e",
           "$type": "color"
         },
         "ink": {
-          "$value": "#dad3cc",
+          "$value": "#dbd8c9",
           "$type": "color"
         }
       }
