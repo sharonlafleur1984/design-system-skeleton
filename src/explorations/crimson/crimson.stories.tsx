@@ -55,7 +55,8 @@ function Pair({ left, right }: { left: ReactNode; right: ReactNode }) {
   return <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-7)' }}>{left}{right}</div>;
 }
 function AfterGraduationOnly({ children }: { children: ReactNode }) {
-  return useContext(ThemeContext) === 'life-hub' ? <p>After Graduation only. Switch the theme in the toolbar to see it.</p> : <>{children}</>;
+  const theme = useContext(ThemeContext);
+  return theme !== 'after-graduation' && theme !== 'both' ? <p>After Graduation only. Switch the theme in the toolbar to see it.</p> : <>{children}</>;
 }
 
 function Ramp({ colors }: { colors: string[] }) {

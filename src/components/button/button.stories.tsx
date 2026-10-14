@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
 import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
+import { Callout } from '../callout/callout';
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -136,7 +137,10 @@ function OnHeaderArt({ glassLens = true }: { glassLens?: boolean }) {
 }
 
 function GlassOnArt({ theme, glassLens = true }: { theme: unknown; glassLens?: boolean }) {
-  return singleTheme(theme) === 'life-hub' ? <OnMarble lens={glassLens}>{glassRow}</OnMarble> : <OnHeaderArt glassLens={glassLens} />;
+  const t = singleTheme(theme);
+  // Fireside's glass and light recipe is still open (designer-toolkit wiki, Skin).
+  if (t === 'designer-toolkit') return <Callout tone="info">Fireside's glass hasn't been designed yet.</Callout>;
+  return t === 'life-hub' ? <OnMarble lens={glassLens}>{glassRow}</OnMarble> : <OnHeaderArt glassLens={glassLens} />;
 }
 
 /**

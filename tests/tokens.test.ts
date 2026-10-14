@@ -190,3 +190,26 @@ describe('see-through colors keep their transparency', () => {
   it('finds see-through colors to check', () => expect(checks.length).toBeGreaterThan(0));
   it.each(checks)('%s: %s stays see-through', (_t, _name, value) => expect(isSolid(value)).toBe(false));
 });
+
+// Spacing, sizes and corners live in the shared base (tokens/base), so a change there reaches every
+// product. A theme changes how things look (color, type, depth), never the space between or around them.
+const sourceTokens = (dir: string): string[] => {
+  const paths: string[] = [];
+  const walk = (node: unknown, path: string[]) => {
+    if (!node || typeof node !== 'object') return;
+    if ('$value' in node) return void paths.push(path.join('.'));
+    for (const [k, v] of Object.entries(node)) if (!k.startsWith('$')) walk(v, [...path, k]);
+  };
+  for (const f of readdirSync(dir).filter((f) => f.endsWith('.json'))) walk(JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')), []);
+  return paths;
+};
+const baseOnly = /^(space|layout|radius|control\.(height|padding-inline|icon|gap)|callout|bottom-bar|dialog|settings)\./;
+
+describe('spacing and sizes stay in the base', () => {
+  const base = new Set(sourceTokens('tokens/base'));
+  for (const t of readdirSync('tokens/themes')) {
+    it(`${t} doesn't override base spacing, sizes or corners`, () => {
+      expect(sourceTokens(`tokens/themes/${t}`).filter((p) => base.has(p) && baseOnly.test(p))).toEqual([]);
+    });
+  }
+});

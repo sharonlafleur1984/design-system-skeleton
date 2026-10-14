@@ -1,0 +1,120 @@
+{
+  "shell": {
+    "$description": "After Graduation's page shell, kept so its stories work in Fireside, with a teal frame instead of red. Theme-only. The toolkit's real shell lives in designer-toolkit-code.",
+    "sheet-inset": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Smallest space between the screen side and the page sheet, so the header color always shows around it. Matches layout-gutter, so the sheet's edges line up with the header's content on every screen size.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "16px",
+          "medium": "24px"
+        }
+      }
+    },
+    "sheet-overlap": {
+      "$type": "dimension",
+      "$value": "40px",
+      "$description": "How far the page sheet rises over the bottom of the header.",
+      "$extensions": {
+        "com.sharon.screen-class": {
+          "compact": "24px",
+          "medium": "32px"
+        }
+      }
+    },
+    "sheet-radius": {
+      "$type": "dimension",
+      "$value": "{radius.panel}",
+      "$description": "Rounded top corners of the page sheet."
+    },
+    "frame": {
+      "$type": "color",
+      "$value": "#173e48"
+    },
+    "entrance": {
+      "$description": "The header's entrance when a page opens, from the prototype: the title slams in, speed lines burst behind it, the subtitle fades down and the magic circle turns. Slowed to about 1.4 times the prototype's speed, which felt too fast. Its own tokens so the header can be dramatic while cards and lists keep the quicker energetic arrival.",
+      "title-duration": {
+        "$type": "duration",
+        "$value": "1000ms",
+        "$description": "The title slams in: starts big and tilted, overshoots, settles. Prototype: 700ms."
+      },
+      "title-easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.mood.energetic.arrive-easing}"
+      },
+      "burst-duration": {
+        "$type": "duration",
+        "$value": "1400ms",
+        "$description": "Speed lines grow out behind the title. Prototype: 1000ms."
+      },
+      "subtitle-duration": {
+        "$type": "duration",
+        "$value": "1000ms",
+        "$description": "The subtitle fades down into place."
+      },
+      "subtitle-delay": {
+        "$type": "duration",
+        "$value": "560ms",
+        "$description": "The subtitle waits until the title has landed. Prototype: 400ms."
+      },
+      "wheel-duration": {
+        "$type": "duration",
+        "$value": "30s",
+        "$description": "The wheel turns as the page opens, then eases to a stop over this long (Oct 13: back to 30s; Oct 7 had tried 20s). Anything moving on its own past 5 seconds needs to stop (WCAG 2.2.2)."
+      },
+      "wheel-angle": {
+        "$type": "number",
+        "$value": 44,
+        "$description": "How far the wheel turns before it rests, in degrees. 44 is the resting angle that puts the fewest wheel lines inside the episode tiles and behind their words (measured on desktop and tablet)."
+      },
+      "title-from-scale": {
+        "$type": "number",
+        "$value": 1.5,
+        "$description": "How big the title starts before it slams into place."
+      },
+      "title-from-tilt": {
+        "$type": "number",
+        "$value": -4,
+        "$description": "How tilted the title starts, in degrees."
+      },
+      "burst-from-scale": {
+        "$type": "number",
+        "$value": 0.4,
+        "$description": "How small the rays start before they burst out from the wheel."
+      }
+    },
+    "art": {
+      "$description": "The header's art. The magic wheel sits low on the right and is the header's one light source: rays start at its center, and glass in the header is lit from it.",
+      "ray": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.18)",
+        "$description": "The rays from the wheel's center, at their strongest. They fade with distance from the wheel."
+      },
+      "wheel": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.16)",
+        "$description": "The wheel's lines: faint, so it reads as light, not a picture (Oct 13: 0.22 to 0.16, quieter beside the lens glass)."
+      },
+      "wheel-min": {
+        "$type": "dimension",
+        "$value": "420px",
+        "$description": "Smallest the wheel gets, on phones."
+      },
+      "wheel-max": {
+        "$type": "dimension",
+        "$value": "920px",
+        "$description": "Largest the wheel gets, on wide screens."
+      },
+      "ray-behind-glass": {
+        "$type": "number",
+        "$value": 0.45,
+        "$description": "How strong the rays are behind the glass tiles (1 is full strength). The rays themselves fade there, so the glass stays clear and the crimson isn't tinted."
+      }
+    },
+    "subtitle": {
+      "$type": "color",
+      "$value": "#e2d8a5"
+    }
+  }
+}

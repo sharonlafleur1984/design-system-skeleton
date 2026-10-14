@@ -35,6 +35,7 @@ export const ThisThemeOnly: Story = {
   name: 'This theme only',
   render: (_args, { globals }) => {
     const theme = singleTheme(globals.theme);
+    if (theme === 'designer-toolkit') return <p>Fireside has no extra colors. Peach copper is the primary color, used rarely: the main action, focus and the selected item.</p>;
     return theme === 'life-hub' ? (
       <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
     ) : (

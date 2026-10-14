@@ -1,0 +1,80 @@
+{
+  "card": {
+    "surface": {
+      "$value": "{color.surface.card}",
+      "$type": "color"
+    },
+    "frost": {
+      "$value": "none"
+    },
+    "backdrop": {
+      "$value": "none"
+    },
+    "frost-feather": {
+      "$value": "0px",
+      "$type": "dimension"
+    },
+    "border": {
+      "$value": "rgba(246, 242, 225, 0.08)",
+      "$type": "color"
+    },
+    "shadow": {
+      "$value": "0px 0px 0px 0px rgba(0,0,0,0)",
+      "$description": "No extra shadow: glass cards take theirs from the light (card.glass)."
+    },
+    "shadow-hover": {
+      "$value": "0px 0px 0px 0px rgba(0,0,0,0)"
+    },
+    "glass": {
+      "$description": "The shared glass recipe's settings for cards (see glass.css): rim, glint, highlight, shade and shadow, all aimed at the page's one light.",
+      "rim-color": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "rim-strength": {
+        "$type": "number",
+        "$value": 0.88
+      },
+      "rim-glint": {
+        "$type": "number",
+        "$value": 0.22
+      },
+      "rim-spread-x": {
+        "$type": "dimension",
+        "$value": "65%"
+      },
+      "rim-spread-y": {
+        "$type": "dimension",
+        "$value": "155%"
+      },
+      "rim-base": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "shade": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "cast": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "contact": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0)"
+      },
+      "cast-distance": {
+        "$type": "dimension",
+        "$value": "11.3px"
+      },
+      "cast-blur": {
+        "$type": "dimension",
+        "$value": "22px"
+      }
+    }
+  }
+}

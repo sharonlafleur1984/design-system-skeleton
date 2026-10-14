@@ -1,8 +1,23 @@
 # Decisions
 
-**Last updated:** October 12, 2026
+**Last updated:** October 14, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 14, 2026:</b> Fireside is the third theme, for the designer toolkit</summary>
+
+- **Decided by:** Sharon
+- **Decision:** the designer toolkit's Fireside skin is a theme here, `tokens/themes/designer-toolkit`, and appears in Storybook's Theme picker as "Designer toolkit (Fireside)". It is always dark, so it has no dark folder and the Mode switch doesn't change it.
+- **Colors:** Retro, the colors Sharon picked to update Fireside (the toolkit's shell preview, Oct 13). **Peach copper (#E1A36F) is the primary color:** the main button, focus and the selected item, with near-black text on it. It replaces bright rust. Behind it: a deep teal-black page (#08161A), teal panels, cream text, and soft yellow for supporting text. Status colors keep their jobs: red for danger, green for success, yellow for warnings. Every text pair passes 4.5:1 (tests/tokens.test.ts).
+- **Spacing, sizes and corners come from the shared base** (`tokens/base/`), like every other skin. The theme overrides none of them, so a change to the base reaches the toolkit too. This replaces the Oct 12 toolkit theme (closed #53), which set its own tighter spacing, control heights and corners.
+- **Kept from the first Fireside palette:** the color ramps on Foundations, Colors, Palette (near-black, cream, peach, rust, fire red, lake green, honey). Retro has no ramps yet, and no component uses a ramp directly.
+- **Borrowed for now:** type and motion come from After Graduation until the toolkit picks its own (Skin: Still open).
+- **Not made yet:** Fireside skins for Action tile, Page shell and Settings, and Fireside's glass. Those stories say so when Fireside is picked, the same way they do for Life Hub.
+- **Why:** the toolkit's Skin page says Fireside is a theme in this design system, but it only existed as a copy inside designer-toolkit-code, so it never showed in Storybook.
+- **How:** "Both, side by side" is now "All, side by side" and shows all three themes. Visual tests screenshot every story in Fireside too.
+
+</details>
 
 <details>
 <summary><b>Oct 12, 2026:</b> Action tiles and glass buttons use lens glass</summary>
