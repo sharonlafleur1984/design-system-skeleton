@@ -92,9 +92,14 @@ void main() {
     vec4 pr = props[i];
     vec2 h = r.zw * .5;
     vec2 c = r.xy + h;
-    vec2 away = normalize(c - light + 1e-4) * shadowDist * pr.w;
-    float ds = sdBox(p - c - away, h, pr.x);
-    sh = max(sh, (1. - smoothstep(0., max(shadowBlur * pr.w, 1.), ds)) * shadowColor.a * pr.z);
+    // Two parts, like a real shadow: a thin contact shadow right at the edge, and a faint cast shadow
+    // that falls away from the light and softens as it goes. Neither is ever a solid block.
+    vec2 dir = normalize(c - light + 1e-4);
+    float blur = max(shadowBlur * pr.w, 1.);
+    float fall = 1. - smoothstep(-blur * .6, blur, sdBox(p - c - dir * shadowDist * pr.w, h, pr.x));
+    float touch = 1. - smoothstep(0., max(blur * .12, dpr), sdBox(p - c - dir * shadowDist * .12, h, pr.x));
+    float s = 1. - (1. - fall * .55) * (1. - touch * .8);
+    sh = max(sh, s * shadowColor.a * pr.z);
   }
   // Shadows fall only outside the glass, so clear glass never shows its own shadow through it.
   // (On art that fills the frame the glass covers them anyway.)

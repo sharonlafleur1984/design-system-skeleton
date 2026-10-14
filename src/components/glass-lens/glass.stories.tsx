@@ -67,7 +67,8 @@ function GlassSet() {
 function ThemePage({ theme, children }: { theme: Theme; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const lens = useMemo(() => ({ art: theme === 'life-hub' ? sunriseArt : firesideArt }), [theme]);
-  useGlassLight(ref, { source: '[data-sun]', selector: '.ds-glass', lens });
+  // A long reach: the edge light stays strong wherever the sun is, as it would outdoors.
+  useGlassLight(ref, { source: '[data-sun]', selector: '.ds-glass', lens, reach: 6 });
   const style: CSSProperties = {
     position: 'relative',
     isolation: 'isolate',
@@ -120,10 +121,13 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-bend' as string]: String(bend),
     ['--glass-lens-edge-depth' as string]: `${edgeDepth}px`,
     ['--glass-lens-color-split' as string]: String(colorSplit),
-    ['--glass-lens-rim-lit' as string]: `rgba(255, 255, 255, ${Math.min(1, edgeLight * 1.6).toFixed(2)})`,
+    ['--glass-lens-rim-width' as string]: '1.5px',
+    ['--glass-lens-rim-lit' as string]: `rgba(255, 255, 255, ${Math.min(1, edgeLight * 3.4).toFixed(2)})`,
     ['--glass-lens-highlight' as string]: `rgba(255, 255, 255, ${edgeLight.toFixed(2)})`,
+    ['--glass-lens-rim-faint' as string]: `rgba(255, 255, 255, ${(edgeLight * 0.57).toFixed(2)})`,
     ['--glass-lens-shadow-color' as string]: `rgba(0, 0, 0, ${shadow.toFixed(2)})`,
-    ['--glass-lens-shadow-distance' as string]: `${Math.round(2 + shadow * 20)}px`,
+    ['--glass-lens-shadow-distance' as string]: '22px',
+    ['--glass-lens-shadow-blur' as string]: '34px',
   } as CSSProperties;
   const sunStyle: CSSProperties = {
     position: 'absolute',
@@ -201,5 +205,5 @@ export default meta;
 /** Drag the sun, and tune the glass with the controls. */
 export const Playground: StoryObj<Args> = {};
 
-/** Closer to the shader demo (Oct 14): a deeper edge, a stronger bend, brighter edge light and a firmer shadow. */
-export const Deep: StoryObj<Args> = { args: { bend: 1.6, edgeDepth: 40, colorSplit: 0.03, edgeLight: 0.35, shadow: 0.35 } };
+/** Matched to the Oct 14 shader demo: a deeper edge, a stronger bend, a bright edge facing the sun, and a soft shadow that falls away from it. */
+export const Demo: StoryObj<Args> = { args: { bend: 1.5, edgeDepth: 28, colorSplit: 0.02, edgeLight: 0.28, shadow: 0.38 } };
