@@ -1,5 +1,5 @@
 # Runs on every pull request: builds the tokens, checks types, runs the
-# contract and contrast tests, and makes sure Storybook still builds.
+# contract and contrast tests, checks the code for mistakes (ESLint), and makes sure Storybook still builds.
 name: CI
 on:
   pull_request:
@@ -7,6 +7,13 @@ on:
     branches: [main]
   # Lets the update-screenshots job rerun this check on its own commit.
   workflow_dispatch:
+# The check only reads the code.
+permissions:
+  contents: read
+# A new push replaces a run that's still going on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -19,4 +26,5 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
+      - run: npm run lint
       - run: npm run build-storybook

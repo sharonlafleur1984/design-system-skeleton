@@ -74,3 +74,21 @@ describe('component CSS only uses tokens that exist', () => {
     });
   }
 });
+
+// Screen sizes come from one place (src/components/breakpoints.ts, matching the token build), so a
+// phone layout never starts at 599px in one component and 600px in another.
+describe('screen-size media queries use the shared breakpoints', () => {
+  const build = readFileSync('scripts/build-tokens.mjs', 'utf8');
+  const shared = readFileSync('src/components/breakpoints.ts', 'utf8');
+  it('breakpoints.ts matches the token build (phone under 600px, tablet under 840px)', () => {
+    expect(build).toMatch(/BREAKPOINTS = \{ medium: 839, compact: 599 \}/);
+    expect(shared).toContain("PHONE = '(width < 37.5rem)'");
+    expect(shared).toContain("TABLET = '(width < 52.5rem)'");
+  });
+  for (const file of [...cssFiles('src/components'), ...cssFiles('src/explorations')]) {
+    it(`${file}: width media queries are (width < 37.5rem) or (width < 52.5rem)`, () => {
+      const queries = [...withoutComments(readFileSync(file, 'utf8')).matchAll(/@media[^{]*\b(?:width|min-width|max-width)\b[^{]*/g)].map((m) => m[0].trim());
+      expect(queries.filter((q) => q !== '@media (width < 37.5rem)' && q !== '@media (width < 52.5rem)')).toEqual([]);
+    });
+  }
+});

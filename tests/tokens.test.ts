@@ -211,7 +211,7 @@ const sourceTokenFiles = (dir: string, onlyTop = false): { path: string; file: s
   return found;
 };
 const sourceTokens = (dir: string): string[] => sourceTokenFiles(dir).map((t) => t.path);
-const baseOnly = /^(space|layout|radius|control\.(height|padding-inline|icon|gap)|callout|bottom-bar|dialog|settings)\./;
+const baseOnly = /^(space|layout|radius|focus|control\.(height|padding-inline|icon|gap)|callout|bottom-bar|dialog|settings)\./;
 
 describe('spacing and sizes stay in the base', () => {
   const base = new Set(sourceTokens('tokens/base'));

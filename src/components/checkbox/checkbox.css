@@ -44,8 +44,8 @@
 
 .ds-checkbox[data-focus-visible] .ds-checkbox__box,
 .ds-checkbox[data-state='focus'] .ds-checkbox__box {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .ds-checkbox[data-disabled] {
