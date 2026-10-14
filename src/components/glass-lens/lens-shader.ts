@@ -84,7 +84,10 @@ vec4 artAt(vec2 p) { return texture2D(art, clamp(p / res, 0., 1.)); }
 void main() {
   vec2 p = vec2(gl_FragCoord.x, res.y - gl_FragCoord.y);
 
-  // Soft shadows, cast away from the light.
+  // Shadows, as light makes them:
+  // - only on the side away from the light: the soft edge never wraps round to the lit side;
+  // - a fine, deeper line right where the glass meets the page, on that far side;
+  // - glass lets light through, so its shadow is paler in the middle than along its outline.
   float sh = 0.;
   for (int i = 0; i < MAX; i++) {
     if (i >= count) break;
@@ -92,9 +95,18 @@ void main() {
     vec4 pr = props[i];
     vec2 h = r.zw * .5;
     vec2 c = r.xy + h;
-    vec2 away = normalize(c - light + 1e-4) * shadowDist * pr.w;
+    vec2 dir = normalize(c - light + 1e-4);
+    vec2 away = dir * shadowDist * pr.w;
+    float blur = max(shadowBlur * pr.w, 1.);
+    float d0 = sdBox(p - c, h, pr.x);
     float ds = sdBox(p - c - away, h, pr.x);
-    sh = max(sh, (1. - smoothstep(0., max(shadowBlur * pr.w, 1.), ds)) * shadowColor.a * pr.z);
+    // Nearer the thrown shape than the glass itself means the far side; the lit side gets nothing.
+    float far = smoothstep(-1.5 * dpr, 3. * dpr, d0 - ds);
+    float soft = 1. - smoothstep(0., blur, ds);
+    float pass = mix(.6, 1., 1. - smoothstep(0., blur * .9, -ds));
+    float contact = (1. - smoothstep(0., 2.5 * dpr, d0)) * far * .5;
+    float s = max(soft * pass * far, contact);
+    sh = max(sh, s * shadowColor.a * pr.z);
   }
   // Shadows fall only outside the glass, so clear glass never shows its own shadow through it.
   // (On art that fills the frame the glass covers them anyway.)

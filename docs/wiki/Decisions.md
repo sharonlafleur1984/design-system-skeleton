@@ -63,7 +63,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Fixes found while matching:** a Glass tile's own layer was filtering the lens again and smearing its bend (the marble barely bent); glass buttons drew their own border under the lens's edge, so they looked thicker than tiles.
 - **Clear, not frosted (follow-up):** white reads as light on a dark page but as frost on a light one. Sunrise's light mode has no white body and a gentle inner band; its dark mode keeps the demo's sheen; Spotlight and Fireside use a 4% body. The bevel scales with the piece (at most just over half its height), so short buttons stay clear in the middle instead of turning milky.
 - **Edges drawn by light only:** the rim away from the light is down to 4% white, so there's no fixed border; the edge brightens and fades as the light moves.
-- **Shadows rest close:** 4px from the light with a 14px blur, so glass reads as lying near the page, not floating high above it.
+- **Shadows rest close:** 4px from the light with a 14px blur, so glass reads as lying near the page, not floating high above it. The shadow appears only on the side away from the light (never a halo on the lit side), with a fine deeper line where the glass meets the page, and is paler in the middle because glass lets light through.
+- **Light behaves differently in the dark:** on dark backgrounds (Sunrise at night, Fireside) shadow has little to darken, so the glass is shown by light: almost no white film, a bright edge where the light hits, and faint shadows. On light backgrounds the shadow carries more of the form.
 - **Chosen Glass is milky** (Sharon's pick): frost strength per theme, measured so the text keeps at least 4.5:1 (Sunrise 13.5, Sunrise at night 4.7, Fireside 8.3, Spotlight 4.7).
 
 </details>

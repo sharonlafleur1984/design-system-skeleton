@@ -3,18 +3,23 @@
     "lens": {
       "body": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.08)",
-        "$description": "At night the marble is dark, so a faint white body reads as a sheen on the glass, like the demo."
+        "$value": "rgba(255, 255, 255, 0.03)",
+        "$description": "At night only a trace of white: in the dark, a film turns the glass dull gray. The light on its edge does the work."
       },
       "highlight": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.34)",
-        "$description": "On the dark marble the light inside the edge can be strong, like the demo."
+        "$value": "rgba(255, 255, 255, 0.5)",
+        "$description": "In the dark, light reads stronger: the band inside the edge facing the light is bright."
       },
       "shadow-color": {
         "$type": "color",
-        "$value": "rgba(0, 0, 0, 0.45)",
+        "$value": "rgba(0, 0, 0, 0.28)",
         "$description": "On the dark marble a shadow needs more strength to show."
+      },
+      "rim-lit": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 1)",
+        "$description": "The edge facing the light, at full brightness against the dark marble."
       }
     }
   }
