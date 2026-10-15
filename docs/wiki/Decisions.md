@@ -11,6 +11,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | ID | Date | Decision |
 |---|---|---|
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
+| D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
+| D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
 | D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
 | D48 | Oct 15, 2026 | Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere |
 | D46 | Oct 14, 2026 | Action tile titles one size smaller; action tiles fit their space |
@@ -71,6 +73,32 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Tradeoff:** lens glass bends the art behind it, so it still needs artwork the system controls. On a plain background there's nothing to bend, so glass shows the classic frosted recipe, not the lens.
 - **Why:** Sharon decided this while reviewing the Style control (Solid or Glass) for the Storybook docs page template.
 - **Details:** Components, Button and Action tile in Storybook (When to use and When not to).
+
+</details>
+
+<details>
+<summary><b>D51 · Oct 15, 2026:</b> Motion: open and close, a leaving curve, switching views and loading</summary>
+
+- **Decided by:** Sharon ("what all motion tokens are available in aria that I can take advantage of and add here?"; "where are all of the other different motions that you just told me about")
+- **What React Aria gives:** no motion tokens, since it's unstyled, but the moments to animate: overlays mark when they're opening (`data-entering`) and closing (`data-exiting`), and React Aria waits for the animation before removing them ([React Aria: animation](https://react-spectrum.adobe.com/react-aria/styling.html#animation)).
+- **Open and close (`motion.open`, `motion.close`):** overlays fade in and grow from 96% over 220ms, and close in 140ms on the leaving curve, because the person is already done with them. Select's menu and the Settings dialog use it. With Reduce motion they only fade.
+- **A leaving curve (`motion.easing.in`):** starts slowly and speeds away, for things closing or being removed. Material 3's standard accelerate curve ([Material 3: easing and duration](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)). Arriving uses `out`, back and forth uses `in-out`.
+- **Switching views (`motion.switch`):** a 140ms fade when tabs or action tiles change what's shown. Nothing moves, so it's kept with Reduce motion.
+- **Loading (`motion.spin`):** one spinner turn every 800ms; the Button's spinner used a fixed value before.
+- **The Motion page** shows each one with a real component to try: Select, Tabs and Button. Every value is shared by all themes. The numbers are estimates, chosen to sit on the existing steps.
+
+</details>
+
+<details>
+<summary><b>D50 · Oct 15, 2026:</b> Storybook: the theme picker sits on the page, and Compare all works on every story</summary>
+
+- **Decided by:** Sharon ("I don't think it's super clear that the drop-down is up there or how it works"; "if I use the all option in the drop-down, I don't actually see all")
+- **On the page:** a Theme picker (Spotlight, Sunrise, Fireside, Compare all) above every story, and once at the top of every Docs page, under the name and what it's for. It changes the same setting as the toolbar, so the two always agree. Controls hidden in a menu are found and used less ([NN/g](https://www.nngroup.com/articles/find-navigation-desktop-not-hamburger)), and seeing which theme is on means never having to remember it (Nielsen: visibility of system status, recognition over recall).
+- **Mode and Background in the same bar:** Light or Dark as a button set (two choices), left out for a theme that's always dark; and a Background menu only when the theme has patterned backgrounds, listed in its `theme.json` (Sunrise's marbles). Only what applies to the theme on show appears (Sharon).
+- **Storybook's own look:** the picker and the theme names in Compare all are neutral gray in system type, the same in every theme, so they're never mistaken for the component on show.
+- **Compare all, everywhere:** handled once in the preview, so every story, Foundations pages included, shows once per theme, side by side, each under its theme's name as a heading. "All" worked only on stories built with a helper before; a choice that works on some pages and not others breaks trust (Nielsen: consistency and standards). Renamed "Compare all" because it says what you get.
+- **Moods say what's the default and what changes it:** each theme's default mood first (Spotlight energetic, Sunrise calm, Fireside energetic for now), read from its tokens. Under it, each change with what triggers it: "When a page asks for it" (the other mood, with `data-motion`) and "When someone turns on Reduce motion" (fade only, and where people find the setting). The demos use plain labels (Item 1, Done), never one product's words.
+- **Screenshots:** the tests hide the picker (`picker:hide`), so it stays out of every picture.
 
 </details>
 

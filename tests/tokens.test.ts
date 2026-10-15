@@ -263,5 +263,9 @@ describe('every theme has what Storybook and the package need', () => {
     it(`${t} has a fonts file (src/fonts/${t}.css)`, () => {
       expect(existsSync(`src/fonts/${t}.css`)).toBe(true);
     });
+    it(`${t}: every background in its theme.json has its image`, () => {
+      const meta = JSON.parse(readFileSync(`tokens/themes/${t}/theme.json`, 'utf8')) as { backgrounds?: { file: string }[] };
+      for (const bg of meta.backgrounds ?? []) expect(existsSync(`.storybook/public/${bg.file}`), bg.file).toBe(true);
+    });
   }
 });

@@ -51,6 +51,11 @@ const caption: CSSProperties = {
 // top right (transparent in light mode). Written as a string, not a CSS file, so the texture's
 // address stays relative to the page, as the build expects.
 export const storyBackgroundsCss = `
+/* A background picked in the bar above the story (a theme's backgrounds in its theme.json) fills the page. */
+:root[data-sb-backdrop] body {
+  background: var(--story-bg-page);
+  background-attachment: fixed;
+}
 /* Space between the items in a theme panel, and a wider gap between groups of still pictures, so each group reads as one. The lens canvas sits behind them, so it is left out (a margin would draw the glass off its element). */
 .ds-story-panel > :not(.ds-lens-canvas) ~ :not(.ds-lens-canvas) {
   margin-block-start: var(--space-4);
@@ -59,7 +64,7 @@ export const storyBackgroundsCss = `
   margin-block-start: var(--space-7);
 }
 [data-theme="life-hub"] {
-  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page);
+  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), var(--story-backdrop, url('texture-sage-cream.jpg')) center / cover, var(--color-surface-page);
 }
 [data-theme="after-graduation"],
 [data-theme="designer-toolkit"] {
@@ -94,19 +99,55 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
 /** Each theme's name as people see it, like Spotlight. */
 export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
+// Storybook's own chrome, not any theme: the same in every column.
+// The theme's name is the biggest thing in its column (above any theme's title size), so it's clear what everything under it belongs to.
+const compareHeading: CSSProperties = { margin: 0, font: '700 32px/1.2 system-ui, sans-serif', color: '#2e3438' };
+
+/** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
+const InComparePanel = createContext(false);
+
 /**
- * Shows the content in the theme picked in the toolbar. Pick "All" to see
- * every product side by side; otherwise only one product shows at a time.
+ * Shows the content in its theme's panel: the theme's real page background, with its glass lit.
+ * In the Compare all view the preview already gives each theme a panel, so this adds nothing there.
  */
 export function BothThemes({ children }: { children: ReactNode }) {
   const choice = useContext(ThemeContext);
-  const shown = choice === 'both' ? themeList : [singleTheme(choice)];
+  if (useContext(InComparePanel)) return <>{children}</>;
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-      {shown.map((theme) => (
-        <ThemePanel key={theme} theme={theme} heading={shown.length > 1}>
-          {children}
-        </ThemePanel>
+      <ThemePanel theme={singleTheme(choice)} heading={false}>
+        {children}
+      </ThemePanel>
+    </div>
+  );
+}
+
+/**
+ * Compare all: the story once per theme, side by side, each in its own panel with its name. Used by
+ * Storybook's preview for every story, so Compare all works on every page. `render` draws the story
+ * in the theme it's given.
+ */
+export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
+      {themeList.map((theme) => (
+        <ThemeContext.Provider key={theme} value={theme}>
+          <InComparePanel.Provider value>
+            {/* The theme's name as a heading above its column, in Storybook's own type, so it's clear
+                which theme everything under it belongs to. */}
+            <section aria-labelledby={`compare-${theme}`} style={{ flex: '1 1 320px', display: 'grid', gap: '8px', alignContent: 'start' }}>
+              <h2 id={`compare-${theme}`} style={compareHeading}>
+                {themeNames[theme]}
+              </h2>
+              {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
+              <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
+                <ThemePanel theme={theme} heading={false}>
+                  {render(theme)}
+                </ThemePanel>
+              </div>
+            </section>
+          </InComparePanel.Provider>
+        </ThemeContext.Provider>
       ))}
     </div>
   );

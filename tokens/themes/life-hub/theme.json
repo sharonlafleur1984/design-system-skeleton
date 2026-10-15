@@ -2,5 +2,43 @@
   "name": "Sunrise",
   "product": "Life Hub",
   "order": 2,
-  "alwaysDark": false
+  "alwaysDark": false,
+  "backgrounds": [
+    {
+      "name": "Dashboard",
+      "file": "texture-sage-cream.jpg"
+    },
+    {
+      "name": "Time",
+      "file": "texture-seagull.jpg"
+    },
+    {
+      "name": "Finance",
+      "file": "texture-sea-nymph.jpg"
+    },
+    {
+      "name": "Parenting",
+      "file": "texture-lilacs-lavender.jpg"
+    },
+    {
+      "name": "Health",
+      "file": "texture-berry-pie.jpg"
+    },
+    {
+      "name": "Home",
+      "file": "texture-morning-latte.jpg"
+    },
+    {
+      "name": "Office",
+      "file": "texture-gold-sand.jpg"
+    },
+    {
+      "name": "Professional",
+      "file": "texture-nocturnal-navy.jpg"
+    },
+    {
+      "name": "Personal growth",
+      "file": "texture-sunflower-medley.jpg"
+    }
+  ]
 }
