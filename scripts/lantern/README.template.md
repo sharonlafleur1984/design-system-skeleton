@@ -1,4 +1,4 @@
-*Updated {{UPDATED}}*
+Updated {{UPDATED}}
 
 Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fireside. Sharing a single foundation, each provides its own unique glow.
 
