@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
-import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme, StatePictures } from '../story-helpers';
+import { BothThemes, OnMarble, Row, WithReducedMotion, choice, hidden, marbles, onOff, setting, singleTheme, StatePictures, words } from '../story-helpers';
+import { buttonPage } from './button.page';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
 
@@ -16,35 +17,31 @@ const meta: Meta<typeof Button> = {
   tags: ['autodocs'],
   args: { children: 'Button', variant: 'primary', appearance: 'solid', size: 'medium' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'tertiary'] },
-    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
+    children: words('Label', 'The words on the button'),
+    variant: choice('Variant', 'How important the action is', ['primary', 'secondary', 'tertiary']),
+    size: choice('Size', 'How big it is', ['small', 'medium', 'large']),
+    appearance: choice('Appearance', 'Solid, or clear glass for artwork', ['solid', 'glass']),
+    destructive: onOff('Destructive', 'For actions that remove something'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed"),
+    isPending: onOff('Loading', 'Shows a spinner while the action runs'),
+    icon: setting('Icon', 'A decorative icon before the label', { control: false }),
+    material: hidden,
+    loading: hidden,
+    disabled: hidden,
+    'data-state': hidden,
+    className: hidden,
   },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Starts an action. From the Figma "Button" set (Style, Size, Destructive, Is Enabled, Show Icon).',
-          '',
-          '**When to use:** Primary for the one main action on a screen. Secondary for other choices. Tertiary for side trips. Glass only on artwork the design system controls: After Graduation\'s header and Life Hub\'s marble.',
-          '',
-          '**When not to:** To go to another page, use a link. Never put two primary buttons side by side. Never use Glass on a plain page or on a photo the system doesn\'t control; use Secondary there.',
-          '',
-          '**Solid and glass:** `appearance="solid"` (the default) is the button in its style (primary, secondary or tertiary). `appearance="glass"` is a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows a frosted look instead. The glass build is due for a review (issue #60).',
-          '',
-          '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
-          '',
-          '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on. Glass button text uses `button-glass-ink`, with no text shadow, and keeps 4.5:1 on the header red and on every Life Hub marble; the lens canvas is decorative and hidden from screen readers, and focus rings, keyboard behavior and touch targets are unchanged.',
-        ].join('\n'),
-      },
-    },
-  },
+  parameters: { componentPage: buttonPage },
 };
 export default meta;
 type Story = StoryObj<typeof Button>;
 
+/** Every setting, in the Controls tab. */
 export const Playground: Story = {};
 
+/** Primary for the one main action, Secondary for other choices, Tertiary for side trips. */
 export const Styles: Story = {
+  name: 'Variants',
   render: () => (
     <BothThemes>
       <Row label="Primary">
@@ -63,6 +60,7 @@ export const Styles: Story = {
   ),
 };
 
+/** Medium almost everywhere. Small in dense lists, Large for the main action on a phone. */
 export const Sizes: Story = {
   render: () => (
     <BothThemes>
@@ -79,6 +77,7 @@ export const Sizes: Story = {
   ),
 };
 
+/** Every state, side by side: rest, hover, pressed, disabled and loading. */
 export const States: Story = {
   render: () => (
     <BothThemes>
@@ -97,6 +96,7 @@ export const States: Story = {
   ),
 };
 
+/** For actions that remove something. The label says what goes, so red is never the only signal. */
 export const Destructive: Story = {
   render: () => (
     <BothThemes>
@@ -149,16 +149,18 @@ function GlassOnArt({ theme }: { theme: unknown }) {
 }
 
 /**
- * Glass buttons on the artwork each product controls: After Graduation's header, and
- * Life Hub's marble (the Dashboard's). Pick the theme in the toolbar. The small one is a pill.
+ * Clear glass, only on artwork the design system paints: Spotlight's header and Sunrise's marble. Its
+ * rim, highlight and shadow come from the page's light, and the art bends at its curved edge while the
+ * label stays crisp. Without WebGL, or with Reduce transparency or Increase contrast, it turns frosted.
  */
 export const GlassOnArtwork: Story = {
   name: 'Glass on artwork',
-  parameters: { layout: 'fullscreen' },
+  // On the Docs page, a window onto the header rather than a whole page of empty content.
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
   render: (_args, { globals }) => <GlassOnArt theme={globals.theme} />,
 };
 
-/** Life Hub: glass buttons on all ten marbles, to check the bend and the text on every one, in light and dark mode. */
+/** Sunrise: glass buttons on all ten marbles, to check the bend and the text on every one, in light and dark mode. */
 export const GlassOnEveryMarble: Story = {
   name: 'Glass on every marble',
   render: () => (
@@ -176,7 +178,7 @@ export const GlassOnEveryMarble: Story = {
 /** With Reduce motion on: still Glass, but presses don't swell and phone tilt is off. */
 export const GlassReducedMotion: Story = {
   name: 'Glass: reduced motion',
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
   render: (_args, { globals }) => (
     <WithReducedMotion>
       <GlassOnArt theme={globals.theme} />

@@ -1,0 +1,260 @@
+/* Storybook only: the component page template. Neutral grays and system type, the same in every theme,
+   so the page's own structure is never mistaken for the component on show. The examples inside it
+   (stories, Do and don't) are in the theme picked. */
+.sb-page {
+  --sb-ink: #2e3438;
+  --sb-muted: #5c6670;
+  --sb-line: #e2e4e7;
+  --sb-panel: #f7f7f8;
+  --sb-pass: #11703f;
+  --sb-fail: #b3261e;
+  color: var(--sb-ink);
+  font: 16px/1.6 system-ui, sans-serif;
+}
+.sb-page a {
+  color: #0b5cad;
+}
+.sb-page__updated {
+  margin: 0 0 4px;
+  color: var(--sb-muted);
+  font-size: 14px;
+}
+.sb-page__summary {
+  max-inline-size: 65ch;
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+.sb-page__built {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 0 0 20px;
+}
+/* Status: a dot and a word, so it never relies on color alone. */
+.sb-page__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.sb-page__dot {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.sb-page__status--ready {
+  background: #e3f3ea;
+  color: var(--sb-pass);
+}
+.sb-page__status--review {
+  background: #fdf1d8;
+  color: #7a4d00;
+}
+.sb-page__status--experimental {
+  background: #ece8fb;
+  color: #4b3a99;
+}
+.sb-page__h2 {
+  margin: 56px 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.sb-page__h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.sb-page__lead {
+  max-inline-size: 70ch;
+  margin: 0 0 16px;
+}
+/* The stories under Examples: each story's name is a heading, its comment the line under it. */
+.sb-page .sbdocs-h3,
+.sb-page h3.sb-anchor {
+  margin-block-start: 32px;
+  font-size: 20px;
+}
+.sb-page__pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.sb-page__card {
+  padding: 20px 24px;
+  border: 1px solid var(--sb-line);
+  border-radius: 8px;
+}
+.sb-page__card ul {
+  margin: 0;
+  padding-inline-start: 20px;
+}
+.sb-page__card li + li {
+  margin-block-start: 6px;
+}
+/* Do and don't: the example on the theme's page color, then a line and a verdict with its mark. */
+.sb-page__rule {
+  overflow: hidden;
+  border: 1px solid var(--sb-line);
+  border-radius: 8px;
+}
+.sb-page__example {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-block-size: 200px;
+  padding: 24px;
+  background: var(--color-surface-page);
+  border-block-end: 3px solid var(--sb-pass);
+}
+.sb-page__rule--dont .sb-page__example {
+  border-block-end-color: var(--sb-fail);
+}
+.sb-page__rule-text {
+  padding: 16px 24px 20px;
+}
+.sb-page__rule-text p {
+  margin: 0;
+}
+.sb-page__rule-text .sb-page__verdict {
+  margin-block-end: 4px;
+  color: var(--sb-pass);
+  font-weight: 700;
+}
+.sb-page__rule--dont .sb-page__verdict {
+  color: var(--sb-fail);
+}
+.sb-page__frame {
+  overflow-x: auto;
+  border: 1px solid var(--sb-line);
+  border-radius: 8px;
+}
+.sb-page__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.sb-page__table th {
+  padding: 10px 16px;
+  background: var(--sb-panel);
+  color: var(--sb-muted);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: start;
+}
+.sb-page__table td {
+  padding: 12px 16px;
+  border-block-start: 1px solid var(--sb-line);
+  vertical-align: top;
+}
+.sb-page__table code {
+  font-size: 14px;
+}
+.sb-page__kbd {
+  display: inline-block;
+  margin-block: 2px;
+  padding: 1px 8px;
+  border: 1px solid #c9ccd1;
+  border-radius: 4px;
+  font: 14px/1.5 ui-monospace, monospace;
+}
+.sb-page__says {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.sb-page__muted {
+  margin: 0;
+  color: var(--sb-muted);
+}
+.sb-page__checks {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.sb-page__checks li + li {
+  margin-block-start: 4px;
+}
+.sb-page__pass {
+  color: var(--sb-pass);
+  font-weight: 700;
+}
+.sb-page__note {
+  max-inline-size: 70ch;
+  margin: 8px 0 0;
+}
+.sb-page__engineers {
+  margin-block-start: 56px;
+  padding-block: 16px;
+  border-block: 1px solid var(--sb-line);
+}
+.sb-page__engineers summary {
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+}
+.sb-page__engineers[open] summary {
+  margin-block-end: 16px;
+}
+.sb-page__import {
+  margin: 0 0 16px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  border: 1px solid var(--sb-line);
+  border-radius: 8px;
+  background: var(--sb-panel);
+}
+.sb-page__tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0 0;
+}
+.sb-page__tokens span {
+  margin-inline-end: 4px;
+  font-weight: 600;
+}
+.sb-page__tokens code {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #eef0f2;
+  font-size: 14px;
+}
+.sb-page__related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  margin: 0;
+}
+
+/* The page sits outside Storybook's docs typography (sb-unstyled), so its own headings are set here. */
+.sb-page h1 {
+  margin: 0 0 8px;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.sb-page .sb-page__checks li {
+  list-style: none;
+}
+/* Every example sits on the theme's page color, like the template. */
+.sb-page .docs-story {
+  background: var(--color-surface-page);
+}
+.sb-page .sb-story h3,
+.sb-page h3[id] {
+  margin: 40px 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+}
+.sb-page pre {
+  font: 14px/1.5 ui-monospace, monospace;
+}

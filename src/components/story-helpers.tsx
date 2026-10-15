@@ -366,3 +366,17 @@ export const storyIcons = {
     </>,
   ),
 };
+
+/**
+ * Storybook only: friendly Controls. Each setting gets a plain name and one line saying what it does
+ * (the template's Setting and What it does), and a yes-or-no setting is an Off | On button set.
+ */
+export const setting = (name: string, description: string, extra: Record<string, unknown> = {}) => ({ name, description, ...extra });
+export const onOff = (name: string, description: string) =>
+  setting(name, description, { control: { type: 'inline-radio', labels: { false: 'Off', true: 'On' } }, options: [false, true] });
+export const choice = (name: string, description: string, options: string[]) =>
+  setting(name, description, { control: { type: 'inline-radio', labels: Object.fromEntries(options.map((o) => [o, o[0].toUpperCase() + o.slice(1)])) }, options });
+/** A setting typed as words, like a label. */
+export const words = (name: string, description: string) => setting(name, description, { control: 'text' });
+/** Hides a prop from Controls and the props table: deprecated aliases and Storybook-only props. */
+export const hidden = { table: { disable: true } };
