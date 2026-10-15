@@ -61,7 +61,7 @@ export function resolveColor(css: string, within: HTMLElement): [number, number,
 }
 
 /** A computed CSS color as numbers, through the canvas so every color syntax the browser knows works. */
-function parseColor(css: string): [number, number, number, number] | null {
+export function parseColor(css: string): [number, number, number, number] | null {
   const m = /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:\s*[,/]\s*([\d.]+%?))?\s*\)$/.exec(css.trim());
   if (m) {
     const a = m[4] == null ? 1 : m[4].endsWith('%') ? Number.parseFloat(m[4]) / 100 : Number(m[4]);
@@ -323,4 +323,13 @@ export function shellArt(): GlassArt {
       });
     },
   };
+}
+
+/**
+ * Nothing to bend: the glass is fully clear, and the lens draws only its light (the edge, highlight and
+ * shadow), which follow the light when it moves. Glass on any background the design system doesn't paint.
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
+ */
+export function clearArt(): GlassArt {
+  return { paint: () => true };
 }

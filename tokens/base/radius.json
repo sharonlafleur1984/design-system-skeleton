@@ -28,25 +28,22 @@
       "$type": "dimension",
       "$value": "999px"
     },
-    "control": {
-      "$type": "dimension",
-      "$value": "{radius.xs}"
-    },
-    "button": {
-      "$type": "dimension",
-      "$value": "{radius.md}"
-    },
-    "card": {
-      "$type": "dimension",
-      "$value": "{radius.lg}"
-    },
-    "panel": {
-      "$type": "dimension",
-      "$value": "{radius.xl}"
-    },
-    "chip": {
-      "$type": "dimension",
-      "$value": "{radius.pill}"
+    "roundness": {
+      "square": {
+        "$type": "number",
+        "$value": 0.2,
+        "$description": "Square: nearly square corners, softened just enough not to look harsh."
+      },
+      "standard": {
+        "$type": "number",
+        "$value": 0.6,
+        "$description": "Standard: the middle."
+      },
+      "round": {
+        "$type": "number",
+        "$value": 0.9,
+        "$description": "Round: nearly a pill on buttons and soft on cards."
+      }
     }
   }
 }

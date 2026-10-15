@@ -1,6 +1,9 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
+import { LIGHT_CHANGE } from './glass-lens/lens';
+import { LitContext, type Appearance } from './material';
+import { storyPageArt } from './glass-lens/story-art';
 import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
@@ -20,11 +23,11 @@ export function singleTheme(choice: unknown): Theme {
   return themeList.includes(choice as Theme) ? (choice as Theme) : themeList[0];
 }
 
+// Normal page flow, not a stretching column: buttons and other inline controls keep their own size,
+// and full-width things (tile groups, cards) still fill the panel. Space between items: .ds-story-panel.
 const panel: CSSProperties = {
   flex: '1 1 320px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 'var(--space-4)',
+  display: 'flow-root',
   padding: 'var(--space-6)',
   borderRadius: 'var(--radius-panel)',
   background: 'var(--color-surface-page)',
@@ -48,8 +51,20 @@ const caption: CSSProperties = {
 // top right (transparent in light mode). Written as a string, not a CSS file, so the texture's
 // address stays relative to the page, as the build expects.
 export const storyBackgroundsCss = `
+/* A background picked in the bar above the story (a theme's backgrounds in its theme.json) fills the page. */
+:root[data-sb-backdrop] body {
+  background: var(--story-bg-page);
+  background-attachment: fixed;
+}
+/* Space between the items in a theme panel, and a wider gap between groups of still pictures, so each group reads as one. The lens canvas sits behind them, so it is left out (a margin would draw the glass off its element). */
+.ds-story-panel > :not(.ds-lens-canvas) ~ :not(.ds-lens-canvas) {
+  margin-block-start: var(--space-4);
+}
+.ds-story-stack > * + * {
+  margin-block-start: var(--space-7);
+}
 [data-theme="life-hub"] {
-  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page);
+  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), var(--story-backdrop, url('texture-sage-cream.jpg')) center / cover, var(--color-surface-page);
 }
 [data-theme="after-graduation"],
 [data-theme="designer-toolkit"] {
@@ -84,24 +99,101 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
 /** Each theme's name as people see it, like Spotlight. */
 export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
+// Storybook's own chrome, not any theme: the same in every column.
+// The theme's name is the biggest thing in its column (above any theme's title size), so it's clear what everything under it belongs to.
+const compareHeading: CSSProperties = { margin: 0, font: '700 32px/1.2 system-ui, sans-serif', color: '#2e3438' };
+
+/** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
+const InComparePanel = createContext(false);
+
 /**
- * Shows the content in the theme picked in the toolbar. Pick "All" to see
- * every product side by side; otherwise only one product shows at a time.
+ * Shows the content in its theme's panel: the theme's real page background, with its glass lit.
+ * In the Compare all view the preview already gives each theme a panel, so this adds nothing there.
  */
 export function BothThemes({ children }: { children: ReactNode }) {
   const choice = useContext(ThemeContext);
-  const shown = choice === 'both' ? themeList : [singleTheme(choice)];
+  if (useContext(InComparePanel)) return <>{children}</>;
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-      {shown.map((theme) => (
-        <section key={theme} data-theme={theme} style={{ ...panel, background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
-          {shown.length > 1 && <p style={caption}>{themeNames[theme]}</p>}
-          {children}
-        </section>
+      <ThemePanel theme={singleTheme(choice)} heading={false}>
+        {children}
+      </ThemePanel>
+    </div>
+  );
+}
+
+/**
+ * Compare all: the story once per theme, side by side, each in its own panel with its name. Used by
+ * Storybook's preview for every story, so Compare all works on every page. `render` draws the story
+ * in the theme it's given.
+ */
+export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
+      {themeList.map((theme) => (
+        <ThemeContext.Provider key={theme} value={theme}>
+          <InComparePanel.Provider value>
+            {/* The theme's name as a heading above its column, in Storybook's own type, so it's clear
+                which theme everything under it belongs to. */}
+            <section aria-labelledby={`compare-${theme}`} style={{ flex: '1 1 320px', display: 'grid', gap: '8px', alignContent: 'start' }}>
+              <h2 id={`compare-${theme}`} style={compareHeading}>
+                {themeNames[theme]}
+              </h2>
+              {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
+              <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
+                <ThemePanel theme={theme} heading={false}>
+                  {render(theme)}
+                </ThemePanel>
+              </div>
+            </section>
+          </InComparePanel.Provider>
+        </ThemeContext.Provider>
       ))}
     </div>
   );
 }
+
+/**
+ * One theme's panel: its real page background, and the glass on it lit and bent from that background,
+ * exactly as the Glass playground does it (the same art, the same light). Glass groups inside don't
+ * light themselves, so every glass story shows the glass as designed.
+ */
+function ThemePanel({ theme, heading, children }: { theme: Theme; heading: boolean; children: ReactNode }) {
+  const ref = useRef<HTMLElement>(null);
+  const lens = useMemo(() => ({ art: storyPageArt(theme) }), [theme]);
+  // The same long reach as the Glass playground: sunlight is even across the page, so every piece of
+  // glass catches it about as strongly wherever the sun is.
+  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6 });
+  return (
+    <section ref={ref} className="ds-story-panel" data-theme={theme} style={{ ...panel, position: 'relative', isolation: 'isolate', background: 'var(--story-bg-page)' }} aria-label={themeNames[theme]}>
+      {heading && <p style={caption}>{themeNames[theme]}</p>}
+      <LitContext.Provider value>{children}</LitContext.Provider>
+    </section>
+  );
+}
+
+/**
+ * Storybook only: a States story's examples as still pictures. Each example is pinned to one state
+ * (data-state="hover" and so on), so they ignore the mouse and keyboard: hovering the "Hover" example
+ * never stacks a real hover on top. The Playground story is where the states can be tried for real.
+ */
+export function StatePictures({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <p style={note}>Still pictures of each state. To try them, use Playground.</p>
+      <div inert className="ds-story-stack">
+        {children}
+      </div>
+    </>
+  );
+}
+
+const note: CSSProperties = {
+  margin: 0,
+  color: 'var(--color-ink-secondary)',
+  fontSize: 'var(--type-body-small-size)',
+  lineHeight: 'var(--type-body-small-line-height)',
+};
 
 /** A labeled row, for galleries of variants and states. */
 export function Row({ label, children }: { label: string; children: ReactNode }) {
@@ -133,13 +225,13 @@ export type Marble = (typeof marbles)[number];
 /**
  * Storybook only: a piece of Life Hub's marble with glass on it, lit from the shared light (top right).
  * The marble is the container's background, and the same image is the lens's art, so the glass bends
- * exactly what's behind it. lens={false} shows the classic glass (the fallback).
+ * exactly what's behind it. appearance="solid" shows it without the lens (the frosted look).
  */
-export function OnMarble({ marble = marbles[0], lens = true, children, label }: { marble?: Marble; lens?: boolean; children: ReactNode; label?: string }) {
+export function OnMarble({ marble = marbles[0], appearance = 'glass', children, label }: { marble?: Marble; appearance?: Appearance; children: ReactNode; label?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  const art = useMemo(() => (lens ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [lens, marble.texture, night]);
-  useGlassLight(ref, { selector: '.ds-glass', lens: art });
+  const art = useMemo(() => (appearance === 'glass' ? { art: imageArt({ src: marble.texture, overlay: night }) } : false), [appearance, marble.texture, night]);
+  useGlassLight(ref, { selector: '.ds-glass', lens: art, reach: 6 });
   const style: CSSProperties = {
     position: 'relative',
     isolation: 'isolate',
@@ -154,7 +246,7 @@ export function OnMarble({ marble = marbles[0], lens = true, children, label }: 
   };
   return (
     <section ref={ref} data-theme="life-hub" style={style} aria-label={label ?? marble.name}>
-      {children}
+      <LitContext.Provider value>{children}</LitContext.Provider>
     </section>
   );
 }
@@ -171,3 +263,106 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
   }, []);
   return <>{children}</>;
 }
+
+/**
+ * Storybook only: the page's one light, shown as a sun, on every story that shows glass (glass can't
+ * be judged without seeing where its light comes from). Drag the sun, or focus it and use the arrow
+ * keys, and every rim, highlight and shadow follows. It's the page light (data-glass-light), so all
+ * glass in the story shares it. Stories with their own light (the Glass playground's sun, the page
+ * shell's wheel) keep theirs, and no sun is shown.
+ */
+export function LightScene({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [show, setShow] = useState(false);
+  // Where the sun is, as a share of the scene: top right, above the content.
+  const [sun, setSun] = useState({ x: 0.97, y: 0 });
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-shell'));
+    check();
+    const mo = new MutationObserver(check);
+    mo.observe(el, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }, []);
+  useLayoutEffect(() => {
+    window.dispatchEvent(new Event(LIGHT_CHANGE));
+  }, [sun, show]);
+
+  const clamp = (v: number) => Math.min(1, Math.max(0, v));
+  const moveTo = (e: PointerEvent<HTMLElement>) => {
+    const r = ref.current!.getBoundingClientRect();
+    setSun({ x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) });
+  };
+  const onKey = (e: KeyboardEvent<HTMLElement>) => {
+    const step = e.shiftKey ? 0.1 : 0.02;
+    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
+    if (!d) return;
+    e.preventDefault();
+    setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
+  };
+  const sunStyle: CSSProperties = {
+    position: 'absolute',
+    zIndex: 5,
+    left: `${sun.x * 100}%`,
+    top: `${sun.y * 100}%`,
+    inlineSize: 'var(--space-5)',
+    blockSize: 'var(--space-5)',
+    marginInlineStart: 'calc(var(--space-5) / -2)',
+    marginBlockStart: 'calc(var(--space-5) / -2)',
+    padding: 0,
+    border: 'none',
+    borderRadius: '50%',
+    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
+    boxShadow: '0 0 24px 8px rgba(245, 197, 66, 0.35)',
+    cursor: 'grab',
+    touchAction: 'none',
+  };
+  return (
+    <div ref={ref} style={{ position: 'relative', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
+      {show && (
+        <button
+          type="button"
+          data-glass-light=""
+          aria-label="Light. Drag it, or use the arrow keys to move it."
+          style={sunStyle}
+          onPointerDown={(e) => {
+            e.currentTarget.setPointerCapture(e.pointerId);
+            moveTo(e);
+          }}
+          onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
+          onKeyDown={onKey}
+        />
+      )}
+      {children}
+    </div>
+  );
+}
+
+// Storybook only: simple line icons for stories (24 x 24, drawn in the text color).
+const lineIcon = (d: ReactNode) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {d}
+  </svg>
+);
+export const storyIcons = {
+  calendar: lineIcon(
+    <>
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M4 10h16M8 3v4M16 3v4" />
+    </>,
+  ),
+  star: lineIcon(<path d="m12 4 2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.5-.8z" />),
+  wallet: lineIcon(
+    <>
+      <rect x="3" y="6" width="18" height="13" rx="2" />
+      <path d="M3 10h18M16 14.5h2" />
+    </>,
+  ),
+  book: lineIcon(
+    <>
+      <path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" />
+      <path d="M5 17a3 3 0 0 1 3-3h10" />
+    </>,
+  ),
+};

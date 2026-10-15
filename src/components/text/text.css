@@ -1,0 +1,69 @@
+/* Text parts. Every value is one of the theme's type styles (tokens/themes/<theme>/), so each theme's
+   fonts, sizes and weights come through on their own. */
+.ds-text {
+  margin: 0;
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+}
+.ds-text--display {
+  font-family: var(--type-display-m-family);
+  font-size: var(--type-display-m-size);
+  font-weight: var(--type-display-m-weight);
+  line-height: var(--type-display-m-line-height);
+  letter-spacing: var(--type-display-m-letter-spacing);
+}
+.ds-text--title {
+  font-family: var(--type-heading-title-family);
+  font-size: var(--type-heading-title-size);
+  font-weight: var(--type-heading-title-weight);
+  line-height: var(--type-heading-title-line-height);
+  letter-spacing: var(--type-heading-title-letter-spacing);
+}
+.ds-text--heading {
+  font-family: var(--type-heading-heading-family);
+  font-size: var(--type-heading-heading-size);
+  font-weight: var(--type-heading-heading-weight);
+  line-height: var(--type-heading-heading-line-height);
+  letter-spacing: var(--type-heading-heading-letter-spacing);
+}
+.ds-text--subheading {
+  font-family: var(--type-heading-subheading-family);
+  font-size: var(--type-heading-subheading-size);
+  font-weight: var(--type-heading-subheading-weight);
+  line-height: var(--type-heading-subheading-line-height);
+  letter-spacing: var(--type-heading-subheading-letter-spacing);
+}
+.ds-text--body-large {
+  font-family: var(--type-body-large-family);
+  font-size: var(--type-body-large-size);
+  font-weight: var(--type-body-large-weight);
+  line-height: var(--type-body-large-line-height);
+  letter-spacing: var(--type-body-large-letter-spacing);
+}
+.ds-text--body-default {
+  font-family: var(--type-body-default-family);
+  font-size: var(--type-body-default-size);
+  font-weight: var(--type-body-default-weight);
+  line-height: var(--type-body-default-line-height);
+  letter-spacing: var(--type-body-default-letter-spacing);
+}
+.ds-text--body-small,
+.ds-text--note {
+  font-family: var(--type-body-small-family);
+  font-size: var(--type-body-small-size);
+  font-weight: var(--type-body-small-weight);
+  line-height: var(--type-body-small-line-height);
+  letter-spacing: var(--type-body-small-letter-spacing);
+}
+.ds-text--note {
+  color: var(--text-note-color, var(--color-ink-secondary));
+}
+.ds-text--label {
+  font-family: var(--type-label-family);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-meta-weight);
+  line-height: var(--type-label-line-height);
+  letter-spacing: var(--type-label-letter-spacing);
+  text-transform: var(--type-label-transform);
+  color: var(--color-ink-secondary);
+}

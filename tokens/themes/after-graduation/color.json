@@ -213,6 +213,16 @@
       "focus": {
         "$type": "color",
         "$value": "{palette.red.600}"
+      },
+      "focus-glow": {
+        "$type": "color",
+        "$value": "{palette.red.600}",
+        "$description": "The keyboard focus glow on light backgrounds: the theme's primary color, so the glow shows (Sharon, Oct 14)."
+      },
+      "focus-glow-on-dark": {
+        "$type": "color",
+        "$value": "#fff9f8",
+        "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.red.100, the lightest step on the theme's primary color line (Sharon, Oct 14)."
       }
     },
     "accent": {

@@ -1,0 +1,36 @@
+/* Icon tile. The square's size follows the control heights (24, 32, 40) plus 48; the icon inside comes
+   from the spacing scale. Filled is a faint wash of the text color, so it works on Solid, on Glass and in
+   dark mode without a color of its own (color only communicates). */
+.ds-icon-tile {
+  --_box: var(--control-height-medium);
+  --_icon: var(--space-5);
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--_box);
+  block-size: var(--_box);
+  /* The same shape at every size; in Round it stops short of a circle, so it never reads as a profile picture. */
+  border-radius: calc(var(--_box) * min(var(--radius-control), 0.35));
+  color: inherit;
+}
+.ds-icon-tile--small {
+  --_box: var(--control-height-small);
+  --_icon: var(--control-icon);
+}
+.ds-icon-tile--large {
+  --_box: var(--control-height-large);
+  --_icon: var(--space-6);
+}
+.ds-icon-tile--xlarge {
+  --_box: var(--space-9);
+  --_icon: var(--space-7);
+}
+.ds-icon-tile--filled {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.ds-icon-tile > svg,
+.ds-icon-tile > img {
+  display: block;
+  inline-size: var(--_icon);
+  block-size: var(--_icon);
+}

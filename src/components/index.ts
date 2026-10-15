@@ -1,9 +1,17 @@
 import './shared.css';
+import './corners.css';
 
 export { Button } from './button/button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './button/button';
-export { Card } from './card/card';
-export type { CardProps, CardVariant } from './card/card';
+export { Card, CardHeader, CardBody, CardFooter } from './card/card';
+export type { CardProps, CardVariant, CardHeaderProps } from './card/card';
+export { Tile } from './tile/tile';
+export type { TileProps } from './tile/tile';
+export { IconTile } from './icon-tile/icon-tile';
+export type { IconTileProps, IconTileSize } from './icon-tile/icon-tile';
+export { Heading, Body, Label, Note } from './text/text';
+export type { HeadingProps, HeadingVariant, TextPartProps } from './text/text';
+export type { IconPosition, TileHeaderOptions } from './tile-header';
 export { Callout } from './callout/callout';
 export type { CalloutProps, CalloutTone, LegacyCalloutTone } from './callout/callout';
 export { ProgressBar, ProgressMeter } from './progress-bar/progress-bar';
@@ -25,10 +33,12 @@ export type { ToggleButtonGroupProps, ToggleButtonProps, SegmentedControlProps, 
 export { PageShell } from './page-shell/page-shell';
 export type { PageShellProps } from './page-shell/page-shell';
 export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from './action-tile/action-tile';
-export type { ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
-export { useGlassLight } from './glass-light/glass-light';
+export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
+export type { Appearance, Material } from './material';
+export { useGlassLight, PAGE_LIGHT } from './glass-light/glass-light';
+export { LIGHT_CHANGE } from './glass-lens/lens';
 export type { GlassLightOptions } from './glass-light/glass-light';
-export { imageArt, shellArt } from './glass-lens/lens-art';
+export { clearArt, imageArt, shellArt } from './glass-lens/lens-art';
 export type { GlassArt, ImageArtOptions } from './glass-lens/lens-art';
 export type { LensOptions } from './glass-lens/lens';
 export { Select } from './select/select';

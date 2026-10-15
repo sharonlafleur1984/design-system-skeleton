@@ -22,12 +22,12 @@ Private files aren't here. They're listed in Sharon's private Notion document in
 
 | Document | Read this when |
 |---|---|
-| [Storybook](https://designsystemskeleton.netlify.app/) ([source: src/components](../../tree/main/src/components)) | You want to see every component and token, in every theme. Switch themes in the toolbar. |
+| [Storybook](https://designsystemskeleton.netlify.app/) ([source: src/components](../../tree/main/src/components)) | You want to see every component and token, in every theme. Switch themes with the picker above every story. |
 | [README](../../blob/main/README.md) | You want to know what this is and how to run it |
 | [Changelog](../../blob/main/CHANGELOG.md) | You want to know what changed in a version before an app updates to it |
 | [CLAUDE.md](../../blob/main/CLAUDE.md) | You're an AI or developer starting work |
 | [Voice](../../blob/main/docs/voice.md) | You're writing anything people will read here: Storybook, the wiki, comments, pull requests |
-| [Tokens](../../tree/main/tokens) | Changing a value: `base/` for everything shared (spacing, sizes and corners always), `themes/<product>/` for one product's look |
+| [Tokens](../../tree/main/tokens) | Changing a value: `base/` for everything shared (spacing and sizes always), `themes/<product>/` for one product's look, roundness included |
 | [Tasks (GitHub Issues)](../../issues) | You need to know who's doing what |
 
 **Adding or removing a document?** Update its row here in the same pull request, and in Sharon's private Notion index.

@@ -100,9 +100,9 @@ function Header({ reds }: { reds: string[] }) {
         <div style={{ marginBlockStart: 'var(--space-2)', color: '#fcc687', fontWeight: 600 }}>Get ready for Season 2</div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center' }}>
-        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-button)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
+        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-medium)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
         <span style={{ color: reds[6], textDecoration: 'underline', fontWeight: 600 }}>A link</span>
-        <span style={{ padding: 'var(--space-1) var(--space-3)', borderRadius: 'var(--radius-chip)', background: reds[1], color: reds[7], fontWeight: 600 }}>Chosen chip</span>
+        <span style={{ padding: 'var(--space-1) var(--space-3)', borderRadius: 'var(--radius-medium)', background: reds[1], color: reds[7], fontWeight: 600 }}>Chosen chip</span>
       </div>
     </div>
   );
@@ -128,7 +128,7 @@ function StatusList({ set, reds }: { set: Status[]; reds: string[] }) {
         </div>
       ))}
       <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'center', marginBlockStart: 'var(--space-2)' }}>
-        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-button)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
+        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-medium)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
         <span style={small}>next to the error color</span>
       </div>
     </div>

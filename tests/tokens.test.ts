@@ -192,8 +192,10 @@ describe('see-through colors keep their transparency', () => {
   it.each(checks)('%s: %s stays see-through', (_t, _name, value) => expect(isSolid(value)).toBe(false));
 });
 
-// Spacing, sizes and corners live in the shared base (tokens/base), so a change there reaches every
-// product. A theme changes how things look (color, type, depth), never the space between or around them.
+// Spacing and sizes live in the shared base (tokens/base), so a change there reaches every product.
+// A theme changes how things look (color, type, depth, corners), never the space between or around them.
+// Corners (D49): a theme picks one named roundness (shape.roundness); the corner sizes themselves are
+// worked out from it in src/components/corners.css, so a theme never sets a radius directly.
 // Every token path in a folder's token files, subfolders (like dark/) included, with the file it's in.
 // theme.json names the theme and holds no tokens, so it's skipped.
 const sourceTokenFiles = (dir: string, onlyTop = false): { path: string; file: string }[] => {
@@ -216,8 +218,19 @@ const baseOnly = /^(space|layout|radius|focus|control\.(height|padding-inline|ic
 describe('spacing and sizes stay in the base', () => {
   const base = new Set(sourceTokens('tokens/base'));
   for (const t of readdirSync('tokens/themes')) {
-    it(`${t} doesn't override base spacing, sizes or corners`, () => {
+    it(`${t} doesn't override base spacing, sizes or corner sizes`, () => {
       expect(sourceTokens(`tokens/themes/${t}`).filter((p) => base.has(p) && baseOnly.test(p))).toEqual([]);
+    });
+  }
+});
+
+// A theme picks its roundness by name (Square, Standard or Round), never a raw number.
+describe('each theme picks a named roundness', () => {
+  for (const t of readdirSync('tokens/themes')) {
+    it(`${t} sets shape.roundness to a named step`, () => {
+      const file = `tokens/themes/${t}/shape.json`;
+      const value = JSON.parse(readFileSync(file, 'utf8')).shape?.roundness?.$value;
+      expect(value).toMatch(/^\{radius\.roundness\.(square|standard|round)\}$/);
     });
   }
 });
@@ -249,6 +262,10 @@ describe('every theme has what Storybook and the package need', () => {
     });
     it(`${t} has a fonts file (src/fonts/${t}.css)`, () => {
       expect(existsSync(`src/fonts/${t}.css`)).toBe(true);
+    });
+    it(`${t}: every background in its theme.json has its image`, () => {
+      const meta = JSON.parse(readFileSync(`tokens/themes/${t}/theme.json`, 'utf8')) as { backgrounds?: { file: string }[] };
+      for (const bg of meta.backgrounds ?? []) expect(existsSync(`.storybook/public/${bg.file}`), bg.file).toBe(true);
     });
   }
 });

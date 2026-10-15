@@ -1,0 +1,22 @@
+/* Radius (D49). Each theme sets one number, its roundness (shape-roundness: Square, Standard or
+   Round). Every radius is worked out from it and the part's own size, so a part keeps the same shape
+   at every size: a small button is the same shape as a large one, just smaller.
+   - Controls (buttons, fields, icon tiles): height x roundness / 2. At 1 a button would be a pill.
+   - Surfaces (cards, callouts, panels): padding x roundness x 1.6. Taken from the padding, not the
+     height, so a tall card never turns into a blob.
+   Declared on every theme root, so a theme nested inside another gets its own radius. */
+:root,
+[data-theme] {
+  --radius-control: calc(var(--shape-roundness) / 2);
+  --radius-surface: calc(var(--shape-roundness) * 1.6);
+
+  --radius-small: calc(var(--control-height-small) * var(--radius-control));
+  --radius-medium: calc(var(--control-height-medium) * var(--radius-control));
+  --radius-large: calc(var(--control-height-large) * var(--radius-control));
+
+  /* Checkboxes stop short of round, so one never reads as a radio button. */
+  --radius-box: calc(var(--control-box) * min(var(--radius-control), 0.3));
+
+  --radius-card: calc(var(--space-4) * var(--radius-surface));
+  --radius-panel: calc(var(--space-5) * var(--radius-surface));
+}

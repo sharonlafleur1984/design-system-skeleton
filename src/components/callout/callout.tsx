@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 import '../shared.css';
+import '../corners.css';
 import './callout.css';
 
 // Mirrors the Figma "Callout" set: tone and title (true, false). The tones use the same names as the

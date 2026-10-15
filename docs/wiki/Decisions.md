@@ -11,10 +11,21 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | ID | Date | Decision |
 |---|---|---|
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
+| D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
+| D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
+| D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
+| D48 | Oct 15, 2026 | Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere |
+| D46 | Oct 14, 2026 | Action tile titles one size smaller; action tiles fit their space |
+| D45 | Oct 14, 2026 | One light per page, shown in Storybook as a sun on every glass story; a softer focus glow |
+| D44 | Oct 14, 2026 | States stories are still pictures; Playground is where states are tried |
 | D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
+| D42 | Oct 14, 2026 | Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles |
+| D41 | Oct 14, 2026 | Glass goes back to the shader demo, with its settings in every theme |
+| D40 | Oct 14, 2026 | Action tile works in every theme; Glass is the lens and follows the light; states are soft light |
 | D39 | Oct 14, 2026 | Releases attach a ready-built package file |
 | D38 | Oct 14, 2026 | The repo follows how-i-work; ESLint checks the code |
 | D37 | Oct 14, 2026 | Adding a theme is one folder |
+| D36 | Oct 14, 2026 | Two materials: Default and Glass |
 | D35 | Oct 14, 2026 | Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside |
 | D34 | Oct 14, 2026 | Fireside is the third theme, for the designer toolkit |
 | D33 | Oct 12, 2026 | Action tiles and glass buttons use lens glass |
@@ -66,6 +77,145 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
+<summary><b>D51 · Oct 15, 2026:</b> Motion: open and close, a leaving curve, switching views and loading</summary>
+
+- **Decided by:** Sharon ("what all motion tokens are available in aria that I can take advantage of and add here?"; "where are all of the other different motions that you just told me about")
+- **What React Aria gives:** no motion tokens, since it's unstyled, but the moments to animate: overlays mark when they're opening (`data-entering`) and closing (`data-exiting`), and React Aria waits for the animation before removing them ([React Aria: animation](https://react-spectrum.adobe.com/react-aria/styling.html#animation)).
+- **Open and close (`motion.open`, `motion.close`):** overlays fade in and grow from 96% over 220ms, and close in 140ms on the leaving curve, because the person is already done with them. Select's menu and the Settings dialog use it. With Reduce motion they only fade.
+- **A leaving curve (`motion.easing.in`):** starts slowly and speeds away, for things closing or being removed. Material 3's standard accelerate curve ([Material 3: easing and duration](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)). Arriving uses `out`, back and forth uses `in-out`.
+- **Switching views (`motion.switch`):** a 140ms fade when tabs or action tiles change what's shown. Nothing moves, so it's kept with Reduce motion.
+- **Loading (`motion.spin`):** one spinner turn every 800ms; the Button's spinner used a fixed value before.
+- **The Motion page** shows each one with a real component to try: Select, Tabs and Button. Every value is shared by all themes. The numbers are estimates, chosen to sit on the existing steps.
+
+</details>
+
+<details>
+<summary><b>D50 · Oct 15, 2026:</b> Storybook: the theme picker sits on the page, and Compare all works on every story</summary>
+
+- **Decided by:** Sharon ("I don't think it's super clear that the drop-down is up there or how it works"; "if I use the all option in the drop-down, I don't actually see all")
+- **On the page:** a Theme picker (Spotlight, Sunrise, Fireside, Compare all) above every story, and once at the top of every Docs page, under the name and what it's for. It changes the same setting as the toolbar, so the two always agree. Controls hidden in a menu are found and used less ([NN/g](https://www.nngroup.com/articles/find-navigation-desktop-not-hamburger)), and seeing which theme is on means never having to remember it (Nielsen: visibility of system status, recognition over recall).
+- **Mode and Background in the same bar:** Light or Dark as a button set (two choices), left out for a theme that's always dark; and a Background menu only when the theme has patterned backgrounds, listed in its `theme.json` (Sunrise's marbles). Only what applies to the theme on show appears (Sharon).
+- **Storybook's own look:** the picker and the theme names in Compare all are neutral gray in system type, the same in every theme, so they're never mistaken for the component on show.
+- **Compare all, everywhere:** handled once in the preview, so every story, Foundations pages included, shows once per theme, side by side, each under its theme's name as a heading. "All" worked only on stories built with a helper before; a choice that works on some pages and not others breaks trust (Nielsen: consistency and standards). Renamed "Compare all" because it says what you get.
+- **Moods say what's the default and what changes it:** each theme's default mood first (Spotlight energetic, Sunrise calm, Fireside energetic for now), read from its tokens. Under it, each change with what triggers it: "When a page asks for it" (the other mood, with `data-motion`) and "When someone turns on Reduce motion" (fade only, and where people find the setting). The demos use plain labels (Item 1, Done), never one product's words.
+- **Screenshots:** the tests hide the picker (`picker:hide`), so it stays out of every picture.
+
+</details>
+
+<details>
+<summary><b>D49 · Oct 15, 2026:</b> Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size</summary>
+
+- **Decided by:** Sharon ("Spotlight is pretty round. Sunrise would be in the middle and Fireside is a little more boxy"; "ideally it looks the same shape no matter what size it is"; "call that one square and maybe we can call that standard")
+- **One setting per theme:** `shape.roundness`, picked by name: Spotlight is Round (0.9), Sunrise is Standard (0.6), Fireside is Square (0.2). The numbers are estimates, chosen by eye. A test fails if a theme sets a number instead of a name. Like [Radix Themes' radius setting](https://www.radix-ui.com/themes/docs/theme/radius).
+- **The same shape at every size:** a corner is worked out from the part's own size (`src/components/corners.css`), so a small button is the same shape as a large one. Controls take height × roundness ÷ 2 (at 1 a button would be a pill). Surfaces take padding × roundness × 1.6, from the padding rather than the height, so a tall card never turns into a blob. Rows inside a panel take the panel's corner minus its padding, so the corners line up.
+- **Limits:** checkboxes stop short of round, so one never reads as a radio button; icon tiles stop short of a circle, so one never reads as a profile picture. Switches, progress bars and tags follow the theme too, so Fireside is square throughout (Sharon: "follow"). Only small round marks (a callout's status dot, the loading spinner) stay circles.
+- **Changes D37's rule for radius only:** spacing and sizes still stay in the base. The fixed radius tokens (`radius-control`, `radius-button`, `radius-chip`, `shell-sheet-radius`, and the old fixed `radius-card` and `radius-panel`) are gone. Components use the worked-out ones: `--radius-small`, `--radius-medium`, `--radius-large`, `--radius-box`, `--radius-card` and `--radius-panel`.
+- **One word: radius** (Sharon, Oct 15: "make it all say radius"). These were first called corner tokens; the page title, the story and the tokens now all say radius.
+- **Not yet:** a density setting for spacing. Other libraries keep spacing shared and offer at most one "denser or roomier" setting ([Radix scaling](https://www.radix-ui.com/themes/docs/theme/spacing)); add one only when a product needs it.
+
+</details>
+
+<details>
+<summary><b>D48 · Oct 15, 2026:</b> Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere</summary>
+
+- **Decided by:** Sharon ("the look that you have for action tile should become the look for the card"; "we would only use action tiles if there's navigation"; "I'm only using solid and glass")
+- **Decided by:** Sharon, again ("a card is acting like a surface area"; "regular tiles … a card that is acting like a button … would be a different component"; "Actually, I like note")
+- **Card is a surface, never pressable:** the action tile's look for any content, Solid or Glass, with no hover or pressed state. The buttons and links on it are pressed, never the card. Its parts have their type set by role: `CardHeader` (an optional icon, a label and the title, a real heading at h3 unless `level` says otherwise), `CardBody` (body text) and `CardFooter` (buttons and an optional quiet `note`). Card, Tile and Action tile share one stylesheet, so they can't drift apart. Same model as [Carbon's tiles](https://carbondesignsystem.com/components/tile/usage/): base, clickable and selectable.
+- **Tile:** the clickable one. A whole tile that's a link (`href`) or a button (`onPress`), with an icon, title and description and the tile's hover, pressed and focus states.
+- **Text parts on their own:** `Heading` (display, title, heading, subheading), `Body` (large, default, small), `Label` and `Note`, each in the theme's type style ([Polaris Text](https://polaris.shopify.com/components/typography/text) works the same way). "Note" stays, not "Caption" (Sharon).
+- **Icon tile:** an icon in a tile, `filled` (a soft background) or `plain`, small, medium, large or xlarge. Card, Tile and Action tile headers take one at the top or at the start (`iconPosition`). Like Atlassian's Icon tile.
+- **Removed:** Card's opaque, translucent and transparent, and Action tile's fills (card, raised, sunken, accent and inverse). Accent was the same color as chosen, so an accent tile looked chosen; raised and sunken were really the hover and pressed looks, which are states. `variant`, `interactive` and `fill` are ignored now, so nothing breaks.
+- **Solid and Glass:** every component that can be glass has `appearance`, Button included, `solid` (the starting look) or `glass`, the name Atlassian and Fluent use for a look ([Figma: variant properties](https://help.figma.com/hc/en-us/articles/360056440594)). It replaces `material`, whose "default" no one recognized; `material` still works. Button keeps Glass as one of its styles, always real glass.
+- **Glass cards anywhere:** any card can be Glass, not only an empty one. Replaces D42's "glass cards only while empty" and D36's material names.
+- **Action tile is navigation:** tiles switch the page's content, like tabs, and become the bottom bar on phones. A link or button that looks like a tile is a Tile. Tiles with `href` or `onPress` still work, but are deprecated.
+- **Stories that each do one job:** Card: Playground, Solid and glass, Parts, Icons, Empty state. Tile: Playground, Solid and glass, States. Icon tile: Playground, Sizes and backgrounds. Text: Styles. Action tile: Playground, Solid and glass, States, Navigation. Links and buttons are explained on Card's Docs page instead of a story of identical tiles.
+- **Not yet:** the name. "Action tile" could become "Navigation tiles" now that navigation is its only job; Sharon to decide.
+
+</details>
+
+<details>
+<summary><b>D46 · Oct 14, 2026:</b> Action tile titles one size smaller; action tiles fit their space</summary>
+
+- **Decided by:** Sharon ("that text feels too big")
+- **Title size:** each theme picks (`action-tile.title-large`). Sunrise and Fireside use their heading style (20px and 16px); Spotlight uses its title style (20px), because its heading is no bigger than its body text. Long words wrap inside the tile instead of spilling out.
+- **Fireside text color:** a tile's label and description use `action-tile.ink-soft`. Fireside's is its warm grey (#bebbad), not its honey-yellow secondary, which read wrong next to the cream title. Spotlight and Sunrise keep their secondary text color.
+- **Label:** the label above the title keeps the theme's label size and spacing but uses the lighter weight of its meta style, so it sits quietly and the title is read first (Sharon: the label was too big for the hierarchy).
+- **Layout:** action tiles sit as many across as fit at 12rem or more each, so a narrow column gets fewer, roomier tiles instead of squeezed ones. Page-switching tiles keep D31: three across on tablet and up, the bottom bar on phones.
+
+</details>
+
+<details>
+<summary><b>D45 · Oct 14, 2026:</b> One light per page, shown in Storybook as a sun on every glass story; a softer focus glow</summary>
+
+- **Decided by:** Sharon ("we need to show a light source on any surface that shows glass"; "the focus is too much")
+- **One light per page:** an element marked `data-glass-light` is the page's light (`PAGE_LIGHT`). Glass with no light of its own is lit from the nearest one around it, so every glass on the page shares one light. Moving it (then firing `LIGHT_CHANGE`) moves every rim, highlight and shadow. A glass group's own `source` or `light` still wins, and with no page light the light tokens are used as before.
+- **Storybook:** each theme panel lights its glass from its own real background (the same art and light as the Glass playground), so glass looks the same in every story as it does in the playground. Groups inside a lit panel don't light themselves (`LitContext`), and a lens leaves glass inside a nested lit container to that container's lens.
+- **Storybook:** every story that shows glass gets the page light as a small sun at the top right. Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
+- **Balanced light (Sharon: "not balanced, so it's not natural"):**
+  - Story panels and self-lit tile groups use the same long reach as the Glass playground, so every tile catches the sun about equally.
+  - A bug in the shared glass recipe put the inner highlight on the far edge and the shade on the lit edge (an inset shadow shows opposite its offset). They're swapped back.
+  - The lens treats the light as above the page, so every edge turned toward it catches some light, softly, with the brightest edge the one facing it most, instead of one hot edge and nothing elsewhere.
+- **Focus glow:** a soft line of light right at the tile's edge with a small bloom, instead of a wide halo, and still no ring. Its color (Sharon):
+  - On dark or colored backgrounds (dark mode, Fireside, the page shell header): half white, half the lightest step on the theme's primary color line (`color.border.focus-glow-on-dark`).
+  - On light backgrounds: the theme's primary color itself (Spotlight's red, Sunrise's charcoal), because a near-white glow disappears on a light page and keyboard users couldn't see focus (`color.border.focus-glow`).
+  - It surrounds the tile evenly and doesn't respond to the light: while focus shows, the tile's edge stops catching the light (its rim, inner highlight and shade, and the lens's edge light step aside), so the glow is the same all the way round (Sharon).
+
+</details>
+
+<details>
+<summary><b>D44 · Oct 14, 2026:</b> States stories are still pictures; Playground is where states are tried</summary>
+
+- **Decided by:** Sharon ("It feels like I shouldn't get a hover if I have a hover")
+- **What:** each component's States story shows every state as a still picture. The examples ignore the mouse and keyboard, so hovering the "Hover" example no longer stacks a real hover on top of the pinned one. A line above them says so and points to Playground, where the states can be tried for real.
+- **Where:** `StatePictures` in `src/components/story-helpers.tsx`, used by the States stories of Action tile, Button, Card, Checkbox, Link, Tabs, Tag and Toggle button group.
+
+</details>
+
+<details>
+<summary><b>D42 · Oct 14, 2026:</b> Glass light follows the surroundings; glass cards only while empty; accessibility fallbacks for Glass tiles</summary>
+
+- **Decided by:** Sharon (the empty-card idea, and yes to the light-physics review's fixes and the two items taken from the [liquid-glass skill](https://github.com/haider-nawaz/liquid-glass-skill))
+- **Gaps:** an edge facing a neighbor that sits between it and the light catches less light (up to 60% less, never all of it, since the light also comes from above).
+- **Edges take the surroundings' color:** away from the light, the very edge mirrors the colors around it, as real glass does at a glancing angle, instead of a white line.
+- **Milky glass is one even layer:** a chosen Glass tile casts a fuller shadow (it scatters light instead of letting it through), but nothing shades its inside: no bending, no blur pulling its shadow in, no inner highlight band, just the average of what's behind under the theme's frost. Only its edge catches the light (Sharon: no inner shadow).
+- **Warm daylight:** the lit edge and highlight are warm white in Spotlight, Sunrise's light mode and Fireside; Sunrise at night stays neutral.
+- **Shadows are the surface, darker and cooler:** a shadow is mixed from the color it falls on (on a plain page, the page's own color), as a painter would, with the theme's shadow color only nudging the hue. It fades out gradually and never wraps onto the lit side.
+- **Glass on a card is for empty states only:** a card that holds just an empty state can be Glass, since there's nothing to read yet; once it has content, the app sets it back to Default. The [Card's Empty state story](https://designsystemskeleton.netlify.app/?path=/story/components-card--empty-state) shows both.
+- **Reduce transparency and Increase contrast on Glass tiles:** the lens is off, so there's no light: the tile turns solid in its theme's color, its text still passes, and it drops the painted rim. An unchosen tile has no edge, and a chosen tile shows a line in its text color plus its mark, so it never depends on the fill. Increase contrast looks the same with no shadows at all, on tiles and glass buttons (Sharon's call). Before, a Glass tile had no fill at all when the lens was off.
+- **Every change glides (Sharon: "smooth as glass, nothing jarring or quick"):** the lens eases each glass's light, lift, milk and opacity over the slow motion step, and the light itself over the fast step, so hovering, choosing, disabling and moving the sun all fade instead of jumping. CSS state changes on tiles and glass buttons ease in and out on the base and slow steps (fills on the slow step, in time with the lens); the press stays on the fast step so a tap still answers, and its swell now rises gently too. Reduced motion skips all of it. The look is unchanged.
+- **Not taken from the liquid-glass skill:** its code and Apple-only APIs. It has no light or shadow guidance.
+
+</details>
+
+<details>
+<summary><b>D41 · Oct 14, 2026:</b> Glass goes back to the shader demo, with its settings in every theme</summary>
+
+- **Decided by:** Sharon ("I am not going to be happy until I have this again")
+- **What:** the lens drawing code is the Oct 14 shader demo's (from #54) again, with only two fixes that don't change how it looks: it can draw on a clear background, and its shadow never shows through the glass. The experiments since (painted shadows, two-sided rims, caustics) are dropped.
+- **Settings:** matched side by side to Sharon's screenshot of the demo's grid panel and written into each theme's `glass.lens` tokens: a faintly milky body (10% white), no tint, a bright line on the edge facing the light, bend 1.5, edge depth 28px, a soft shadow 14px away from the light with a 34px blur. Shadow strength fits each background: 40% on Spotlight's red, 16% on Sunrise's light marble, 50% on Fireside.
+- **Fixes found while matching:** a Glass tile's own layer was filtering the lens again and smearing its bend (the marble barely bent); glass buttons drew their own border under the lens's edge, so they looked thicker than tiles.
+- **Clear, not frosted (follow-up):** white reads as light on a dark page but as frost on a light one. Sunrise's light mode has no white body and a gentle inner band; its dark mode keeps the demo's sheen; Spotlight and Fireside use a 4% body. The bevel scales with the piece (at most just over half its height), so short buttons stay clear in the middle instead of turning milky.
+- **Edges drawn by light only:** the rim away from the light is down to 4% white, so there's no fixed border; the edge brightens and fades as the light moves.
+- **Shadows rest close:** 4px from the light with a 14px blur, so glass reads as lying near the page, not floating high above it. The shadow appears only on the side away from the light (never a halo on the lit side), with a fine deeper line where the glass meets the page, and is paler in the middle because glass lets light through.
+- **Light behaves differently in the dark:** on dark backgrounds (Sunrise at night, Fireside) shadow has little to darken, so the glass is shown by light: almost no white film, a bright edge where the light hits, and faint shadows. On light backgrounds the shadow carries more of the form.
+- **Chosen Glass is milky** (Sharon's pick): frost strength per theme, measured so the text keeps at least 4.5:1 (Sunrise 13.5, Sunrise at night 4.7, Fireside 8.3, Spotlight 4.7).
+
+</details>
+
+<details>
+<summary><b>D40 · Oct 14, 2026:</b> Action tile works in every theme; Glass is the lens and follows the light; states are soft light</summary>
+
+- **Decided by:** Sharon
+- **Why:** Action tile was built for Spotlight's red header only. On anything else its text disappeared, and Sunrise and Fireside had no tile at all.
+- **Default:** a solid fill with an inviting shadow and light catching the edge (the cards' lighting). `fill` picks the inside color from the theme's own surfaces: card (the default), raised, sunken, accent or inverse. The text color switches with it, so every choice passes contrast in light and dark mode.
+- **Glass is the lens, everywhere.** The old frosted recipe is only the fallback when the lens can't draw (no WebGL, Reduce transparency, Increase contrast). On a plain background Glass is fully clear: nothing bends, but its edge, highlight and shadow face the page's light and follow it when it moves. On art the design system paints, it also bends the art. Its shadow falls only outside the glass.
+- **Page shell:** tiles on the header are Glass unless they ask for Default, so After Graduation's header keeps its glass tiles with no change in the app.
+- **States, soft light, no hard lines:** hover rises with a deeper shadow and a faint tint; pressed sinks back; chosen shows the theme's mark (Spotlight's star, a check in Sunrise and Fireside, or any icon through `chosenIcon`) and sits flat: Default takes the accent fill, Glass turns milky, the theme's frost (`action-tile.chosen-frost`) over a blur of what's behind it, chosen by Sharon over raised and tinted on Oct 14; its text sits on top at its usual color, untouched by the frost or the light; focus is a soft glow with no ring; disabled fades to half with no shadow.
+- **Foundations → Glass:** a playground on the real background of the theme picked in the toolbar, in light and dark mode (Spotlight's header, Sunrise's marble, Fireside's page). Drag the sun, or use the arrow keys, and every rim, highlight and shadow follows; in Spotlight the sun is the header's own light, so the wheel and rays move too. Sliders for bend, edge depth, color split, edge light and shadow; the values Sharon picks become each theme's glass-lens tokens.
+
+</details>
+
+<details>
 <summary><b>D39 · Oct 14, 2026:</b> Releases attach a ready-built package file</summary>
 
 - **Decided by:** Sharon (approved with the audit list)
@@ -101,6 +251,20 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Explorations** are screenshotted only in the theme they were made for (84 fewer screenshots).
 - **Why:** before, a theme's name was typed into about 10 files, and a missed one failed quietly. The fourth theme is coming.
 - **How to:** [Add a theme](Add-a-theme).
+
+</details>
+
+<details>
+<summary><b>D36 · Oct 14, 2026:</b> Two materials: Default and Glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** every component with a glass look has a `material` setting with two looks. **Default** is the subtle frosted look (the shared recipe in `glass.css`). **Glass** bends the art behind it at its edge (until now called "lens glass").
+- **Which components:** Button (its glass style), Action tile, Card, Tag, Toggle button group (its sliding indicator) and Page shell (the tiles and buttons in its header).
+- **Starting looks stay the same:** action tiles, glass buttons and the page shell start as Glass; cards, tags and toggle button groups start as Default. Nothing changes until someone switches.
+- **Where it shows:** Glass only shows on artwork the system controls (a theme's header art, Life Hub's marble). On a plain page both look the same.
+- **Why:** "lens" and "classic glass" were confusing names, and Glass doesn't read as glass as much as hoped. Clear names now; a deeper look later.
+- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)).
+- **Details:** `src/components/material.ts`; stories "Glass on artwork" and "Default on artwork" under Button and Action tile.
 
 </details>
 

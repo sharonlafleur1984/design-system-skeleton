@@ -14,7 +14,7 @@ One page on how a value gets from a token file to a product's screen. Open this 
    - `build/json/`: the same values as JSON, for the Foundations pages and the tests
    - `build/themes.json`: every theme's id, name and order. Everything else reads theme names from here.
 3. **Components** (`src/components/<name>/`): React components on [React Aria Components](https://react-aria.adobe.com/). Their CSS uses only `var(--token)`, so each theme restyles them without touching the component.
-4. **Storybook** (`.storybook/`, `npm run storybook`): loads every theme's CSS and fonts, and the toolbar sets `data-theme`. It's [published on Netlify](https://designsystemskeleton.netlify.app/), with a preview for every pull request.
+4. **Storybook** (`.storybook/`, `npm run storybook`): loads every theme's CSS and fonts, and the theme picker (above every story, and in the toolbar) sets `data-theme`. Compare all shows every story once per theme, side by side. It's [published on Netlify](https://designsystemskeleton.netlify.app/), with a preview for every pull request.
 5. **Package** (`vite.lib.config.ts`, `npm run build:lib`): builds `dist/` from `src/components/index.ts`: the components, one components CSS file, the base styles and each theme's fonts. A version tag attaches it to a GitHub Release ([README](../../blob/main/README.md#use-it-in-an-app)).
 6. **Apps** install a release, load one theme's CSS and fonts, and set `data-theme` on the page.
 
@@ -31,7 +31,7 @@ One page on how a value gets from a token file to a product's screen. Open this 
 
 ## Where the materials come from
 
-Components that sit on artwork take a `material`: `default` (the frosted recipe in `glass.css`) or `glass` (one WebGL canvas per group that bends the art behind, in `glass-lens/`). The glass code is experimental until [issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60).
+Components that can be glass take an `appearance`: `solid` (their normal surface) or `glass` (one WebGL canvas per group draws the glass, lit from the page's light, and bends the art behind on artwork; in `glass-lens/`). Card and Action tile share one look, in `action-tile.css`. The glass code is experimental until [issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60).
 
 ## Related
 

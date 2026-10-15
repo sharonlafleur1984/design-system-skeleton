@@ -96,7 +96,7 @@
   min-block-size: var(--control-height-large);
   padding-inline: var(--space-3);
   border: none;
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-large);
   background: transparent;
   color: var(--color-ink-secondary);
   font-family: var(--font-family-body);
@@ -246,10 +246,17 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .ds-settings-overlay[data-entering] {
-    animation: ds-settings-fade var(--motion-duration-base) var(--motion-easing-out);
+    animation: ds-settings-fade var(--motion-open-duration) var(--motion-easing-out);
   }
   .ds-settings-modal[data-entering] {
-    animation: ds-settings-rise var(--motion-duration-base) var(--motion-easing-out);
+    animation: ds-settings-rise var(--motion-open-duration) var(--motion-easing-out);
+  }
+  /* Closing (motion.close): quicker, on the leaving curve. */
+  .ds-settings-overlay[data-exiting] {
+    animation: ds-settings-fade var(--motion-close-duration) var(--motion-easing-in) reverse;
+  }
+  .ds-settings-modal[data-exiting] {
+    animation: ds-settings-rise var(--motion-close-duration) var(--motion-easing-in) reverse;
   }
 }
 @keyframes ds-settings-fade {

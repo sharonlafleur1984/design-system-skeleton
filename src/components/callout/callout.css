@@ -10,7 +10,7 @@
   padding-block: var(--space-3);
   padding-inline: var(--callout-padding-inline);
   border: 1px solid color-mix(in srgb, var(--_tone) 20%, transparent);
-  border-radius: var(--radius-lg);
+  border-radius: calc(var(--space-3) * var(--radius-surface));
   background: var(--_fill);
   box-shadow: var(--shadow-rest);
 }

@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { Button, Card, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
+import { ActionTile, ActionTileGroup, PageShell, Button, Card, CardHeader, CardBody, CardFooter, Tile, IconTile, Heading, Body, Label, Note, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
 // The old names, kept as aliases so apps that use them keep working.
 import { ProgressMeter, Divider, Chip, ChipGroup, SegmentedControl, Segment } from '../src/components';
 
@@ -76,9 +76,82 @@ describe('Button', () => {
 });
 
 describe('Card', () => {
-  it('renders the element asked for', () => {
-    render(<Card as="section" aria-label="This week">Hi</Card>);
-    expect(screen.getByRole('region', { name: 'This week' }).className).toContain('ds-card--translucent');
+  it('renders the element asked for, Solid by default', () => {
+    render(
+      <Card as="section" aria-label="This week">
+        <CardHeader title="Title" />
+      </Card>,
+    );
+    const card = screen.getByRole('region', { name: 'This week' });
+    expect(card.className).not.toContain('ds-tile--glass');
+    expect(screen.getByText('Title').className).toContain('ds-tile__title');
+  });
+
+  it('is Glass with appearance="glass", and still with the old material="glass"', () => {
+    render(
+      <>
+        <Card aria-label="New">New</Card>
+        <Card appearance="glass" as="section" aria-label="Glass">Glass</Card>
+        <Card material="glass" as="section" aria-label="Old name">Old</Card>
+      </>,
+    );
+    expect(screen.getByRole('region', { name: 'Glass' }).className).toContain('ds-tile--glass');
+    expect(screen.getByRole('region', { name: 'Old name' }).className).toContain('ds-tile--glass');
+  });
+
+  it('is a surface with typed parts, and the title is a real heading', async () => {
+    const { container } = render(
+      <Card as="section" aria-label="Bills">
+        <CardHeader label="Label" title="Water bill" level={2} />
+        <CardBody>Due Friday.</CardBody>
+        <CardFooter note="Updated today">
+          <button type="button">Pay</button>
+        </CardFooter>
+      </Card>,
+    );
+    expect(screen.getByRole('heading', { level: 2, name: 'Water bill' })).toBeTruthy();
+    expect(screen.getByText('Updated today').className).toContain('ds-text--note');
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Tile', () => {
+  it('is one link or one button, with its icon decorative', async () => {
+    const icon = <svg viewBox="0 0 24 24" />;
+    const { container } = render(
+      <>
+        <Tile href="#" icon={icon} title="Go somewhere" description="A page" />
+        <Tile onPress={() => {}} title="Do something" />
+      </>,
+    );
+    expect(screen.getByRole('link', { name: /Go somewhere/ }).className).toContain('ds-tile');
+    expect(screen.getByRole('button', { name: /Do something/ })).toBeTruthy();
+    expect(container.querySelector('.ds-icon-tile')?.getAttribute('aria-hidden')).toBe('true');
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Icon tile', () => {
+  it('is read out only when it has a label', () => {
+    render(<IconTile icon={<svg viewBox="0 0 24 24" />} label="Calendar" size="large" variant="plain" />);
+    const tile = screen.getByRole('img', { name: 'Calendar' });
+    expect(tile.className).toContain('ds-icon-tile--large');
+    expect(tile.className).toContain('ds-icon-tile--plain');
+  });
+});
+
+describe('Text parts', () => {
+  it('keep the look and the heading level separate', () => {
+    render(
+      <>
+        <Heading level={4} variant="title">Title</Heading>
+        <Body>Body</Body>
+        <Label>Label</Label>
+        <Note>Note</Note>
+      </>,
+    );
+    expect(screen.getByRole('heading', { level: 4, name: 'Title' }).className).toContain('ds-text--title');
+    expect(screen.getByText('Label').className).toContain('ds-text--label');
   });
 });
 
@@ -318,5 +391,72 @@ describe('Select', () => {
   it('a visible label names it for screen readers', () => {
     render(<Select label="Year" options={[{ id: '1', label: 'Option 1' }]} defaultSelectedKey="1" />);
     expect(screen.getByRole('button', { name: /Year/ })).toBeTruthy();
+  });
+});
+
+// Default is the subtle frosted look; Glass opts an element into the glass canvas (the ds-lens class).
+describe('material', () => {
+  it('cards start as Default and can switch to Glass', () => {
+    const { container } = render(
+      <>
+        <Card>A</Card>
+        <Card material="glass">B</Card>
+      </>,
+    );
+    const [a, b] = Array.from(container.querySelectorAll('.ds-card'));
+    expect(a.classList.contains('ds-lens')).toBe(false);
+    expect(b.classList.contains('ds-lens')).toBe(true);
+  });
+
+  it('glass buttons start as Glass and can switch to Default', () => {
+    render(
+      <>
+        <Button variant="glass">One</Button>
+        <Button variant="glass" material="default">Two</Button>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'One' }).classList.contains('ds-lens')).toBe(true);
+    expect(screen.getByRole('button', { name: 'Two' }).classList.contains('ds-lens')).toBe(false);
+  });
+});
+
+describe('Action tile', () => {
+  // jsdom has no ResizeObserver; the page shell watches its size with one.
+  globalThis.ResizeObserver ??= class {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  } as unknown as typeof ResizeObserver;
+
+  it('is Solid by default, and ignores the old fill', async () => {
+    const { container } = render(
+      <ActionTileGroup aria-label="Tiles">
+        <ActionTile onPress={() => {}} title="Title" />
+        <ActionTile onPress={() => {}} fill="accent" title="Old fill" />
+      </ActionTileGroup>,
+    );
+    expect(screen.getByRole('button', { name: /^Title/ }).className).not.toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Old fill/ }).className).not.toContain('fill');
+    await expectNoAxeViolations(container);
+  });
+
+  it('is Glass on the page shell header, unless it asks for Solid', () => {
+    render(
+      <PageShell
+        title="Page title"
+        navigation={
+          <ActionTileGroup aria-label="Tiles">
+            <ActionTile onPress={() => {}} title="On the header" />
+            <ActionTile onPress={() => {}} appearance="solid" title="Asked for solid" />
+            <ActionTile onPress={() => {}} material="default" title="Old name" />
+          </ActionTileGroup>
+        }
+      >
+        <p>Content</p>
+      </PageShell>,
+    );
+    expect(screen.getByRole('button', { name: /On the header/ }).className).toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Asked for solid/ }).className).not.toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Old name/ }).className).not.toContain('ds-tile--glass');
   });
 });

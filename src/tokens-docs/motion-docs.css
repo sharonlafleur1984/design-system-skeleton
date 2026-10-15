@@ -24,7 +24,7 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-chip);
+  border-radius: var(--radius-pill);
   background: var(--color-status-success-surface);
   color: var(--color-status-success-ink);
   font-weight: var(--font-weight-semibold);
@@ -46,26 +46,4 @@
   100% {
     scale: 1;
   }
-}
-
-.motion-demo__track {
-  position: relative;
-  height: 8px;
-  border-radius: 4px;
-  background: var(--color-surface-muted, var(--color-border-default));
-}
-
-.motion-demo__dot {
-  position: absolute;
-  inset-block-start: -4px;
-  inset-inline-start: 0;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--color-accent-base);
-}
-
-.motion-demo__track--go .motion-demo__dot {
-  inset-inline-start: calc(100% - 16px);
-  transition: inset-inline-start var(--d) var(--e);
 }

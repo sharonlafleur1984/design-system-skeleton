@@ -43,6 +43,16 @@
           1
         ],
         "$description": "Reversible changes that go both ways, like a toggle or a tab."
+      },
+      "in": {
+        "$type": "cubicBezier",
+        "$value": [
+          0.3,
+          0,
+          1,
+          1
+        ],
+        "$description": "Leaving: starts slowly and speeds away, for things closing or being removed. Material 3's standard accelerate curve (m3.material.io/styles/motion/easing-and-duration/tokens-specs)."
       }
     },
     "stagger": {
@@ -138,6 +148,40 @@
       "$type": "dimension",
       "$value": "4px",
       "$description": "How far a tile or card rises on hover. Large surfaces need a little more movement to read as lifting. Chosen ones settle back down."
+    },
+    "open": {
+      "$description": "Opening and closing overlays (menus, popovers, dialogs, tooltips), at React Aria's data-entering and data-exiting moments. Closing is quicker than opening, because the person is already done with it.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.base}",
+        "$description": "How long an overlay takes to open."
+      },
+      "scale": {
+        "$type": "number",
+        "$value": 0.96,
+        "$description": "An overlay grows from this size as it opens, so it seems to come from where it was opened. Reduce motion skips it."
+      }
+    },
+    "close": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.fast}",
+        "$description": "How long an overlay takes to close, with the leaving curve."
+      }
+    },
+    "switch": {
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.fast}",
+        "$description": "Switching views (tabs, action tiles): the new content fades in, so the change isn't abrupt."
+      }
+    },
+    "spin": {
+      "duration": {
+        "$type": "duration",
+        "$value": "800ms",
+        "$description": "One turn of a loading spinner."
+      }
     }
   }
 }

@@ -15,7 +15,7 @@
   padding-block: var(--space-1);
   padding-inline: var(--control-padding-inline-medium);
   border: 1px solid var(--_ring);
-  border-radius: var(--radius-button);
+  border-radius: var(--_corner, var(--radius-medium));
   background: var(--_bg);
   box-shadow: var(--_shadow);
   color: var(--_ink);
@@ -38,7 +38,7 @@
   content: '';
   position: absolute;
   inset-block-start: 0;
-  inset-inline: 35% var(--radius-button);
+  inset-inline: 35% var(--_corner, var(--radius-medium));
   block-size: 1px;
   border-radius: 1px;
   pointer-events: none;
@@ -57,6 +57,7 @@
 
 /* Sizes: Small 24, Medium 32, Large 40 tall. Each size has its own control type style. */
 .ds-button--small {
+  --_corner: var(--radius-small);
   min-block-size: var(--control-height-small);
   padding-block: 0;
   padding-inline: var(--control-padding-inline-small);
@@ -65,6 +66,7 @@
   line-height: var(--control-type-small-line-height);
 }
 .ds-button--large {
+  --_corner: var(--radius-large);
   min-block-size: var(--control-height-large);
   padding-inline: var(--control-padding-inline-large);
   font-size: var(--control-type-large-size);
@@ -143,7 +145,7 @@
   --g-contact: var(--glass-contact);
   --g-cast-distance: var(--glass-cast-distance);
   --g-cast-blur: var(--glass-cast-blur);
-  --g-radius: var(--radius-button);
+  --g-radius: var(--_corner, var(--radius-medium));
   --_bg: var(--color-surface-glass-on-art);
   --_ink: var(--button-glass-ink);
   --_shadow: var(--g-shadow);
@@ -169,9 +171,20 @@
   outline-color: var(--button-glass-ink);
 }
 .ds-button--glass[data-lens='on'] {
+  /* The lens draws the edge; the button's own border would double it. */
+  --_ring: transparent;
   --_bg: transparent;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+}
+/* Increase contrast: glass buttons are solid (material.css) and cast no shadow, so nothing is soft. */
+@media (prefers-contrast: more) {
+  :root:not([data-contrast='standard']) .ds-button--glass {
+    --_shadow: none;
+  }
+}
+:root[data-contrast='more'] .ds-button--glass {
+  --_shadow: none;
 }
 /* Disabled glass stays glass, half see-through, like a disabled action tile. */
 .ds-button--glass[data-disabled],
@@ -186,8 +199,14 @@
   --_bg: transparent;
 }
 @media (prefers-reduced-motion: no-preference) {
+  /* Glass fades between states like the tiles: ease in and out, nothing sudden. */
   .ds-button--glass {
-    transition: scale var(--motion-duration-instant) var(--motion-easing-out);
+    transition:
+      scale var(--motion-duration-fast) var(--motion-easing-in-out),
+      background-color var(--motion-duration-slow) var(--motion-easing-in-out),
+      color var(--motion-duration-base) var(--motion-easing-in-out),
+      box-shadow var(--motion-duration-base) var(--motion-easing-in-out),
+      opacity var(--motion-duration-slow) var(--motion-easing-in-out);
   }
 }
 
@@ -242,7 +261,7 @@
   border: 2px solid currentColor;
   border-inline-end-color: transparent;
   border-radius: var(--radius-pill);
-  animation: ds-spin 0.8s linear infinite;
+  animation: ds-spin var(--motion-spin-duration) linear infinite;
 }
 
 @keyframes ds-spin {

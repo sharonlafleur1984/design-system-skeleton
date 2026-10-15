@@ -17,7 +17,8 @@
   inline-size: var(--control-switch-width);
   block-size: var(--control-switch-height);
   border: 1px solid var(--color-ink-muted);
-  border-radius: var(--radius-pill);
+  /* Follows the theme's roundness (D49): a pill in Round, a rounded rectangle in Square. */
+  border-radius: calc(var(--control-switch-height) * var(--radius-control));
   background: var(--color-ink-muted);
   box-shadow: inset 0 1px 2px color-mix(in srgb, var(--color-ink-primary) 12%, transparent);
 }
@@ -29,17 +30,20 @@
 .ds-switch__knob {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-start: var(--space-1);
+  /* The same gap on all four sides: what's left of the track's inner height around the knob. */
+  --_gap: calc((var(--control-switch-height) - 2px - var(--control-switch-knob)) / 2);
+  inset-inline-start: var(--_gap);
   display: block;
   inline-size: var(--control-switch-knob);
   block-size: var(--control-switch-knob);
-  border-radius: var(--radius-pill);
+  /* The same shape as the track, at its own size. */
+  border-radius: calc(var(--control-switch-knob) * var(--radius-control));
   background: var(--color-surface-card);
   box-shadow: var(--shadow-rest), var(--shadow-glass);
   transform: translateY(-50%);
 }
 .ds-switch[data-selected] .ds-switch__knob {
-  inset-inline-start: calc(100% - var(--control-switch-knob) - var(--space-1));
+  inset-inline-start: calc(100% - var(--control-switch-knob) - var(--_gap));
 }
 
 .ds-switch[data-focus-visible] .ds-switch__track {

@@ -23,11 +23,6 @@
         }
       }
     },
-    "sheet-radius": {
-      "$type": "dimension",
-      "$value": "{radius.panel}",
-      "$description": "Rounded top corners of the page sheet."
-    },
     "frame": {
       "$type": "color",
       "$value": "#6e0f20",

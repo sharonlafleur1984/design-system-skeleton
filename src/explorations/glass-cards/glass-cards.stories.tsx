@@ -17,7 +17,8 @@ const meta: Meta<Args> = {
         component:
           'Exploration, not in the library yet. Life Hub cards as glass on each area\'s marble, lit by one sun in the header (top right). ' +
           'Light mode shows the light as shade and shadow; dark mode shows it as highlights. Buttons are the real React Aria Button. ' +
-          'The edge bend shows in Chrome and Edge only. Every value is an estimate until it becomes a token.',
+          'Oct 14: the cards are the real Card with appearance="glass", drawn by the lens, which bends the area\'s marble at their edges; move the sun to light them. ' +
+          'In the library, lens glass is for empty cards only (D42); here it\'s on full cards to see how it looks. Every value is an estimate until it becomes a token.',
       },
     },
   },

@@ -12,7 +12,7 @@ A theme is one folder. Storybook, the docs pages, the tests and the package all 
    { "name": "Starlight", "product": "Voyager", "order": 4, "alwaysDark": false }
    ```
    `name` is what people see in Storybook's Theme picker. `order` is its place in that list.
-3. **Change the look, not the space.** Change colors, type, motion and art in the theme's files. Spacing, sizes and corners stay in `tokens/base/`; a test fails if a theme sets them.
+3. **Change the look, not the space.** Change colors, type, motion and art in the theme's files, and pick the roundness in `shape.json`: `square`, `standard` or `round`. Spacing and sizes stay in `tokens/base/`; a test fails if a theme sets them.
 4. **Dark mode.** Put dark values in a `dark/` folder inside the theme, only for names the theme already has. A theme that's always dark has no `dark/` folder; set `"alwaysDark": true`.
 5. **Fonts.** Add `src/fonts/<id>.css`, listing only the weights the type tokens use.
 6. **Build and test.** Run `npm run test:update`. It builds the tokens, records the new theme's values in the token lock, and runs every check:
@@ -20,7 +20,7 @@ A theme is one folder. Storybook, the docs pages, the tests and the package all 
    - text passes 4.5:1 contrast, in light and dark
    - no token is set twice in the theme
    - spacing is left to the base
-7. **Look at it.** Run `npm run storybook`, then pick the new theme in the toolbar.
+7. **Look at it.** Run `npm run storybook`, then pick the new theme in the theme picker above any story.
 8. **Write it up.** Add the theme to [Themes](Themes) and add a decision to [Decisions](Decisions).
 9. **Open a pull request** and add the `update-screenshots` label, so every story gets screenshots in the new theme.
 

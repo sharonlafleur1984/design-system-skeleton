@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox } from './checkbox';
-import { BothThemes, Row } from '../story-helpers';
+import { BothThemes, Row, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Components/Checkbox',
@@ -31,18 +31,20 @@ export const Playground: Story = {};
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <Row label="Unchecked">
-        <Checkbox label="Rest" />
-        <Checkbox label="Hover" data-state="hover" />
-        <Checkbox label="Focus" data-state="focus" />
-        <Checkbox label="Disabled" isDisabled />
-      </Row>
-      <Row label="Checked">
-        <Checkbox label="Rest" defaultSelected />
-        <Checkbox label="Hover" defaultSelected data-state="hover" />
-        <Checkbox label="Focus" defaultSelected data-state="focus" />
-        <Checkbox label="Disabled" defaultSelected isDisabled />
-      </Row>
+      <StatePictures>
+        <Row label="Unchecked">
+          <Checkbox label="Rest" />
+          <Checkbox label="Hover" data-state="hover" />
+          <Checkbox label="Focus" data-state="focus" />
+          <Checkbox label="Disabled" isDisabled />
+        </Row>
+        <Row label="Checked">
+          <Checkbox label="Rest" defaultSelected />
+          <Checkbox label="Hover" defaultSelected data-state="hover" />
+          <Checkbox label="Focus" defaultSelected data-state="focus" />
+          <Checkbox label="Disabled" defaultSelected isDisabled />
+        </Row>
+      </StatePictures>
     </BothThemes>
   ),
 };

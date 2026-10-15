@@ -8,7 +8,7 @@
   padding: 2px;
   max-inline-size: 100%;
   border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-medium);
   background: var(--color-surface-sunken);
 }
 
@@ -20,7 +20,8 @@
   min-block-size: calc(var(--control-height-medium) - 2px);
   padding-inline: var(--control-padding-inline-medium);
   border: 0;
-  border-radius: var(--radius-pill);
+  /* Concentric: the group's corner minus its 2px inset. */
+  border-radius: calc(var(--radius-medium) - 2px);
   background: transparent;
   color: var(--color-ink-secondary);
   font-family: var(--font-family-body);
@@ -70,7 +71,7 @@
   content: '';
   position: absolute;
   inset-block-start: 0;
-  inset-inline: 35% var(--radius-button);
+  inset-inline: 35% var(--radius-medium);
   block-size: 1px;
   border-radius: 1px;
   pointer-events: none;

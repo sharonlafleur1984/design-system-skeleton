@@ -1,0 +1,9 @@
+{
+  "shape": {
+    "roundness": {
+      "$type": "number",
+      "$value": "{radius.roundness.standard}",
+      "$description": "How round this theme's corners are (Standard). Every corner is worked out from it and the part's size."
+    }
+  }
+}

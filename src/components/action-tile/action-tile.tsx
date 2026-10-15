@@ -1,4 +1,6 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useRef, type ReactNode } from 'react';
+import { useGlassLight } from '../glass-light/glass-light';
+import { clearArt } from '../glass-lens/lens-art';
 import {
   Button as AriaButton,
   Link as AriaLink,
@@ -11,16 +13,18 @@ import {
   type Key,
 } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
+import { AppearanceContext, LitContext, lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 import './action-tile.css';
+import { TileHeader, type IconPosition } from '../tile-header';
+import type { IconTileSize } from '../icon-tile/icon-tile';
 
-// Action tile: a glass tile you click to make something happen. One look, three behaviors,
-// each on the React Aria piece that keeps it accessible:
-// - In an ActionTileGroup with behavior="switch", tiles swap the content shown elsewhere on the page
-//   (React Aria Tabs underneath: one Tab stop, arrow keys between tiles). After Graduation's episodes.
-// - With href, a tile goes to a page (Link).
-// - With onPress, a tile does an action (Button).
+// Action tile: navigation (Oct 15). In an ActionTileGroup with behavior="switch", tiles switch the
+// page's content, like tabs (React Aria Tabs underneath: one Tab stop, arrow keys between tiles).
+// After Graduation's episodes. For anything else, a link or a button that looks like a tile, use Card:
+// it has the same look. Tiles with href or onPress still work, but are deprecated.
 // Each tile is one click target: never put a button inside a tile.
 //
 // On artwork the design system controls (the page shell's header), tiles are lens glass (Oct 12): the
@@ -56,14 +60,24 @@ export function ActionTilePanel({ className, ...rest }: ActionTilePanelProps) {
 export interface ActionTileGroupProps {
   /** Names the group for screen readers, like "Episodes". */
   'aria-label': string;
-  /** switch: tiles swap content shown elsewhere (inside an ActionTileSwitch). actions: each tile is its own link or button. */
+  /** switch: tiles switch the content shown elsewhere (inside an ActionTileSwitch). actions (deprecated): each tile is its own link or button; use Card instead. */
   behavior?: 'switch' | 'actions';
   children: ReactNode;
 }
 /** Three across on tablet and up. On phones, switch tiles become the bottom bar and action tiles stack. */
 export function ActionTileGroup({ behavior = 'actions', children, ...rest }: ActionTileGroupProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  // The page shell lights its own tiles (with its art). Anywhere else, the group lights its Glass tiles
+  // itself, on whatever plain color is behind it.
+  // Anywhere else the glass is fully clear (nothing to bend), and the lens draws only its light: the edge,
+  // highlight and shadow, which follow the page's light (the light tokens).
+  const lit = useContext(LitContext);
+  const inLitContainer = useContext(AppearanceContext) !== null || lit;
+  const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
+  // Sunlight's long reach, as in the Glass playground: every tile in the group catches it evenly.
+  useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens, reach: 6 });
   return (
-    <div className={`ds-tiles ds-tiles--${behavior}`}>
+    <div ref={ref} className={`ds-tiles ds-tiles--${behavior}`}>
       {behavior === 'switch' ? (
         <SwitchContext.Provider value>
           <AriaTabList aria-label={rest['aria-label']} className="ds-tiles__list">
@@ -79,6 +93,9 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   );
 }
 
+/** @deprecated Fills are gone (Oct 15): every Solid tile uses the card surface. */
+export type ActionTileFill = 'card' | 'raised' | 'sunken' | 'accent' | 'inverse';
+
 export interface ActionTileProps {
   /** Optional. Small line above the title, like "Episode 1". */
   label?: ReactNode;
@@ -86,31 +103,50 @@ export interface ActionTileProps {
   title: ReactNode;
   /** Optional. One short line about what happens there. */
   description?: ReactNode;
-  /** The tile's icon in the phone bottom bar. Decorative: the name next to it is what's read out. */
+  /** Shown when the tile is chosen, in place of the theme's mark (Spotlight's star, a check elsewhere). Any icon works. Decorative: screen readers hear "selected". */
+  chosenIcon?: ReactNode;
+  /** The tile's icon: in the phone bottom bar always, and in the tile itself when iconPosition is set. Decorative: the name next to it is what's read out. */
   icon?: ReactNode;
+  /** Shows the icon in the tile, in an icon tile: top (above the label) or start (before the label and title). Leave out to show it only in the phone bottom bar. */
+  iconPosition?: IconPosition;
+  /** The icon tile in the tile: filled (a soft background, the default) or plain. */
+  iconVariant?: 'filled' | 'plain';
+  /** The icon tile's size in the tile: small, medium (the default), large or xlarge. */
+  iconSize?: IconTileSize;
   /** One or two words for the phone bottom bar, like "Schools". Falls back to the title. */
   shortTitle?: ReactNode;
   /** In a switch group: matches the ActionTilePanel it shows. */
   id?: Key;
-  /** Goes to this page. */
+  /** @deprecated Tiles are for navigation. For a link that looks like a tile, use Card with href. */
   href?: string;
-  /** Does this when clicked. */
+  /** @deprecated Tiles are for navigation. For a button that looks like a tile, use Card with onPress. */
   onPress?: () => void;
   isDisabled?: boolean;
+  /** Solid (the starting look, except on the page shell header, where tiles are Glass) or Glass: fully clear, only its edge light and shadow show, and on artwork it bends the art at its edges. */
+  appearance?: Appearance;
+  /** @deprecated Use appearance: "default" is now "solid". */
+  material?: Material;
+  /** @deprecated Ignored: every Solid tile uses the card surface. */
+  fill?: ActionTileFill;
   /** Storybook only: forces a look for the state gallery. */
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, iconPosition, iconVariant, iconSize, chosenIcon, shortTitle, id, href, onPress, isDisabled, appearance: own, material, fill: _fill, ...rest }: ActionTileProps) {
+  // On the page shell header, tiles are Glass unless they ask for Solid.
+  const container = useContext(AppearanceContext);
+  const appearance = resolveAppearance(own, material) ?? container ?? 'solid';
+  const className = ['ds-tile', 'ds-glass', appearance === 'glass' ? 'ds-tile--glass' : null, lensClass(appearance)]
+    .filter(Boolean)
+    .join(' ');
   const inSwitch = useContext(SwitchContext);
   const body = (
     <>
       <span className="ds-tile__glass" aria-hidden="true" />
-      {label && <span className="ds-tile__label">{label}</span>}
-      <span className="ds-tile__title">{title}</span>
+      <TileHeader icon={iconPosition ? icon : undefined} iconPosition={iconPosition} iconVariant={iconVariant} iconSize={iconSize} label={label} title={title} />
       {description && <span className="ds-tile__description">{description}</span>}
       <span className="ds-tile__star" aria-hidden="true">
-        ✦
+        {chosenIcon}
       </span>
       <span className="ds-tile__bar">
         {icon && (
@@ -125,20 +161,20 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
   const state = rest['data-state'];
   if (inSwitch) {
     return (
-      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaTab id={id} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaTab>
     );
   }
   if (href) {
     return (
-      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaLink href={href} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaLink>
     );
   }
   return (
-    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+    <AriaButton onPress={onPress} isDisabled={isDisabled} className={className} data-state={state}>
       {body}
     </AriaButton>
   );

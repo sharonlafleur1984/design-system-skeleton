@@ -1,7 +1,9 @@
 import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { shellArt } from '../glass-lens/lens-art';
+import { AppearanceContext, resolveAppearance, type Appearance, type Material } from '../material';
 import './page-shell.css';
+import '../corners.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
 // sheet that rises over its bottom edge (Oct 7: the sheet is as wide as the header's content and always
@@ -30,9 +32,13 @@ export interface PageShellProps {
   children: ReactNode;
   className?: string;
   /**
-   * Lens glass for the action tiles and glass buttons in the header (on by default). Off shows the
-   * classic glass, the same look people get without WebGL or with Reduce transparency.
+   * The appearance of the action tiles in the header: Glass (the starting look) bends the header art
+   * at their edges; Solid gives them the theme's card surface.
    */
+  appearance?: Appearance;
+  /** @deprecated Use appearance: "default" is now "solid". */
+  material?: Material;
+  /** @deprecated Use appearance: true is "glass", false is "solid". */
   glassLens?: boolean;
 }
 
@@ -49,9 +55,10 @@ const Wheel = () => (
   </svg>
 );
 
-export function PageShell({ title, subtitle, navigation, actions, children, className, glassLens = true }: PageShellProps) {
+export function PageShell({ title, subtitle, navigation, actions, children, className, appearance, material, glassLens }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
-  const lens = useMemo(() => (glassLens ? { art: shellArt(), selector: '.ds-shell__header .ds-lens' } : false), [glassLens]);
+  const glass = (resolveAppearance(appearance, material) ?? (glassLens === false ? 'solid' : 'glass')) === 'glass';
+  const lens = useMemo(() => (glass ? { art: shellArt(), selector: '.ds-shell__header .ds-lens' } : false), [glass]);
   useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass', lens });
   // Where the header's glass tiles sit, so the rays fade behind them (shell-art-ray-behind-glass).
   useLayoutEffect(() => {
@@ -92,7 +99,11 @@ export function PageShell({ title, subtitle, navigation, actions, children, clas
             {actions && <div className="ds-shell__actions">{actions}</div>}
           </div>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}
-          {navigation && <div className="ds-shell__nav">{navigation}</div>}
+          {navigation && (
+            <div className="ds-shell__nav">
+              <AppearanceContext.Provider value={glass ? 'glass' : 'solid'}>{navigation}</AppearanceContext.Provider>
+            </div>
+          )}
         </div>
       </header>
       <main className="ds-shell__sheet">

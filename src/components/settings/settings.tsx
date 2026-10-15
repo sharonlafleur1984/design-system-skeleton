@@ -13,6 +13,7 @@ import {
 } from 'react-aria-components';
 import { Button } from '../button/button';
 import '../shared.css';
+import '../corners.css';
 import './settings.css';
 import { PHONE } from '../breakpoints';
 

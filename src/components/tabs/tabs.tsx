@@ -11,6 +11,7 @@ import {
   type TabsProps as AriaTabsProps,
 } from 'react-aria-components';
 import './tabs.css';
+import '../corners.css';
 
 // Tabs: switch between views of the same thing ("Upcoming", "Paid"). Built on React Aria's Tabs, which
 // handles arrow keys, Home and End, and links each tab to its panel. This file only adds the look.

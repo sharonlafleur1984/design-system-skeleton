@@ -21,7 +21,7 @@
   padding-block: var(--space-1);
   padding-inline: var(--space-3);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-control);
+  border-radius: var(--radius-medium);
   background: var(--color-surface-card);
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
@@ -65,10 +65,37 @@
 .ds-select__list {
   outline: none;
 }
+
+/* Open and close (motion.open, motion.close): fades in, and grows a little from the field it opened from;
+   closes quicker on the leaving curve. With Reduce motion it only fades. */
+.ds-select__popover {
+  transform-origin: top center;
+  transition: opacity var(--motion-open-duration) var(--motion-easing-out);
+}
+.ds-select__popover[data-entering] {
+  opacity: 0;
+}
+.ds-select__popover[data-exiting] {
+  opacity: 0;
+  transition: opacity var(--motion-close-duration) var(--motion-easing-in);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-reduce-motion]) .ds-select__popover {
+    transition: opacity var(--motion-open-duration) var(--motion-easing-out), scale var(--motion-open-duration) var(--motion-easing-out);
+  }
+  :root:not([data-reduce-motion]) .ds-select__popover[data-entering] {
+    scale: var(--motion-open-scale);
+  }
+  :root:not([data-reduce-motion]) .ds-select__popover[data-exiting] {
+    scale: var(--motion-open-scale);
+    transition: opacity var(--motion-close-duration) var(--motion-easing-in), scale var(--motion-close-duration) var(--motion-easing-in);
+  }
+}
 .ds-select__option {
   padding-block: var(--space-2);
   padding-inline: var(--space-3);
-  border-radius: var(--radius-control);
+  /* Concentric: the panel's corner minus its padding, so the rows line up with it. */
+  border-radius: calc(var(--radius-panel) - var(--space-1));
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
   font-size: var(--control-type-medium-size);

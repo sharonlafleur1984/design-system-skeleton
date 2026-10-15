@@ -1,85 +1,48 @@
-/* Card. Each theme decides through tokens: After Graduation's cards are solid or lightly translucent;
-   Life Hub's are glass (Oct 7 2026, replacing the Sep 27 "cards are never glass" rule). Buttons inside
-   a glass card have no blur of their own, so it is never glass on glass. Three levels of emphasis. */
+/* Card (Oct 15): a surface. Its look is the action tile's (action-tile.css): Solid and Glass, the
+   shadow and the light. This file lays out its parts: header, body and footer. */
 .ds-card {
-  --_fill: 88%;
+  /* No reserved space for a chosen mark, and never pressable: cards don't move or take a pointer. */
+  gap: var(--space-3);
+  padding: var(--space-4);
+  cursor: auto;
+}
+
+.ds-card__header {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.ds-card__body {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  color: var(--tile-ink);
+}
+.ds-card__body > :is(p, ul, ol) {
+  margin: 0;
+}
+
+.ds-card__footer {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.ds-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ds-card__note {
+  --text-note-color: var(--tile-ink-soft);
+}
+
+/* Glass that lights itself: its frame holds the lens canvas behind it. */
+.ds-card-frame {
   position: relative;
   isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-card);
-  background: color-mix(in srgb, var(--card-surface) var(--_fill), transparent);
-  color: var(--color-ink-primary);
-  /* Lit by the shared glass recipe (glass.css). Each theme sets card.glass: Life Hub's and After
-     Graduation's dark cards are glass; After Graduation's light cards are solid, with the glass
-     settings off and card.shadow as a plain shadow underneath. */
-  --g-rim-color: var(--card-glass-rim-color);
-  --g-rim-strength: var(--card-glass-rim-strength);
-  --g-rim-glint: var(--card-glass-rim-glint);
-  --g-rim-spread-x: var(--card-glass-rim-spread-x);
-  --g-rim-spread-y: var(--card-glass-rim-spread-y);
-  --g-rim-base: var(--card-glass-rim-base);
-  --g-highlight: var(--card-glass-highlight);
-  --g-shade: var(--card-glass-shade);
-  --g-cast: var(--card-glass-cast);
-  --g-contact: var(--card-glass-contact);
-  --g-cast-distance: var(--card-glass-cast-distance);
-  --g-cast-blur: var(--card-glass-cast-blur);
-  --g-extra-shadow: var(--card-shadow);
-}
-
-/* Glass cards: a frosted fill behind the content that fades at the edges, so a thin clear band of glass
-   shows at the rim. The rim itself comes from the shared recipe. Themes without frost set it to none.
-   An area page can pass its own tuning: --card-frost and the card-glass settings (tokens color.area.*). */
-.ds-card::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: -1;
-  inset: 0;
-  background: var(--card-frost);
-  backdrop-filter: var(--card-backdrop);
-  -webkit-backdrop-filter: var(--card-backdrop);
-  -webkit-mask:
-    linear-gradient(to right, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent),
-    linear-gradient(to bottom, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent) intersect,
-    linear-gradient(to bottom, transparent, black var(--card-frost-feather), black calc(100% - var(--card-frost-feather)), transparent);
-}
-.ds-card--transparent {
-  --_fill: 70%;
-  --g-extra-shadow: var(--shadow-edge);
-}
-.ds-card--opaque {
-  --_fill: 100%;
-}
-
-.ds-card--interactive {
-  cursor: pointer;
-}
-.ds-card--interactive:hover,
-.ds-card--interactive[data-state='hover'] {
-  --glass-lift: 1.5;
-  --g-extra-shadow: var(--card-shadow-hover);
-  translate: 0 calc(-1 * var(--motion-lift-large));
-}
-.ds-card--interactive:focus-within {
-  outline: var(--focus-ring-width) solid var(--color-border-focus);
-  outline-offset: var(--focus-ring-offset);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .ds-card--interactive {
-    transition:
-      box-shadow var(--motion-duration-fast) var(--motion-easing-out),
-      translate var(--motion-duration-fast) var(--motion-easing-out);
-  }
+  display: grid;
 }
 
 /* Never glass on glass: controls inside a card drop their own blur and use the card's. */

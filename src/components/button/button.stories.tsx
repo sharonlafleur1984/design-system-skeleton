@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
-import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme } from '../story-helpers';
+import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme, StatePictures } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
 
@@ -14,7 +14,11 @@ const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
   tags: ['autodocs'],
-  args: { children: 'Button', variant: 'primary', size: 'medium' },
+  args: { children: 'Button', variant: 'primary', appearance: 'solid', size: 'medium' },
+  argTypes: {
+    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'tertiary'] },
+    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
+  },
   parameters: {
     docs: {
       description: {
@@ -25,7 +29,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**When not to:** To go to another page, use a link. Never put two primary buttons side by side. Never put Glass on glass, like a glass button on a glass card.',
           '',
-          '**Glass (Oct 12):** a clear glass button. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), it is lens glass: one WebGL canvas behind the group paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. On a plain page there\'s no art to bend, so it shows the classic glass recipe. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows the classic glass recipe instead.',
+          '**Solid and glass:** `appearance="solid"` (the default) is the button in its style (primary, secondary or tertiary). `appearance="glass"` is a clear glass button, on artwork or a plain page, never on glass. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. On a plain page there\'s no art to bend, so it shows the frosted look. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows the frosted look too. The glass build is due for a review (issue #60).',
           '',
           '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
           '',
@@ -78,15 +82,17 @@ export const Sizes: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      {(['primary', 'secondary', 'tertiary'] as const).map((variant) => (
-        <Row key={variant} label={variant}>
-          <Button variant={variant}>Rest</Button>
-          <Button variant={variant} data-state="hover">Hover</Button>
-          <Button variant={variant} data-state="pressed">Pressed</Button>
-          <Button variant={variant} isDisabled>Disabled</Button>
-          <Button variant={variant} isPending>Loading</Button>
-        </Row>
-      ))}
+      <StatePictures>
+        {(['primary', 'secondary', 'tertiary'] as const).map((variant) => (
+          <Row key={variant} label={variant}>
+            <Button variant={variant}>Rest</Button>
+            <Button variant={variant} data-state="hover">Hover</Button>
+            <Button variant={variant} data-state="pressed">Pressed</Button>
+            <Button variant={variant} isDisabled>Disabled</Button>
+            <Button variant={variant} isPending>Loading</Button>
+          </Row>
+        ))}
+      </StatePictures>
     </BothThemes>
   ),
 };
@@ -112,22 +118,21 @@ const Gear = () => (
 
 const glassRow = (
   <>
-    <Button variant="glass" size="large" icon={<Plus />}>Button</Button>
-    <Button variant="glass">Button</Button>
-    <Button variant="glass" size="small">Small</Button>
-    <Button variant="glass" isDisabled>Disabled</Button>
+    <Button appearance="glass" size="large" icon={<Plus />}>Button</Button>
+    <Button appearance="glass">Button</Button>
+    <Button appearance="glass" size="small">Small</Button>
+    <Button appearance="glass" isDisabled>Disabled</Button>
   </>
 );
 
 // After Graduation: glass buttons in the real page shell header (Settings at the top right, a row in the header).
-function OnHeaderArt({ glassLens = true }: { glassLens?: boolean }) {
+function OnHeaderArt() {
   return (
     <div data-theme="after-graduation">
       <PageShell
         title="Page title"
         subtitle="Subtitle"
-        glassLens={glassLens}
-        actions={<Button variant="glass" size="small" icon={<Gear />}>Settings</Button>}
+        actions={<Button appearance="glass" size="small" icon={<Gear />}>Settings</Button>}
         navigation={<div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3)' }}>{glassRow}</div>}
       >
         <p style={{ margin: 0 }}>Page content</p>
@@ -136,15 +141,15 @@ function OnHeaderArt({ glassLens = true }: { glassLens?: boolean }) {
   );
 }
 
-function GlassOnArt({ theme, glassLens = true }: { theme: unknown; glassLens?: boolean }) {
+function GlassOnArt({ theme }: { theme: unknown }) {
   const t = singleTheme(theme);
   // Fireside's glass and light recipe is still open (designer-toolkit wiki, Skin).
   if (t === 'designer-toolkit') return <Callout tone="info">Fireside's glass hasn't been designed yet.</Callout>;
-  return t === 'life-hub' ? <OnMarble lens={glassLens}>{glassRow}</OnMarble> : <OnHeaderArt glassLens={glassLens} />;
+  return t === 'life-hub' ? <OnMarble>{glassRow}</OnMarble> : <OnHeaderArt />;
 }
 
 /**
- * Glass buttons as lens glass on the artwork each product controls: After Graduation's header, and
+ * Glass buttons on the artwork each product controls: After Graduation's header, and
  * Life Hub's marble (the Dashboard's). Pick the theme in the toolbar. The small one is a pill.
  */
 export const GlassOnArtwork: Story = {
@@ -160,22 +165,15 @@ export const GlassOnEveryMarble: Story = {
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
       {marbles.map((m) => (
         <OnMarble key={m.texture} marble={m}>
-          <Button variant="glass" icon={<Plus />}>Button</Button>
-          <Button variant="glass" size="small">Small</Button>
+          <Button appearance="glass" icon={<Plus />}>Button</Button>
+          <Button appearance="glass" size="small">Small</Button>
         </OnMarble>
       ))}
     </div>
   ),
 };
 
-/** The fallback: no WebGL, a lost graphics context, or Reduce transparency or Increase contrast. The classic glass recipe. */
-export const GlassFallback: Story = {
-  name: 'Glass: fallback',
-  parameters: { layout: 'fullscreen' },
-  render: (_args, { globals }) => <GlassOnArt theme={globals.theme} glassLens={false} />,
-};
-
-/** With Reduce motion on: still lens glass, but presses don't swell and phone tilt is off. */
+/** With Reduce motion on: still Glass, but presses don't swell and phone tilt is off. */
 export const GlassReducedMotion: Story = {
   name: 'Glass: reduced motion',
   parameters: { layout: 'fullscreen' },
