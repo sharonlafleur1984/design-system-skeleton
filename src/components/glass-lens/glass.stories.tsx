@@ -5,6 +5,7 @@ import { AppearanceContext } from '../material';
 import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
 import { Orb } from '../orb/orb';
+import { LitBackground } from '../glass-light/lit-background';
 import { PageShell } from '../page-shell/page-shell';
 import { singleTheme, SUN_START, type Theme } from '../story-helpers';
 import { firesideArt, sunriseArt } from './story-art';
@@ -40,7 +41,7 @@ function GlassSet() {
 }
 
 /** A theme's page background with its own lens, lit by the sun. Text is the theme's own, so it suits light and dark mode. */
-function ThemePage({ theme, children }: { theme: Theme; children: ReactNode }) {
+function ThemePage({ theme, light, children }: { theme: Theme; light: { x: number; y: number }; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const lens = useMemo(() => ({ art: theme === 'life-hub' ? sunriseArt : firesideArt }), [theme]);
   // A long reach: the edge light stays strong wherever the sun is, as it would outdoors.
@@ -55,6 +56,8 @@ function ThemePage({ theme, children }: { theme: Theme; children: ReactNode }) {
   };
   return (
     <div ref={ref} style={style}>
+      {/* The page's background, lit by the orb's light (D59). */}
+      <LitBackground art={lens.art} light={light} />
       {children}
     </div>
   );
@@ -99,7 +102,7 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
           <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} This is a full page, so the light stays where it sits on the real page.</p>
         </PageShell>
       ) : (
-        <ThemePage theme={theme}>
+        <ThemePage theme={theme} light={sun}>
           <h1 style={{ margin: 0, fontFamily: 'var(--type-heading-title-family)' }}>Glass</h1>
           <p style={{ maxInlineSize: '60ch', marginBlockEnd: 'var(--space-6)' }}>{intro} Drag the light, or focus it and use the arrow keys.</p>
           <AppearanceContext.Provider value="glass">{set}</AppearanceContext.Provider>

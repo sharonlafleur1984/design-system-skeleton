@@ -1,6 +1,6 @@
 import { useEffect, useRef, type RefObject } from 'react';
 import { resolveColor, type GlassArt } from '../glass-lens/lens-art';
-import { colorBehind } from '../orb/orb';
+import { colorBehind, pageRgb } from '../orb/orb';
 import { sharedRenderer } from '../orb/orb-render';
 
 // A surface lit by the page's light, drawn by a real renderer (three.js) instead of a hand-tuned glow.
@@ -28,8 +28,11 @@ export interface LitSurfaceOptions {
   enabled?: boolean;
 }
 
-/** Draws `surface`'s background, lit by the light, into `canvas` (which sits behind its content). */
-export function useLitSurface(surface: RefObject<HTMLElement | null>, canvas: RefObject<HTMLCanvasElement | null>, { art, light, color, height, strength = 1.5, enabled = true }: LitSurfaceOptions) {
+/**
+ * Draws `surface`'s background, lit by the light, into `canvas` (which sits behind its content). Pass
+ * null for `surface` to light the canvas's own parent (as LitBackground does).
+ */
+export function useLitSurface(surface: RefObject<HTMLElement | null> | null, canvas: RefObject<HTMLCanvasElement | null>, { art, light, color, height, strength = 1.5, enabled = true }: LitSurfaceOptions) {
   const frame = useRef(0);
   useEffect(() => {
     if (!enabled) return;
@@ -38,8 +41,8 @@ export function useLitSurface(surface: RefObject<HTMLElement | null>, canvas: Re
     cancelAnimationFrame(frame.current);
     // One drawing per frame at most, while the light is dragged.
     frame.current = requestAnimationFrame(() => {
-      const el = surface.current;
       const out = canvas.current;
+      const el = surface ? surface.current : (out?.parentElement ?? null);
       if (!el || !out) return;
       drawLit(el, out, { art, light, color, height, strength }).then((ok) => {
         // The art isn't ready (an image loading): try again shortly.
@@ -86,6 +89,12 @@ async function drawLit(el: HTMLElement, out: HTMLCanvasElement, { art, light, co
   for (let i = 0; i < sample.length; i += 4 * 16) lum += (0.2126 * sample[i] + 0.7152 * sample[i + 1] + 0.0722 * sample[i + 2]) / 255;
   lum /= sample.length / (4 * 16);
   const lampStrength = strength * (1 - 0.8 * lum);
+  // A plain page (the theme's own page color) has no color to blend with, so its light is pure white.
+  const page = pageRgb(el);
+  const mean = [0, 0, 0];
+  for (let i = 0; i < sample.length; i += 4 * 16) for (let k = 0; k < 3; k++) mean[k] += sample[i + k];
+  const n = sample.length / (4 * 16);
+  const plain = !!page && mean.reduce((d, v, k) => d + Math.abs(v / n - page[k]), 0) / (3 * 255) < 0.06;
 
   const texture = new THREE.CanvasTexture(painted);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -101,7 +110,7 @@ async function drawLit(el: HTMLElement, out: HTMLCanvasElement, { art, light, co
   // Even light at the page's own brightness, so parts far from the light look as they always do.
   scene.add(new THREE.AmbientLight(0xffffff, Math.PI));
   // The light: falls off with distance squared and with angle, as real light does.
-  const rgb = resolveColor(color, el) ?? [255, 255, 255, 1];
+  const rgb = plain ? [255, 255, 255, 1] : (resolveColor(color, el) ?? [255, 255, 255, 1]);
   const lamp = new THREE.PointLight(new THREE.Color(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`), lampStrength * Math.PI * height * height, 0, 2);
   lamp.position.set(light.x * box.width, -light.y * box.height, height);
   scene.add(lamp);

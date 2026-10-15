@@ -46,7 +46,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
 /** The theme's own page color around an element, as 0 to 255 red, green and blue. */
-function pageRgb(el: HTMLElement): number[] | undefined {
+export function pageRgb(el: HTMLElement): number[] | undefined {
   const probe = document.createElement('span');
   probe.style.color = 'var(--color-surface-page)';
   el.appendChild(probe);

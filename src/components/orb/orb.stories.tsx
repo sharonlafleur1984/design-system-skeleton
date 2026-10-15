@@ -55,7 +55,7 @@ export const OnEveryBackground: Story = {
   },
 };
 
-/** Today's glow beside the renderer-lit light (D59), on the picked theme's backgrounds. Drag either orb. */
+/** The CSS glow alone (the fallback without 3D) beside the renderer-lit light, the default (D59). Drag either orb. */
 export const LitByTheRenderer: Story = {
   tags: ['!dev'],
   parameters: { layout: 'padded' },
@@ -63,13 +63,13 @@ export const LitByTheRenderer: Story = {
     const shows = (theme: string) => globals.theme === 'both' || globals.theme === theme;
     const pair = (key: string, props: Omit<OrbSectionProps, 'label' | 'lit'>, name: string) => (
       <div key={key} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
-        <OrbSection {...props} size="small" label={`${name}, today's glow`} />
-        <OrbSection {...props} size="small" lit label={`${name}, lit by the renderer`} />
+        <OrbSection {...props} size="small" lit={false} label={`${name}, CSS glow`} />
+        <OrbSection {...props} size="small" label={`${name}, lit by the renderer`} />
       </div>
     );
     return (
       <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
-        <p style={{ margin: 0, color: 'var(--color-ink-secondary)' }}>Left: today&apos;s glow. Right: lit by the renderer.</p>
+        <p style={{ margin: 0, color: 'var(--color-ink-secondary)' }}>Left: the CSS glow alone (where 3D isn&apos;t available). Right: lit by the renderer, the default.</p>
         {shows('after-graduation') && pair('header', { backdrop: 'header' }, 'Spotlight header')}
         {shows('life-hub') &&
           marbles

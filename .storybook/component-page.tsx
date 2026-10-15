@@ -9,6 +9,7 @@ import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
 import { Orb } from '../src/components/orb/orb';
+import { LitBackground } from '../src/components/glass-light/lit-background';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
 
@@ -426,6 +427,7 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {showSun && (
         <>
+          <LitBackground art={lens.art} light={sun} palette={bg === 'marble' ? marble.palette : undefined} />
           <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} backdrop={lens.art} />
           <span className="sb-try__hint">Drag the light to move it</span>
         </>
