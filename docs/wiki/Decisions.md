@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
@@ -66,6 +67,16 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D58 · Oct 15, 2026:</b> The light may move on real pages; staying still is a choice</summary>
+
+- **Decided by:** Sharon ("Let's move that way. I can always tell you to stay still in the future, but if I change my mind and move again, that's fine too.")
+- **Replaces part of D45 and D57:** a full page's light no longer has to stay still at `light-from-right` and `light-top`. Those tokens are where it rests, and staying still remains a choice Sharon can switch back to.
+- **How it moves:** not chosen yet (time of day, pointer or touch, device tilt, or a slow drift). Each option is a separate decision.
+- **Still true:** one light for every glass part; Reduce motion keeps the light still; text stays readable wherever the light lands, so contrast is checked along its whole path; a moving light is drawn live and pauses when nothing moves or the page is hidden.
+
+</details>
 
 <details>
 <summary><b>D57 · Oct 15, 2026:</b> The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass</summary>
