@@ -2,18 +2,18 @@
    the same in every theme, so the page's own structure is never mistaken for the component on show.
    The examples inside it are in the theme picked, and follow Mode in Controls, not the page's Mode. */
 .sb-page {
-  --sb-ink: #2e3438;
-  --sb-muted: #5c6870;
-  --sb-line: #e3e5e8;
-  --sb-head: #eef0f2;
+  --sb-ink: #1c1c1c;
+  --sb-muted: #525252;
+  --sb-line: #d4d4d4;
+  --sb-head: #e5e5e5;
   --sb-cell: #ffffff;
   --sb-link: #1d5fc4;
   --sb-link-hover: #123f85;
   --sb-do: #1f7a3d;
   --sb-dont: #a3121f;
   --sb-dont-line: #b3261e;
-  --sb-codebar: #4a5056;
-  --sb-code: #f6f7f8;
+  --sb-codebar: #333333;
+  --sb-code: #f5f5f5;
   --sb-shadow: 2px 2px 8px 0 rgb(0 0 0 / 0.2);
   --sb-ease: cubic-bezier(0.2, 0, 0, 1);
   display: flex;
@@ -28,19 +28,19 @@
 }
 /* The page in dark mode: the Controls header's gray, tables dark like the bottom panel, text light. */
 .sb-page[data-page='dark'] {
-  --sb-ink: #e6e9eb;
-  --sb-muted: #c7cdd1;
-  --sb-line: #4a5056;
-  --sb-head: #2e3438;
-  --sb-cell: #1e2124;
+  --sb-ink: #ededed;
+  --sb-muted: #c4c4c4;
+  --sb-line: #404040;
+  --sb-head: #333333;
+  --sb-cell: #171717;
   --sb-link: #7fb0ff;
   --sb-link-hover: #b3d0ff;
   --sb-do: #7ad49a;
   --sb-dont: #ff9aa2;
-  --sb-codebar: #3a3f44;
-  --sb-code: #26292d;
-  --sb-shadow: 0 0 0 1px #4a5056;
-  background: #2e3438;
+  --sb-codebar: #3a3a3a;
+  --sb-code: #1f1f1f;
+  --sb-shadow: 0 0 0 1px #404040;
+  background: #262626;
 }
 /* The page's own links. Links inside an example keep the theme's colors. */
 .sb-page a:not(.sb-try__window *, .sb-page__example *) {
@@ -106,14 +106,14 @@
 }
 /* In dark mode the bar sits a step lighter than the page, and the selected choice is a light chip, as in light mode. */
 .sb-page[data-page='dark'] .sb-page__field {
-  background: #3a3f44;
+  background: #3a3a3a;
 }
 .sb-page[data-page='dark'] .sb-page__choice[data-hovered] {
   background: rgb(255 255 255 / 0.1);
 }
 .sb-page[data-page='dark'] .sb-page__choice[data-selected] {
-  background: #e6e9eb;
-  color: #1e2124;
+  background: #e5e5e5;
+  color: #171717;
   box-shadow: none;
 }
 .sb-page__choice[data-focus-visible] {
@@ -168,8 +168,8 @@
   gap: 6px;
   padding: 3px 10px;
   border-radius: 999px;
-  background: #f1f3f4;
-  color: #2e3438;
+  background: #f0f0f0;
+  color: #1c1c1c;
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
@@ -177,9 +177,9 @@
 .sb-page__dot {
   inline-size: 8px;
   block-size: 8px;
-  border: 1.5px solid #6b747b;
+  border: 1.5px solid #6b6b6b;
   border-radius: 50%;
-  background: #6b747b;
+  background: #6b6b6b;
 }
 .sb-page__status--ready {
   background: #e6f2ea;
@@ -226,8 +226,8 @@
   font-weight: 600;
   text-align: end;
   /* One neutral bar over every window, light or dark, so the windows line up and the eye isn't pulled between them. */
-  background: #f6f7f8;
-  color: #5c6870;
+  background: #f5f5f5;
+  color: #525252;
 }
 /* The window: the component left-aligned, on the theme's page, art or marble. */
 .sb-try__window {
@@ -347,7 +347,7 @@
   z-index: 2;
   padding: 2px 8px;
   border-radius: 4px;
-  background: rgb(30 33 36 / 0.72);
+  background: rgb(23 23 23 / 0.72);
   color: #ffffff;
   font: 12px/1.5 'Nunito Sans', system-ui, sans-serif;
   pointer-events: none;
@@ -366,7 +366,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: var(--color-ink-tertiary, #6b747b);
+  color: var(--color-ink-tertiary, #6b6b6b);
 }
 .sb-try__empty-title {
   margin: 0;
@@ -494,17 +494,17 @@
 .sb-page__kbd {
   display: inline-block;
   padding: 1px 7px;
-  border: 1px solid #cfd4d8;
+  border: 1px solid #d4d4d4;
   border-block-end-width: 2px;
   border-radius: 5px;
   background: #ffffff;
-  color: #2e3438;
+  color: #1c1c1c;
   font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .sb-page[data-page='dark'] .sb-page__kbd {
-  border-color: #4a5056;
-  background: #26292d;
-  color: #e6e9eb;
+  border-color: #404040;
+  background: #1f1f1f;
+  color: #e5e5e5;
 }
 
 /* Usage rules: use it for this, don't use it for this. */
@@ -568,11 +568,11 @@
 /* For engineers, folded away. */
 .sb-page__engineers {
   border-radius: 8px;
-  background: #2e3438;
+  background: #1c1c1c;
   color: #ffffff;
 }
 .sb-page[data-page='dark'] .sb-page__engineers {
-  background: #1e2124;
+  background: #171717;
 }
 .sb-page__engineers summary {
   padding: 12px 16px;
@@ -609,8 +609,8 @@
 .sb-page__tokens code {
   padding: 3px 10px;
   border-radius: 999px;
-  background: #e6e9eb;
-  color: #2e3438;
+  background: #e5e5e5;
+  color: #1c1c1c;
   font-size: 13px;
 }
 .sb-page__related {
