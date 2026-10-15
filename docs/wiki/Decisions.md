@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D54 | Oct 15, 2026 | Fireside's light mode changes only the work area |
 | D53 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
@@ -64,6 +65,16 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D54 · Oct 15, 2026:</b> Fireside's light mode changes only the work area</summary>
+
+- **Decided by:** Sharon
+- **Decision:** Fireside has a light mode, but the shell and most components stay dark in both modes. Light mode changes only the work area: the background behind the prototype and the wiki, the text on it (it turns dark), the wiki's lines, and the selected page in the wiki's side nav, which shows the primary color. These are five Fireside-only tokens, `shell-work-*`, with the toolkit's own values from its shell (designer-toolkit-code `src/styles/shell.css`). Checkboxes on the wiki stay gray in both modes.
+- **Why:** the toolkit's shell already switches its work area between light and dark, so the design system should know it. Everything else is chrome, which stays dark.
+- **Other options:** a full light Fireside, with light values for every color.
+
+</details>
 
 <details>
 <summary><b>D53 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>

@@ -27,7 +27,7 @@ const sha = execSync('git rev-parse --short HEAD', { cwd: root }).toString().tri
 const branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: root }).toString().trim();
 const now = new Date().toISOString();
 
-// ---- Themes: each product's light and dark look is one Lantern theme. Fireside is always dark.
+// ---- Themes: each product's light and dark look is one Lantern theme. A theme marked alwaysDark has only its dark look.
 const repoThemes = json('build/themes.json');
 const lanternThemes = [];
 for (const t of repoThemes) {

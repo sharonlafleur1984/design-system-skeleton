@@ -14,7 +14,7 @@ Pick a theme at the top to see every token and preview in it.
 | --- | --- | --- |
 | Spotlight, Spotlight dark | After Graduation | Crimson on warm white; a header lit from one light |
 | Sunrise, Sunrise dark | Life Hub | Warm ink on marble, one marble color per life area |
-| Fireside | Designer toolkit | Copper on deep teal; always dark |
+| Fireside | Designer toolkit | Copper on deep teal; dark, with a light work area |
 
 ## Writing
 
