@@ -40,7 +40,7 @@ function setup() {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     const pmrem = new THREE.PMREMGenerator(renderer);
-    const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    const env = pmrem.fromScene(new RoomEnvironment(), 0.01).texture;
     pmrem.dispose();
     return { THREE, renderer, env };
   })();
@@ -49,7 +49,7 @@ function setup() {
 
 const cache = new Map<string, Promise<string>>();
 
-/** The orb as a picture (a data URL), `px` pixels across. */
+/** The orb as a picture (a data URL), for `px` pixels on screen (drawn at twice that, for sharpness). */
 export function renderOrb(px: number, look: OrbLook, colors: OrbColors): Promise<string> {
   const key = [px, look, colors.light, colors.glow, colors.halo, colors.body].join('|');
   let picture = cache.get(key);
@@ -68,10 +68,12 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   const scene = new THREE.Scene();
   scene.environment = env;
   // What the glass bends: its own light color, so the inside reads the same on any background.
+  // Smooth glass (roughness 0) and a sharp studio room keep the reflections crisp.
   scene.background = color(colors[l.backdrop]);
 
-  // The ball fills the picture exactly, so there's no gap at its edge.
-  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+  // The ball fills the picture, a hair past its edges: rays that only skim the glass there miss
+  // everything and draw a dotted dark rim, so that sliver is left outside the picture.
+  const camera = new THREE.OrthographicCamera(-0.975, 0.975, 0.975, -0.975, 0.1, 10);
   camera.position.set(0, 0, 4);
 
   const geometries = [new THREE.SphereGeometry(l.core, 64, 64), new THREE.SphereGeometry(1, 128, 128)];
@@ -81,9 +83,9 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
     transmission: 1,
     ior: 1.5,
     thickness: 1.4,
-    roughness: 0.04,
+    roughness: 0,
     clearcoat: 1,
-    clearcoatRoughness: 0.03,
+    clearcoatRoughness: 0,
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
@@ -96,7 +98,9 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   key.position.set(1.2, 1.5, 4);
   scene.add(key, new THREE.AmbientLight(0xffffff, 0.25));
 
-  renderer.setSize(px, px, false);
+  // Drawn at twice the size and shrunk by the browser, so every edge and reflection stays sharp.
+  const drawn = Math.min(px * 2, 1024);
+  renderer.setSize(drawn, drawn, false);
   renderer.render(scene, camera);
   const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());
