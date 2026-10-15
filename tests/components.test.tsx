@@ -263,7 +263,7 @@ describe('Orb', () => {
     expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--glow');
     rerender(<Orb size="small" />);
     expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--small ds-orb--glow');
-    rerender(<Orb size="large" look="clear" />);
+    rerender(<Orb size="large" look="tinted" />);
     expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--large');
   });
 

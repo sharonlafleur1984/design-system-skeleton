@@ -28,7 +28,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   onPositionChange?: (position: OrbPosition) => void;
   /** How big it is: small 16px, the height of body text (Try it out windows use it); medium 32px, the usual; large 48px. */
   size?: OrbSize;
-  /** Glow (the default): lit from inside, its light spreading over the whole section. Clear: glass with no glow, just for fun. */
+  /** Glow (the default): lit from inside, its light spreading over the whole section. Tinted: glass in the page's color, no glow. Clear: completely see-through glass, no glow. */
   look?: OrbLook;
   /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.
