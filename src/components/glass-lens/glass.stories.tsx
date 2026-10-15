@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { AppearanceContext } from '../material';
 import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
+import { Orb } from '../orb/orb';
 import { PageShell } from '../page-shell/page-shell';
 import { singleTheme, SUN_START, type Theme } from '../story-helpers';
 import { firesideArt, sunriseArt } from './story-art';
@@ -72,18 +73,6 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, theme, bend, edgeDepth, colorSplit, edgeLight, shadow]);
 
-  const moveTo = (e: PointerEvent<HTMLElement>) => {
-    const r = ref.current!.getBoundingClientRect();
-    setSun({ x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) });
-  };
-  const onKey = (e: KeyboardEvent<HTMLElement>) => {
-    const step = e.shiftKey ? 0.1 : 0.02;
-    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
-    if (!d) return;
-    e.preventDefault();
-    setSun((s) => ({ x: Math.min(1, Math.max(0, s.x + d[0])), y: Math.min(1, Math.max(0, s.y + d[1])) }));
-  };
-
   // The Demo story shows each theme's own glass settings; the Playground's controls override them.
   const tuning = themeSettings ? ({ position: 'relative' } as CSSProperties) : ({
     position: 'relative',
@@ -100,41 +89,11 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-shadow-distance' as string]: '4px',
     ['--glass-lens-shadow-blur' as string]: '14px',
   } as CSSProperties);
-  const sunStyle: CSSProperties = {
-    position: 'absolute',
-    left: `${sun.x * 100}%`,
-    top: `${sun.y * 100}%`,
-    zIndex: 5,
-    inlineSize: 'var(--space-6)',
-    blockSize: 'var(--space-6)',
-    marginInlineStart: 'calc(var(--space-6) / -2)',
-    marginBlockStart: 'calc(var(--space-6) / -2)',
-    padding: 0,
-    border: 'none',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
-    boxShadow: '0 0 32px 12px rgba(245, 197, 66, 0.35)',
-    cursor: 'grab',
-    touchAction: 'none',
-  };
   const intro = "Glass bends what's behind it at its curved edge, and its rim and shadow come from one light.";
 
   return (
     <div ref={ref} style={tuning}>
-      {!spotlight && (
-        <button
-          type="button"
-          data-sun=""
-          aria-label="Sun. Drag it, or use the arrow keys to move the light."
-          style={sunStyle}
-          onPointerDown={(e) => {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            moveTo(e);
-          }}
-          onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-          onKeyDown={onKey}
-        />
-      )}
+      {!spotlight && <Orb data-sun="" position={sun} onPositionChange={setSun} />}
       {spotlight ? (
         <PageShell title="Spotlight" navigation={set}>
           <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} This is a full page, so the light stays where it sits on the real page.</p>

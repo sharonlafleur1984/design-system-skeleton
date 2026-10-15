@@ -1,0 +1,12 @@
+{
+  "orb": {
+    "color": {
+      "$description": "Spotlight's orb glows in its red, the primary color.",
+      "light": { "$type": "color", "$value": "{palette.red.100}", "$description": "The brightest light inside the orb." },
+      "glow": { "$type": "color", "$value": "{palette.red.200}", "$description": "The glow nearest the orb, and its farthest bloom." },
+      "halo": { "$type": "color", "$value": "{palette.red.300}", "$description": "The middle of the glow." },
+      "body": { "$type": "color", "$value": "{palette.red.400}", "$description": "The color of the glass." },
+      "shade": { "$type": "color", "$value": "{palette.red.600}", "$description": "The deepest color, at the top of the glass." }
+    }
+  }
+}

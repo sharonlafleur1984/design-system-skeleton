@@ -36,6 +36,8 @@ export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from '
 export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
 export type { Appearance, Material } from './material';
 export { useGlassLight, PAGE_LIGHT } from './glass-light/glass-light';
+export { Orb, ORB_START } from './orb/orb';
+export type { OrbProps, OrbPosition } from './orb/orb';
 export { LIGHT_CHANGE } from './glass-lens/lens';
 export type { GlassLightOptions } from './glass-light/glass-light';
 export { clearArt, imageArt, shellArt } from './glass-lens/lens-art';
