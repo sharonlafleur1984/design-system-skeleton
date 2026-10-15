@@ -2,7 +2,7 @@ Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fir
 
 ## How Lantern stays in sync with the code
 
-Lantern isn't drawn by hand. It's built from the code, and Claude keeps the two in step.
+Lantern isn't made in Figma. It's built straight from the code, and Claude keeps the two in step.
 
 1. The tokens, components and docs all start in one place.
 2. A single build turns them into this page, live previews and all.
