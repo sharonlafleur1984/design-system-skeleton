@@ -85,7 +85,7 @@ export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sa
   };
   return (
     <section ref={ref} aria-label={label} data-theme={theme} data-mode={backdrop === 'fireside' ? 'dark' : backdrop === 'light' ? 'light' : undefined} style={style}>
-      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} look={look} />
+      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} look={look} backdrop={lens.art} />
       <LitContext.Provider value>
         <Button appearance="glass">Button</Button>
       </LitContext.Provider>

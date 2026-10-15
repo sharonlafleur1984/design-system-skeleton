@@ -407,7 +407,7 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {showSun && (
         <>
-          <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} />
+          <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} backdrop={lens.art} />
           <span className="sb-try__hint">Drag the light to move it</span>
         </>
       )}

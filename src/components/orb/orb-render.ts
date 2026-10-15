@@ -24,8 +24,8 @@ const LOOKS = {
   glow: { core: 0.78, coreWhite: 0.5, emissive: 1.6, attenuation: 2.2, seeThrough: false },
   // Tinted glass: you look through glass in the page's color to a small bright core.
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
-  // Completely clear: colorless glass with no core. The real page shows through it on any background;
-  // only the reflections, the highlights and the bright edges say it's glass, like a bubble.
+  // Completely clear: colorless glass with no core, with the real background behind it bent through.
+  // The renderer alone works out the bending, shading, uneven rim and highlights, like a bubble.
   clear: { core: 0, coreWhite: 0, emissive: 0, attenuation: Infinity, seeThrough: true },
 };
 
@@ -82,8 +82,13 @@ function studio(THREE: Three, floor: number, rise: number) {
 
 const cache = new Map<string, Promise<string>>();
 
-/** The orb as a picture (a data URL), for `px` pixels on screen (drawn at twice that, for sharpness). */
-export function renderOrb(px: number, look: OrbLook, colors: OrbColors): Promise<string> {
+/**
+ * The orb as a picture (a data URL), for `px` pixels on screen (drawn at twice that, for sharpness).
+ * `behind` is the patch of the real background behind the orb, which clear glass bends; clear orbs
+ * are drawn fresh each time, since what's behind them changes as they move.
+ */
+export function renderOrb(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLCanvasElement): Promise<string> {
+  if (look === 'clear') return draw(px, look, colors, behind);
   const key = [px, look, colors.light, colors.glow, colors.halo, colors.body].join('|');
   let picture = cache.get(key);
   if (!picture) {
@@ -94,16 +99,21 @@ export function renderOrb(px: number, look: OrbLook, colors: OrbColors): Promise
   return picture;
 }
 
-async function draw(px: number, look: OrbLook, colors: OrbColors) {
+async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLCanvasElement) {
   const { THREE, renderer, env, brightEnv } = await setup();
   const l = LOOKS[look];
   const color = (c: string) => new THREE.Color(c);
   const scene = new THREE.Scene();
   scene.environment = l.seeThrough ? brightEnv : env;
-  // What the glass bends: its own light color, so the inside reads the same on any background. (Clear
-  // glass is drawn twice, on black and on white; see below.) Smooth glass (roughness 0) and a sharp
-  // studio keep the reflections crisp.
-  scene.background = color(colors.light);
+  // What the glass bends. Glow and tinted: their own light color, so the inside reads the same on any
+  // background. Clear: the real background behind the orb, so the renderer bends, shades and rims it
+  // the way glass would. Smooth glass (roughness 0) and a sharp studio keep the reflections crisp.
+  let backdrop: import('three').CanvasTexture | undefined;
+  if (l.seeThrough && behind) {
+    backdrop = new THREE.CanvasTexture(behind);
+    backdrop.colorSpace = THREE.SRGBColorSpace;
+  }
+  scene.background = backdrop ?? color(colors.light);
 
   // The ball fills the picture, a hair past its edges: rays that only skim the glass there miss
   // everything and draw a dotted dark rim, so that sliver is left outside the picture.
@@ -125,11 +135,10 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
-    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : l.seeThrough ? new THREE.Color('#ffffff') : color(colors.glow),
+    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : color(colors.glow),
     emissiveIntensity: l.emissive,
-    // Clear glass reflects only about 4% face-on, as real glass does, so the page shows through; its
-    // edges reflect almost everything, so they read as a light rim.
-    envMapIntensity: l.seeThrough ? 0.35 : 0.7,
+    // Clear glass reflects its studio at full, real strength: about 4% face-on, nearly all at the edge.
+    envMapIntensity: l.seeThrough ? 1 : 0.7,
   });
   scene.add(new THREE.Mesh(geometries[1], glass));
   if (l.core) scene.add(new THREE.Mesh(geometries[0], core));
@@ -140,46 +149,14 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   // Drawn at twice the size and shrunk by the browser, so every edge and reflection stays sharp.
   const drawn = Math.min(px * 2, 1024);
   renderer.setSize(drawn, drawn, false);
-  // Clear glass passes the page's own color through untouched (no tone mapping to lift a dark page).
+  // Clear glass shows the real background, so its colors pass through the renderer untouched.
   renderer.toneMapping = l.seeThrough ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
-  let url: string;
-  if (l.seeThrough) {
-    // Clear glass: drawn once on black and once on white. Whatever changes between the two is the
-    // background showing through, so it becomes see-through; what stays is the glass's own light
-    // (reflections, highlights, bright edges). The real page then shows through on any background.
-    const snap = (bg: string) => {
-      scene.background = new THREE.Color(bg);
-      renderer.render(scene, camera);
-      const c = document.createElement('canvas');
-      c.width = c.height = drawn;
-      const ctx = c.getContext('2d')!;
-      ctx.drawImage(renderer.domElement, 0, 0);
-      return { ctx, data: ctx.getImageData(0, 0, drawn, drawn) };
-    };
-    const onBlack = snap('#000000').data.data;
-    const white = snap('#ffffff');
-    const out = white.data;
-    const d = out.data;
-    for (let i = 0; i < d.length; i += 4) {
-      // How much of the background still shows: the difference between the white and black drawings.
-      const through = ((d[i] - onBlack[i]) + (d[i + 1] - onBlack[i + 1]) + (d[i + 2] - onBlack[i + 2])) / (3 * 255);
-      const a = Math.min(1, Math.max(0, 1 - through));
-      // Sharon wants clear to read truly clear on any page: the faint film of reflection across the
-      // face thins toward nothing (a squared, so 17% becomes about 3%), and the glass's light is pure
-      // white, so it can only lighten what's behind it: a light rim on dark pages, nearly invisible on
-      // light ones, never a dark ring.
-      d[i] = d[i + 1] = d[i + 2] = 255;
-      d[i + 3] = Math.round(a ** 2 * 255);
-    }
-    white.ctx.putImageData(out, 0, 0);
-    url = white.ctx.canvas.toDataURL('image/png');
-  } else {
-    renderer.render(scene, camera);
-    url = renderer.domElement.toDataURL('image/png');
-  }
+  renderer.render(scene, camera);
+  const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());
   core.dispose();
   glass.dispose();
+  backdrop?.dispose();
   return url;
 }
 

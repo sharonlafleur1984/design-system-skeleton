@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import type { GlassArt } from '../glass-lens/lens-art';
 import { renderOrb, type OrbLook } from './orb-render';
 import './orb.css';
 
@@ -31,6 +32,11 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   /** Glow (the default): lit from inside, its light spreading over the whole section. Tinted: glass in the page's color, no glow. Clear: completely see-through glass, no glow. */
   look?: OrbLook;
   /**
+   * The art behind the orb (the same art its section gives the glass lens), so clear glass can bend
+   * the real background. Leave out on a plain background: the section's own color is used.
+   */
+  backdrop?: GlassArt;
+  /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.
    * Leave it out to use the theme's orb color.
    */
@@ -39,7 +45,36 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', look = 'glow', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+/** The first color painted behind an element: its own background, or the nearest one around it. */
+function colorBehind(el: HTMLElement | null) {
+  for (let node = el; node; node = node.parentElement) {
+    const bg = getComputedStyle(node).backgroundColor;
+    if (bg && bg !== 'transparent' && !/rgba\(.*,\s*0\)$/.test(bg)) return bg;
+  }
+  return getComputedStyle(document.documentElement).getPropertyValue('--color-surface-page').trim() || 'white';
+}
+
+/**
+ * Paints the patch of the real background behind the orb's glass, `px` pixels across: the section's
+ * color, then its art. Returns false when the art isn't ready yet (an image still loading).
+ */
+function paintBehind(glass: HTMLElement, art: GlassArt | undefined, px: number): HTMLCanvasElement | false {
+  const section = (glass.closest('.ds-orb') as HTMLElement | null)?.offsetParent as HTMLElement | null;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = px;
+  const ctx = canvas.getContext('2d');
+  if (!ctx || !section) return false;
+  const s = section.getBoundingClientRect();
+  const g = glass.getBoundingClientRect();
+  const k = px / g.width;
+  ctx.setTransform(k, 0, 0, k, -(g.left - s.left) * k, -(g.top - s.top) * k);
+  ctx.fillStyle = colorBehind(section);
+  ctx.fillRect(0, 0, s.width, s.height);
+  if (art && !art.paint(ctx, { width: s.width, height: s.height }, section)) return false;
+  return canvas;
+}
+
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', look = 'glow', backdrop, palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
   const [own, setOwn] = useState(defaultPosition);
   const glassRef = useRef<HTMLSpanElement>(null);
   const [picture, setPicture] = useState<string>();
@@ -51,6 +86,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-mode'] });
     return () => mo.disconnect();
   }, []);
+  const position = controlled ?? own;
+  // Clear glass shows what's behind it, so it redraws as it moves.
+  const where = look === 'clear' ? `${position.x.toFixed(3)},${position.y.toFixed(3)}` : '';
   useEffect(() => {
     const el = glassRef.current;
     const px = Math.round((el?.getBoundingClientRect().width ?? 0) * Math.min(window.devicePixelRatio || 1, 3));
@@ -58,14 +96,23 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     const cs = getComputedStyle(el);
     const c = (part: string) => cs.getPropertyValue(`--orb-color-${part}`).trim();
     let live = true;
-    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') })
+    let behind: HTMLCanvasElement | undefined;
+    if (look === 'clear') {
+      const painted = paintBehind(el, backdrop, px);
+      if (!painted) {
+        // The art isn't ready (an image loading): try again shortly.
+        const t = setTimeout(() => setColorKey((k) => k + 1), 250);
+        return () => clearTimeout(t);
+      }
+      behind = painted;
+    }
+    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') }, behind)
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));
     return () => {
       live = false;
     };
-  }, [size, look, palette, colorKey]);
-  const position = controlled ?? own;
+  }, [size, look, palette, colorKey, where, backdrop]);
   const move = (p: OrbPosition) => {
     if (!controlled) setOwn(p);
     onPositionChange?.(p);
