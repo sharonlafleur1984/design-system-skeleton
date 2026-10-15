@@ -45,84 +45,16 @@ const checkIcon = (
   </svg>
 );
 
-const steps: [string, string, string, string][] = [
-  ['instant', '80ms', 'Press', 'var(--motion-easing-out)'],
-  ['fast', '140ms', 'Hover, color changes, a switch', 'var(--motion-easing-out)'],
-  ['base', '220ms', 'A tab or panel moving into place', 'var(--motion-easing-in-out)'],
-  ['slow', '380ms', 'Fading in, a progress bar filling', 'var(--motion-easing-out)'],
+const steps: [string, string, string, string, string][] = [
+  ['instant', 'Instant', '80ms', 'A press', 'var(--motion-easing-out)'],
+  ['fast', 'Fast', '140ms', 'Hover, a color change, a switch', 'var(--motion-easing-out)'],
+  ['base', 'Base', '220ms', 'A tab or panel moving into place', 'var(--motion-easing-in-out)'],
+  ['slow', 'Slow', '380ms', 'Fading in, a progress bar filling', 'var(--motion-easing-out)'],
 ];
-
-/** The same in every theme: controls use these steps on every page, so a button always feels like a button. Press Play to compare them. */
-export const Timing: StoryObj = {
-  render: function Timing() {
-    const [go, setGo] = useState(false);
-    return (
-      <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
-        <div><Button variant="secondary" icon={playIcon} onPress={() => setGo((g) => !g)}>{go ? 'Reset' : 'Play'}</Button></div>
-        {steps.map(([name, ms, use, ease]) => (
-          <div key={name} style={{ display: 'grid', gridTemplateColumns: 'minmax(180px, 1fr) 2fr', gap: 'var(--space-4)', alignItems: 'center' }}>
-            <div>
-              <code style={code}>--motion-duration-{name}</code>
-              <div style={note}>{ms}: {use}</div>
-            </div>
-            <div className={`motion-demo__track${go ? ' motion-demo__track--go' : ''}`} style={{ '--d': `var(--motion-duration-${name})`, '--e': ease } as CSSProperties}>
-              <div className="motion-demo__dot" />
-            </div>
-          </div>
-        ))}
-        <p style={note}>
-          <code style={code}>--motion-easing-out</code> for things entering and hovering. <code style={code}>--motion-easing-in-out</code> for changes that go both ways.{' '}
-          <code style={code}>--motion-stagger</code> (60ms) is the step between items in a list.
-        </p>
-      </div>
-    );
-  },
-};
-
-/**
- * One case: a label saying when it applies, its name, and what happens, each in the theme's own type
- * styles, then a demo. `reduced` shows the demo as it plays with Reduce motion on.
- */
-function MoodPanel({ mood, label, title, about, reduced = false }: { mood: 'calm' | 'energetic'; label: string; title: string; about: string; reduced?: boolean }) {
-  const [run, setRun] = useState(0);
-  const [won, setWon] = useState(0);
-  return (
-    <section data-motion={mood} className={reduced ? 'motion-demo--reduced' : undefined} style={{ flex: '1 1 280px', display: 'grid', gap: 'var(--space-4)', alignContent: 'start' }}>
-      <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
-        <Label>{label}</Label>
-        <Heading level={3} variant="heading">
-          {title}
-        </Heading>
-        <Body>{about}</Body>
-      </div>
-      {/* A button set: the label says these are things to try, and real buttons with icons read as actions, not tags. */}
-      <div role="group" aria-label="Try it" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
-        <Label>Try it</Label>
-        <Button icon={playIcon} onPress={() => setRun((r) => r + 1)}>
-          Play arrival
-        </Button>
-        <Button variant="secondary" icon={checkIcon} onPress={() => setWon((w) => w + 1)}>
-          Finish something
-        </Button>
-      </div>
-      <div key={run} className={run ? 'motion-demo__play' : undefined} style={{ display: 'grid', gap: 'var(--space-3)' }}>
-        {['Item 1', 'Item 2', 'Item 3'].map((s, i) => (
-          <div key={s} className="motion-demo__card" style={{ '--i': i } as CSSProperties}>{s}</div>
-        ))}
-      </div>
-      <div style={{ minHeight: 40 }}>
-        <span key={won} className={`motion-demo__badge${won ? ' motion-demo__badge--won' : ''}`}>
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          Done
-        </span>
-      </div>
-    </section>
-  );
-}
 
 const moods = {
   calm: { title: 'Calm', about: 'Things settle into place and never bounce. For everyday pages: settings, lists, reading.' },
-  energetic: { title: 'Energetic', about: 'Things snap in, overshoot and settle. For earned moments, like finishing something.' },
+  energetic: { title: 'Energetic', about: 'Things snap in, overshoot a little and settle. For earned moments, like finishing something.' },
 } as const;
 type Mood = keyof typeof moods;
 
@@ -139,42 +71,181 @@ function useThemeMood(theme: string) {
   return [ref, mood] as const;
 }
 
-function MoodsView() {
-  const theme = themeNames[singleTheme(useContext(ThemeContext))];
-  const [ref, own] = useThemeMood(theme);
-  const other: Mood = own === 'calm' ? 'energetic' : 'calm';
+const useThemeName = () => themeNames[singleTheme(useContext(ThemeContext))];
+
+/** A label, a heading and a line of text, each in the theme's own type styles. */
+function Intro({ label, title, about }: { label: string; title: string; about: string }) {
   return (
-    <div ref={ref} style={{ display: 'grid', gap: 'var(--space-7)' }}>
-      <MoodPanel mood={own} label="Default" title={moods[own].title} about={`${moods[own].about} Every page in ${theme} moves this way unless it asks for the other mood.`} />
-      <MoodPanel mood={other} label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} A page turns it on with data-motion="${other}".`} />
+    <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
+      <Label>{label}</Label>
+      <Heading level={3} variant="heading">
+        {title}
+      </Heading>
+      <Body>{about}</Body>
     </div>
   );
 }
 
 /**
- * Arrivals and celebrations use a mood, calm or energetic. Each theme has a default (Spotlight: energetic,
- * Sunrise: calm, Fireside: energetic for now, borrowed from Spotlight). Under it, the other mood, which any
- * page can ask for with data-motion. Controls never change with the mood. Pick Compare all to see every
- * theme's default side by side.
+ * One set of buttons for the demos beside it, so both play at the same moment: two motions are only
+ * comparable side by side, while the first is still fresh. The labels say what you'll see.
  */
-export const Moods: StoryObj = {
-  render: () => <MoodsView />,
+function useDemoControls() {
+  const [arrive, setArrive] = useState(0);
+  const [celebrate, setCelebrate] = useState(0);
+  const controls = (
+    <div role="group" aria-label="Show the motion" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+      <Button icon={playIcon} onPress={() => setArrive((n) => n + 1)}>
+        Show arrival
+      </Button>
+      <Button variant="secondary" icon={checkIcon} onPress={() => setCelebrate((n) => n + 1)}>
+        Show celebration
+      </Button>
+    </div>
+  );
+  return { controls, arrive, celebrate };
+}
+
+/** The demo: three items that arrive, and a badge that celebrates. */
+function Demo({ mood, arrive, celebrate, reduced = false }: { mood: Mood; arrive: number; celebrate: number; reduced?: boolean }) {
+  return (
+    <div data-motion={mood} className={reduced ? 'motion-demo--reduced' : undefined} style={{ display: 'grid', gap: 'var(--space-3)' }}>
+      <div key={arrive} className={arrive ? 'motion-demo__play' : undefined} style={{ display: 'grid', gap: 'var(--space-3)' }}>
+        {['Item 1', 'Item 2', 'Item 3'].map((s, i) => (
+          <div key={s} className="motion-demo__card" style={{ '--i': i } as CSSProperties}>
+            {s}
+          </div>
+        ))}
+      </div>
+      <div style={{ minHeight: 40 }}>
+        <span key={celebrate} className={`motion-demo__badge${celebrate ? ' motion-demo__badge--won' : ''}`}>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16">
+            <path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Done
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// Two columns whose demos start on the same line, whatever the length of the text above them, so the
+// motions line up for comparing. Narrow screens stack them.
+const pair: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', columnGap: 'var(--space-6)', rowGap: 'var(--space-4)' };
+const half: CSSProperties = { display: 'grid', gridTemplateRows: 'subgrid', gridRow: 'span 2', rowGap: 'var(--space-4)', alignContent: 'start' };
+
+/** The three things most people need, before any detail. */
+export const AtAGlance: StoryObj = {
+  name: 'At a glance',
+  render: function AtAGlance() {
+    const theme = useThemeName();
+    const [ref, mood] = useThemeMood(theme);
+    const rows: [string, string, string][] = [
+      ['How long things take', '80 to 380ms', 'The same in every theme, so a button always feels like a button.'],
+      [`How things arrive in ${theme}`, moods[mood].title, moods[mood].about],
+      ['With Reduce motion on', 'Fade only', 'Nothing slides, bounces or grows, in every theme.'],
+    ];
+    return (
+      <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-5)' }}>
+        {rows.map(([label, title, about]) => (
+          <Intro key={label} label={label} title={title} about={about} />
+        ))}
+      </div>
+    );
+  },
+};
+
+/** How long controls take to move, the same in every theme. Press Play to run all four at once and compare them. */
+export const Timing: StoryObj = {
+  render: function Timing() {
+    const [go, setGo] = useState(false);
+    return (
+      <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+        <div>
+          <Button variant="secondary" icon={playIcon} onPress={() => setGo((g) => !g)}>
+            {go ? 'Reset' : 'Play'}
+          </Button>
+        </div>
+        {steps.map(([token, name, ms, use, ease]) => (
+          <div key={token} style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) 2fr', gap: 'var(--space-4)', alignItems: 'center' }}>
+            <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              <Body>
+                <strong>{name}, {ms}:</strong> {use}
+              </Body>
+              <code style={code}>--motion-duration-{token}</code>
+            </div>
+            <div className={`motion-demo__track${go ? ' motion-demo__track--go' : ''}`} style={{ '--d': `var(--motion-duration-${token})`, '--e': ease } as CSSProperties}>
+              <div className="motion-demo__dot" />
+            </div>
+          </div>
+        ))}
+        <p style={note}>
+          Things entering or hovered use <code style={code}>--motion-easing-out</code>; changes that go both ways use <code style={code}>--motion-easing-in-out</code>. Items in a list arrive{' '}
+          <code style={code}>--motion-stagger</code> (60ms) apart.
+        </p>
+      </div>
+    );
+  },
 };
 
 /**
- * When someone turns on Reduce motion in their device settings
- * ([where to find it on each device, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)),
- * both moods only fade, in every theme. Controls keep their short fades, so a change is never silent.
+ * How things arrive and celebrate. The theme's default sits beside the other mood, and one set of buttons plays
+ * both, so you see the difference as it happens. Controls never change with the mood. Pick Compare all to see every
+ * theme's default.
+ */
+export const Moods: StoryObj = {
+  render: function Moods() {
+    const theme = useThemeName();
+    const [ref, own] = useThemeMood(theme);
+    const other: Mood = own === 'calm' ? 'energetic' : 'calm';
+    const { controls, arrive, celebrate } = useDemoControls();
+    return (
+      <div ref={ref} style={{ display: 'grid', gap: 'var(--space-5)' }}>
+        {controls}
+        <div style={pair}>
+          <section style={half}>
+            <Intro label="Default" title={moods[own].title} about={`${moods[own].about} Every page in ${theme} moves this way.`} />
+            <Demo mood={own} arrive={arrive} celebrate={celebrate} />
+          </section>
+          <section style={half}>
+            <Intro label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} Turned on with data-motion="${other}".`} />
+            <Demo mood={other} arrive={arrive} celebrate={celebrate} />
+          </section>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * What changes when someone turns on Reduce motion in their device settings
+ * ([where to find it on each device, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)).
+ * Beside the theme's default, one set of buttons plays both. Controls keep their short fades, so a change is never silent.
  */
 export const ReducedMotion: StoryObj = {
   name: 'Reduced motion',
-  render: () => (
-    <MoodPanel
-      mood="energetic"
-      reduced
-      label="When someone turns on Reduce motion"
-      title="Fade only"
-      about="Both moods only fade: nothing slides, bounces or grows. People turn it on in their device settings, under Accessibility: Motion on iPhone and iPad, Display on a Mac, Visual effects on Windows."
-    />
-  ),
+  render: function ReducedMotion() {
+    const theme = useThemeName();
+    const [ref, own] = useThemeMood(theme);
+    const { controls, arrive, celebrate } = useDemoControls();
+    return (
+      <div ref={ref} style={{ display: 'grid', gap: 'var(--space-5)' }}>
+        {controls}
+        <div style={pair}>
+          <section style={half}>
+            <Intro label="Default" title={moods[own].title} about={`How ${theme} moves for most people.`} />
+            <Demo mood={own} arrive={arrive} celebrate={celebrate} />
+          </section>
+          <section style={half}>
+            <Intro
+              label="When someone turns on Reduce motion"
+              title="Fade only"
+              about="Nothing slides, bounces or grows. The setting is under Accessibility: Motion on iPhone and iPad, Display on a Mac, Visual effects on Windows."
+            />
+            <Demo mood={own} arrive={arrive} celebrate={celebrate} reduced />
+          </section>
+        </div>
+      </div>
+    );
+  },
 };
