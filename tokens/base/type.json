@@ -46,6 +46,13 @@
       "$type": "string",
       "$value": "auto",
       "$description": "Fonts with an optical-size axis (Newsreader, Fraunces) use the cut drawn for the size they're shown at: finer details on big titles, sturdier shapes on small text. auto is the browser's default; the text style classes set it so nothing switches it off by accident."
+    },
+    "line-height": {
+      "glyph": {
+        "$type": "number",
+        "$value": 1,
+        "$description": "A single icon or symbol set as text, like the callout's ! or a tile's star: the line is exactly as tall as the glyph, so it centers in its box. Never for words."
+      }
     }
   },
   "type": {

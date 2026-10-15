@@ -131,12 +131,15 @@
    whose heading is no bigger than its body text) (Sharon, Oct 14). Long words wrap inside the tile. */
 .ds-tile__title {
   --_t: var(--action-tile-title-large);
-  font-family: var(--type-heading-heading-family);
-  font-size: calc(var(--type-heading-heading-size) * (1 - var(--_t)) + var(--type-heading-title-size) * var(--_t));
+  --_size: calc(var(--type-heading-heading-size) * (1 - var(--_t)) + var(--type-heading-title-size) * var(--_t));
   --_weight: calc(var(--type-heading-heading-weight) * (1 - var(--_t)) + var(--type-heading-title-weight) * var(--_t));
+  --_line-height: calc(var(--type-heading-heading-line-height) * (1 - var(--_t)) + var(--type-heading-title-line-height) * var(--_t));
+  --_tracking: calc(var(--type-heading-heading-letter-spacing) * (1 - var(--_t)) + var(--type-heading-title-letter-spacing) * var(--_t));
+  font-family: var(--type-heading-heading-family);
+  font-size: var(--_size);
   font-weight: var(--_weight);
-  line-height: calc(var(--type-heading-heading-line-height) * (1 - var(--_t)) + var(--type-heading-title-line-height) * var(--_t));
-  letter-spacing: calc(var(--type-heading-heading-letter-spacing) * (1 - var(--_t)) + var(--type-heading-title-letter-spacing) * var(--_t));
+  line-height: var(--_line-height);
+  letter-spacing: var(--_tracking);
 }
 .ds-tile__label,
 .ds-tile__title,
@@ -274,7 +277,7 @@
   color: var(--color-accent-text);
   /* The standard icon size in every theme, so the mark never outgrows the tile's label (Sharon, Oct 14). */
   font-size: var(--control-icon);
-  line-height: 1;
+  line-height: var(--font-line-height-glyph);
   visibility: hidden;
 }
 .ds-tile__star:empty::before {
