@@ -1,22 +1,25 @@
-# Approves new screenshots. Add the "update-screenshots" label to a pull request and
-# this takes fresh screenshots of every story, commits them to the pull request's
-# branch, reruns the checks on that commit, and removes the label. It then posts a comment on the
-# pull request (scripts/screenshot-summary.mjs) showing the biggest changes before and after, with a
-# link to each story's preview. Look there before merging.
+# Approves new screenshots. Tick "Approve the new screenshots" in a pull request's description, or add
+# the "update-screenshots" label, and this takes fresh screenshots of every story, commits them to the
+# pull request's branch, reruns the checks on that commit, and unticks the box (or removes the label).
+# It then posts a comment on the pull request (scripts/screenshot-summary.mjs) showing the biggest
+# changes before and after, with a link to each story's preview. Look there before merging.
+#
+# The box only counts when someone ticks it: a description edit that leaves it ticked, or unticks it,
+# does nothing. Only people who can edit the pull request can tick it.
 #
 # Like the visual check, the screenshots are split across 4 machines that run at the same time.
 # Each one hands back only the screenshots that changed, and the "update" job commits them together.
 name: Update screenshots
 on:
   pull_request:
-    types: [labeled]
+    types: [labeled, edited]
 permissions:
   contents: write
   pull-requests: write
   actions: write
 jobs:
   shard:
-    if: github.event.label.name == 'update-screenshots'
+    if: (github.event.action == 'labeled' && github.event.label.name == 'update-screenshots') || (github.event.action == 'edited' && github.event.changes.body != null && contains(github.event.pull_request.body, '- [x] Approve the new screenshots') && !contains(github.event.changes.body.from, '- [x] Approve the new screenshots'))
     runs-on: ubuntu-latest
     container: mcr.microsoft.com/playwright:v1.56.1-noble
     strategy:
@@ -51,7 +54,7 @@ jobs:
 
   update:
     needs: shard
-    if: always() && github.event.label.name == 'update-screenshots'
+    if: always() && ((github.event.action == 'labeled' && github.event.label.name == 'update-screenshots') || (github.event.action == 'edited' && github.event.changes.body != null && contains(github.event.pull_request.body, '- [x] Approve the new screenshots') && !contains(github.event.changes.body.from, '- [x] Approve the new screenshots')))
     runs-on: ubuntu-latest
     steps:
       - if: needs.shard.result != 'success'
@@ -111,3 +114,15 @@ jobs:
         run: |
           curl -s -X DELETE -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/update-screenshots"
+      # Unticks the box, so it can be ticked again for the next round. Reads the description fresh,
+      # so an edit made while the screenshots were being taken isn't lost.
+      - name: Untick the box
+        if: always() && github.event.action == 'edited'
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
+        run: |
+          body=$(curl -fsS -H "Authorization: Bearer $TOKEN" "$URL" | jq -r '.body // ""')
+          new=$(printf '%s' "$body" | sed 's/- \[x\] Approve the new screenshots/- [ ] Approve the new screenshots/')
+          curl -fsS -X PATCH -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" "$URL" \
+            -d "$(jq -nc --arg body "$new" '{body: $body}')" > /dev/null
