@@ -2,19 +2,6 @@ Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fir
 
 Supported by React Aria components and semantic tokens, Lantern plays with light and glass, gently encouraging them to bring out the best in each other, with every component visibly responding to a single source of light.
 
-## How Lantern works
-
-Lantern wasn't created in Figma. It was built straight from the code.
-
-1. The tokens, components and docs all start in a GitHub repo.
-2. Builds with Claude turn them into this page, live previews and all.
-3. Changes made here go back as a pull request, so nothing drifts.
-4. Once merged, the next build brings them back.
-
-Interact with the entire component library in [Storybook](https://designsystemskeleton.netlify.app).
-
-The full story behind the journey can be found in the [design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton/wiki) wiki page.
-
 ## Themes
 
 | Theme | Modes | Look |
@@ -31,7 +18,9 @@ The full story behind the journey can be found in the [design-system-skeleton](h
 - Use React Aria's names: Tag, Toggle button group, Separator and Progress bar. Not chip, segmented control, divider or progress meter.
 - Use the same five status names everywhere (info, warning, success, error and neutral).
 
-## Color
+## Foundations
+
+### Color
 
 - Set text in `color-ink-primary` on `color-surface-page` or `color-surface-card`. Set quieter text in `color-ink-secondary`.
 - Set text on artwork, like Spotlight's header and glass on it, in `color-ink-on-art`. It never flips in dark mode.
@@ -47,7 +36,7 @@ Each status has four tokens, and always comes with an icon or a word.
 | `-accent-strong` | The border |
 | `-ink` | The text |
 
-## Type
+### Type
 
 Each theme has its own faces. Use the text styles by role (display, heading, body, label, data, code), never a raw size.
 
@@ -57,19 +46,19 @@ Each theme has its own faces. Use the text styles by role (display, heading, bod
 | Sunrise | Fraunces | Figtree | The device's mono font |
 | Fireside | Newsreader | Instrument Sans | JetBrains Mono |
 
-## Space, corners and shadow
+### Space, corners and shadow
 
 - Take space from the `space-` steps, and page gutters and section gaps from the `layout-` tokens.
 - Each theme picks its roundness, and every corner follows the component's size (`radius-` tokens).
 - Use shadows for things that float or lift, like a hovered tile (`shadow-hover`) or a popover (`shadow-float`).
 
-## Light and glass
+### Light and glass
 
 - A page has one light, an orb, toward the bottom right. Glass rims, highlights and shadows all come from it.
 - The light is only ever an orb. Rays belong to After Graduation's own header, not the system.
 - Glass goes on any background except other glass. With Reduce transparency or More contrast, it turns solid.
 
-## Motion
+### Motion
 
 - Hover fades in over 140ms, a press over 80ms, and a panel opens over 220ms.
 - With Reduce motion, only color fades are left.
@@ -102,3 +91,18 @@ Every component has one of four statuses.
 - **Not started:** planned, nothing built yet.
 
 {{STATUS_TABLE}}
+
+## How Lantern works
+
+Lantern wasn't created in Figma. It was built straight from the code.
+
+1. The tokens, components and docs all start in a GitHub repo.
+2. Builds with Claude turn them into this page, live previews and all.
+3. Changes made here go back as a pull request, so nothing drifts.
+4. Once merged, the next build brings them back.
+
+Interact with the entire component library in [Storybook](https://designsystemskeleton.netlify.app).
+
+The full story behind the journey can be found in the [design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton/wiki) wiki page.
+
+Updated {{UPDATED}}

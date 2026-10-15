@@ -38,6 +38,9 @@ for (const t of repoThemes) {
     lanternThemes.push({ id: `${slug}-dark`, name: `${t.name} dark`, repo: t.id, file: `build/json-dark/${t.id}.json` });
   }
 }
+// Light looks and Fireside first, so Lantern never opens on Spotlight dark; that look waits for the glass parts.
+const order = ['spotlight', 'sunrise', 'fireside', 'sunrise-dark', 'spotlight-dark'];
+lanternThemes.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 const values = Object.fromEntries(lanternThemes.map((t) => [t.id, json(t.file)]));
 
 // The comment after each variable in the theme CSS says what it's for.
@@ -259,8 +262,8 @@ for (const [name, p] of Object.entries(pages)) {
 // ---- The brand book, the cover and the index.
 const statusRows = Object.entries(pages)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([n, p]) => `| ${n} | ${p.title.split('/')[0]} | ${statusWord[p.status]} | ${p.summary} |`);
-write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Component | Group | Status | What it does |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`));
+  .map(([n, p]) => `| ${n} | ${p.title.split('/')[0]} | \`${statusWord[p.status]}\` | ${p.summary} |`);
+write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Component | Group | Status | Description |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`).replace('{{UPDATED}}', new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })));
 write('components/Cover/preview.html', read('scripts/lantern/cover.html'));
 // Lantern's mark. In the artifact it's an uploaded asset (assets/Logos), so publishing uploads it and records
 // its id in design-system.json's assetGroups; the folder keeps a copy and the group's note.
