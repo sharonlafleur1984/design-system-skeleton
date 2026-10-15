@@ -150,8 +150,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         }
       }
     }
-    // On a background with no color, the light inside is pure white too.
-    renderOrb(px, look, { light: white ? '#ffffff' : c('light'), glow: c('glow'), halo: c('halo'), body: c('body') }, behind)
+    // On a background with no color, the whole ball and the light inside it are white too.
+    const w = (part: string) => (white ? '#ffffff' : c(part));
+    renderOrb(px, look, { light: w('light'), glow: w('glow'), halo: w('halo'), body: w('body') }, behind)
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));
     return () => {

@@ -115,6 +115,8 @@
    way sun lights a surface, so any pattern shows through its tint instead of under a haze (Sharon). */
 .ds-orb-light[data-pattern] {
   mix-blend-mode: screen;
+  /* Strong enough to glow, never so strong it washes the pattern out at the ball (Sharon wants both). */
+  --_strength: calc(1 + var(--_lum, 0) * 0.6);
 }
 
 .ds-orb__glass {
