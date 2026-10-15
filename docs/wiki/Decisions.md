@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D53 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
@@ -63,6 +64,23 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D53 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
+
+- **Decided by:** Sharon, designing the page with Claude on a canvas, and approving the parts list (Oct 15).
+- **A story, not a Docs page:** so Storybook's bottom panel (Controls, Actions, Interactions, Accessibility) works on it. Sidebar entries per part: Overview, Try it out, Usage rules, Accessibility and Related, each opening the one page at that section. The old stories stay as test stories, hidden from the sidebar (tag `!dev`), so screenshot and accessibility tests still run on them. Replaces D52's Docs tab, Examples and the theme picker's Mode and Background.
+- **The order:** Theme and Mode (the page's own light or dark), updated date, name and what it does (the status lives in the table, not up top); Try it out (the part on its own window, left-aligned; Show code and Copy code; then a table of Is it ready to use, When do I use it, When don't I use it, and What codebase it's built with, React Aria or ours, linked); Usage rules (use it for this, don't use it for this); Accessibility (Trigger, Result and Notes); For engineers, folded; Related.
+- **Status:** Ready, Pending, On hold or Not started, a dot and a word. Anything not built shows an empty state in Try it out and "No design yet" until it has one.
+- **Controls:** a plain name with the code name under it, what it does, radio buttons. Every option list ends with All: one All is a labeled row, two a labeled grid, Mode's All shows light and dark windows side by side, and State's All shows rest, hover, pressed, focus, disabled and loading. Page settings: Mode (Light, Dark, Auto: dark 7 PM to 7 AM, System), Background (Spotlight's header art and landscape lanes, Sunrise's marble in all ten colors; hidden for Fireside) and a System choice for every device setting a part reacts to: Motion, Contrast, Transparency.
+- **Glass:** on any background except other glass (PR #71). On header art, a sun you drag moves the art's bright spot and the glass light.
+- **A part with nothing to change** drops the Try it out heading and its sidebar entry, but keeps the part and the table.
+- **Motion:** hover 140ms, press 80ms, code panel opens in 220ms; Reduce motion keeps only color fades.
+- **Compare all:** three equal columns when they fit, otherwise one per row; never two plus one.
+- **Accessibility fixes from the canvas review:** no pale text, white text only on a code bar dark enough for it, check results are words not buttons, every choice group named by its label, the first column of each table as row headings, key styling only on real keys.
+- **Applies to:** every part under Components and Patterns, built or planned. Foundations keep their own layout.
+
+</details>
 
 <details>
 <summary><b>D52 · Oct 15, 2026:</b> One page template for every component's Docs tab</summary>

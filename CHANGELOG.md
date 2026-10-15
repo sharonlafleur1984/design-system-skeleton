@@ -15,6 +15,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Added
 
+- **Storybook: every part has a page.** The component page is a story now, so Controls, Actions, Interactions and Accessibility work on it. Every planned part has a page with its status (Ready, Pending, On hold or Not started), so the sidebar shows the whole library.
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
 - **Card, rebuilt:** a surface with the action tile's look, Solid or Glass, never pressable. Parts with their type set by role: `CardHeader` (icon, label and title), `CardBody` and `CardFooter` (buttons and a `note`).

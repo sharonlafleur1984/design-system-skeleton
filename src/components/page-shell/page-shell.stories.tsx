@@ -5,19 +5,20 @@ import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '
 import { afterGraduationOnly } from '../product-only';
 import { choice, hidden, setting, words } from '../story-helpers';
 import { pageShellPage } from './page-shell.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof PageShell> = {
   title: 'Components/Page shell',
   component: PageShell,
-  tags: ['autodocs'],
-  args: { title: 'Page title', subtitle: 'Subtitle' },
+  args: { title: 'Page title', subtitle: 'Subtitle', appearance: 'glass', ...pageArgs } as Meta<typeof PageShell>['args'],
   argTypes: {
-    title: words('Title', "The product name: the page's only h1"),
-    subtitle: words('Subtitle', 'One line under the title, like a greeting'),
-    appearance: choice('Appearance', 'Glass bends the header art at the tiles\' edges; Solid gives them the card surface', ['glass', 'solid']),
-    navigation: setting('Navigation', 'Page-switching tiles in the header; the bottom bar on phones', { control: false }),
-    actions: setting('Actions', 'App-wide actions at the top right, like Settings', { control: false }),
-    children: setting('Page content', 'The page itself, on the sheet', { control: false }),
+    title: words('Title', "The product name: the page's only h1\n\n`title`"),
+    subtitle: words('Subtitle', 'One line under the title, like a greeting\n\n`subtitle`'),
+    appearance: choice('Style', 'Glass bends the header art at the tiles\' edges; Solid gives them the card surface\n\n`appearance`', ['solid', 'glass']),
+    navigation: setting('Navigation', 'Page-switching tiles in the header; the bottom bar on phones\n\n`navigation`', { control: false }),
+    actions: setting('Actions', 'App-wide actions at the top right, like Settings\n\n`actions`', { control: false }),
+    children: setting('Page content', 'The page itself, on the sheet\n\n`children`', { control: false }),
+    ...pageArgTypes({ glass: true }),
     material: hidden,
     glassLens: hidden,
     className: hidden,
@@ -28,6 +29,15 @@ const meta: Meta<typeof PageShell> = {
 };
 export default meta;
 type Story = StoryObj<typeof PageShell>;
+
+/** Page shell's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 // Bottom bar icons for the sample (simple line icons, 24 x 24, drawn in the text color).
 const icon = (d: ReactNode) => (
@@ -70,6 +80,7 @@ const tiles = [
  * toolbar to see them become the bottom bar. Replays its entrance each time it opens.
  */
 export const WithNavigation: Story = {
+  tags: ['!dev'],
   name: 'With navigation',
   render: (args) => (
     <ActionTileSwitch defaultSelectedKey="explore">
@@ -95,6 +106,7 @@ export const WithNavigation: Story = {
 
 /** Just the title and the sheet, with no navigation: for an app with one page. */
 export const TitleOnly: Story = {
+  tags: ['!dev'],
   args: {
     title: 'Page title',
     subtitle: 'Subtitle',

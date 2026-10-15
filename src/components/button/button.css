@@ -1,6 +1,6 @@
 /* Button. Values come from tokens only, so each product theme restyles it.
    React Aria sets the state attributes: data-hovered, data-pressed, data-focus-visible,
-   data-disabled and data-pending. data-state="hover|pressed" forces a state for Storybook's gallery. */
+   data-disabled and data-pending. data-state="hover|pressed|focus" forces a state for Storybook's gallery. */
 .ds-button {
   --_bg: transparent;
   --_ink: var(--color-accent-text);
@@ -50,7 +50,8 @@
   display: none;
 }
 
-.ds-button[data-focus-visible] {
+.ds-button[data-focus-visible],
+.ds-button[data-state='focus'] {
   outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: var(--focus-ring-offset);
 }

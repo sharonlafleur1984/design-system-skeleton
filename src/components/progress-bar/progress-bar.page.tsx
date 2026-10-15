@@ -1,5 +1,4 @@
 import type { ComponentPageInfo } from '../../../.storybook/component-page';
-import { DocLink, docsPath } from '../../../.storybook/component-page';
 import { ProgressBar } from './progress-bar';
 
 const wide = { inlineSize: '100%' } as const;
@@ -8,14 +7,12 @@ const wide = { inlineSize: '100%' } as const;
 export const progressBarPage: ComponentPageInfo = {
   updated: '2026-10-15',
   summary: 'Shows how much of something is done.',
-  reactAria: { name: 'ProgressBar', href: 'https://react-aria.adobe.com/ProgressBar' },
   status: 'ready',
+  builtWith: { reactAria: 'ProgressBar' },
   useFor: ['Progress toward a clear finish line, like a checklist.'],
   useElse: [
-    'Loading: a progress bar is for progress people make, not waiting.',
-    <>
-      A single yes or no: use <DocLink href={docsPath('Components/Checkbox')}>Checkbox</DocLink>.
-    </>,
+    { job: 'Loading: a progress bar is for progress people make, not waiting' },
+    { job: 'A single yes or no', instead: { name: 'Checkbox', title: 'Components/Checkbox' } },
   ],
   do: {
     example: (
@@ -23,7 +20,7 @@ export const progressBarPage: ComponentPageInfo = {
         <ProgressBar value={3} max={5} label="Steps done" showLabel />
       </div>
     ),
-    text: 'Say what is being measured, with the label and value above the bar.',
+    rules: ['Say what is being measured, with the label and value above the bar.'],
   },
   dont: {
     example: (
@@ -31,9 +28,9 @@ export const progressBarPage: ComponentPageInfo = {
         <ProgressBar value={3} max={5} label="Steps done" />
       </div>
     ),
-    text: 'A bar with no label anywhere nearby.',
+    rules: ['A bar with no label anywhere nearby.'],
   },
-  keys: [{ keys: ['Tab'], does: "Skips it: it isn't interactive" }],
+  keys: [{ keys: ['Tab'], result: "Skips it: it isn't interactive." }],
   screenReader: { pattern: '[Label], progress bar, [value]', example: 'Steps done, progress bar, 3 of 5' },
   accessibility: [
     'The label is always read by screen readers, even when showLabel is off.',
@@ -42,8 +39,8 @@ export const progressBarPage: ComponentPageInfo = {
   imports: ['ProgressBar'],
   tokens: ['--control-meter', '--radius-control', '--color-surface-sunken', '--color-accent-base', '--font-family-data', '--motion-duration-slow'],
   related: [
-    { name: 'Checkbox', href: docsPath('Components/Checkbox') },
-    { name: 'Card', href: docsPath('Components/Card') },
-    { name: 'Motion', href: docsPath('Foundations/Motion') },
+    { name: 'Checkbox', title: 'Components/Checkbox' },
+    { name: 'Card', title: 'Components/Card' },
+    { name: 'Motion', title: 'Foundations/Motion' },
   ],
 };

@@ -7,7 +7,8 @@ import { expect, test } from '@playwright/test';
 
 type Entry = { id: string; type: string; title: string; tags?: string[] };
 const index = JSON.parse(readFileSync('storybook-static/index.json', 'utf8')) as { entries: Record<string, Entry> };
-const stories = Object.values(index.entries).filter((e) => e.type === 'story');
+// Component pages (tagged page) are left out: they hold the same examples as the test stories, plus words.
+const stories = Object.values(index.entries).filter((e) => e.type === 'story' && !(e.tags ?? []).includes('page'));
 
 const screens = { phone: 390, tablet: 768, desktop: 1280 } as const;
 // Every theme, from the token build (each tokens/themes/<id>/theme.json).

@@ -6,15 +6,26 @@ import { BothThemes, Row, choice, hidden, onOff, setting, storyIcons, words } fr
 import { cardPage } from './card.page';
 import type { Appearance } from '../material';
 import type { IconPosition } from '../tile-header';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
-  tags: ['autodocs'],
+  args: {
+    appearance: 'solid',
+    children: (
+      <>
+        <CardHeader label="Label" title="Title" />
+        <CardBody>Body text.</CardBody>
+      </>
+    ),
+    ...pageArgs,
+  } as Meta<typeof Card>['args'],
   argTypes: {
-    appearance: choice('Appearance', 'Solid, or clear glass that takes its light from the page', ['solid', 'glass']),
-    as: setting('Element', 'The HTML element, like section or article', { control: false }),
-    children: setting('Parts', 'CardHeader, CardBody and CardFooter, or anything else', { control: false }),
+    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page\n\n`appearance`', ['solid', 'glass']),
+    as: setting('Element', 'The HTML element, like section or article\n\n`as`', { control: false }),
+    children: setting('Parts', 'CardHeader, CardBody and CardFooter, or anything else\n\n`children`', { control: false }),
+    ...pageArgTypes({ glass: true }),
     material: hidden,
     variant: hidden,
     interactive: hidden,
@@ -24,6 +35,15 @@ const meta: Meta<typeof Card> = {
 };
 export default meta;
 type Story = StoryObj<typeof Card>;
+
+/** Card's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 4)), 1fr))', gap: 'var(--space-3)', flex: '1 1 auto' };
 
@@ -47,6 +67,7 @@ type PlaygroundArgs = {
 
 /** Every setting, in the Controls tab. */
 export const Playground: StoryObj<PlaygroundArgs> = {
+  tags: ['!dev'],
   args: { appearance: 'solid', showIcon: true, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Title', showBody: true, showButton: true, showNote: true },
   argTypes: {
     showIcon: onOff('Icon', 'An icon in the header, in an icon tile'),
@@ -73,6 +94,7 @@ export const Playground: StoryObj<PlaygroundArgs> = {
 
 /** Solid (the theme's card surface, the starting look) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
 export const SolidAndGlass: Story = {
+  tags: ['!dev'],
   name: 'Solid and glass',
   render: () => (
     <BothThemes>
@@ -93,6 +115,7 @@ export const SolidAndGlass: Story = {
 
 /** The parts, alone and together: header, body and footer. Use only the ones the content needs. */
 export const Parts: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <div style={grid}>
@@ -117,6 +140,7 @@ export const Parts: Story = {
 
 /** Icons in the header: on top or at the start, with a soft background (filled) or without (plain). */
 export const Icons: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       {(['top', 'start'] as IconPosition[]).map((position) => (
@@ -137,6 +161,7 @@ export const Icons: Story = {
 
 /** A card that holds only an empty state: what's missing, and the one action that fills it. */
 export const EmptyState: Story = {
+  tags: ['!dev'],
   name: 'Empty state',
   render: () => (
     <BothThemes>

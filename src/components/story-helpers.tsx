@@ -387,9 +387,10 @@ export const storyIcons = {
  */
 export const setting = (name: string, description: string, extra: Record<string, unknown> = {}) => ({ name, description, ...extra });
 export const onOff = (name: string, description: string) =>
-  setting(name, description, { control: { type: 'inline-radio', labels: { false: 'Off', true: 'On' } }, options: [false, true] });
+  setting(name, description, { control: { type: 'inline-radio', labels: { false: 'Off', true: 'On', all: 'All' } }, options: [false, true, 'all'] });
+/** Every option list ends with All, which the component page shows as every choice at once. */
 export const choice = (name: string, description: string, options: string[]) =>
-  setting(name, description, { control: { type: 'inline-radio', labels: Object.fromEntries(options.map((o) => [o, o[0].toUpperCase() + o.slice(1)])) }, options });
+  setting(name, description, { control: { type: 'inline-radio', labels: { ...Object.fromEntries(options.map((o) => [o, o[0].toUpperCase() + o.slice(1)])), all: 'All' } }, options: [...options, 'all'] });
 /** A setting typed as words, like a label. */
 export const words = (name: string, description: string) => setting(name, description, { control: 'text' });
 /** Hides a prop from Controls and the props table: deprecated aliases and Storybook-only props. */
