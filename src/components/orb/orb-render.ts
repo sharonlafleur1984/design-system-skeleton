@@ -19,9 +19,9 @@ export interface OrbColors {
 
 const LOOKS = {
   // Glows: the light is inside the ball, a bright core shining out through clear glass, over the real
-  // background, so the ball is see-through around its light. The core is half white, half the lightest
-  // step of the page's color (as the focus glow, D45); the glass glows only faintly in it.
-  glow: { core: 0.55, coreWhite: 0.5, emissive: 0.25, attenuation: 4, seeThrough: false },
+  // background, so the ball is see-through around its light. The core is 75% white, 25% the lightest
+  // step of the page's color; the glass glows only faintly in it.
+  glow: { core: 0.55, coreWhite: 0.75, emissive: 0.25, attenuation: 4, seeThrough: false },
   // Tinted glass: you look through glass in the page's color to a small bright core.
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
   // Completely clear: colorless glass with no core, with the real background behind it bent through.
@@ -134,7 +134,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
-    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : color(colors.glow),
+    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.75) : color(colors.glow),
     emissiveIntensity: l.emissive,
     // Clear glass reflects its studio at full, real strength: about 4% face-on, nearly all at the edge.
     envMapIntensity: l.seeThrough ? 1 : 0.7,
