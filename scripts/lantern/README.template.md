@@ -8,9 +8,9 @@ Supported by React Aria components and semantic tokens, Lantern plays with light
 
 | Theme | Modes | Look |
 | --- | --- | --- |
-| Spotlight | Light, Dark, Auto, System | Crimson on warm white, with anime styling and visuals |
-| Sunrise | Light, Dark, Auto, System | Glass on marble, an experiment with light and glass |
-| Fireside | Light, Dark, Auto, System | A simpler approach: basic components with subtle glass accents |
+| [Spotlight](https://designsystemskeleton.netlify.app/?path=/story/foundations-colors--palette&globals=theme:after-graduation) | Light, Dark, Auto, System | Crimson on warm white, with anime styling and visuals |
+| [Sunrise](https://designsystemskeleton.netlify.app/?path=/story/foundations-colors--palette&globals=theme:life-hub) | Light, Dark, Auto, System | Glass on marble, an experiment with light and glass |
+| [Fireside](https://designsystemskeleton.netlify.app/?path=/story/foundations-colors--palette&globals=theme:designer-toolkit) | Light, Dark, Auto, System | A simpler approach: basic components with subtle glass accents |
 
 ## Foundations
 
