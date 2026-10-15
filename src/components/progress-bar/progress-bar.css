@@ -22,7 +22,7 @@
 .ds-progress__track {
   block-size: var(--control-meter);
   overflow: hidden;
-  border-radius: var(--radius-pill);
+  border-radius: calc(var(--control-meter) * var(--corner-control)); /* Follows the theme's roundness (D49). */
   background: var(--color-surface-sunken); /* Figma uses surface/page, which disappears on a page background */
 }
 

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Switch as AriaSwitch, type SwitchProps as AriaSwitchProps } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import './switch.css';
 
 // Mirrors the Figma "Switch" set: checked (true, false).

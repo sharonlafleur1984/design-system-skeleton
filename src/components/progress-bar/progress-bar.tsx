@@ -1,5 +1,6 @@
 import { ProgressBar as AriaProgressBar, type ProgressBarProps as AriaProgressBarProps } from 'react-aria-components';
 import './progress-bar.css';
+import '../corners.css';
 
 // A thin bar showing how much is done (Figma: "ProgressMeter"). Built on React Aria's ProgressBar,
 // which gives it role="progressbar", the value range and the spoken value.
