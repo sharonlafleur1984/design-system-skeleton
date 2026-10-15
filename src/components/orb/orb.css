@@ -101,9 +101,10 @@
   );
 }
 
-/* A plain light or dark background has no color to blend with, so the light is pure white. */
+/* A plain light or dark background has no color to blend with: the theme's plain light (pure white, or
+   Fireside's warm white). */
 .ds-orb-light[data-neutral] {
-  --_light: var(--orb-shine-pool);
+  --_light: var(--orb-color-plain);
 }
 .ds-orb-light--small {
   --_size: var(--orb-size-small);

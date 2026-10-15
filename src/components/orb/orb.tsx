@@ -150,8 +150,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         }
       }
     }
-    // On a background with no color, the whole ball and the light inside it are white too.
-    const w = (part: string) => (white ? '#ffffff' : c(part));
+    // On a background with no color, the whole ball and its light are the theme's plain light too.
+    const plainLight = cs.getPropertyValue('--orb-color-plain').trim() || '#ffffff';
+    const w = (part: string) => (white ? plainLight : c(part));
     renderOrb(px, look, { light: w('light'), glow: w('glow'), halo: w('halo'), body: w('body') }, behind)
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));

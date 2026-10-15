@@ -98,6 +98,7 @@
   "orb-color-halo": "#c7af9a",
   "orb-color-body": "#a5917f",
   "orb-color-shade": "#6b5e52",
+  "orb-color-plain": "#f9f0e9",
   "radius-number": "0px",
   "radius-xs": "4px",
   "radius-sm": "8px",
