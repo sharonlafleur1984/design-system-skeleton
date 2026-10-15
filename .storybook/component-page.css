@@ -200,12 +200,12 @@
 }
 
 /* The frame: the window, the code bar, then the table. */
+/* The outline is a ring outside the frame, not a border, so the dark code bar runs to the very edge. */
 .sb-page__frame {
   overflow: hidden;
-  border: 1px solid var(--sb-line);
   border-radius: 8px;
   background: var(--sb-cell);
-  box-shadow: var(--sb-shadow);
+  box-shadow: 0 0 0 1px var(--sb-line), var(--sb-shadow);
 }
 .sb-try__windows--many {
   display: grid;
