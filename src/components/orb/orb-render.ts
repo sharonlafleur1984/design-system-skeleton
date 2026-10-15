@@ -20,8 +20,8 @@ export interface OrbColors {
 const LOOKS = {
   // Clear glass: you see through it to a small bright core; its color is a tint.
   clear: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, backdrop: 'light' as const },
-  // Glows: a bigger, brighter core and deeper color, so the whole ball reads as lit from inside.
-  glow: { core: 0.66, coreWhite: 0.85, emissive: 0.9, attenuation: 0.85, backdrop: 'halo' as const },
+  // Glows: the light is inside the ball, a big, almost white core shining out through the glass.
+  glow: { core: 0.72, coreWhite: 0.92, emissive: 1.1, attenuation: 0.85, backdrop: 'halo' as const },
 };
 
 type Three = typeof import('three');

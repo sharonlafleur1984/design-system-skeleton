@@ -34,45 +34,16 @@
       }
     },
     "glow": {
-      "near-blur": {
-        "$type": "dimension",
-        "$value": "14px"
+      "$description": "The light from a glowing orb (look glow). Clear orbs have none.",
+      "falloff": {
+        "$type": "number",
+        "$value": 0.75,
+        "$description": "The step the light fades in, as a share of the ball's size: very bright within one step, then thinner and thinner."
       },
-      "near-spread": {
-        "$type": "dimension",
-        "$value": "5px"
-      },
-      "mid-blur": {
-        "$type": "dimension",
-        "$value": "44px"
-      },
-      "mid-spread": {
-        "$type": "dimension",
-        "$value": "18px"
-      },
-      "far-blur": {
-        "$type": "dimension",
-        "$value": "120px",
-        "$description": "How far the light spills around the orb."
-      },
-      "far-spread": {
-        "$type": "dimension",
-        "$value": "50px"
-      },
-      "scale": {
-        "$description": "How far the glow reaches, compared with medium's, so a smaller orb glows less far.",
-        "small": {
-          "$type": "number",
-          "$value": 0.5
-        },
-        "medium": {
-          "$type": "number",
-          "$value": 1
-        },
-        "large": {
-          "$type": "number",
-          "$value": 1.5
-        }
+      "reach": {
+        "$type": "number",
+        "$value": 45,
+        "$description": "How many steps the light reaches before it's gone: far enough to cover the whole section with no visible edge."
       }
     },
     "shine": {

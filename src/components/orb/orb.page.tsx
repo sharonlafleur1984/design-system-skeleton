@@ -13,7 +13,7 @@ export const orbPage: ComponentPageInfo = {
   builtWith: { source: 'src/components/orb/orb.tsx' },
   isLight: true,
   useFor: ['Exploring light on glass, one component at a time: drag the orb, and every rim, highlight and shadow follows.'],
-  useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family.", 'Clear is see-through glass with a small bright core; glow is lit from inside.'],
+  useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family.", 'Glow, the default, is lit from inside, and its light spreads over the whole section. Clear has no glow, just for fun.'],
   useElse: [{ job: 'A full page: its light stays still where it was placed (the light tokens)', instead: { name: 'Page shell', title: 'Components/Page shell' } }],
   do: {
     example: <OrbSection {...marble} start={center} label="One orb, lighting the glass beside it" />,
@@ -35,7 +35,7 @@ export const orbPage: ComponentPageInfo = {
     "The glass is a picture drawn once by three.js; where a browser can't draw 3D, a CSS version shows instead.",
   ],
   imports: ['Orb', 'ORB_START'],
-  tokens: ['--orb-color-[part]', '--orb-size-[size]', '--orb-target-[size]', '--orb-glow-[reach]', '--orb-glow-scale-[size]', '--orb-shine-[part]'],
+  tokens: ['--orb-color-[part]', '--orb-size-[size]', '--orb-target-[size]', '--orb-glow-falloff', '--orb-glow-reach', '--orb-shine-[part]'],
   related: [
     { name: 'Glass', title: 'Foundations/Glass' },
     { name: 'Page shell', title: 'Components/Page shell' },

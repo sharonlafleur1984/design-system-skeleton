@@ -1,12 +1,12 @@
-/* The orb: the light you drag when exploring glass. A button (44px or more) holding a glass marble, in three sizes, in the
-   theme's color (--orb-color-*). The marble is darker at the top, with a bright crescent where light
-   catches its top edge and light pooling at the bottom. Its rim isn't even, as real glass never is:
-   thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own
-   color. Nothing moves on its own, so there's no motion to reduce. */
+/* The orb: the light you drag when exploring glass. A button (44px or more) holding a glass ball, in
+   three sizes, in the theme's color (--orb-color-*). The glass is drawn by three.js (orb-render.ts);
+   the CSS glass below shows only until that picture is ready, or where a browser can't draw 3D.
+   Two looks: clear has no glow at all; glow is lit from inside, and its light spreads over the whole
+   section the way real light does: very bright right around the ball, fading fast at first, then
+   slowly, with a long soft tail. Nothing moves on its own, so there's no motion to reduce. */
 .ds-orb {
   --_size: var(--orb-size-medium);
   --_target: var(--orb-target-medium);
-  --_k: var(--orb-glow-scale-medium);
   position: absolute;
   z-index: 5;
   inline-size: var(--_target);
@@ -19,16 +19,13 @@
   cursor: grab;
   touch-action: none;
 }
-/* Small is the height of body text; large is for a bigger stage. The glow reaches less or farther to match. */
 .ds-orb--small {
   --_size: var(--orb-size-small);
   --_target: var(--orb-target-small);
-  --_k: var(--orb-glow-scale-small);
 }
 .ds-orb--large {
   --_size: var(--orb-size-large);
   --_target: var(--orb-target-large);
-  --_k: var(--orb-glow-scale-large);
 }
 .ds-orb:active {
   cursor: grabbing;
@@ -37,6 +34,38 @@
   outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: var(--focus-ring-offset);
 }
+
+/* The light from a glowing orb. Its strength follows the way light fades with distance, in steps of
+   --_r (a share of the ball's size): almost white at the glass, then the orb's own colors, thinning
+   out over many times its size, so it reaches across the whole section without a visible edge. A
+   gradient (not a blurred shadow) keeps the fade smooth, with no grain. */
+.ds-orb--glow::before {
+  --_r: calc(var(--_size) * var(--orb-glow-falloff));
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: calc(var(--_r) * var(--orb-glow-reach) * 2);
+  block-size: calc(var(--_r) * var(--orb-glow-reach) * 2);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  background: radial-gradient(
+    circle closest-side,
+    var(--orb-color-light) 0,
+    color-mix(in srgb, var(--orb-color-light) 95%, transparent) calc(var(--_r) * 0.7),
+    color-mix(in srgb, var(--orb-color-glow) 82%, transparent) calc(var(--_r) * 1),
+    color-mix(in srgb, var(--orb-color-glow) 62%, transparent) calc(var(--_r) * 1.5),
+    color-mix(in srgb, var(--orb-color-halo) 46%, transparent) calc(var(--_r) * 2),
+    color-mix(in srgb, var(--orb-color-halo) 32%, transparent) calc(var(--_r) * 3),
+    color-mix(in srgb, var(--orb-color-glow) 20%, transparent) calc(var(--_r) * 5),
+    color-mix(in srgb, var(--orb-color-glow) 12%, transparent) calc(var(--_r) * 8),
+    color-mix(in srgb, var(--orb-color-glow) 6%, transparent) calc(var(--_r) * 14),
+    color-mix(in srgb, var(--orb-color-glow) 2.5%, transparent) calc(var(--_r) * 25),
+    transparent 100%
+  );
+}
+
 .ds-orb__glass {
   position: absolute;
   inset: 50% auto auto 50%;
@@ -54,14 +83,10 @@
     inset 0 -2px 2px -1px var(--orb-shine-rim-thick),
     inset 2px -1px 2px -1px var(--orb-shine-rim-side),
     inset 1px 1px 1px 0 var(--orb-shine-rim-thin),
-    inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent),
-    0 0 calc(var(--orb-glow-near-blur) * var(--_k)) calc(var(--orb-glow-near-spread) * var(--_k)) var(--orb-color-glow),
-    0 0 calc(var(--orb-glow-mid-blur) * var(--_k)) calc(var(--orb-glow-mid-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
-    0 0 calc(var(--orb-glow-far-blur) * var(--_k)) calc(var(--orb-glow-far-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+    inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent);
 }
 
-/* The rendered glass (orb-render.ts) sits over the CSS glass, which only shows until it's ready. The
-   bloom around it stays: it's the light. */
+/* The rendered glass (orb-render.ts) sits over the CSS glass, which only shows until it's ready. */
 .ds-orb__render {
   position: absolute;
   inset: 0;
@@ -72,8 +97,5 @@
 }
 .ds-orb--rendered .ds-orb__glass {
   background: none;
-  box-shadow:
-    0 0 calc(var(--orb-glow-near-blur) * var(--_k)) calc(var(--orb-glow-near-spread) * var(--_k)) var(--orb-color-glow),
-    0 0 calc(var(--orb-glow-mid-blur) * var(--_k)) calc(var(--orb-glow-mid-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
-    0 0 calc(var(--orb-glow-far-blur) * var(--_k)) calc(var(--orb-glow-far-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+  box-shadow: none;
 }

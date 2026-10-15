@@ -9,10 +9,10 @@ const meta: Meta<typeof Orb> = {
   title: 'Components/Orb',
   component: Orb,
   // On its own page the orb starts in the middle, like every component's example.
-  args: { size: 'medium', look: 'clear', defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
+  args: { size: 'medium', look: 'glow', defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
   argTypes: {
     size: choice('Size', 'How big it is: small 16px (the height of body text, for Try it out windows), medium 32px (the usual), large 48px\n\n`size`', ['small', 'medium', 'large']),
-    look: choice('Look', 'Clear glass with a small bright core, or glass that glows from inside\n\n`look`', ['clear', 'glow']),
+    look: choice('Look', 'Glow: lit from inside, its light spreading over the section. Clear: glass with no glow\n\n`look`', ['glow', 'clear']),
     position: setting('Position', 'Where it is in its section, from 0 to 1 across and down. Leave out and it keeps its own, starting on the right, two thirds down (ORB_START)\n\n`position`', { control: false }),
     defaultPosition: setting('Starts at', 'Where it starts when it keeps its own place. Leave out for the right, two thirds down\n\n`defaultPosition`', { control: false }),
     onPositionChange: setting('On position change', 'Called while it is dragged or moved with the arrow keys\n\n`onPositionChange`', { control: false }),

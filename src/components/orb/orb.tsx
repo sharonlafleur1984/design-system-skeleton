@@ -28,7 +28,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   onPositionChange?: (position: OrbPosition) => void;
   /** How big it is: small 16px, the height of body text (Try it out windows use it); medium 32px, the usual; large 48px. */
   size?: OrbSize;
-  /** Clear glass with a small bright core, or glass that glows from inside. */
+  /** Glow (the default): lit from inside, its light spreading over the whole section. Clear: glass with no glow, just for fun. */
   look?: OrbLook;
   /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.
@@ -39,7 +39,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', look = 'clear', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', look = 'glow', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
   const [own, setOwn] = useState(defaultPosition);
   const glassRef = useRef<HTMLSpanElement>(null);
   const [picture, setPicture] = useState<string>();
@@ -90,7 +90,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     <button
       type="button"
       aria-label={ariaLabel}
-      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
+      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, look === 'glow' && 'ds-orb--glow', picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
       style={{ ...tint, ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
