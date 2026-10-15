@@ -263,7 +263,7 @@ for (const [name, p] of Object.entries(pages)) {
 // ---- The brand book, the cover and the index.
 const statusRows = Object.entries(pages)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([n, p]) => `| [${n}](${storybook}${storyId(p.title)}--overview) | ${p.title.split('/')[0]} | \`${statusWord[p.status]}\` | ${p.summary} |`);
+  .map(([n, p]) => `| [${n}](${storybook}${storyId(p.title)}--overview) | ${p.title.split('/')[0].replace(/s$/, '')} | \`${statusWord[p.status]}\` | ${p.summary} |`);
 write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Component | Group | Status | Description |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`).replace('{{UPDATED}}', new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })));
 write('components/Cover/preview.html', read('scripts/lantern/cover.html'));
 // Lantern's mark. In the artifact it's an uploaded asset (assets/Logos), so publishing uploads it and records
