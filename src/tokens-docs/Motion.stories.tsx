@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useContext, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
-import { CompareAll, ThemeContext, singleTheme, themeNames } from '../components/story-helpers';
+import { ThemeContext, singleTheme, themeNames } from '../components/story-helpers';
 import { Button } from '../components/button/button';
 import { Body, Heading, Label } from '../components/text/text';
 import { Description, Stories, Title } from '@storybook/addon-docs/blocks';
@@ -52,7 +52,7 @@ const steps: [string, string, string, string][] = [
   ['slow', '380ms', 'Fading in, a progress bar filling', 'var(--motion-easing-out)'],
 ];
 
-/** Controls use these steps on every page, in every theme, so a button always feels like a button. Press Play to compare them. */
+/** The same in every theme: controls use these steps on every page, so a button always feels like a button. Press Play to compare them. */
 export const Timing: StoryObj = {
   render: function Timing() {
     const [go, setGo] = useState(false);
@@ -153,13 +153,12 @@ function MoodsView() {
 
 /**
  * Arrivals and celebrations use a mood, calm or energetic. Each theme has a default (Spotlight: energetic,
- * Sunrise: calm, Fireside: energetic for now, borrowed from Spotlight), shown side by side. Under it, the
- * other mood, which any page can ask for with data-motion. Controls never change with the mood.
+ * Sunrise: calm, Fireside: energetic for now, borrowed from Spotlight). Under it, the other mood, which any
+ * page can ask for with data-motion. Controls never change with the mood. Pick Compare all to see every
+ * theme's default side by side.
  */
 export const Moods: StoryObj = {
-  // Always every theme side by side: comparing them is the point, so the theme picker doesn't change it.
-  parameters: { compareAll: false },
-  render: () => <CompareAll render={() => <MoodsView />} />,
+  render: () => <MoodsView />,
 };
 
 /**
