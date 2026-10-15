@@ -18,10 +18,10 @@ export interface OrbColors {
 }
 
 const LOOKS = {
-  // Glows: the light is inside the ball, a big bright core shining out through the glass. Its color is
-  // half white, half the lightest step of the page's color (as the focus glow, D45), and the glass
-  // glows in it too, so the ball blends into its light.
-  glow: { core: 0.78, coreWhite: 0.5, emissive: 1.6, attenuation: 2.2, seeThrough: false },
+  // Glows: the light is inside the ball, a bright core shining out through clear glass, over the real
+  // background, so the ball is see-through around its light. The core is half white, half the lightest
+  // step of the page's color (as the focus glow, D45); the glass glows only faintly in it.
+  glow: { core: 0.55, coreWhite: 0.5, emissive: 0.25, attenuation: 4, seeThrough: false },
   // Tinted glass: you look through glass in the page's color to a small bright core.
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
   // Completely clear: colorless glass with no core, with the real background behind it bent through.
@@ -88,7 +88,7 @@ const cache = new Map<string, Promise<string>>();
  * are drawn fresh each time, since what's behind them changes as they move.
  */
 export function renderOrb(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLCanvasElement): Promise<string> {
-  if (look === 'clear') return draw(px, look, colors, behind);
+  if (behind) return draw(px, look, colors, behind);
   const key = [px, look, colors.light, colors.glow, colors.halo, colors.body].join('|');
   let picture = cache.get(key);
   if (!picture) {
@@ -105,11 +105,10 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
   const color = (c: string) => new THREE.Color(c);
   const scene = new THREE.Scene();
   scene.environment = l.seeThrough ? brightEnv : env;
-  // What the glass bends. Glow and tinted: their own light color, so the inside reads the same on any
-  // background. Clear: the real background behind the orb, so the renderer bends, shades and rims it
-  // the way glass would. Smooth glass (roughness 0) and a sharp studio keep the reflections crisp.
+  // What the glass bends. Glow and clear: the real background behind the orb, so the renderer bends,
+  // shades and rims it the way glass would. Tinted: its own light color, so it reads the same anywhere. Smooth glass (roughness 0) and a sharp studio keep the reflections crisp.
   let backdrop: import('three').CanvasTexture | undefined;
-  if (l.seeThrough && behind) {
+  if (behind) {
     backdrop = new THREE.CanvasTexture(behind);
     backdrop.colorSpace = THREE.SRGBColorSpace;
   }
@@ -150,7 +149,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
   const drawn = Math.min(px * 2, 1024);
   renderer.setSize(drawn, drawn, false);
   // Clear glass shows the real background, so its colors pass through the renderer untouched.
-  renderer.toneMapping = l.seeThrough ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = behind ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
   renderer.render(scene, camera);
   const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());

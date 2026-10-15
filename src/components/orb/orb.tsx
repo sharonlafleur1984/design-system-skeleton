@@ -99,22 +99,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     const cs = getComputedStyle(el);
     const c = (part: string) => cs.getPropertyValue(`--orb-color-${part}`).trim();
     let live = true;
-    if (look === 'glow') {
-      const patch = paintBehind(el, backdrop, 8);
-      if (!patch) {
-        // The art isn't ready (an image loading): measure again shortly.
-        const t = setTimeout(() => setColorKey((k) => k + 1), 250);
-        return () => clearTimeout(t);
-      }
-      const data = patch.getContext('2d')?.getImageData(0, 0, 8, 8).data;
-      if (data) {
-        let sum = 0;
-        for (let i = 0; i < data.length; i += 4) sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
-        setLum(sum / (data.length / 4));
-      }
-    }
+    // Glow and clear are see-through, so they're drawn over the patch of real background behind them.
     let behind: HTMLCanvasElement | undefined;
-    if (look === 'clear') {
+    if (look !== 'tinted') {
       const painted = paintBehind(el, backdrop, px);
       if (!painted) {
         // The art isn't ready (an image loading): try again shortly.
@@ -122,6 +109,15 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         return () => clearTimeout(t);
       }
       behind = painted;
+      if (look === 'glow') {
+        // How light that background is, so the glow can look equally bright on it (orb.css).
+        const data = painted.getContext('2d')?.getImageData(0, 0, px, px).data;
+        if (data) {
+          let sum = 0;
+          for (let i = 0; i < data.length; i += 4) sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
+          setLum(sum / (data.length / 4));
+        }
+      }
     }
     renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') }, behind)
       .then((url) => live && setPicture(url))
