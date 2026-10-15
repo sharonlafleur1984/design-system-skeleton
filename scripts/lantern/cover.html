@@ -7,12 +7,13 @@
   .mark { position: absolute; left: -20px; top: 8px; }
   .text { position: absolute; left: 216px; bottom: 68px; max-width: 640px; }
   .name { margin: 0; font: 400 112px/0.92 Georgia, 'Iowan Old Style', serif; color: #f7c9a6; }
-  /* Optical kerning (Sharon, Oct 15): the open sides of L, e and r leave extra air, so those pairs close up (L and a by 3px; 6px made them touch);
-     n and t sit tight on their stems, so they open a pixel. */
-  .k-l { margin-right: -3px; }
+  /* Optical kerning (Sharon, Oct 15): the open sides of L, e and r leave extra air, so those pairs close up (L and a by 1px; more made them touch);
+     n and t, and r and n, open a pixel, so the stems don't crowd. */
+  .k-l { margin-right: -1px; }
   .k-n { margin-right: 1px; }
   .k-t { margin-right: -2px; }
   .k-e { margin-right: -2px; }
+  .k-r { margin-right: 1px; }
   .tagline { margin: 26px 0 0 4px; font: 16px/1.5 system-ui, sans-serif; color: #d8b49a; }
 </style>
 <div class="cover">
@@ -46,7 +47,7 @@
   <path d="M62 116.8 H98" stroke="#f7c9a6" stroke-width="1.3" stroke-linecap="round" opacity="0.7"/>
 </svg>
   <div class="text">
-    <h1 class="name"><span class="k-l">L</span>a<span class="k-n">n</span><span class="k-t">t</span><span class="k-e">e</span>rn</h1>
+    <h1 class="name"><span class="k-l">L</span>a<span class="k-n">n</span><span class="k-t">t</span><span class="k-e">e</span><span class="k-r">r</span>n</h1>
     <p class="tagline">One shared base, with a theme for each product.</p>
   </div>
 </div>
