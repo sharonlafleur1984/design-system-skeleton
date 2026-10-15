@@ -6,6 +6,7 @@ import { clearArt, imageArt, resolveColor, type GlassArt } from '../glass-lens/l
 import { firesideArt } from '../glass-lens/story-art';
 import { LitContext } from '../material';
 import { Orb, ORB_START } from './orb';
+import type { OrbLook } from './orb-render';
 
 // Storybook only: a section with glass in it, lit by an orb you can drag. Used on the Orb's page and
 // in its test stories. Not exported from the component library.
@@ -42,11 +43,13 @@ export interface OrbSectionProps {
   palette?: string;
   /** Where the orb starts. Defaults to the right, two thirds down, like every orb; the Orb's own page centers it. */
   start?: { x: number; y: number };
+  /** The orb's look. Defaults to glow, like every orb. */
+  look?: OrbLook;
   /** A name for the section, for screen readers. */
   label: string;
 }
 
-export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, start = ORB_START, label }: OrbSectionProps) {
+export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, start = ORB_START, look, label }: OrbSectionProps) {
   const ref = useRef<HTMLElement>(null);
   const [sun, setSun] = useState(start);
   const night = `var(--color-area-${area}-night)`;
@@ -82,7 +85,7 @@ export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sa
   };
   return (
     <section ref={ref} aria-label={label} data-theme={theme} data-mode={backdrop === 'fireside' ? 'dark' : backdrop === 'light' ? 'light' : undefined} style={style}>
-      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} />
+      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} look={look} />
       <LitContext.Provider value>
         <Button appearance="glass">Button</Button>
       </LitContext.Provider>

@@ -38,16 +38,16 @@ export const Related: Story = { ...pageStory('related', { tryIt: false }), tags:
 export const OnEveryBackground: Story = {
   tags: ['!dev'],
   parameters: { layout: 'padded' },
-  render: () => (
+  render: ({ look }) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 'var(--space-4)' }}>
-      <OrbSection backdrop="header" label="Spotlight header" />
+      <OrbSection backdrop="header" look={look} label="Spotlight header" />
       {marbles
         .filter((m) => ['dashboard', 'parenting', 'health', 'time'].includes(m.area ?? ''))
         .map((m) => (
-          <OrbSection key={m.name} backdrop="marble" area={m.area!} texture={m.texture} palette={m.palette} label={`Sunrise, ${m.name}`} />
+          <OrbSection key={m.name} look={look} backdrop="marble" area={m.area!} texture={m.texture} palette={m.palette} label={`Sunrise, ${m.name}`} />
         ))}
-      <OrbSection backdrop="fireside" label="Fireside" />
-      <OrbSection backdrop="light" label="Light page" />
+      <OrbSection backdrop="fireside" look={look} label="Fireside" />
+      <OrbSection backdrop="light" look={look} label="Light page" />
     </div>
   ),
 };

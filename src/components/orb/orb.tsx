@@ -58,7 +58,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     const cs = getComputedStyle(el);
     const c = (part: string) => cs.getPropertyValue(`--orb-color-${part}`).trim();
     let live = true;
-    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body'), page: cs.getPropertyValue('--color-surface-page').trim() })
+    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') })
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));
     return () => {
