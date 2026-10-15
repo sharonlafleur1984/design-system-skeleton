@@ -208,7 +208,7 @@ const { pages, renderToStaticMarkup } = require(wordsFile);
 // styles and the base, exactly as the repo ships them. Lantern's own token edits don't reach the
 // previews: the code is the source of truth, so a token change goes back to the repo as a pull request.
 const themeCss = repoThemes.map((t) => read(`build/css/${t.id}.css`)).join('\n');
-let css = [readFileSync(join(out, 'components/bundle.css'), 'utf8'), themeCss, read('build/text-styles.css'), read('src/base.css'), '.lantern-preview{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px;background:var(--color-surface-page);color:var(--color-ink-primary);font-family:var(--font-family-body)}'].join('\n');
+let css = [readFileSync(join(out, 'components/bundle.css'), 'utf8'), themeCss, read('build/text-styles.css'), read('src/base.css'), '.lantern-preview{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px;color:var(--color-ink-primary);font-family:var(--font-family-body)}'].join('\n');
 css = css.replace(/@import[^;]+;/g, '');
 write('components/bundle.css', css);
 
