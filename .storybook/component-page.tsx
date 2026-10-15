@@ -374,10 +374,12 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const bg = theme === 'after-graduation' && (picked === 'header' || picked === 'landscape') ? picked : theme === 'life-hub' && picked === 'marble' ? 'marble' : 'plain';
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  // The light starts near the bottom right, where it usually sits.
+  // Every dark window, and the header art, shows the light as a sun you can move. It starts near the
+  // bottom right, where it usually sits, and the window's glass is lit from it.
+  const showSun = bg === 'header' || mode === 'dark';
   const [sun, setSun] = useState({ x: 0.9, y: 0.75 });
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
-  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: bg === 'header' ? '[data-sb-sun]' : undefined });
+  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
   useLayoutEffect(() => {
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, bg, mode]);
@@ -402,7 +404,7 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   } as CSSProperties;
   return (
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
-      {bg === 'header' && (
+      {showSun && (
         <>
           <button
             type="button"
@@ -423,7 +425,7 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
         </>
       )}
       {bg === 'landscape' && <span className="sb-try__standin">Stand-in for the landscape lanes</span>}
-      <LitContext.Provider value={bg !== 'plain'}>
+      <LitContext.Provider value={bg !== 'plain' || showSun}>
         <div className="sb-try__content">{children}</div>
       </LitContext.Provider>
     </div>
