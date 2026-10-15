@@ -104,9 +104,16 @@
   font-weight: 700;
   box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
 }
+/* In dark mode the bar sits a step lighter than the page, and the selected choice is a light chip, as in light mode. */
+.sb-page[data-page='dark'] .sb-page__field {
+  background: #3a3f44;
+}
+.sb-page[data-page='dark'] .sb-page__choice[data-hovered] {
+  background: rgb(255 255 255 / 0.1);
+}
 .sb-page[data-page='dark'] .sb-page__choice[data-selected] {
-  background: #4a5056;
-  color: #ffffff;
+  background: #e6e9eb;
+  color: #1e2124;
   box-shadow: none;
 }
 .sb-page__choice[data-focus-visible] {
