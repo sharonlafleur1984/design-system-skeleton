@@ -31,6 +31,11 @@
         "$type": "color",
         "$value": "#ffffff",
         "$description": "The light on a plain page (the theme's own page color behind it). Pure white: a plain page has no color to blend with."
+      },
+      "plain-far": {
+        "$type": "color",
+        "$value": "transparent",
+        "$description": "Where the light on a plain page fades out, it warms to this. Transparent: Spotlight's light stays white all the way out."
       }
     }
   }

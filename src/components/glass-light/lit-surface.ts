@@ -112,9 +112,23 @@ async function drawLit(el: HTMLElement, out: HTMLCanvasElement, { art, light, co
   // The light: falls off with distance squared and with angle, as real light does.
   // On a plain page, the theme's plain light (pure white, or Fireside's warm white).
   const rgb = (plain ? resolveColor('var(--orb-color-plain, #ffffff)', el) : resolveColor(color, el)) ?? [255, 255, 255, 1];
-  const lamp = new THREE.PointLight(new THREE.Color(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`), lampStrength * Math.PI * height * height, 0, 2);
-  lamp.position.set(light.x * box.width, -light.y * box.height, height);
-  scene.add(lamp);
+  const toColor = (c: number[]) => new THREE.Color(`rgb(${c[0]}, ${c[1]}, ${c[2]})`);
+  // A lamp `h` above the surface: its brightest spot, right under it, is `share` of the lamp's strength.
+  const addLamp = (c: number[], share: number, h: number) => {
+    const lamp = new THREE.PointLight(toColor(c), share * lampStrength * Math.PI * h * h, 0, 2);
+    lamp.position.set(light.x * box.width, -light.y * box.height, h);
+    scene.add(lamp);
+  };
+  // On a plain page, a theme may warm its light as it fades (Fireside, like a lantern on a wall): a
+  // tight lamp in the plain light keeps the spot by the orb near white, and a higher, wider one in the
+  // warm color takes over farther out. Transparent means the light stays one color.
+  const far = plain ? resolveColor('var(--orb-color-plain-far, transparent)', el) : undefined;
+  if (far && far[3] > 0) {
+    addLamp(rgb, 0.7, height);
+    addLamp(far, 0.3, height * 2.5);
+  } else {
+    addLamp(rgb, 1, height);
+  }
 
   renderer.toneMapping = THREE.NoToneMapping;
   renderer.setSize(W, H, false);

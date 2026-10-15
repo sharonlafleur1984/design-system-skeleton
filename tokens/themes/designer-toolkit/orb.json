@@ -31,6 +31,11 @@
         "$type": "color",
         "$value": "{palette.peach.100}",
         "$description": "The light on a plain page (the theme's own page color behind it). Fireside's light on a plain page is warm white, its lightest peach: a warm bulb next to a white one, never yellow (Sharon)."
+      },
+      "plain-far": {
+        "$type": "color",
+        "$value": "{palette.peach.200}",
+        "$description": "Where the light on a plain page fades out, it warms to this: white near the orb, peach farther away, like a lantern's glow on a wall. Fireside's second-lightest peach, so it's warm, never orange or yellow (Sharon)."
       }
     }
   }
