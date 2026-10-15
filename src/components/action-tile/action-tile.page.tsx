@@ -16,6 +16,7 @@ export const actionTilePage: ComponentPageInfo = {
     { job: 'A link or a button that looks like a tile', instead: { name: 'Tile', title: 'Components/Tile' } },
     { job: 'Views inside a card', instead: { name: 'Tabs', title: 'Components/Tabs' } },
     { job: 'A surface that holds its own buttons', instead: { name: 'Card', title: 'Components/Card' } },
+    { job: 'Tiles on glass, like a glass card. Use Solid, never Glass on glass.' },
   ],
   do: {
     example: (
