@@ -250,10 +250,14 @@
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
 }
-/* The page shell's art, as a window: not a whole screen tall. Its bright spot follows the sun. */
-.sb-try__window--header.ds-shell {
-  display: block;
-  min-block-size: 0;
+/* Spotlight's header red as a window, lit by an orb you can move. No rays: those are After Graduation's alone. */
+.sb-try__window--header {
+  background: radial-gradient(
+    circle farthest-corner at var(--sb-sun-x) var(--sb-sun-y),
+    var(--color-accent-base) 0,
+    var(--color-accent-hover) 30%,
+    var(--shell-frame) 90%
+  );
   color: var(--color-ink-on-art);
 }
 .sb-try__window--landscape {

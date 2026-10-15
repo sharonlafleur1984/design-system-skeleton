@@ -6,7 +6,7 @@ import type { Meta, StoryContext, StoryObj } from '@storybook/react-vite';
 import themes from '../build/themes.json';
 import { useGlassLight } from '../src/components/glass-light/glass-light';
 import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
-import { clearArt, imageArt, shellArt } from '../src/components/glass-lens/lens-art';
+import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
 import { marbles, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
@@ -336,6 +336,32 @@ function Matrix({ rows, args, render }: { rows: Expand[]; args: Record<string, u
   );
 }
 
+/**
+ * Spotlight's header art as a window: its red, lightest at the light and deepening away from it, with
+ * the light shown only as an orb. No rays: they belong to After Graduation's own header, not the system.
+ * The same paint goes to the glass, so it bends exactly what's behind it.
+ */
+function headerArt(sun: { x: number; y: number }): GlassArt {
+  return {
+    paint(ctx, { width, height }, container) {
+      const color = (css: string) => {
+        const c = resolveColor(css, container) ?? [0, 0, 0, 0];
+        return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})`;
+      };
+      const lx = width * sun.x;
+      const ly = height * sun.y;
+      const r = Math.max(Math.hypot(lx, ly), Math.hypot(width - lx, ly), Math.hypot(lx, height - ly), Math.hypot(width - lx, height - ly));
+      const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, r);
+      g.addColorStop(0, color('var(--color-accent-base)'));
+      g.addColorStop(0.3, color('var(--color-accent-hover)'));
+      g.addColorStop(0.9, color('var(--shell-frame)'));
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, width, height);
+      return true;
+    },
+  };
+}
+
 /** One example window: the theme, the mode and the background picked, with its glass lit. */
 function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'light' | 'dark'; args: Record<string, unknown>; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -346,16 +372,7 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   // The light starts near the bottom right, where it usually sits.
   const [sun, setSun] = useState({ x: 0.9, y: 0.75 });
-  // The window's height, so the light's distance from the top can be given in px, as the art reads it.
-  const [height, setHeight] = useState(200);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => setHeight(el.offsetHeight));
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-  const lens = useMemo(() => ({ art: bg === 'header' ? shellArt() : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night]);
+  const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: bg === 'header' ? '[data-sb-sun]' : undefined });
   useLayoutEffect(() => {
     window.dispatchEvent(new Event(LIGHT_CHANGE));
@@ -374,13 +391,13 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
     setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
   };
   const style = {
-    // The header art (and shellArt, for the glass) read the light from these, so the bright spot follows the sun.
-    '--light-from-right': `${(1 - sun.x) * 100}%`,
-    '--light-top': `${sun.y * height}px`,
+    // The header art's bright spot sits at the sun.
+    '--sb-sun-x': `${sun.x * 100}%`,
+    '--sb-sun-y': `${sun.y * 100}%`,
     ...(bg === 'marble' ? { background: `linear-gradient(${night}, ${night}), url('${marble.texture}') center / cover` } : {}),
   } as CSSProperties;
   return (
-    <div ref={ref} className={`sb-try__window sb-try__window--${bg}${bg === 'header' ? ' ds-shell' : ''}`} data-theme={theme} data-mode={mode} style={style}>
+    <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {bg === 'header' && (
         <>
           <button
