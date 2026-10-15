@@ -22,6 +22,7 @@ export const actionTilePage: ComponentPageInfo = {
     <>
       A surface that holds its own buttons: use <DocLink href={docsPath('Components/Card')}>Card</DocLink>.
     </>,
+    'Tiles on glass, like a glass card: use Solid, never Glass on glass.',
   ],
   do: {
     example: (
