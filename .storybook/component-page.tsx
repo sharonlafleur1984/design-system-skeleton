@@ -9,6 +9,7 @@ import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
 import { Orb } from '../src/components/orb/orb';
+import { EmptyState } from './empty-state';
 import { LitBackground } from '../src/components/glass-light/lit-background';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
@@ -486,18 +487,9 @@ function CodeBar({ code }: { code: string }) {
   );
 }
 
-function EmptyState({ status }: { status: Status }) {
+function StatusEmpty({ status }: { status: Status }) {
   const empty = statusInfo[status].empty ?? statusInfo['not-started'].empty!;
-  // The words sit inside the dashed outline of a part still being drawn, with the pencil beside it.
-  return (
-    <div className="sb-try__empty">
-      <p className="sb-try__empty-title">{empty.title}</p>
-      <svg className="sb-try__pencil" width="20" height="20" viewBox="110 24 22 22" fill="none" aria-hidden="true">
-        <path d="M112 40 126 26l4 4-14 14-6 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M122 30l4 4" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    </div>
-  );
+  return <EmptyState title={empty.title} />;
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -600,7 +592,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
             )}
             <TryWindow theme={t} mode={m} args={args} isLight={info.isLight}>
               {info.onlyIn && !info.onlyIn.includes(t) ? (
-                <p className="sb-try__not-here">This component hasn&apos;t been made for the {themeNames[t]} theme yet.</p>
+                <EmptyState title={`Not made for ${themeNames[t]} yet`} />
               ) : (
                 <Matrix rows={rows} args={args} render={render} />
               )}
@@ -611,7 +603,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
     </div>
   ) : (
     <div className="sb-try__window sb-try__window--plain" data-theme={shownThemes[0]} data-mode={modes[0]}>
-      <EmptyState status={info.status} />
+      <StatusEmpty status={info.status} />
     </div>
   );
   const reactAria = 'reactAria' in info.builtWith ? info.builtWith.reactAria : null;
