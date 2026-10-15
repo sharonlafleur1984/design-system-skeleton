@@ -56,19 +56,6 @@ Each theme has its own faces. Use the text styles by role (display, heading, bod
 - With Reduce motion, only color fades are left.
 - Nothing moves on its own for more than 5 seconds.
 
-## Lantern's mark
-
-The mark is a copper camp lantern with one amber orb inside, on night iron. Set it on a dark ground only.
-
-Its four colors belong to Lantern. Use them for the mark and the cover only, never in a product.
-
-| Color | Value |
-| --- | --- |
-| Night iron | `#2a1a12` |
-| Copper | `#b5672f` |
-| Amber flame | `#f6b25a` |
-| Peach glow | `#f7c9a6` |
-
 ## Icons
 
 There's no shared icon set yet; the Icon component isn't started yet. Examples use simple line icons drawn in the text color. Don't draw a product's logo.
