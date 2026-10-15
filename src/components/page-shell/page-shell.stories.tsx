@@ -3,37 +3,26 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PageShell } from './page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '../action-tile/action-tile';
 import { afterGraduationOnly } from '../product-only';
+import { choice, hidden, setting, words } from '../story-helpers';
+import { pageShellPage } from './page-shell.page';
 
 const meta: Meta<typeof PageShell> = {
   title: 'Components/Page shell',
   component: PageShell,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: [
-          "After Graduation's page: a red header that runs edge to edge, and the page as a sheet rising over its bottom edge. The sheet is exactly as wide as the header's content and always sits in from the screen sides, so the header's red frames it on every screen size.",
-          '',
-          '**When to use:** once per app, around every page.',
-          '',
-          '**Navigation:** pass page-switching tiles as `navigation`. Tablet and up, they sit three across in the header. On phones they become the bottom bar, within thumb reach; give each tile an `icon` and a `shortTitle` for it. The sheet leaves room at the bottom so the bar never covers content.',
-          '',
-          "**When not to:** Life Hub has no shell yet; its theme doesn't define the shell tokens.",
-          '',
-          "**Spacing:** all from tokens. `layout-gutter`, `layout-section` and `layout-title-gap` set the space; `shell-sheet-overlap` and `shell-sheet-inset` shape the sheet; `layout-content-max` (1024px, shared by every product) caps the width of the header's content and the sheet together. They change on phone, tablet and desktop on their own. Resize, or pick a size in the toolbar.",
-          '',
-          "**The light:** the wheel is the page's one light source, at the shared `light-from-right` and `light-top` tokens (Life Hub's sun sits in the same place). The red is lightest at the wheel and deepens with distance, the rays fade as they travel, and every glass surface on the page, tiles and cards, in light and dark mode, is lit from it with the shared glass recipe.",
-          '',
-          "**Glass (Oct 14):** action tiles and glass buttons in the header are Glass. The shell paints its own art (the red, the rays and the wheel, at its current angle) into one WebGL canvas behind them, which bends the art at their curved edges and never their text. `appearance=\"solid\"` gives the tiles the theme's card surface instead. Without WebGL or with Reduce transparency, people see a frosted look.",
-          '',
-          '**Motion:** when the page opens, the title slams in, the rays burst, the subtitle fades down, and the wheel turns, then eases to a stop (`shell-entrance` tokens). Reduced motion only fades.',
-          '',
-          '**Accessibility:** the title is the page\'s only h1. The header is a `header` landmark and the sheet is `main`. The wheel comes to rest after 30 seconds (WCAG 2.2.2).',
-        ].join('\n'),
-      },
-    },
+  args: { title: 'Page title', subtitle: 'Subtitle' },
+  argTypes: {
+    title: words('Title', "The product name: the page's only h1"),
+    subtitle: words('Subtitle', 'One line under the title, like a greeting'),
+    appearance: choice('Appearance', 'Glass bends the header art at the tiles\' edges; Solid gives them the card surface', ['glass', 'solid']),
+    navigation: setting('Navigation', 'Page-switching tiles in the header; the bottom bar on phones', { control: false }),
+    actions: setting('Actions', 'App-wide actions at the top right, like Settings', { control: false }),
+    children: setting('Page content', 'The page itself, on the sheet', { control: false }),
+    material: hidden,
+    glassLens: hidden,
+    className: hidden,
   },
+  parameters: { layout: 'fullscreen', componentPage: pageShellPage },
   // After Graduation only for now; with Life Hub picked, shows a message instead.
   decorators: [afterGraduationOnly],
 };
@@ -77,18 +66,15 @@ const tiles = [
 ];
 
 /**
- * The shell with navigation, as After Graduation uses it for its pages. Pick one to switch
- * pages. Tablet and up: three tiles across. Phones (under 600px): the same tiles become the bottom bar,
- * each an icon and a short name. Pick a phone size in the toolbar to see it. Replays its entrance each
- * time the story opens.
+ * Every setting, in the Controls tab. The shell with page-switching tiles; pick a phone size in the
+ * toolbar to see them become the bottom bar. Replays its entrance each time it opens.
  */
 export const WithNavigation: Story = {
   name: 'With navigation',
-  render: () => (
+  render: (args) => (
     <ActionTileSwitch defaultSelectedKey="explore">
       <PageShell
-        title="Page title"
-        subtitle="Subtitle"
+        {...args}
         navigation={
           <ActionTileGroup aria-label="Navigation" behavior="switch">
             {tiles.map((e) => (
@@ -107,7 +93,7 @@ export const WithNavigation: Story = {
   ),
 };
 
-/** Just the title and the sheet, with no navigation. */
+/** Just the title and the sheet, with no navigation: for an app with one page. */
 export const TitleOnly: Story = {
   args: {
     title: 'Page title',

@@ -13,7 +13,7 @@ import {
 import './select.css';
 import '../corners.css';
 
-// Select: pick one from a list that's too long for a segmented control (more than about four options),
+// Select: pick one from a list that's too long for a segmented control (more than five options),
 // like a school year or a state. Built on React Aria's Select: it opens with Enter, Space or the arrow
 // keys, typing jumps to a match, and screen readers hear the label and the current choice.
 

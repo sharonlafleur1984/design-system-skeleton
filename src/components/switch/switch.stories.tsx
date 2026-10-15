@@ -1,33 +1,32 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Switch } from './switch';
-import { BothThemes, Row } from '../story-helpers';
+import { BothThemes, Row, hidden, onOff, setting, words } from '../story-helpers';
+import { switchPage } from './switch.page';
 
 const meta: Meta<typeof Switch> = {
   title: 'Components/Switch',
   component: Switch,
   tags: ['autodocs'],
   args: { label: 'Label' },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Turns a setting on or off right away. From the Figma "Switch" set (checked).',
-          '',
-          '**When to use:** Settings that apply the moment they change, like reminders.',
-          '',
-          '**When not to:** In a form that is saved later, or for a to-do. Use a Checkbox.',
-          '',
-          '**Accessibility:** Built on React Aria: a real input with `role="switch"`, toggled by Space, named by its visible label.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    label: words('Label', 'The words next to the switch. Clicking them toggles it too'),
+    isSelected: onOff('On', 'Whether the setting is on'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be changed"),
+    onChange: setting('On change', 'Runs when it is turned on or off', { control: false }),
+    checked: hidden,
+    defaultChecked: hidden,
+    disabled: hidden,
+    className: hidden,
   },
+  parameters: { componentPage: switchPage },
 };
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
+/** Every setting, in the Controls tab. */
 export const Playground: Story = {};
 
+/** Off and on, each also disabled. */
 export const States: Story = {
   render: () => (
     <BothThemes>

@@ -9,5 +9,5 @@
     "types": []
   },
   "include": ["src/components"],
-  "exclude": ["src/**/*.stories.tsx", "src/components/story-helpers.tsx", "src/components/product-only.tsx"]
+  "exclude": ["src/**/*.stories.tsx", "src/**/*.page.tsx", "src/components/story-helpers.tsx", "src/components/product-only.tsx"]
 }

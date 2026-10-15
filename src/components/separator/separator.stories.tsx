@@ -1,32 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Separator } from './separator';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, choice, hidden } from '../story-helpers';
+import { separatorPage } from './separator.page';
 
 const meta: Meta<typeof Separator> = {
   title: 'Components/Separator',
   component: Separator,
   tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'A thin line between groups. Built on React Aria\'s Separator. Called "Divider" in Figma.',
-          '',
-          '**When to use:** Only when spacing alone can\'t show where one group ends.',
-          '',
-          '**When not to:** Between every row, or around cards (cards use shadows).',
-          '',
-          '**Accessibility:** An `<hr>` (or `role="separator"` when vertical), so screen readers announce a separator.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    orientation: choice('Orientation', 'A line across, or up and down between items in a row', ['horizontal', 'vertical']),
+    className: hidden,
   },
+  parameters: { componentPage: separatorPage },
 };
 export default meta;
 type Story = StoryObj<typeof Separator>;
 
+/** Every setting, in the Controls tab. */
 export const Playground: Story = {};
 
+/** Horizontal between stacked groups, vertical between items in a row. */
 export const Orientations: Story = {
   render: () => (
     <BothThemes>

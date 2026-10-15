@@ -1,39 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tab, TabList, TabPanel, Tabs } from './tabs';
-import { BothThemes, StatePictures } from '../story-helpers';
+import { BothThemes, StatePictures, choice, hidden, onOff } from '../story-helpers';
+import { tabsPage } from './tabs.page';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs',
   component: Tabs,
   tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Switch between views of the same thing. Built on React Aria\'s Tabs.',
-          '',
-          '**When to use:** two to six related views on one page, like "Overview" and "Details".',
-          '',
-          '**When not to:** to change how one list shows ("Week" or "Month"), use a segmented control. To go to another page, use a link.',
-          '',
-          '**Do:** Keep labels to one or two words. **Don\'t:** Nest tabs inside tabs.',
-          '',
-          '**Accessibility:** one Tab stop for the list, arrow keys move between tabs, Home and End jump to the ends. The list needs an aria-label. The chosen tab has an underline and bolder text, not just color.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    keyboardActivation: choice('Arrow keys', 'Automatic shows a panel as soon as its tab gets focus; manual waits for Enter or Space', ['automatic', 'manual']),
+    isDisabled: onOff('Disabled', "Turns every tab off, so none can be chosen"),
+    children: hidden,
+    className: hidden,
   },
+  parameters: { componentPage: tabsPage },
 };
 export default meta;
 type Story = StoryObj<typeof Tabs>;
 
 const panel = { margin: 0, color: 'var(--color-ink-secondary)' };
 
-/** Three tabs, each with its own panel. */
+/** Every setting, in the Controls tab. */
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <BothThemes>
-      <Tabs defaultSelectedKey="1">
+      <Tabs defaultSelectedKey="1" {...args}>
         <TabList aria-label="Label">
           <Tab id="1">Tab 1</Tab>
           <Tab id="2">Tab 2</Tab>
@@ -47,7 +38,7 @@ export const Default: Story = {
   ),
 };
 
-/** Every state, side by side. */
+/** Every state, side by side: rest, hover, focus, selected and disabled. */
 export const States: Story = {
   render: () => (
     <BothThemes>

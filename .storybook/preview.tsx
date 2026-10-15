@@ -5,6 +5,7 @@ import '../build/text-styles.css';
 import '../src/components/corners.css';
 import { Controls, Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
 import { DocsThemePicker, THEME_CHOICE_EVENT, ThemePicker } from './theme-picker';
+import { ComponentPage, useComponentPage } from './component-page';
 import { CompareAll, LightScene, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // Every theme's tokens and fonts, found by file name, so a new theme needs no change here.
@@ -17,6 +18,27 @@ import.meta.glob('../src/fonts/*.css', { eager: true });
 // The same picker sits on the page above each story (theme-picker.tsx), because a menu in the toolbar is
 // easy to miss. Screenshot tests hide it with the global picker:hide.
 // A theme marked alwaysDark in its theme.json (Fireside) doesn't change with the Mode switch.
+/**
+ * Every Docs page. A component (parameters.componentPage) gets the component template; any other page
+ * gets its name, what it's for, the theme picker once at the top, then its stories.
+ */
+function DocsPage() {
+  const page = useComponentPage();
+  if (page) return <ComponentPage {...page} />;
+  return (
+    <>
+      <Title />
+      <Subtitle />
+      <Description />
+      <DocsThemePicker />
+      <Primary />
+      <Controls />
+      {/* The first story is already shown above with its controls, so the list starts with the second. */}
+      <Stories includePrimary={false} />
+    </>
+  );
+}
+
 const preview: Preview = {
   globalTypes: {
     theme: {
@@ -86,19 +108,10 @@ const preview: Preview = {
   ],
   parameters: {
     // Every Docs page: the theme picker once at the top, under the name and what it's for.
+    // The Controls tab shows what each setting does, not only its name (the template's What it does).
+    controls: { expanded: true },
     docs: {
-      page: () => (
-        <>
-          <Title />
-          <Subtitle />
-          <Description />
-          <DocsThemePicker />
-          <Primary />
-          <Controls />
-          {/* The first story is already shown above with its controls, so the list starts with the second. */}
-          <Stories includePrimary={false} />
-        </>
-      ),
+      page: DocsPage,
     },
     a11y: { test: 'error' },
     layout: 'padded',
