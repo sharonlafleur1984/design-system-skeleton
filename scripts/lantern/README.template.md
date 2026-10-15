@@ -12,9 +12,7 @@ Supported by React Aria components and semantic tokens, Lantern plays with light
 | [Sunrise](https://designsystemskeleton.netlify.app/?path=/story/foundations-colors--palette&globals=theme:life-hub) | Light, Dark, Auto, System | Glass on marble, an experiment with light and glass |
 | [Fireside](https://designsystemskeleton.netlify.app/?path=/story/foundations-colors--palette&globals=theme:designer-toolkit) | Light, Dark, Auto, System | A simpler approach: basic components with subtle glass accents |
 
-## Foundations
-
-### Color
+## Color
 
 - Set text in `color-ink-primary` on `color-surface-page` or `color-surface-card`. Set quieter text in `color-ink-secondary`.
 - Set text on artwork, like Spotlight's header and glass on it, in `color-ink-on-art`. It never flips in dark mode.
@@ -30,7 +28,7 @@ Each status has four tokens, and always comes with an icon or a word.
 | `-accent-strong` | The border |
 | `-ink` | The text |
 
-### Type
+## Type
 
 Each theme has its own faces. Use the text styles by role (display, heading, body, label, data, code), never a raw size.
 
@@ -40,19 +38,19 @@ Each theme has its own faces. Use the text styles by role (display, heading, bod
 | Sunrise | Fraunces | Figtree | The device's mono font |
 | Fireside | Newsreader | Instrument Sans | JetBrains Mono |
 
-### Space, corners and shadow
+## Space, corners and shadow
 
 - Take space from the `space-` steps, and page gutters and section gaps from the `layout-` tokens.
 - Each theme picks its roundness, and every corner follows the component's size (`radius-` tokens).
 - Use shadows for things that float or lift, like a hovered tile (`shadow-hover`) or a popover (`shadow-float`).
 
-### Light and glass
+## Light and glass
 
 - A page has one light, an orb, toward the bottom right. Glass rims, highlights and shadows all come from it.
 - The light is only ever an orb. Rays belong to After Graduation's own header, not the system.
 - Glass goes on any background except other glass. With Reduce transparency or More contrast, it turns solid.
 
-### Motion
+## Motion
 
 - Hover fades in over 140ms, a press over 80ms, and a panel opens over 220ms.
 - With Reduce motion, only color fades are left.
