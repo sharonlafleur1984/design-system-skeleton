@@ -53,9 +53,10 @@ const isColor = (v) => typeof v === 'string' && /^(#[0-9a-f]{3,8}|(rgba?|hsla?|o
 const isLength = (v) => typeof v === 'string' && /^-?[0-9.]+(px|rem|em|%)?$/.test(v.trim());
 const skipped = [];
 
-// ---- Colors: the shared color names and the palettes, one value per theme.
+// ---- Colors: the shared color names, one value per theme. Each theme's raw palette has its own
+// names, so Lantern leaves palettes out; a palette listed by name would show Spotlight's in every theme.
 const first = values[lanternThemes[0].id];
-const colorNames = Object.keys(first).filter((k) => k.startsWith('color-') || k.startsWith('palette-'));
+const colorNames = Object.keys(first).filter((k) => k.startsWith('color-'));
 const colorTokens = [];
 for (const name of colorNames) {
   const value = {};
