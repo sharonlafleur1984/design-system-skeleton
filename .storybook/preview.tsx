@@ -16,7 +16,7 @@ import.meta.glob('../src/fonts/*.css', { eager: true });
 // (a story that already shows every theme sets parameters.compareAll = false).
 // The same picker sits on the page above each story (theme-picker.tsx), because a menu in the toolbar is
 // easy to miss. Screenshot tests hide it with the global picker:hide.
-// A theme marked alwaysDark in its theme.json (Fireside) doesn't change with the Mode switch.
+// A theme marked alwaysDark in its theme.json doesn't change with the Mode switch.
 /**
  * Every Docs page (Foundations and Explorations): its name, what it's for, the theme picker once at the
  * top, then its stories. Components and patterns get the component page instead, which is a story
