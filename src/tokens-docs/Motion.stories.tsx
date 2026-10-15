@@ -143,30 +143,18 @@ const controlRow: CSSProperties = { display: 'flex', flexWrap: 'wrap', alignItem
 const control: CSSProperties = { display: 'flex', alignItems: 'center', gap: 'var(--space-2)' };
 
 /**
- * Real moments to try. Mood changes how things arrive and celebrate; each theme has a default. Reduced shows what
- * people see with Reduce motion on in their device settings: everything fades, nothing moves.
+ * Real moments to try, in the theme's own mood. Reduced shows what people see with Reduce motion on in their
+ * device settings: everything fades, nothing moves.
  */
 export const Moments: StoryObj = {
   render: function Moments() {
     const theme = themeNames[singleTheme(useContext(ThemeContext))];
-    const [ref, own] = useThemeMood(theme);
-    const [picked, setPicked] = useState<Mood | null>(null);
-    const mood = picked ?? own;
+    const [ref, mood] = useThemeMood(theme);
     const [reduced, setReduced] = useState(false);
     useReduceMotion(reduced);
     return (
       <div ref={ref} style={{ display: 'grid', gap: 'var(--space-5)' }}>
         <div style={controlRow}>
-          <div style={control}>
-            <Label>Mood</Label>
-            <ToggleButtonGroup aria-label="Mood" selectedKeys={[mood]} onSelectionChange={(keys) => setPicked([...keys][0] as Mood)}>
-              {(['calm', 'energetic'] as Mood[]).map((m) => (
-                <ToggleButton key={m} id={m}>
-                  {m === own ? `${moodName[m]} (default)` : moodName[m]}
-                </ToggleButton>
-              ))}
-            </ToggleButtonGroup>
-          </div>
           <div style={control}>
             <Label>Motion</Label>
             <ToggleButtonGroup aria-label="Motion" selectedKeys={[reduced ? 'reduced' : 'default']} onSelectionChange={(keys) => setReduced([...keys][0] === 'reduced')}>
@@ -176,10 +164,10 @@ export const Moments: StoryObj = {
           </div>
         </div>
         <div data-motion={mood} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 'var(--space-4)', alignItems: 'start' }}>
-          <Moment title="Items arriving" timing={reduced ? 'Fade only' : moodTiming[mood].arrive}>
+          <Moment title="Items arriving" timing={reduced ? 'Fade only' : `${moodName[mood]} · ${moodTiming[mood].arrive}`}>
             <Arrival />
           </Moment>
-          <Moment title="Celebrating" timing={reduced ? 'Fade only' : moodTiming[mood].celebrate}>
+          <Moment title="Celebrating" timing={reduced ? 'Fade only' : `${moodName[mood]} · ${moodTiming[mood].celebrate}`}>
             <Celebration />
           </Moment>
           <Moment title="Menu" timing={reduced ? '220ms in · 140ms out · Fade only' : '220ms in · 140ms out'}>
