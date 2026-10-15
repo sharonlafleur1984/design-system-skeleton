@@ -1,50 +1,72 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { Tile } from './tile';
-import { BothThemes, Row, StatePictures, storyIcons } from '../story-helpers';
+import { BothThemes, Row, StatePictures, choice, hidden, onOff, setting, storyIcons, words } from '../story-helpers';
+import { tilePage } from './tile.page';
 import type { Appearance } from '../material';
 import type { IconPosition } from '../tile-header';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof Tile> = {
   title: 'Components/Tile',
   component: Tile,
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'A whole tile that\'s one link or one button, in every theme: press anywhere on it to go somewhere or do something. The same look as Card and Action tile.',
-          '',
-          '**Link or button:** give it `href` to go to a page (React Aria Link) or `onPress` to do something here (React Aria Button). Both look the same; screen readers hear "link" or "button," and a link can open in a new tab.',
-          '',
-          '**When to use:** a few big choices that each lead somewhere, like the sections of an app. **When not to:** if it needs its own buttons inside, use Card (a tile is one click target). To switch between sections of the same page, use Action tile.',
-          '',
-          '**Solid and glass, icons:** the same as Card: `appearance`, and an `icon` in an icon tile, `iconPosition` top or start, filled or plain.',
-          '',
-          '**States:** hover rises a little with a deeper shadow, pressed sinks back, keyboard focus is a soft glow in the theme\'s focus color, and disabled fades to half. With reduced motion nothing moves, but the shadow still changes.',
-        ].join('\n'),
-      },
-    },
+  args: {
+    title: 'Title',
+    label: 'Label',
+    description: 'Description',
+    appearance: 'solid',
+    icon: storyIcons.wallet,
+    iconPosition: 'top',
+    iconVariant: 'filled',
+    isDisabled: false,
+    ...pageArgs,
+  } as Meta<typeof Tile>['args'],
+  argTypes: {
+    title: words('Title', 'What the tile is\n\n`title`'),
+    label: words('Label', 'A small line above the title\n\n`label`'),
+    description: words('Description', 'One short line about where it goes or what it does\n\n`description`'),
+    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page\n\n`appearance`', ['solid', 'glass']),
+    icon: setting('Icon', 'An icon in an icon tile\n\n`icon`', { control: false }),
+    iconPosition: choice('Icon position', 'Above the label, or before the label and title\n\n`iconPosition`', ['top', 'start']),
+    iconVariant: choice('Icon background', 'A soft background behind the icon, or the icon alone\n\n`iconVariant`', ['filled', 'plain']),
+    iconSize: choice('Icon size', 'The icon tile: small, medium, large or xlarge\n\n`iconSize`', ['small', 'medium', 'large', 'xlarge']),
+    href: words('Link to', 'Goes to this page, as a link\n\n`href`'),
+    onPress: setting('On press', 'Does this when pressed, as a button\n\n`onPress`', { control: false }),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed\n\n`isDisabled`"),
+    ...pageArgTypes({ states: ['rest', 'hover', 'pressed', 'focus', 'disabled'], glass: true }),
+    'data-state': hidden,
+    className: hidden,
   },
+  parameters: { componentPage: tilePage },
 };
 export default meta;
 type Story = StoryObj<typeof Tile>;
+
+/** Tile's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 3)), 1fr))', gap: 'var(--space-3)', flex: '1 1 auto' };
 
 type PlaygroundArgs = { appearance: Appearance; showIcon: boolean; iconPosition: IconPosition; iconVariant: 'filled' | 'plain'; showLabel: boolean; title: string; showDescription: boolean };
 
-/** Try it: press the tile, pick Solid or Glass, and turn each part on or off. */
+/** Every setting, in the Controls tab. */
 export const Playground: StoryObj<PlaygroundArgs> = {
+  tags: ['!dev'],
   args: { appearance: 'solid', showIcon: true, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Title', showDescription: true },
   argTypes: {
-    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
-    showIcon: { name: 'Icon', control: 'boolean' },
-    iconPosition: { name: 'Icon position', control: 'inline-radio', options: ['top', 'start'], if: { arg: 'showIcon' } },
-    iconVariant: { name: 'Icon background', control: 'inline-radio', options: ['filled', 'plain'], if: { arg: 'showIcon' } },
-    showLabel: { name: 'Label', control: 'boolean' },
-    title: { name: 'Title' },
-    showDescription: { name: 'Description', control: 'boolean' },
+    showIcon: onOff('Icon', 'An icon in an icon tile'),
+    iconPosition: { ...choice('Icon position', 'Above the label, or before the label and title', ['top', 'start']), if: { arg: 'showIcon' } },
+    iconVariant: { ...choice('Icon background', 'A soft background behind the icon, or the icon alone', ['filled', 'plain']), if: { arg: 'showIcon' } },
+    showLabel: onOff('Label', 'A small line above the title'),
+    showDescription: onOff('Description', 'One short line about where it goes'),
+    // The component's own props this story doesn't use.
+    ...Object.fromEntries(['label', 'description', 'icon', 'iconSize', 'href', 'onPress', 'isDisabled'].map((k) => [k, hidden])),
   },
   render: ({ appearance, showIcon, iconPosition, iconVariant, showLabel, title, showDescription }) => (
     <div style={grid}>
@@ -62,8 +84,9 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   ),
 };
 
-/** The two appearances on the theme's own page. Drag the sun to move the light. */
+/** Solid (the theme's card surface, the starting look) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
 export const SolidAndGlass: Story = {
+  tags: ['!dev'],
   name: 'Solid and glass',
   render: () => (
     <BothThemes>
@@ -75,8 +98,9 @@ export const SolidAndGlass: Story = {
   ),
 };
 
-/** Every state: rest, hover, pressed, keyboard focus and disabled, in Solid and Glass. */
+/** Every state, in Solid and Glass: rest, hover (rises), pressed (sinks back), keyboard focus (a soft glow) and disabled (half strength). */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <StatePictures>

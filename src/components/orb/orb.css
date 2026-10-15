@@ -1,0 +1,47 @@
+/* The orb: the light you drag when exploring glass. A 44px button holding a small glass marble in the
+   theme's color (--orb-color-*). The marble is darker at the top, with a bright crescent where light
+   catches its top edge and light pooling at the bottom. Its rim isn't even, as real glass never is:
+   thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own
+   color. Nothing moves on its own, so there's no motion to reduce. */
+.ds-orb {
+  position: absolute;
+  z-index: 5;
+  inline-size: var(--orb-target);
+  block-size: var(--orb-target);
+  margin: calc(var(--orb-target) / -2) 0 0 calc(var(--orb-target) / -2);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.ds-orb:active {
+  cursor: grabbing;
+}
+.ds-orb:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+.ds-orb__glass {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: var(--orb-size);
+  block-size: var(--orb-size);
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 36% 18% at 64% 19%, var(--orb-shine-highlight), transparent 100%),
+    radial-gradient(ellipse 82% 48% at 50% 88%, var(--orb-shine-pool), color-mix(in srgb, var(--orb-color-light) 80%, transparent) 45%, transparent 100%),
+    linear-gradient(to bottom, color-mix(in srgb, var(--orb-color-shade) 45%, transparent), transparent 60%),
+    radial-gradient(circle at 50% 42%, var(--orb-color-body) 0, var(--orb-color-halo) 40%, var(--orb-color-glow) 75%, var(--orb-color-light) 100%);
+  box-shadow:
+    inset 0 -2px 2px -1px var(--orb-shine-rim-thick),
+    inset 2px -1px 2px -1px var(--orb-shine-rim-side),
+    inset 1px 1px 1px 0 var(--orb-shine-rim-thin),
+    inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent),
+    0 0 var(--orb-glow-near-blur) var(--orb-glow-near-spread) var(--orb-color-glow),
+    0 0 var(--orb-glow-mid-blur) var(--orb-glow-mid-spread) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
+    0 0 var(--orb-glow-far-blur) var(--orb-glow-far-spread) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+}

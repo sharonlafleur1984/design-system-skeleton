@@ -1,44 +1,61 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { BothThemes, Row, WithReducedMotion, StatePictures, storyIcons } from '../story-helpers';
+import { BothThemes, Row, WithReducedMotion, StatePictures, choice, hidden, onOff, setting, storyIcons, words } from '../story-helpers';
+import { actionTilePage } from './action-tile.page';
 import type { IconPosition } from '../tile-header';
 import { PageShell } from '../page-shell/page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
 import { afterGraduationOnly } from '../product-only';
 import type { Appearance } from '../material';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof ActionTile> = {
   title: 'Components/Action tile',
   component: ActionTile,
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Navigation: a row of tiles that switches what the page shows, like tabs, in every theme. Built on React Aria Tabs. After Graduation\'s episodes use it.',
-          '',
-          '**When to use:** two to five big sections at the top of a page, each with a title and one short line. Put the tiles in `ActionTileGroup behavior="switch"` inside an `ActionTileSwitch`, with one `ActionTilePanel` per tile.',
-          '',
-          '**When not to:** for a link or a button that looks like a tile, use **Tile**: same look. For views inside a card, use Tabs. (Tiles with `href` or `onPress` still work, but are deprecated.)',
-          '',
-          '**Solid and glass:** `appearance="solid"` (the starting look) is the theme\'s card surface with a soft shadow. `appearance="glass"` is fully clear: only its edge light and shadow show, and its text takes the color of what it sits on. On artwork the design system paints (Spotlight\'s header), Glass bends the art at its edges. Glass works on artwork or a plain page, never on glass, like a glass card. Tiles in the page shell header start as Glass. Fills are gone (Oct 15): hover and pressed are states, not colors to pick.',
-          '',
-          '**Do:** keep the description to one short line. **Don\'t:** put a button or link inside a tile; each tile is one click target.',
-          '',
-          '**States:** soft light throughout, no hard lines. Hover rises 4px with a deeper shadow; pressed sinks back slightly; chosen shows the theme\'s mark (Spotlight\'s star, a check elsewhere, or any icon through `chosenIcon`), takes the theme\'s pale primary color (Glass turns milky) and sits flat; focus glows; disabled fades to half. With reduced motion nothing moves, but the shadow still changes.',
-          '',
-          '**Icons:** give each tile an `icon`. It always shows in the phone bottom bar; set `iconPosition` (top or start) to show it in the tile too, in an icon tile, `filled` or `plain`. The chosen mark stays in the top-right corner.',
-          '',
-          '**Phones:** under 600px the same tiles become the bottom bar, each an icon (`icon`) and a short name (`shortTitle`), so it\'s one set of tabs on every screen.',
-          '',
-          '**Accessibility:** one Tab stop, with arrow keys between tiles and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The mark and the color change together, so color is never the only sign a tile is chosen. Keyboard focus is a soft glow in the theme\'s focus color. With Reduce transparency or Increase contrast on, Glass tiles turn solid, and a chosen one shows a line in its text color with its mark.',
-        ].join('\n'),
-      },
-    },
+  args: {
+    title: 'Title',
+    label: 'Label',
+    description: 'Description',
+    appearance: 'solid',
+    icon: storyIcons.book,
+    iconVariant: 'filled',
+    iconSize: 'medium',
+    isDisabled: false,
+    ...pageArgs,
+  } as Meta<typeof ActionTile>['args'],
+  argTypes: {
+    title: words('Title', 'What the tile is\n\n`title`'),
+    label: words('Label', 'A small line above the title\n\n`label`'),
+    description: words('Description', 'One short line about what happens there\n\n`description`'),
+    shortTitle: words('Short title', 'One or two words for the phone bottom bar. Falls back to the title\n\n`shortTitle`'),
+    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page. Never on other glass\n\n`appearance`', ['solid', 'glass']),
+    icon: setting('Icon', 'Shown in the phone bottom bar, and in the tile when Icon position is set\n\n`icon`', { control: false }),
+    iconPosition: choice('Icon position', 'Shows the icon in the tile: above the label, or before the label and title\n\n`iconPosition`', ['top', 'start']),
+    iconVariant: choice('Icon background', 'A soft background behind the icon, or the icon alone\n\n`iconVariant`', ['filled', 'plain']),
+    iconSize: choice('Icon size', 'The icon tile: small, medium, large or xlarge\n\n`iconSize`', ['small', 'medium', 'large', 'xlarge']),
+    chosenIcon: setting('Chosen mark', "Shown when the tile is chosen, in place of the theme's mark\n\n`chosenIcon`", { control: false }),
+    id: setting('ID', 'Matches the ActionTilePanel it shows\n\n`id`', { control: false }),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be chosen\n\n`isDisabled`"),
+    ...pageArgTypes({ states: ['rest', 'hover', 'focus', 'disabled'], glass: true }),
+    href: hidden,
+    onPress: hidden,
+    material: hidden,
+    fill: hidden,
+    'data-state': hidden,
   },
+  parameters: { componentPage: actionTilePage },
 };
 export default meta;
 type Story = StoryObj<typeof ActionTile>;
+
+/** Action tile's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 // The switched content, below the tiles.
 const panelStyle: CSSProperties = { marginBlockStart: 'var(--space-4)' };
@@ -79,25 +96,28 @@ function NavigationTiles({ appearance, label = 'Navigation', showLabel = true, s
 
 type PlaygroundArgs = { appearance: Appearance; showIcon: boolean; iconPosition: IconPosition; iconVariant: 'filled' | 'plain'; showLabel: boolean; title: string; showDescription: boolean };
 
-/** Try it: pick Solid or Glass, turn the label and description on or off, and press the tiles. */
+/** Every setting, in the Controls tab. */
 export const Playground: StoryObj<PlaygroundArgs> = {
+  tags: ['!dev'],
   args: { appearance: 'solid', showIcon: false, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Tile 1', showDescription: true },
   argTypes: {
-    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
-    showIcon: { name: 'Icon', control: 'boolean' },
-    iconPosition: { name: 'Icon position', control: 'inline-radio', options: ['top', 'start'], if: { arg: 'showIcon' } },
-    iconVariant: { name: 'Icon background', control: 'inline-radio', options: ['filled', 'plain'], if: { arg: 'showIcon' } },
-    showLabel: { name: 'Label', control: 'boolean' },
-    title: { name: 'First title' },
-    showDescription: { name: 'Description', control: 'boolean' },
+    showIcon: onOff('Icon', 'Shows each icon in its tile'),
+    iconPosition: { ...choice('Icon position', 'Above the label, or before the label and title', ['top', 'start']), if: { arg: 'showIcon' } },
+    iconVariant: { ...choice('Icon background', 'A soft background behind the icon, or the icon alone', ['filled', 'plain']), if: { arg: 'showIcon' } },
+    showLabel: onOff('Label', 'A small line above each title'),
+    title: words('First title', 'What the first tile is'),
+    showDescription: onOff('Description', 'One short line on each tile'),
+    // The component's own props this story doesn't use.
+    ...Object.fromEntries(['label', 'description', 'shortTitle', 'icon', 'iconSize', 'chosenIcon', 'id', 'isDisabled'].map((k) => [k, hidden])),
   },
   render: ({ appearance, showIcon, iconPosition, iconVariant, showLabel, title, showDescription }) => (
     <NavigationTiles appearance={appearance} iconPosition={showIcon ? iconPosition : undefined} iconVariant={iconVariant} showLabel={showLabel} showDescription={showDescription} title={title} label="Playground" />
   ),
 };
 
-/** The two appearances on the theme's own page: Solid (the card surface) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
+/** Solid (the theme's card surface, the starting look) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
 export const SolidAndGlass: Story = {
+  tags: ['!dev'],
   name: 'Solid and glass',
   render: () => (
     <BothThemes>
@@ -115,8 +135,9 @@ export const SolidAndGlass: Story = {
   ),
 };
 
-/** Every state: rest, hover, keyboard focus, chosen and disabled, in Solid and Glass. */
+/** Every state, in Solid and Glass: rest, hover, keyboard focus, chosen (the theme's mark) and disabled. */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <StatePictures>
@@ -161,12 +182,9 @@ function ShellWithTiles() {
   );
 }
 
-/**
- * Navigation: three tiles that switch the content under them, like tabs. Use the arrow keys to move
- * between them. On a phone (pick a phone size in the toolbar) the same tiles become the bottom bar. In
- * Spotlight's page header they're Glass on the header art: see Page shell.
- */
+/** Three tiles that switch the content under them; use the arrow keys between them. Pick a phone size in the toolbar to see the bottom bar. */
 export const Navigation: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <NavigationTiles />
@@ -176,8 +194,8 @@ export const Navigation: Story = {
 
 /** Screenshot check only (hidden from the sidebar): with reduced motion, Glass still bends the art, but presses don't swell and phone tilt is off. */
 export const GlassReducedMotion: Story = {
-  name: 'Glass: reduced motion',
   tags: ['!dev'],
+  name: 'Glass: reduced motion',
   parameters: { layout: 'fullscreen' },
   decorators: [afterGraduationOnly],
   render: () => (

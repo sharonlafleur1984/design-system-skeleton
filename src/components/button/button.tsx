@@ -38,8 +38,8 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'classNa
   /** @deprecated Use isDisabled, React Aria's name. */
   disabled?: boolean;
   className?: string;
-  /** Storybook only: forces a look ("hover" or "pressed") for the state gallery. */
-  'data-state'?: 'hover' | 'pressed';
+  /** Storybook only: forces a look ("hover", "pressed" or "focus") for the state pictures. */
+  'data-state'?: 'hover' | 'pressed' | 'focus';
   children: ReactNode;
 }
 

@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from './button';
-import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme, StatePictures } from '../story-helpers';
+import { BothThemes, OnMarble, Row, WithReducedMotion, choice, hidden, marbles, onOff, setting, singleTheme, StatePictures, words } from '../story-helpers';
+import { buttonPage } from './button.page';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
+import { expect, fn, userEvent, within } from 'storybook/test';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -13,38 +16,85 @@ const Plus = () => (
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
-  tags: ['autodocs'],
-  args: { children: 'Button', variant: 'primary', appearance: 'solid', size: 'medium' },
+  args: {
+    children: 'Button',
+    variant: 'primary',
+    appearance: 'solid',
+    size: 'medium',
+    destructive: false,
+    isDisabled: false,
+    isPending: false,
+    // What the Actions tab lists as you use the button.
+    onPress: fn(),
+    onPressStart: fn(),
+    onPressEnd: fn(),
+    onHoverStart: fn(),
+    onHoverEnd: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+    ...pageArgs,
+  } as Meta<typeof Button>['args'],
   argTypes: {
-    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'tertiary'] },
-    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
+    children: words('Label', 'The words on the button\n\n`children`'),
+    variant: choice('Variant', 'How important the action is\n\n`variant`', ['primary', 'secondary', 'tertiary']),
+    appearance: choice('Style', 'Solid, or clear glass for any background except glass\n\n`appearance`', ['solid', 'glass']),
+    size: choice('Size', 'How big it is\n\n`size`', ['small', 'medium', 'large']),
+    destructive: onOff('Destructive', 'For actions that remove something\n\n`destructive`'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed\n\n`isDisabled`"),
+    isPending: onOff('Loading', 'Shows a spinner while the action runs\n\n`isPending`'),
+    icon: setting('Icon', 'A decorative icon before the label', { control: false }),
+    ...pageArgTypes({ states: ['rest', 'hover', 'pressed', 'focus', 'disabled', 'loading'], glass: true }),
+    onPress: hidden,
+    onPressStart: hidden,
+    onPressEnd: hidden,
+    onHoverStart: hidden,
+    onHoverEnd: hidden,
+    onFocus: hidden,
+    onBlur: hidden,
+    material: hidden,
+    loading: hidden,
+    disabled: hidden,
+    'data-state': hidden,
+    className: hidden,
   },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Starts an action. From the Figma "Button" set (Style, Size, Destructive, Is Enabled, Show Icon).',
-          '',
-          '**When to use:** Primary for the one main action on a screen. Secondary for other choices. Tertiary for side trips. Glass works on artwork and on plain pages.',
-          '',
-          '**When not to:** To go to another page, use a link. Never put two primary buttons side by side. Never put Glass on glass, like a glass button on a glass card.',
-          '',
-          '**Solid and glass:** `appearance="solid"` (the default) is the button in its style (primary, secondary or tertiary). `appearance="glass"` is a clear glass button, on artwork or a plain page, never on glass. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. On a plain page there\'s no art to bend, so it shows the frosted look. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows the frosted look too. The glass build is due for a review (issue #60).',
-          '',
-          '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
-          '',
-          '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on. Glass button text uses `button-glass-ink`, with no text shadow, and keeps 4.5:1 on the header red and on every Life Hub marble; the lens canvas is decorative and hidden from screen readers, and focus rings, keyboard behavior and touch targets are unchanged.',
-        ].join('\n'),
-      },
-    },
-  },
+  parameters: { componentPage: buttonPage },
 };
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Playground: Story = {};
+/** Button's page. Every setting is in the Controls tab. */
+export const Overview: Story = {
+  ...pageStory(),
+  tags: ['page'],
+  // The Interactions tab: checks the Try it out button does what it promises, with the settings picked.
+  play: async ({ args, canvasElement, step }) => {
+    const window = canvasElement.querySelector<HTMLElement>('.sb-try__window');
+    if (!window || (args as unknown as Record<string, unknown>).sbState !== 'rest' || Object.values(args).includes('all')) return;
+    const button = within(window).getByRole('button', { name: String(args.children) });
+    await step('Press Tab to reach it: the focus ring shows', async () => {
+      button.focus();
+      await expect(button).toHaveFocus();
+    });
+    await step(args.isDisabled || args.isPending ? 'Press Enter: nothing runs' : 'Press Enter: its action runs once', async () => {
+      await userEvent.keyboard('{Enter}');
+      await expect(args.onPress).toHaveBeenCalledTimes(args.isDisabled || args.isPending ? 0 : 1);
+    });
+  },
+};
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
 
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
+
+/** Every setting at its default. */
+export const Playground: Story = { tags: ['!dev'] };
+
+/** Primary for the one main action, Secondary for other choices, Tertiary for side trips. */
 export const Styles: Story = {
+  tags: ['!dev'],
+  name: 'Variants',
   render: () => (
     <BothThemes>
       <Row label="Primary">
@@ -63,7 +113,9 @@ export const Styles: Story = {
   ),
 };
 
+/** Medium almost everywhere. Small in dense lists, Large for the main action on a phone. */
 export const Sizes: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Small">
@@ -79,7 +131,9 @@ export const Sizes: Story = {
   ),
 };
 
+/** Every state, side by side: rest, hover, pressed, disabled and loading. */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <StatePictures>
@@ -97,7 +151,9 @@ export const States: Story = {
   ),
 };
 
+/** For actions that remove something. The label says what goes, so red is never the only signal. */
 export const Destructive: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Destructive">
@@ -149,17 +205,22 @@ function GlassOnArt({ theme }: { theme: unknown }) {
 }
 
 /**
- * Glass buttons on the artwork each product controls: After Graduation's header, and
- * Life Hub's marble (the Dashboard's). Pick the theme in the toolbar. The small one is a pill.
+ * Clear glass on the artwork the design system paints: Spotlight's header and Sunrise's marble. Its
+ * rim, highlight and shadow come from the page's light, and the art bends at its curved edge while the
+ * label stays crisp. Glass works on a plain page too (frosted, with nothing to bend), never on glass (D55).
+ * Without WebGL, or with Reduce transparency or Increase contrast, it turns frosted.
  */
 export const GlassOnArtwork: Story = {
+  tags: ['!dev'],
   name: 'Glass on artwork',
-  parameters: { layout: 'fullscreen' },
+  // On the Docs page, a window onto the header rather than a whole page of empty content.
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
   render: (_args, { globals }) => <GlassOnArt theme={globals.theme} />,
 };
 
-/** Life Hub: glass buttons on all ten marbles, to check the bend and the text on every one, in light and dark mode. */
+/** Sunrise: glass buttons on all ten marbles, to check the bend and the text on every one, in light and dark mode. */
 export const GlassOnEveryMarble: Story = {
+  tags: ['!dev'],
   name: 'Glass on every marble',
   render: () => (
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
@@ -175,8 +236,9 @@ export const GlassOnEveryMarble: Story = {
 
 /** With Reduce motion on: still Glass, but presses don't swell and phone tilt is off. */
 export const GlassReducedMotion: Story = {
+  tags: ['!dev'],
   name: 'Glass: reduced motion',
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
   render: (_args, { globals }) => (
     <WithReducedMotion>
       <GlassOnArt theme={globals.theme} />

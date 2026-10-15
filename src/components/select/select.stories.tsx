@@ -1,38 +1,44 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Select } from './select';
-import { BothThemes, Row } from '../story-helpers';
+import { BothThemes, Row, hidden, onOff, setting, words } from '../story-helpers';
+import { selectPage } from './select.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const options = [1, 2, 3, 4, 5, 6].map((n) => ({ id: String(n), label: `Option ${n}` }));
 
 const meta: Meta<typeof Select> = {
   title: 'Components/Select',
   component: Select,
-  tags: ['autodocs'],
-  args: { label: 'Label', options, placeholder: 'Select an option' },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Pick one option from a list. Built on React Aria\'s Select.',
-          '',
-          '**When to use:** five or more options. For two to five, use a toggle button group so every option shows at once.',
-          '',
-          '**When not to:** to pick several options (use tags) or to go to another page (use links).',
-          '',
-          '**Do:** give it a visible label. Use `aria-label` only when the label already shows nearby, like in a settings row.',
-          '',
-          '**Accessibility:** opens with Enter, Space or the arrow keys, and typing jumps to a match. Screen readers hear the label and the current choice.',
-        ].join('\n'),
-      },
-    },
+  args: { label: 'Label', options, placeholder: 'Select an option', isDisabled: false, ...pageArgs } as Meta<typeof Select>['args'],
+  argTypes: {
+    label: words('Label', 'The words above it\n\n`label`'),
+    'aria-label': words('Hidden label', 'Names it for screen readers when there is no visible label\n\n`aria-label`'),
+    placeholder: words('Placeholder', 'Shown before anything is picked\n\n`placeholder`'),
+    options: setting('Options', 'The list to pick from, each with an id and a label\n\n`options`'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be opened\n\n`isDisabled`"),
+    ...pageArgTypes({ states: ['rest', 'disabled'] }),
+    className: hidden,
   },
+  parameters: { componentPage: selectPage },
 };
 export default meta;
 type Story = StoryObj<typeof Select>;
 
-export const Playground: Story = {};
+/** Select's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
 
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
+
+/** Every setting, in the Controls tab. */
+export const Playground: Story = { tags: ['!dev'] };
+
+/** Before anything is picked, with a choice, and turned off. */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Placeholder">
@@ -48,8 +54,9 @@ export const States: Story = {
   ),
 };
 
-/** With a visible label above it. */
+/** With a visible label above it: the usual way to use it. */
 export const WithLabel: Story = {
+  tags: ['!dev'],
   name: 'With label',
   render: () => (
     <BothThemes>

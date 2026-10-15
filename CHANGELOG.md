@@ -15,6 +15,8 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Added
 
+- **Orb:** the light you drag when exploring glass, a glowing glass marble in the theme's color (`Orb`, `ORB_START`, tokens `--orb-*`). In Sunrise, `palette` sets an area's color family.
+- **Storybook: every part has a page.** The component page is a story now, so Controls, Actions, Interactions and Accessibility work on it. Every planned part has a page with its status (Ready, Pending, On hold or Not started), so the sidebar shows the whole library.
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
 - **Card, rebuilt:** a surface with the action tile's look, Solid or Glass, never pressable. Parts with their type set by role: `CardHeader` (icon, label and title), `CardBody` and `CardFooter` (buttons and a `note`).
@@ -34,6 +36,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Changed
 
+- **Every component's Docs page uses one template** (D52): what it does, when to use it, examples, do and don't, accessibility, then props, tokens and import for engineers. Controls give every setting a plain name and say what it does.
 - **Foundations, Space, radius and shadow:** the Corners story is called Radius, like the page and the tokens. The Shadow story shows a solid and a glass card under the page's light (drag the sun to move it), and says what uses each shadow token.
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
 - **Switch:** a narrower track (40px, was 44px) and a smaller knob (16px, was 18px) with the same 3px gap on every side.

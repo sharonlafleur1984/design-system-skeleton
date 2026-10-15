@@ -1,30 +1,42 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Body, Heading, Label, Note } from './text';
-import { BothThemes, Row } from '../story-helpers';
+import { BothThemes, Row, choice, hidden, setting, words } from '../story-helpers';
+import { textPage } from './text.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof Heading> = {
   title: 'Components/Text',
   component: Heading,
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'The text parts, each with its type style already chosen from the theme: **Heading**, **Body**, **Label** and **Note**. Card\'s parts use the same styles, so a heading on a card and a heading on a page always match. Built on React Aria\'s Heading and Text.',
-          '',
-          '**Heading:** `variant` sets its look (`display`, `title` (the default), `heading` or `subheading`); `level` (1 to 6) sets its rank in the page outline for screen readers. Keep them separate: a card title can be an h2 on one page and an h3 on another and look the same. One h1 per page.',
-          '',
-          '**Body:** running text, `large` for reading, `default` for most text, `small` for dense places. **Label:** a small line that names what follows, in the theme\'s label style. **Note:** a quiet side note, like "Updated 2 hours ago."',
-        ].join('\n'),
-      },
-    },
+  args: {
+    children: 'Title',
+    level: 2,
+    variant: 'title',
+    ...pageArgs,
+  } as Meta<typeof Heading>['args'],
+  argTypes: {
+    children: words('Text', 'The words of the heading\n\n`children`'),
+    level: setting('Level', 'Its rank in the page outline, h1 to h6. One h1 per page\n\n`level`', { control: { type: 'inline-radio' }, options: [1, 2, 3, 4, 5, 6] }),
+    variant: choice('Variant', 'How it looks, whatever its level\n\n`variant`', ['display', 'title', 'heading', 'subheading']),
+    ...pageArgTypes(),
+    className: hidden,
   },
+  parameters: { componentPage: textPage },
 };
 export default meta;
 type Story = StoryObj<typeof Heading>;
 
-/** Every text part in the theme picked in the toolbar. */
+/** Text's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
+
+/** Every text part: Heading in its four looks, Body in three sizes, Label and Note. */
 export const Styles: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Heading">

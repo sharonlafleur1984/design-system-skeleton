@@ -1,9 +1,10 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
 import { LIGHT_CHANGE } from './glass-lens/lens';
 import { LitContext, type Appearance } from './material';
 import { storyPageArt } from './glass-lens/story-art';
+import { Orb, ORB_START } from './orb/orb';
 import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
@@ -100,8 +101,8 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
 export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
 // Storybook's own chrome, not any theme: the same in every column.
-// The theme's name is the biggest thing in its column (above any theme's title size), so it's clear what everything under it belongs to.
-const compareHeading: CSSProperties = { margin: 0, font: '700 32px/1.2 system-ui, sans-serif', color: '#2e3438' };
+// Small and on the right, in from the rounded corner, so the theme's name labels its column without competing with the part's name (Sharon, Oct 15).
+const compareHeading: CSSProperties = { margin: 0, font: '600 12px/1.4 system-ui, sans-serif', color: '#525252', textAlign: 'end', paddingInlineEnd: '16px' };
 
 /** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
 const InComparePanel = createContext(false);
@@ -129,29 +130,43 @@ export function BothThemes({ children }: { children: ReactNode }) {
  */
 export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-      {themeList.map((theme) => (
-        <ThemeContext.Provider key={theme} value={theme}>
-          <InComparePanel.Provider value>
-            {/* The theme's name as a heading above its column, in Storybook's own type, so it's clear
-                which theme everything under it belongs to. */}
-            <section aria-labelledby={`compare-${theme}`} style={{ flex: '1 1 320px', display: 'grid', gap: '8px', alignContent: 'start' }}>
-              <h2 id={`compare-${theme}`} style={compareHeading}>
-                {themeNames[theme]}
-              </h2>
-              {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
-              <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
-                <ThemePanel theme={theme} heading={false}>
-                  {render(theme)}
-                </ThemePanel>
-              </div>
-            </section>
-          </InComparePanel.Provider>
-        </ThemeContext.Provider>
-      ))}
+    <div className="ds-compare-all">
+      <style>{compareAllCss}</style>
+      <div className="ds-compare-all__grid">
+        {themeList.map((theme) => (
+          <ThemeContext.Provider key={theme} value={theme}>
+            <InComparePanel.Provider value>
+              {/* The theme's name above its column, in Storybook's own type, so it's clear which theme
+                  everything under it belongs to. */}
+              <section aria-labelledby={`compare-${theme}`} style={{ minWidth: 0, display: 'grid', gap: '8px', alignContent: 'start' }}>
+                <h2 id={`compare-${theme}`} style={compareHeading}>
+                  {themeNames[theme]}
+                </h2>
+                {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
+                <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d4d4d4' }}>
+                  <ThemePanel theme={theme} heading={false}>
+                    {render(theme)}
+                  </ThemePanel>
+                </div>
+              </section>
+            </InComparePanel.Provider>
+          </ThemeContext.Provider>
+        ))}
+      </div>
     </div>
   );
 }
+
+// Every theme in equal columns when they all fit at 320px or wider, otherwise one theme per row.
+// Never a row of two with one left over, which reads as if the last theme mattered less.
+const compareColumn = 320;
+const compareGap = 16;
+const compareAllCss = `
+.ds-compare-all { container-type: inline-size; }
+.ds-compare-all__grid { display: grid; gap: ${compareGap}px; grid-template-columns: minmax(0, 1fr); }
+@container (min-width: ${themeList.length * compareColumn + (themeList.length - 1) * compareGap}px) {
+  .ds-compare-all__grid { grid-template-columns: repeat(${themeList.length}, minmax(0, 1fr)); }
+}`;
 
 /**
  * One theme's panel: its real page background, and the glass on it lit and bent from that background,
@@ -208,17 +223,19 @@ export function Row({ label, children }: { label: string; children: ReactNode })
 // Life Hub's marble backgrounds, one per area plus the spare (Figma: Background Texture). Small preview
 // images in .storybook/public; the real files are 6000 x 4000. In dark mode each area's night layer
 // covers its marble (transparent in light mode).
+// Each marble's color family (its area's palette), which its orb glows in. The spare has no area yet;
+// berry pie is the closest family to its coral, an estimate.
 export const marbles = [
-  { area: 'dashboard', name: 'Dashboard', texture: 'texture-sage-cream.jpg' },
-  { area: 'time', name: 'Time', texture: 'texture-seagull.jpg' },
-  { area: 'finance', name: 'Finance', texture: 'texture-sea-nymph.jpg' },
-  { area: 'parenting', name: 'Parenting', texture: 'texture-lilacs-lavender.jpg' },
-  { area: 'health', name: 'Health', texture: 'texture-berry-pie.jpg' },
-  { area: 'home', name: 'Home', texture: 'texture-morning-latte.jpg' },
-  { area: 'office', name: 'Office', texture: 'texture-gold-sand.jpg' },
-  { area: 'professional', name: 'Professional', texture: 'texture-nocturnal-navy.jpg' },
-  { area: 'growth', name: 'Personal growth', texture: 'texture-sunflower-medley.jpg' },
-  { area: null, name: 'Spare (future option B)', texture: 'texture-future-option-b.jpg' },
+  { area: 'dashboard', name: 'Dashboard', texture: 'texture-sage-cream.jpg', palette: 'earth-moss' },
+  { area: 'time', name: 'Time', texture: 'texture-seagull.jpg', palette: 'seagull' },
+  { area: 'finance', name: 'Finance', texture: 'texture-sea-nymph.jpg', palette: 'sea-nymph' },
+  { area: 'parenting', name: 'Parenting', texture: 'texture-lilacs-lavender.jpg', palette: 'lilacs-lavender' },
+  { area: 'health', name: 'Health', texture: 'texture-berry-pie.jpg', palette: 'berry-pie' },
+  { area: 'home', name: 'Home', texture: 'texture-morning-latte.jpg', palette: 'morning-latte' },
+  { area: 'office', name: 'Office', texture: 'texture-gold-sand.jpg', palette: 'gold-sand' },
+  { area: 'professional', name: 'Professional', texture: 'texture-nocturnal-navy.jpg', palette: 'nocturnal-navy' },
+  { area: 'growth', name: 'Personal growth', texture: 'texture-sunflower-medley.jpg', palette: 'sunflower-medley' },
+  { area: null, name: 'Spare (future option B)', texture: 'texture-future-option-b.jpg', palette: 'berry-pie' },
 ] as const;
 export type Marble = (typeof marbles)[number];
 
@@ -265,21 +282,27 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
 }
 
 /**
- * Storybook only: the page's one light, shown as a sun, on every story that shows glass (glass can't
- * be judged without seeing where its light comes from). Drag the sun, or focus it and use the arrow
+ * Where every movable light in Storybook starts, as a share of its section: on the right, two thirds down (Sharon's
+ * rule, Oct 15). Every orb starts here, in any section, theme or mode. The same as the Orb's ORB_START.
+ */
+export const SUN_START = ORB_START;
+
+/**
+ * Storybook only: the page's one light, shown as the orb, on every story that shows glass (glass can't
+ * be judged without seeing where its light comes from). Drag the orb, or focus it and use the arrow
  * keys, and every rim, highlight and shadow follows. It's the page light (data-glass-light), so all
- * glass in the story shares it. Stories with their own light (the Glass playground's sun, the page
- * shell's wheel) keep theirs, and no sun is shown.
+ * glass in the story shares it. Stories with their own light (the Glass playground's orb, the page
+ * shell's wheel) keep theirs, and no second orb is shown.
  */
 export function LightScene({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
-  // Where the sun is, as a share of the scene: top right, above the content.
-  const [sun, setSun] = useState({ x: 0.97, y: 0 });
+  // Where the orb is, as a share of the scene. It starts on the right, two thirds down.
+  const [sun, setSun] = useState(SUN_START);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-shell'));
+    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-orb:not([data-glass-light]), .ds-shell'));
     check();
     const mo = new MutationObserver(check);
     mo.observe(el, { childList: true, subtree: true });
@@ -289,51 +312,9 @@ export function LightScene({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, show]);
 
-  const clamp = (v: number) => Math.min(1, Math.max(0, v));
-  const moveTo = (e: PointerEvent<HTMLElement>) => {
-    const r = ref.current!.getBoundingClientRect();
-    setSun({ x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) });
-  };
-  const onKey = (e: KeyboardEvent<HTMLElement>) => {
-    const step = e.shiftKey ? 0.1 : 0.02;
-    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
-    if (!d) return;
-    e.preventDefault();
-    setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
-  };
-  const sunStyle: CSSProperties = {
-    position: 'absolute',
-    zIndex: 5,
-    left: `${sun.x * 100}%`,
-    top: `${sun.y * 100}%`,
-    inlineSize: 'var(--space-5)',
-    blockSize: 'var(--space-5)',
-    marginInlineStart: 'calc(var(--space-5) / -2)',
-    marginBlockStart: 'calc(var(--space-5) / -2)',
-    padding: 0,
-    border: 'none',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
-    boxShadow: '0 0 24px 8px rgba(245, 197, 66, 0.35)',
-    cursor: 'grab',
-    touchAction: 'none',
-  };
   return (
     <div ref={ref} style={{ position: 'relative', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
-      {show && (
-        <button
-          type="button"
-          data-glass-light=""
-          aria-label="Light. Drag it, or use the arrow keys to move it."
-          style={sunStyle}
-          onPointerDown={(e) => {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            moveTo(e);
-          }}
-          onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-          onKeyDown={onKey}
-        />
-      )}
+      {show && <Orb data-glass-light="" position={sun} onPositionChange={setSun} />}
       {children}
     </div>
   );
@@ -366,3 +347,18 @@ export const storyIcons = {
     </>,
   ),
 };
+
+/**
+ * Storybook only: friendly Controls. Each setting gets a plain name and one line saying what it does
+ * (the template's Setting and What it does), and a yes-or-no setting is an Off | On button set.
+ */
+export const setting = (name: string, description: string, extra: Record<string, unknown> = {}) => ({ name, description, ...extra });
+export const onOff = (name: string, description: string) =>
+  setting(name, description, { control: { type: 'inline-radio', labels: { false: 'Off', true: 'On', all: 'All' } }, options: [false, true, 'all'] });
+/** Every option list ends with All, which the component page shows as every choice at once. */
+export const choice = (name: string, description: string, options: string[]) =>
+  setting(name, description, { control: { type: 'inline-radio', labels: { ...Object.fromEntries(options.map((o) => [o, o[0].toUpperCase() + o.slice(1)])), all: 'All' } }, options: [...options, 'all'] });
+/** A setting typed as words, like a label. */
+export const words = (name: string, description: string) => setting(name, description, { control: 'text' });
+/** Hides a prop from Controls and the props table: deprecated aliases and Storybook-only props. */
+export const hidden = { table: { disable: true } };

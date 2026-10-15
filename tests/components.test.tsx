@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { ActionTile, ActionTileGroup, PageShell, Button, Card, CardHeader, CardBody, CardFooter, Tile, IconTile, Heading, Body, Label, Note, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
+import { ActionTile, ActionTileGroup, PageShell, Button, Card, CardHeader, CardBody, CardFooter, Tile, IconTile, Heading, Body, Label, Note, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select, Orb, ORB_START } from '../src/components';
 // The old names, kept as aliases so apps that use them keep working.
 import { ProgressMeter, Divider, Chip, ChipGroup, SegmentedControl, Segment } from '../src/components';
 
@@ -224,6 +224,48 @@ describe('Separator', () => {
   it('is announced as a separator', () => {
     render(<Separator />);
     expect(screen.getByRole('separator')).toBeTruthy();
+  });
+});
+
+describe('Orb', () => {
+  it('is a named button that starts on the right, two thirds down', () => {
+    render(<Orb position={ORB_START} onPositionChange={() => {}} />);
+    const orb = screen.getByRole('button', { name: 'Light. Drag it, or use the arrow keys to move it.' });
+    expect(ORB_START).toEqual({ x: 0.92, y: 0.67 });
+    expect(orb.style.left).toBe('92%');
+    expect(orb.style.top).toBe('67%');
+  });
+
+  it('moves with the arrow keys, farther with Shift, and stays inside its section', async () => {
+    const moves: { x: number; y: number }[] = [];
+    const { rerender } = render(<Orb position={{ x: 0.5, y: 0.5 }} onPositionChange={(p) => moves.push(p)} />);
+    const orb = screen.getByRole('button');
+    orb.focus();
+    await userEvent.keyboard('{ArrowLeft}');
+    await userEvent.keyboard('{Shift>}{ArrowUp}{/Shift}');
+    expect(moves[0].x).toBeCloseTo(0.48);
+    expect(moves[1].y).toBeCloseTo(0.4);
+    rerender(<Orb position={{ x: 1, y: 1 }} onPositionChange={(p) => moves.push(p)} />);
+    await userEvent.keyboard('{ArrowRight}');
+    expect(moves[2]).toEqual({ x: 1, y: 1 });
+  });
+
+  it('keeps its own place when no position is given', async () => {
+    render(<Orb />);
+    const orb = screen.getByRole('button');
+    orb.focus();
+    await userEvent.keyboard('{ArrowUp}');
+    expect(orb.style.top).toBe('65%');
+  });
+
+  it("glows in an area's color family when given one", () => {
+    render(<Orb position={ORB_START} onPositionChange={() => {}} palette="seagull" />);
+    expect(screen.getByRole('button').style.getPropertyValue('--orb-color-body')).toBe('var(--palette-seagull-400)');
+  });
+
+  it('has no accessibility problems', async () => {
+    const { container } = render(<Orb position={ORB_START} onPositionChange={() => {}} />);
+    await expectNoAxeViolations(container);
   });
 });
 

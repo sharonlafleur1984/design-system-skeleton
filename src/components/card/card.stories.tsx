@@ -2,38 +2,48 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { Card, CardBody, CardFooter, CardHeader } from './card';
 import { Button } from '../button/button';
-import { BothThemes, Row, storyIcons } from '../story-helpers';
+import { BothThemes, Row, choice, hidden, onOff, setting, storyIcons, words } from '../story-helpers';
+import { cardPage } from './card.page';
 import type { Appearance } from '../material';
 import type { IconPosition } from '../tile-header';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
   component: Card,
-  tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'A surface for related content, in every theme. Solid or Glass, with nothing on it until you add its parts.',
-          '',
-          '**Parts:** `CardHeader` (an optional icon, a label and the title), `CardBody` (the main content: text in the body style, or anything else) and `CardFooter` (buttons, and an optional quiet `note`). Each part has its type already chosen from the theme, so every card reads the same way. The text parts (Heading, Body, Label, Note) work on their own too: see Text.',
-          '',
-          '**Solid and glass:** `appearance="solid"` (the starting look) is the theme\'s card surface with a soft shadow. `appearance="glass"` is clear glass: its edge, highlight and shadow come from the page\'s light, its text takes the color of what it sits on, and on artwork the design system paints (Life Hub\'s marble, Spotlight\'s header) it bends the art at its edges.',
-          '',
-          '**Icons:** give the header an `icon`, in an icon tile, `filled` (a soft background) or `plain`, in four sizes. `iconPosition="top"` puts it above the label; `"start"` puts it before the label and title.',
-          '',
-          '**Never pressable:** the buttons and links on a card are pressed, never the card itself, so a card has no hover or pressed state. For a whole tile that\'s a link or button, use **Tile**. To switch between sections of a page, use **Action tile**.',
-          '',
-          '**Do:** let the shadow lift the card; no borders needed. **Don\'t:** nest cards inside cards.',
-          '',
-          '**Accessibility:** the title is a real heading. Its `level` (h3 by default) sets its rank in the page outline without changing its look. Pick the card\'s own element with `as` (for example `section` or `article`). With Reduce transparency or Increase contrast on, Glass turns solid.',
-        ].join('\n'),
-      },
-    },
+  args: {
+    appearance: 'solid',
+    children: (
+      <>
+        <CardHeader label="Label" title="Title" />
+        <CardBody>Body text.</CardBody>
+      </>
+    ),
+    ...pageArgs,
+  } as Meta<typeof Card>['args'],
+  argTypes: {
+    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page\n\n`appearance`', ['solid', 'glass']),
+    as: setting('Element', 'The HTML element, like section or article\n\n`as`', { control: false }),
+    children: setting('Parts', 'CardHeader, CardBody and CardFooter, or anything else\n\n`children`', { control: false }),
+    ...pageArgTypes({ glass: true }),
+    material: hidden,
+    variant: hidden,
+    interactive: hidden,
+    className: hidden,
   },
+  parameters: { componentPage: cardPage },
 };
 export default meta;
 type Story = StoryObj<typeof Card>;
+
+/** Card's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 4)), 1fr))', gap: 'var(--space-3)', flex: '1 1 auto' };
 
@@ -55,19 +65,21 @@ type PlaygroundArgs = {
   showNote: boolean;
 };
 
-/** Try it: pick Solid or Glass, and turn each part on or off. */
+/** Every setting, in the Controls tab. */
 export const Playground: StoryObj<PlaygroundArgs> = {
+  tags: ['!dev'],
   args: { appearance: 'solid', showIcon: true, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Title', showBody: true, showButton: true, showNote: true },
   argTypes: {
-    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
-    showIcon: { name: 'Icon', control: 'boolean' },
-    iconPosition: { name: 'Icon position', control: 'inline-radio', options: ['top', 'start'], if: { arg: 'showIcon' } },
-    iconVariant: { name: 'Icon background', control: 'inline-radio', options: ['filled', 'plain'], if: { arg: 'showIcon' } },
-    showLabel: { name: 'Label', control: 'boolean' },
-    title: { name: 'Title' },
-    showBody: { name: 'Body', control: 'boolean' },
-    showButton: { name: 'Button', control: 'boolean' },
-    showNote: { name: 'Note', control: 'boolean' },
+    showIcon: onOff('Icon', 'An icon in the header, in an icon tile'),
+    iconPosition: { ...choice('Icon position', 'Above the label, or before the label and title', ['top', 'start']), if: { arg: 'showIcon' } },
+    iconVariant: { ...choice('Icon background', 'A soft background behind the icon, or the icon alone', ['filled', 'plain']), if: { arg: 'showIcon' } },
+    showLabel: onOff('Label', 'A small line above the title'),
+    title: words('Title', "The card's name"),
+    showBody: onOff('Body', 'The main content'),
+    showButton: onOff('Button', 'A button in the footer'),
+    showNote: onOff('Note', 'A quiet note in the footer'),
+    // The component's own props this story doesn't use.
+    ...Object.fromEntries(['as', 'children'].map((k) => [k, hidden])),
   },
   render: ({ appearance, showIcon, iconPosition, iconVariant, showLabel, title, showBody, showButton, showNote }) => (
     <div style={grid}>
@@ -80,8 +92,9 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   ),
 };
 
-/** The two appearances on the theme's own page: Solid (the card surface) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
+/** Solid (the theme's card surface, the starting look) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */
 export const SolidAndGlass: Story = {
+  tags: ['!dev'],
   name: 'Solid and glass',
   render: () => (
     <BothThemes>
@@ -100,8 +113,9 @@ export const SolidAndGlass: Story = {
   ),
 };
 
-/** The parts, alone and together: header, body and footer, each with its type already chosen. */
+/** The parts, alone and together: header, body and footer. Use only the ones the content needs. */
 export const Parts: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <div style={grid}>
@@ -126,6 +140,7 @@ export const Parts: Story = {
 
 /** Icons in the header: on top or at the start, with a soft background (filled) or without (plain). */
 export const Icons: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       {(['top', 'start'] as IconPosition[]).map((position) => (
@@ -146,6 +161,8 @@ export const Icons: Story = {
 
 /** A card that holds only an empty state: what's missing, and the one action that fills it. */
 export const EmptyState: Story = {
+  tags: ['!dev'],
+  name: 'Empty state',
   render: () => (
     <BothThemes>
       <div style={grid}>

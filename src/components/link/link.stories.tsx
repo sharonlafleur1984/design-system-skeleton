@@ -1,44 +1,46 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { Link, LinkButton } from './link';
-import { BothThemes, StatePictures } from '../story-helpers';
+import { BothThemes, StatePictures, choice, hidden, onOff, words } from '../story-helpers';
+import { linkPage } from './link.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof Link> = {
   title: 'Components/Link',
   component: Link,
-  tags: ['autodocs'],
-  args: { level: 'inline', href: '#', children: 'Link' },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Two link levels, shared by every product. Each theme sets the colors and the quiet size.',
-          '',
-          '**Inline:** a link inside a sentence, at the sentence\'s size. "Read the full guide."',
-          '',
-          '**Quiet:** a side trip or a small control, one step smaller and gray: View details, Show more, sources.',
-          '',
-          '**Link or LinkButton?** If it goes somewhere, use `Link`. If it does something on the page (Show more, Restore all), use `LinkButton`: it looks the same but is a real button.',
-          '',
-          '**When not to:** for the main action on a screen, use a Button. Never add a third link level for one spot.',
-          '',
-          '**Do:** keep the underline; it\'s what says "link" without relying on color. **Don\'t:** make links bold.',
-          '',
-          '**Accessibility:** soft underline at rest, full on hover and focus; visible focus ring; quiet links get a larger tap area; outside links say "(opens in a new tab)" to screen readers.',
-        ].join('\n'),
-      },
-    },
+  args: { level: 'inline', href: '#', children: 'Link', external: false, isDisabled: false, ...pageArgs } as Meta<typeof Link>['args'],
+  argTypes: {
+    children: words('Label', 'The words of the link\n\n`children`'),
+    level: choice('Level', 'Inline inside a sentence, Quiet for a side trip\n\n`level`', ['inline', 'quiet']),
+    href: words('Goes to', 'The page or place it opens\n\n`href`'),
+    external: onOff('Outside site', 'Opens in a new tab, with a marker that says so\n\n`external`'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be followed\n\n`isDisabled`"),
+    ...pageArgTypes({ states: ['rest', 'disabled'] }),
+    className: hidden,
   },
+  parameters: { componentPage: linkPage },
 };
 export default meta;
 type Story = StoryObj<typeof Link>;
 
-export const Playground: Story = {};
+/** Link's page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(), tags: ['page'] };
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
+
+/** Every setting, in the Controls tab. */
+export const Playground: Story = { tags: ['!dev'] };
 
 const row: CSSProperties = { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 'var(--space-4)' };
 const body: CSSProperties = { margin: 0, fontSize: 'var(--type-body-default-size)', lineHeight: 'var(--type-body-default-line-height)' };
 
+/** Inline inside a sentence, Quiet for a side trip, and an outside link that opens a new tab. */
 export const Levels: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <p style={body}>
@@ -55,7 +57,9 @@ export const Levels: Story = {
   ),
 };
 
+/** LinkButton: looks like a link but does something on this page, like Show more. */
 export const LinkButtons: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <div style={row}>
@@ -74,8 +78,9 @@ const hover: CSSProperties = { color: 'var(--link-inline-color-hover)', textDeco
 const quietHover: CSSProperties = { color: 'var(--link-quiet-color-hover)', textDecorationColor: 'currentColor' };
 const focus: CSSProperties = { outline: '2px solid var(--color-border-focus)', outlineOffset: '2px' };
 
-/** Hover and focus, shown side by side. Hover and focus look the same, plus a focus ring for keyboards. */
+/** Rest, hover and focus side by side. Focus looks like hover, plus a focus ring. */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <StatePictures>

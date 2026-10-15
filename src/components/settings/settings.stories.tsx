@@ -10,38 +10,39 @@ import { Select } from '../select/select';
 import { Switch } from '../switch/switch';
 import { SettingRow, SettingsDialog, SettingsGroup, type SettingsSectionDef } from './settings';
 import { afterGraduationOnly } from '../product-only';
+import { setting, words } from '../story-helpers';
+import { settingsPage } from './settings.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof SettingsDialog> = {
   title: 'Patterns/Settings',
   component: SettingsDialog,
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-    docs: {
-      description: {
-        component: [
-          'A full-size dialog for app-wide settings, modeled on Claude\'s. It opens from the Settings button at the top right of the header. Sections run down the left; on phones the list comes first and each section opens with a Back button.',
-          '',
-          '**Saving:** every change applies right away. No Save button, and closing never asks to discard.',
-          '',
-          '**Match device:** anything the device can tell us (theme, contrast, transparency, motion) defaults to Match device. If the device asks for reduced motion, motion stays reduced whatever is picked here.',
-          '',
-          '**Working settings:** Appearance and Accessibility really change the page (try them). The other sections show the planned settings; their data comes from the app.',
-          '',
-          '**Accessibility:** focus stays inside the dialog, Escape closes it, and focus returns to the Settings button. Every control is named by its row label.',
-          '',
-          '**Where it goes:** render it once, near the top of the app and outside any tabs or action tile switch (those build a hidden copy of their contents, which would open two dialogs).',
-          '',
-          '**Why these settings:** see Settings research in the After Graduation wiki: sections, defaults and the research behind each accessibility setting, including why text spacing comes before any dyslexia font.',
-        ].join('\n'),
-      },
-    },
+  // The page shows the dialog closed: open, it would cover the whole page. The stories below open it from the header.
+  args: { title: 'Settings', isOpen: false, sections: [], ...pageArgs } as Meta<typeof SettingsDialog>['args'],
+  argTypes: {
+    title: words('Title', "The dialog's heading\n\n`title`"),
+    sections: setting('Sections', 'Each section: an id, a label and its rows\n\n`sections`', { control: false }),
+    section: setting('Open section', 'Opens on this section, for deep links like /settings/notifications\n\n`section`', { control: false }),
+    isOpen: setting('Open', 'Whether the dialog is showing\n\n`isOpen`', { control: false }),
+    onOpenChange: setting('On open change', 'Called when it opens or closes\n\n`onOpenChange`', { control: false }),
+    onSectionChange: setting('On section change', 'Called when someone picks a section\n\n`onSectionChange`', { control: false }),
+    ...pageArgTypes(),
   },
+  // On the Docs page each story gets its own frame, so a dialog that starts open stays inside its example.
+  parameters: { layout: 'fullscreen', componentPage: settingsPage, docs: { story: { inline: false, height: '640px' } } },
   // After Graduation only for now; with Life Hub picked, shows a message instead.
   decorators: [afterGraduationOnly],
 };
 export default meta;
 type Story = StoryObj<typeof SettingsDialog>;
+
+/** Settings' page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(undefined, { tryIt: false }), tags: ['page'] };
+export const UsageRules: Story = { ...pageStory('usage', { tryIt: false }), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y', { tryIt: false }), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related', { tryIt: false }), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 // Three-way choices, with the label naming the row for screen readers.
 function Choice<T extends string | number>({
@@ -329,7 +330,7 @@ const episodes = [
   { id: 'dates', label: 'Episode 3', title: 'Important Dates' },
 ];
 
-function Demo({ startOpen = false, startSection }: { startOpen?: boolean; startSection?: Key }) {
+function Demo({ startOpen = false, startSection, title }: { startOpen?: boolean; startSection?: Key; title?: string }) {
   const [open, setOpen] = useState(startOpen);
   const sections = useAfterGraduationSections();
   return (
@@ -359,22 +360,29 @@ function Demo({ startOpen = false, startSection }: { startOpen?: boolean; startS
       </PageShell>
     </ActionTileSwitch>
     {/* Outside the episode switch: React Aria collections render their children twice to build the list. */}
-    <SettingsDialog isOpen={open} onOpenChange={setOpen} sections={sections} section={startSection} />
+    <SettingsDialog isOpen={open} onOpenChange={setOpen} sections={sections} section={startSection} title={title} />
     </>
   );
 }
 
-/** The page with the Settings button at the top right. Press it to open Settings. */
+/**
+ * Every setting, in the Controls tab. Press Settings at the top right to open it. Render it once, outside
+ * any tabs or action tile switch: those build a hidden copy of their contents, which would open two dialogs.
+ */
 export const FromTheHeader: Story = {
-  render: () => <Demo />,
+  tags: ['!dev'],
+  render: (args) => <Demo title={args.title} />,
 };
 
-/** Settings open on Accessibility. Every setting here changes the page right away. */
-export const Accessibility: Story = {
+/** Open on Accessibility. Appearance and Accessibility really change the page; try them. */
+export const OpenOnAccessibility: Story = {
+  tags: ['!dev'],
+  name: 'Open on Accessibility',
   render: () => <Demo startOpen startSection="accessibility" />,
 };
 
-/** Settings open on Plan. */
+/** Open on Plan, the way a deep link opens one section. The other sections show planned settings. */
 export const Plan: Story = {
+  tags: ['!dev'],
   render: () => <Demo startOpen startSection="plan" />,
 };
