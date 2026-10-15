@@ -169,7 +169,7 @@ export const Timing: StoryObj = {
 };
 
 /** One theme's card: its name, its mood and what that means, then the demo, all in the theme's own look. */
-function MoodCard({ theme, picked, arrive, celebrate }: { theme: string; picked: boolean; arrive: number; celebrate: number }) {
+function MoodCard({ theme, arrive, celebrate }: { theme: string; arrive: number; celebrate: number }) {
   const name = themeNames[theme];
   const [ref, mood] = useThemeMood(theme);
   return (
@@ -186,14 +186,10 @@ function MoodCard({ theme, picked, arrive, celebrate }: { theme: string; picked:
         borderRadius: 'var(--corner-panel)',
         background: 'var(--story-bg-page, var(--color-surface-page))',
         color: 'var(--color-ink-primary)',
-        // The theme picked above gets Storybook's own blue ring, so the picker and the cards always agree.
-        boxShadow: picked ? '0 0 0 3px #1d6ae5' : '0 0 0 1px #d9d9d9',
+        boxShadow: '0 0 0 1px #d9d9d9',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
-        <h3 style={{ margin: 0, font: '700 22px/1.2 system-ui, sans-serif', color: 'inherit' }}>{name}</h3>
-        {picked && <span style={{ font: '600 12px/1 system-ui, sans-serif', color: '#1d6ae5' }}>Picked above</span>}
-      </div>
+      <h3 style={{ margin: 0, font: '700 22px/1.2 system-ui, sans-serif', color: 'inherit' }}>{name}</h3>
       <Intro label="Default mood" title={moods[mood].title} about={moods[mood].about} />
       <Demo mood={mood} arrive={arrive} celebrate={celebrate} />
     </section>
@@ -201,12 +197,12 @@ function MoodCard({ theme, picked, arrive, celebrate }: { theme: string; picked:
 }
 
 /**
- * How things arrive and celebrate in each theme, side by side: each theme has a default mood, calm or
- * energetic. One set of buttons plays every card at once, so you see the difference as it happens. Any page
- * can ask for the other mood with data-motion. Controls never change with the mood.
+ * How things arrive and celebrate: each theme has a default mood, calm or energetic. Pick Compare all to see
+ * every theme side by side; one set of buttons plays every card at once. Any page can ask for the other mood
+ * with data-motion. Controls never change with the mood.
  */
 export const Moods: StoryObj = {
-  // Always every theme: the comparison is the point. The theme picked above is marked instead.
+  // Shows only the theme picked above, and every theme as cards side by side with Compare all.
   parameters: { compareAll: false },
   render: function Moods() {
     const choice = useContext(ThemeContext);
@@ -214,10 +210,11 @@ export const Moods: StoryObj = {
     return (
       <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
         {controls}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-4)' }}>
-          {themeList.map((theme) => (
+        {/* One theme keeps the card's compare-view width, so it reads the same either way. */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-4)', maxInlineSize: choice === 'both' ? undefined : '400px' }}>
+          {(choice === 'both' ? themeList : [singleTheme(choice)]).map((theme) => (
             <ThemeContext.Provider key={theme} value={theme}>
-              <MoodCard theme={theme} picked={choice === theme} arrive={arrive} celebrate={celebrate} />
+              <MoodCard theme={theme} arrive={arrive} celebrate={celebrate} />
             </ThemeContext.Provider>
           ))}
         </div>
