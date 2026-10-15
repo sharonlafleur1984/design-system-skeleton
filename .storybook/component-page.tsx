@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from 'react';
 import { ToggleButton, ToggleButtonGroup } from 'react-aria-components';
 import { addons } from 'storybook/preview-api';
 import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
@@ -8,6 +8,7 @@ import { useGlassLight } from '../src/components/glass-light/glass-light';
 import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
+import { Orb } from '../src/components/orb/orb';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
 
@@ -374,8 +375,8 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const bg = theme === 'after-graduation' && (picked === 'header' || picked === 'landscape') ? picked : theme === 'life-hub' && picked === 'marble' ? 'marble' : 'plain';
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  // Every dark window, and the header art, shows the light as a sun you can move. It starts near the
-  // bottom right, like every light, and the window's glass is lit from it.
+  // Every dark window, and the header art, shows the light as the orb you can move. It starts on the
+  // right, two thirds down, like every light, and the window's glass is lit from it.
   const showSun = bg === 'header' || mode === 'dark';
   const [sun, setSun] = useState(SUN_START);
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
@@ -384,20 +385,8 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, bg, mode]);
 
-  const clamp = (v: number) => Math.min(0.96, Math.max(0.04, v));
-  const moveTo = (e: PointerEvent<HTMLElement>) => {
-    const r = ref.current!.getBoundingClientRect();
-    setSun({ x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) });
-  };
-  const onKey = (e: KeyboardEvent<HTMLElement>) => {
-    const step = e.shiftKey ? 0.1 : 0.04;
-    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
-    if (!d) return;
-    e.preventDefault();
-    setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
-  };
   const style = {
-    // The header art's bright spot sits at the sun.
+    // The header art's bright spot sits at the orb.
     '--sb-sun-x': `${sun.x * 100}%`,
     '--sb-sun-y': `${sun.y * 100}%`,
     ...(bg === 'marble' ? { background: `linear-gradient(${night}, ${night}), url('${marble.texture}') center / cover` } : {}),
@@ -406,22 +395,8 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {showSun && (
         <>
-          <button
-            type="button"
-            data-sb-sun=""
-            className="sb-try__sun"
-            style={{ left: `${sun.x * 100}%`, top: `${sun.y * 100}%` }}
-            aria-label="Light. Drag it, or use the arrow keys to move it."
-            onPointerDown={(e) => {
-              e.currentTarget.setPointerCapture(e.pointerId);
-              moveTo(e);
-            }}
-            onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-            onKeyDown={onKey}
-          >
-            <span className="sb-try__sun-core" aria-hidden="true" />
-          </button>
-          <span className="sb-try__hint">Drag the sun to move the light</span>
+          <Orb data-sb-sun="" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} />
+          <span className="sb-try__hint">Drag the light to move it</span>
         </>
       )}
       {bg === 'landscape' && <span className="sb-try__standin">Stand-in for the landscape lanes</span>}
