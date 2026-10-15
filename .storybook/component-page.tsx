@@ -36,7 +36,7 @@ export interface ComponentPageInfo {
   /** What it does, in one line that starts with a verb. */
   summary: string;
   status: Status;
-  /** Where its design lives, if anywhere. Shown in the status row's Notes. */
+  /** Its design file, if one exists (Figma or a Claude design), with a label that names where it is, like "See the design in Figma". Shown in the status row's Notes. */
   design?: { href: string; label: string };
   /** React Aria's component it's built on, or the file of ours it lives in (none yet for an unbuilt one of ours). */
   builtWith: { reactAria: string } | { source?: string };
@@ -633,7 +633,8 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
                         <span className="sb-page__vh"> (opens in a new tab)</span>
                       </a>
                     ) : (
-                      <p className="sb-page__note-line">No design yet.</p>
+                      // A built part's code is its design; only a planned one says it has no design file yet.
+                      !built && <p className="sb-page__note-line">No design file yet (Figma or Claude).</p>
                     )}
                   </td>
                 </tr>
