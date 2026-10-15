@@ -1,8 +1,8 @@
 // Draws the orb with a real renderer (three.js) instead of faking glass with CSS gradients: a glass
 // ball (refractive index 1.5) with a glowing core inside, lit from the top right and reflecting a
-// studio room (three.js's built-in RoomEnvironment, so nothing is downloaded). The renderer works out
+// plain studio (built here, so nothing is downloaded). The renderer works out
 // what CSS can't: the bright edges where glass reflects the most, the core bent and enlarged through
-// the glass, the sharp highlight and the room's reflections.
+// the glass, the sharp highlight and the studio's reflections.
 //
 // Each orb is drawn once into a picture and cached by its look, size and colors. One renderer is
 // shared by every orb, so the page never holds more than one 3D context. three.js loads only the
@@ -28,7 +28,7 @@ const LOOKS = {
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
   // Completely clear: colorless glass with no core. The page behind is bent through it, and only the
   // reflections, the highlights and the bright edges say it's glass, like a bubble.
-  clear: { core: 0, coreWhite: 0, emissive: 0.12, attenuation: Infinity, seeThrough: true },
+  clear: { core: 0, coreWhite: 0, emissive: 0, attenuation: Infinity, seeThrough: true },
 };
 
 type Three = typeof import('three');
@@ -39,17 +39,44 @@ function setup() {
     const probe = document.createElement('canvas');
     if (!probe.getContext('webgl2')) throw new Error('No WebGL here; the CSS orb stays.');
     const THREE = await import('three');
-    const { RoomEnvironment } = await import('three/examples/jsm/environments/RoomEnvironment.js');
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, preserveDrawingBuffer: true });
     renderer.setClearColor(0x000000, 0);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     const pmrem = new THREE.PMREMGenerator(renderer);
-    const env = pmrem.fromScene(new RoomEnvironment(), 0.01).texture;
+    const env = pmrem.fromScene(studio(THREE), 0.02).texture;
     pmrem.dispose();
     return { THREE, renderer, env };
   })();
   return shared;
+}
+
+/**
+ * What the glass reflects: a plain studio with nothing in it to recognize. A soft sky, light above
+ * and dark below, and one round softbox up and to the right (where the page's light sits), plus a
+ * faint one low on the left. No walls or furniture, so the reflections read only as light.
+ */
+function studio(THREE: Three) {
+  const scene = new THREE.Scene();
+  const sky = new THREE.SphereGeometry(10, 48, 24);
+  const position = sky.getAttribute('position');
+  const shades: number[] = [];
+  for (let i = 0; i < position.count; i++) {
+    const up = (position.getY(i) / 10 + 1) / 2;
+    const v = 0.04 + 0.5 * up * up;
+    shades.push(v, v, v);
+  }
+  sky.setAttribute('color', new THREE.Float32BufferAttribute(shades, 3));
+  scene.add(new THREE.Mesh(sky, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.BackSide })));
+  const softbox = (radius: number, strength: number, x: number, y: number, z: number) => {
+    const light = new THREE.Mesh(new THREE.CircleGeometry(radius, 64), new THREE.MeshBasicMaterial({ color: new THREE.Color(strength, strength, strength), side: THREE.DoubleSide }));
+    light.position.set(x, y, z);
+    light.lookAt(0, 0, 0);
+    scene.add(light);
+  };
+  softbox(2.2, 8, 4.5, 5.5, 5);
+  softbox(1.4, 1.2, -5, -3, 4);
+  return scene;
 }
 
 const cache = new Map<string, Promise<string>>();
@@ -73,7 +100,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   const scene = new THREE.Scene();
   scene.environment = env;
   // What the glass bends: for glow and tinted, its own light color, so the inside reads the same on
-  // any background; for clear, the page behind it. Smooth glass (roughness 0) and a sharp studio room
+  // any background; for clear, the page behind it. Smooth glass (roughness 0) and a sharp studio
   // keep the reflections crisp.
   scene.background = color(l.seeThrough ? colors.page : colors.light);
 
@@ -98,7 +125,9 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
     emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : l.seeThrough ? new THREE.Color('#ffffff') : color(colors.glow),
     emissiveIntensity: l.emissive,
-    envMapIntensity: 0.7,
+    // Clear glass shows the room only faintly face-on, as real glass does (about 4%), so a dark page
+    // stays dark through it; its edges still catch the most.
+    envMapIntensity: l.seeThrough ? 0.45 : 0.7,
   });
   scene.add(new THREE.Mesh(geometries[1], glass));
   if (l.core) scene.add(new THREE.Mesh(geometries[0], core));
@@ -109,6 +138,8 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   // Drawn at twice the size and shrunk by the browser, so every edge and reflection stays sharp.
   const drawn = Math.min(px * 2, 1024);
   renderer.setSize(drawn, drawn, false);
+  // Clear glass passes the page's own color through untouched (no tone mapping to lift a dark page).
+  renderer.toneMapping = l.seeThrough ? THREE.NoToneMapping : THREE.ACESFilmicToneMapping;
   renderer.render(scene, camera);
   const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());
