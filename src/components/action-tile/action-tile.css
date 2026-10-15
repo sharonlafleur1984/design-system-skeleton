@@ -118,7 +118,7 @@
   inset-block-start: var(--space-3);
   inset-inline-end: var(--space-4);
   font-size: var(--type-heading-title-size);
-  line-height: 1;
+  line-height: var(--font-line-height-glyph);
   visibility: hidden;
 }
 .ds-tile[data-selected] .ds-tile__star,

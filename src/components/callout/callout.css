@@ -43,7 +43,7 @@
   font-family: var(--font-family-body);
   font-size: var(--type-body-micro-size);
   font-weight: var(--font-weight-semibold);
-  line-height: 1;
+  line-height: var(--font-line-height-glyph);
 }
 
 .ds-callout__content {
@@ -61,10 +61,10 @@
   color: var(--color-ink-primary);
   font-size: var(--type-body-small-size);
   font-weight: var(--font-weight-semibold);
-  line-height: 1.1;
+  line-height: var(--callout-title-line-height);
 }
 .ds-callout__body {
   color: var(--_body);
   font-size: var(--type-body-small-size);
-  line-height: 1.4;
+  line-height: var(--callout-body-line-height);
 }
