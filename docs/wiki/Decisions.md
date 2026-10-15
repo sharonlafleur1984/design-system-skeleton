@@ -73,7 +73,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 - **Decided by:** Sharon ("Let's move that way. I can always tell you to stay still in the future, but if I change my mind and move again, that's fine too.")
 - **Replaces part of D45 and D57:** a full page's light no longer has to stay still at `light-from-right` and `light-top`. Those tokens are where it rests, and staying still remains a choice Sharon can switch back to.
-- **How it moves:** not chosen yet (time of day, pointer or touch, device tilt, or a slow drift). Each option is a separate decision.
+- **How it moves depends on the theme (Sharon):** Sunrise's light follows the time of day. Spotlight's and Fireside's stay still at the light tokens for now.
+- **Illuminate, a setting:** people can turn on Illuminate, which makes the cursor the light source. It's off by default everywhere, works only in dark mode, and is a setting rather than a theme choice.
 - **Still true:** one light for every glass part; Reduce motion keeps the light still; text stays readable wherever the light lands, so contrast is checked along its whole path; a moving light is drawn live and pauses when nothing moves or the page is hidden.
 
 </details>
