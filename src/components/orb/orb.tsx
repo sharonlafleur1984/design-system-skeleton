@@ -78,6 +78,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   const [own, setOwn] = useState(defaultPosition);
   const glassRef = useRef<HTMLSpanElement>(null);
   const [picture, setPicture] = useState<string>();
+  // How light the background behind a glowing orb is (0 dark, 1 light), so its light can look equally
+  // bright on every background (orb.css).
+  const [lum, setLum] = useState(0);
   // Draw the glass in this orb's colors, at its size on screen (sharp on high-density screens). It
   // redraws when the theme or mode around it changes.
   const [colorKey, setColorKey] = useState(0);
@@ -88,7 +91,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   }, []);
   const position = controlled ?? own;
   // Clear glass shows what's behind it, so it redraws as it moves.
-  const where = look === 'clear' ? `${position.x.toFixed(3)},${position.y.toFixed(3)}` : '';
+  const where = look === 'tinted' ? '' : `${position.x.toFixed(3)},${position.y.toFixed(3)}`;
   useEffect(() => {
     const el = glassRef.current;
     const px = Math.round((el?.getBoundingClientRect().width ?? 0) * Math.min(window.devicePixelRatio || 1, 3));
@@ -96,6 +99,20 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     const cs = getComputedStyle(el);
     const c = (part: string) => cs.getPropertyValue(`--orb-color-${part}`).trim();
     let live = true;
+    if (look === 'glow') {
+      const patch = paintBehind(el, backdrop, 8);
+      if (!patch) {
+        // The art isn't ready (an image loading): measure again shortly.
+        const t = setTimeout(() => setColorKey((k) => k + 1), 250);
+        return () => clearTimeout(t);
+      }
+      const data = patch.getContext('2d')?.getImageData(0, 0, 8, 8).data;
+      if (data) {
+        let sum = 0;
+        for (let i = 0; i < data.length; i += 4) sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
+        setLum(sum / (data.length / 4));
+      }
+    }
     let behind: HTMLCanvasElement | undefined;
     if (look === 'clear') {
       const painted = paintBehind(el, backdrop, px);
@@ -138,7 +155,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
       type="button"
       aria-label={ariaLabel}
       className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, look === 'glow' && 'ds-orb--glow', picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
-      style={{ ...tint, ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
+      style={{ ...tint, ...(look === 'glow' ? { '--_lum': lum.toFixed(2) } : {}), ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
         moveTo(e);

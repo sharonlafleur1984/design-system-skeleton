@@ -42,8 +42,13 @@
    not a blurred shadow, keeps the fade smooth, with no grain. */
 .ds-orb--glow::before {
   /* The light's color: half white, half the lightest step of the page's color (the rule the focus glow
-     follows, D45), so it blends with the colors on the page. */
-  --_light: color-mix(in srgb, var(--orb-shine-pool) 50%, var(--orb-color-light));
+     follows, D45), so it blends with the colors on the page. On a light background, white light
+     vanishes, so the orb (orb.tsx) sets --_lum to how light the background behind it is (0 dark,
+     1 light): the light leans further into the page's color and spreads stronger, so every orb looks
+     equally bright (Sharon: what it looks like matters more than the same math). */
+  --_tint: color-mix(in srgb, var(--orb-color-halo) calc(var(--_lum, 0) * 100%), var(--orb-color-light));
+  --_light: color-mix(in srgb, var(--orb-shine-pool) calc(50% - var(--_lum, 0) * 40%), var(--_tint));
+  --_strength: calc(1 + var(--_lum, 0) * 1.8);
   content: '';
   position: absolute;
   z-index: -1;
@@ -56,37 +61,37 @@
   background: radial-gradient(
     circle closest-side,
     var(--_light) 0,
-    color-mix(in srgb, var(--_light) 97.99%, transparent) calc(var(--_size) * 0.5),
-    color-mix(in srgb, var(--_light) 97.98%, transparent) calc(var(--_size) * 0.578),
-    color-mix(in srgb, var(--_light) 85.82%, transparent) calc(var(--_size) * 0.668),
-    color-mix(in srgb, var(--_light) 70.71%, transparent) calc(var(--_size) * 0.773),
-    color-mix(in srgb, var(--_light) 57.3%, transparent) calc(var(--_size) * 0.894),
-    color-mix(in srgb, var(--_light) 46.46%, transparent) calc(var(--_size) * 1.033),
-    color-mix(in srgb, var(--_light) 38.04%, transparent) calc(var(--_size) * 1.195),
-    color-mix(in srgb, var(--_light) 31.55%, transparent) calc(var(--_size) * 1.381),
-    color-mix(in srgb, var(--_light) 26.46%, transparent) calc(var(--_size) * 1.597),
-    color-mix(in srgb, var(--_light) 22.36%, transparent) calc(var(--_size) * 1.846),
-    color-mix(in srgb, var(--_light) 18.95%, transparent) calc(var(--_size) * 2.135),
-    color-mix(in srgb, var(--_light) 16.03%, transparent) calc(var(--_size) * 2.468),
-    color-mix(in srgb, var(--_light) 13.47%, transparent) calc(var(--_size) * 2.854),
-    color-mix(in srgb, var(--_light) 11.2%, transparent) calc(var(--_size) * 3.3),
-    color-mix(in srgb, var(--_light) 9.21%, transparent) calc(var(--_size) * 3.815),
-    color-mix(in srgb, var(--_light) 7.47%, transparent) calc(var(--_size) * 4.411),
-    color-mix(in srgb, var(--_light) 5.99%, transparent) calc(var(--_size) * 5.1),
-    color-mix(in srgb, var(--_light) 4.73%, transparent) calc(var(--_size) * 5.897),
-    color-mix(in srgb, var(--_light) 3.7%, transparent) calc(var(--_size) * 6.819),
-    color-mix(in srgb, var(--_light) 2.87%, transparent) calc(var(--_size) * 7.884),
-    color-mix(in srgb, var(--_light) 2.2%, transparent) calc(var(--_size) * 9.115),
-    color-mix(in srgb, var(--_light) 1.67%, transparent) calc(var(--_size) * 10.539),
-    color-mix(in srgb, var(--_light) 1.26%, transparent) calc(var(--_size) * 12.186),
-    color-mix(in srgb, var(--_light) 0.94%, transparent) calc(var(--_size) * 14.089),
-    color-mix(in srgb, var(--_light) 0.69%, transparent) calc(var(--_size) * 16.29),
-    color-mix(in srgb, var(--_light) 0.5%, transparent) calc(var(--_size) * 18.835),
-    color-mix(in srgb, var(--_light) 0.35%, transparent) calc(var(--_size) * 21.778),
-    color-mix(in srgb, var(--_light) 0.24%, transparent) calc(var(--_size) * 25.18),
-    color-mix(in srgb, var(--_light) 0.16%, transparent) calc(var(--_size) * 29.113),
-    color-mix(in srgb, var(--_light) 0.09%, transparent) calc(var(--_size) * 33.661),
-    color-mix(in srgb, var(--_light) 0.04%, transparent) calc(var(--_size) * 38.92),
+    color-mix(in srgb, var(--_light) min(100%, calc(97.99% * var(--_strength))), transparent) calc(var(--_size) * 0.5),
+    color-mix(in srgb, var(--_light) min(100%, calc(97.98% * var(--_strength))), transparent) calc(var(--_size) * 0.578),
+    color-mix(in srgb, var(--_light) min(100%, calc(85.82% * var(--_strength))), transparent) calc(var(--_size) * 0.668),
+    color-mix(in srgb, var(--_light) min(100%, calc(70.71% * var(--_strength))), transparent) calc(var(--_size) * 0.773),
+    color-mix(in srgb, var(--_light) min(100%, calc(57.3% * var(--_strength))), transparent) calc(var(--_size) * 0.894),
+    color-mix(in srgb, var(--_light) min(100%, calc(46.46% * var(--_strength))), transparent) calc(var(--_size) * 1.033),
+    color-mix(in srgb, var(--_light) min(100%, calc(38.04% * var(--_strength))), transparent) calc(var(--_size) * 1.195),
+    color-mix(in srgb, var(--_light) min(100%, calc(31.55% * var(--_strength))), transparent) calc(var(--_size) * 1.381),
+    color-mix(in srgb, var(--_light) min(100%, calc(26.46% * var(--_strength))), transparent) calc(var(--_size) * 1.597),
+    color-mix(in srgb, var(--_light) min(100%, calc(22.36% * var(--_strength))), transparent) calc(var(--_size) * 1.846),
+    color-mix(in srgb, var(--_light) min(100%, calc(18.95% * var(--_strength))), transparent) calc(var(--_size) * 2.135),
+    color-mix(in srgb, var(--_light) min(100%, calc(16.03% * var(--_strength))), transparent) calc(var(--_size) * 2.468),
+    color-mix(in srgb, var(--_light) min(100%, calc(13.47% * var(--_strength))), transparent) calc(var(--_size) * 2.854),
+    color-mix(in srgb, var(--_light) min(100%, calc(11.2% * var(--_strength))), transparent) calc(var(--_size) * 3.3),
+    color-mix(in srgb, var(--_light) min(100%, calc(9.21% * var(--_strength))), transparent) calc(var(--_size) * 3.815),
+    color-mix(in srgb, var(--_light) min(100%, calc(7.47% * var(--_strength))), transparent) calc(var(--_size) * 4.411),
+    color-mix(in srgb, var(--_light) min(100%, calc(5.99% * var(--_strength))), transparent) calc(var(--_size) * 5.1),
+    color-mix(in srgb, var(--_light) min(100%, calc(4.73% * var(--_strength))), transparent) calc(var(--_size) * 5.897),
+    color-mix(in srgb, var(--_light) min(100%, calc(3.7% * var(--_strength))), transparent) calc(var(--_size) * 6.819),
+    color-mix(in srgb, var(--_light) min(100%, calc(2.87% * var(--_strength))), transparent) calc(var(--_size) * 7.884),
+    color-mix(in srgb, var(--_light) min(100%, calc(2.2% * var(--_strength))), transparent) calc(var(--_size) * 9.115),
+    color-mix(in srgb, var(--_light) min(100%, calc(1.67% * var(--_strength))), transparent) calc(var(--_size) * 10.539),
+    color-mix(in srgb, var(--_light) min(100%, calc(1.26% * var(--_strength))), transparent) calc(var(--_size) * 12.186),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.94% * var(--_strength))), transparent) calc(var(--_size) * 14.089),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.69% * var(--_strength))), transparent) calc(var(--_size) * 16.29),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.5% * var(--_strength))), transparent) calc(var(--_size) * 18.835),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.35% * var(--_strength))), transparent) calc(var(--_size) * 21.778),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.24% * var(--_strength))), transparent) calc(var(--_size) * 25.18),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.16% * var(--_strength))), transparent) calc(var(--_size) * 29.113),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.09% * var(--_strength))), transparent) calc(var(--_size) * 33.661),
+    color-mix(in srgb, var(--_light) min(100%, calc(0.04% * var(--_strength))), transparent) calc(var(--_size) * 38.92),
     transparent 100%
   );
 }
