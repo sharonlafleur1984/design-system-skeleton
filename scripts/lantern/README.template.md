@@ -1,4 +1,4 @@
-Lantern is a design system with a theme for each product: Spotlight, Sunrise and Fireside. Every page has one light, and every component takes its highlights and shadows from it. Move the light, and everything shifts a little. Each part is built on React Aria so anyone can use it.
+Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fireside. Sharing a single foundation, each provides its own unique glow. Supported by React Aria components and semantic tokens, Lantern plays with light and glass, gently encouraging them to bring out the best in each other, with every component visibly responding to a single source of light.
 
 ## Where the truth lives
 
