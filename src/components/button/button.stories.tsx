@@ -14,7 +14,7 @@ const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
   tags: ['autodocs'],
-  args: { children: 'Add school', variant: 'primary', size: 'medium' },
+  args: { children: 'Button', variant: 'primary', size: 'medium' },
   parameters: {
     docs: {
       description: {
@@ -27,7 +27,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**Glass (Oct 12):** a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), it is lens glass: one WebGL canvas behind the group paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows the classic glass recipe instead.',
           '',
-          '**Do:** Start the label with a verb that says what happens ("Add school"). **Don\'t:** Use "Submit" or "Click here".',
+          '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
           '',
           '**Accessibility:** Built on React Aria\'s Button: a real `<button>` that works the same with mouse, touch, keyboard and screen readers. Focus ring always visible. Destructive buttons say what they remove, so color is never the only signal. Loading stays focusable, blocks repeat presses and is announced. Glass turns solid when Reduce Transparency or Increase Contrast is on. Glass button text uses `button-glass-ink`, with no text shadow, and keeps 4.5:1 on the header red and on every Life Hub marble; the lens canvas is decorative and hidden from screen readers, and focus rings, keyboard behavior and touch targets are unchanged.',
         ].join('\n'),
@@ -44,16 +44,16 @@ export const Styles: Story = {
   render: () => (
     <BothThemes>
       <Row label="Primary">
-        <Button>Add school</Button>
-        <Button icon={<Plus />}>Add school</Button>
+        <Button>Button</Button>
+        <Button icon={<Plus />}>Button</Button>
       </Row>
       <Row label="Secondary">
-        <Button variant="secondary">Compare</Button>
-        <Button variant="secondary" icon={<Plus />}>Compare</Button>
+        <Button variant="secondary">Button</Button>
+        <Button variant="secondary" icon={<Plus />}>Button</Button>
       </Row>
       <Row label="Tertiary">
-        <Button variant="tertiary">See all</Button>
-        <Button variant="tertiary" icon={<Plus />}>See all</Button>
+        <Button variant="tertiary">Button</Button>
+        <Button variant="tertiary" icon={<Plus />}>Button</Button>
       </Row>
     </BothThemes>
   ),
@@ -63,13 +63,13 @@ export const Sizes: Story = {
   render: () => (
     <BothThemes>
       <Row label="Small">
-        <Button size="small">Save</Button>
+        <Button size="small">Button</Button>
       </Row>
       <Row label="Medium">
-        <Button size="medium">Save</Button>
+        <Button size="medium">Button</Button>
       </Row>
       <Row label="Large">
-        <Button size="large">Save</Button>
+        <Button size="large">Button</Button>
       </Row>
     </BothThemes>
   ),
@@ -83,8 +83,8 @@ export const States: Story = {
           <Button variant={variant}>Rest</Button>
           <Button variant={variant} data-state="hover">Hover</Button>
           <Button variant={variant} data-state="pressed">Pressed</Button>
-          <Button variant={variant} disabled>Disabled</Button>
-          <Button variant={variant} loading>Loading</Button>
+          <Button variant={variant} isDisabled>Disabled</Button>
+          <Button variant={variant} isPending>Loading</Button>
         </Row>
       ))}
     </BothThemes>
@@ -95,9 +95,9 @@ export const Destructive: Story = {
   render: () => (
     <BothThemes>
       <Row label="Destructive">
-        <Button destructive>Delete plan</Button>
-        <Button destructive variant="secondary">Delete plan</Button>
-        <Button destructive variant="tertiary">Delete plan</Button>
+        <Button destructive>Delete</Button>
+        <Button destructive variant="secondary">Delete</Button>
+        <Button destructive variant="tertiary">Delete</Button>
       </Row>
     </BothThemes>
   ),
@@ -112,10 +112,10 @@ const Gear = () => (
 
 const glassRow = (
   <>
-    <Button variant="glass" size="large" icon={<Plus />}>Add school</Button>
-    <Button variant="glass">Compare</Button>
-    <Button variant="glass" size="small">Pill</Button>
-    <Button variant="glass" disabled>Disabled</Button>
+    <Button variant="glass" size="large" icon={<Plus />}>Button</Button>
+    <Button variant="glass">Button</Button>
+    <Button variant="glass" size="small">Small</Button>
+    <Button variant="glass" isDisabled>Disabled</Button>
   </>
 );
 
@@ -124,13 +124,13 @@ function OnHeaderArt({ glassLens = true }: { glassLens?: boolean }) {
   return (
     <div data-theme="after-graduation">
       <PageShell
-        title="After Graduation"
-        subtitle="Alex, get ready for Season 2"
+        title="Page title"
+        subtitle="Subtitle"
         glassLens={glassLens}
         actions={<Button variant="glass" size="small" icon={<Gear />}>Settings</Button>}
         navigation={<div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3)' }}>{glassRow}</div>}
       >
-        <p style={{ margin: 0 }}>The page goes here.</p>
+        <p style={{ margin: 0 }}>Page content</p>
       </PageShell>
     </div>
   );
@@ -160,8 +160,8 @@ export const GlassOnEveryMarble: Story = {
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
       {marbles.map((m) => (
         <OnMarble key={m.texture} marble={m}>
-          <Button variant="glass" icon={<Plus />}>Add to {m.name}</Button>
-          <Button variant="glass" size="small">Pill</Button>
+          <Button variant="glass" icon={<Plus />}>Button</Button>
+          <Button variant="glass" size="small">Small</Button>
         </OnMarble>
       ))}
     </div>

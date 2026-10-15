@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import {
   Button as AriaButton,
+  Label,
   ListBox,
   ListBoxItem,
   Popover,
@@ -21,18 +22,20 @@ export interface SelectOption {
 }
 
 export interface SelectProps extends Omit<AriaSelectProps<SelectOption>, 'children' | 'className' | 'style' | 'items'> {
-  /** Names the select for screen readers when there's no visible label next to it. */
+  /** The visible label above the select. Leave out only when aria-label is given. */
+  label?: ReactNode;
+  /** Names the select for screen readers when there's no visible label. */
   'aria-label'?: string;
   options: SelectOption[];
   className?: string;
   /** Shown before anything is picked. */
   placeholder?: string;
-  children?: ReactNode;
 }
 
-export function Select({ options, className, ...rest }: SelectProps) {
+export function Select({ label, options, className, ...rest }: SelectProps) {
   return (
     <AriaSelect {...rest} className={className ? `ds-select ${className}` : 'ds-select'}>
+      {label && <Label className="ds-select__label">{label}</Label>}
       <AriaButton className="ds-select__button">
         <SelectValue className="ds-select__value" />
         <span className="ds-select__chevron" aria-hidden="true" />

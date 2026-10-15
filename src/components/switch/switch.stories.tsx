@@ -6,7 +6,7 @@ const meta: Meta<typeof Switch> = {
   title: 'Components/Switch',
   component: Switch,
   tags: ['autodocs'],
-  args: { label: 'Email reminders' },
+  args: { label: 'Label' },
   parameters: {
     docs: {
       description: {
@@ -32,12 +32,12 @@ export const States: Story = {
   render: () => (
     <BothThemes>
       <Row label="Off">
-        <Switch label="Email reminders" />
-        <Switch label="Disabled" disabled />
+        <Switch label="Label" />
+        <Switch label="Disabled" isDisabled />
       </Row>
       <Row label="On">
-        <Switch label="Email reminders" defaultChecked />
-        <Switch label="Disabled" defaultChecked disabled />
+        <Switch label="Label" defaultSelected />
+        <Switch label="Disabled" defaultSelected isDisabled />
       </Row>
     </BothThemes>
   ),

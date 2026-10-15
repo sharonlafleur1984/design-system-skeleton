@@ -5,7 +5,7 @@ import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from '
 import { Button } from '../button/button';
 import { PageShell } from '../page-shell/page-shell';
 import { usePreferences, type Preferences } from '../preferences/preferences';
-import { Segment, SegmentedControl } from '../segmented-control/segmented-control';
+import { ToggleButton, ToggleButtonGroup } from '../toggle-button-group/toggle-button-group';
 import { Select } from '../select/select';
 import { Switch } from '../switch/switch';
 import { SettingRow, SettingsDialog, SettingsGroup, type SettingsSectionDef } from './settings';
@@ -58,7 +58,7 @@ function Choice<T extends string | number>({
   onChange: (v: T) => void;
 }) {
   return (
-    <SegmentedControl
+    <ToggleButtonGroup
       aria-label={label}
       aria-describedby={describedBy}
       selectedKeys={new Set([String(value)])}
@@ -69,11 +69,11 @@ function Choice<T extends string | number>({
       }}
     >
       {options.map(([v, text]) => (
-        <Segment key={String(v)} id={String(v)}>
+        <ToggleButton key={String(v)} id={String(v)}>
           {text}
-        </Segment>
+        </ToggleButton>
       ))}
-    </SegmentedControl>
+    </ToggleButtonGroup>
   );
 }
 
@@ -82,7 +82,7 @@ function Toggle({ label, describedBy, checked, onChange }: { label: string; desc
     <Switch
       label={<span className="ds-visually-hidden">{label}</span>}
       aria-describedby={describedBy}
-      checked={checked}
+      isSelected={checked}
       onChange={onChange}
     />
   );

@@ -1,0 +1,16 @@
+/* Separator. Use sparingly: spacing and grouping separate things first. */
+.ds-separator {
+  flex: none;
+  margin: 0;
+  border: 0;
+  background: var(--color-border-default);
+}
+.ds-separator--horizontal {
+  inline-size: 100%;
+  block-size: 1px;
+}
+.ds-separator--vertical {
+  align-self: stretch;
+  inline-size: 1px;
+  block-size: auto;
+}

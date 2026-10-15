@@ -7,18 +7,18 @@ const meta: Meta<typeof Link> = {
   title: 'Components/Link',
   component: Link,
   tags: ['autodocs'],
-  args: { level: 'inline', href: '#', children: 'Important Dates' },
+  args: { level: 'inline', href: '#', children: 'Link' },
   parameters: {
     docs: {
       description: {
         component: [
           'Two link levels, shared by every product. Each theme sets the colors and the quiet size.',
           '',
-          '**Inline:** a link inside a sentence, at the sentence\'s size. "See everything in Important Dates."',
+          '**Inline:** a link inside a sentence, at the sentence\'s size. "Read the full guide."',
           '',
-          '**Quiet:** a side trip or a small control, one step smaller and gray: View task, Show full year, sources.',
+          '**Quiet:** a side trip or a small control, one step smaller and gray: View details, Show more, sources.',
           '',
-          '**Link or LinkButton?** If it goes somewhere, use `Link`. If it does something on the page (Show full year, Restore all), use `LinkButton`: it looks the same but is a real button.',
+          '**Link or LinkButton?** If it goes somewhere, use `Link`. If it does something on the page (Show more, Restore all), use `LinkButton`: it looks the same but is a real button.',
           '',
           '**When not to:** for the main action on a screen, use a Button. Never add a third link level for one spot.',
           '',
@@ -42,14 +42,14 @@ export const Levels: Story = {
   render: () => (
     <BothThemes>
       <p style={body}>
-        See everything in <Link href="#">Important Dates</Link>.
+        Body text with an <Link href="#">inline link</Link>.
       </p>
       <div style={row}>
-        <span style={body}>Credit check with the Alta counselor</span>
-        <Link level="quiet" href="#">View task</Link>
+        <span style={body}>Body text</span>
+        <Link level="quiet" href="#">Quiet link</Link>
       </div>
       <p style={body}>
-        Source: <Link level="quiet" href="https://studentaid.gov" external>Federal Student Aid</Link>
+        Source: <Link level="quiet" href="https://example.com" external>External link</Link>
       </p>
     </BothThemes>
   ),
@@ -59,12 +59,12 @@ export const LinkButtons: Story = {
   render: () => (
     <BothThemes>
       <div style={row}>
-        <strong style={body}>Junior Year</strong>
-        <LinkButton aria-expanded={false}>Show full year</LinkButton>
+        <strong style={body}>Section title</strong>
+        <LinkButton aria-expanded={false}>Show more</LinkButton>
       </div>
       <div style={row}>
-        <span style={body}>2 cards hidden</span>
-        <LinkButton>Restore all</LinkButton>
+        <span style={body}>Body text</span>
+        <LinkButton>Link button</LinkButton>
       </div>
     </BothThemes>
   ),

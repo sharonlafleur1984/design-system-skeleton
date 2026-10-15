@@ -2,20 +2,24 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import '../shared.css';
 import './callout.css';
 
-// Mirrors the Figma "Callout" set: tone (info, due, settled, overdue, quiet) and title (true, false).
-export type CalloutTone = 'info' | 'due' | 'settled' | 'overdue' | 'quiet';
+// Mirrors the Figma "Callout" set: tone and title (true, false). The tones use the same names as the
+// status colors every theme defines: info, warning, success, error and neutral.
+export type CalloutTone = 'info' | 'warning' | 'success' | 'error' | 'neutral';
+/** @deprecated The old tone names. due is warning, settled is success, overdue is error, quiet is neutral. */
+export type LegacyCalloutTone = 'due' | 'settled' | 'overdue' | 'quiet';
+const LEGACY: Record<LegacyCalloutTone, CalloutTone> = { due: 'warning', settled: 'success', overdue: 'error', quiet: 'neutral' };
 
-// Each tone has a shape and a word, so color is never the only signal.
+// Each tone has its own glyph and a word, so color is never the only signal.
 const TONE: Record<CalloutTone, { glyph: string; label: string }> = {
   info: { glyph: 'i', label: 'Info' },
-  due: { glyph: '!', label: 'Due soon' },
-  settled: { glyph: '✓', label: 'Done' },
-  overdue: { glyph: '!', label: 'Overdue' },
-  quiet: { glyph: '·', label: 'Note' },
+  warning: { glyph: '!', label: 'Warning' },
+  success: { glyph: '✓', label: 'Success' },
+  error: { glyph: '×', label: 'Error' },
+  neutral: { glyph: '·', label: 'Note' },
 };
 
 export interface CalloutProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  tone?: CalloutTone;
+  tone?: CalloutTone | LegacyCalloutTone;
   /** Optional bold first line. */
   title?: ReactNode;
   /** Word read out by screen readers before the message. Defaults to the tone's name. */
@@ -23,7 +27,8 @@ export interface CalloutProps extends Omit<HTMLAttributes<HTMLDivElement>, 'titl
   children: ReactNode;
 }
 
-export function Callout({ tone = 'info', title, toneLabel, className, children, ...rest }: CalloutProps) {
+export function Callout({ tone: toneProp = 'info', title, toneLabel, className, children, ...rest }: CalloutProps) {
+  const tone = toneProp in LEGACY ? LEGACY[toneProp as LegacyCalloutTone] : (toneProp as CalloutTone);
   const t = TONE[tone];
   const classes = ['ds-callout', `ds-callout--${tone}`];
   if (className) classes.push(className);

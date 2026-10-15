@@ -70,14 +70,14 @@ const icons = {
   ),
 };
 
-const episodes = [
-  { id: 'explore', label: 'Episode 1', title: 'Explore Schools', shortTitle: 'Schools', icon: icons.schools, description: 'Select your favorites' },
-  { id: 'pay', label: 'Episode 2', title: 'Financial Planning', shortTitle: 'Finances', icon: icons.finances, description: 'How will you pay for it?' },
-  { id: 'dates', label: 'Episode 3', title: 'Important Dates', shortTitle: 'Dates', icon: icons.dates, description: "What's next, step by step" },
+const tiles = [
+  { id: 'explore', label: 'Label', title: 'Tile 1', shortTitle: 'Tile 1', icon: icons.schools, description: 'Description' },
+  { id: 'pay', label: 'Label', title: 'Tile 2', shortTitle: 'Tile 2', icon: icons.finances, description: 'Description' },
+  { id: 'dates', label: 'Label', title: 'Tile 3', shortTitle: 'Tile 3', icon: icons.dates, description: 'Description' },
 ];
 
 /**
- * The shell with navigation, as After Graduation uses it for its episodes. Pick one to switch
+ * The shell with navigation, as After Graduation uses it for its pages. Pick one to switch
  * pages. Tablet and up: three tiles across. Phones (under 600px): the same tiles become the bottom bar,
  * each an icon and a short name. Pick a phone size in the toolbar to see it. Replays its entrance each
  * time the story opens.
@@ -87,19 +87,19 @@ export const WithNavigation: Story = {
   render: () => (
     <ActionTileSwitch defaultSelectedKey="explore">
       <PageShell
-        title="After Graduation"
-        subtitle="Alex, get ready for Season 2"
+        title="Page title"
+        subtitle="Subtitle"
         navigation={
-          <ActionTileGroup aria-label="Episodes" behavior="switch">
-            {episodes.map((e) => (
+          <ActionTileGroup aria-label="Navigation" behavior="switch">
+            {tiles.map((e) => (
               <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} shortTitle={e.shortTitle} icon={e.icon} />
             ))}
           </ActionTileGroup>
         }
       >
-        {episodes.map((e) => (
+        {tiles.map((e) => (
           <ActionTilePanel key={e.id} id={e.id}>
-            <p style={{ margin: 0 }}>{e.title} goes here.</p>
+            <p style={{ margin: 0 }}>{e.title} content</p>
           </ActionTilePanel>
         ))}
       </PageShell>
@@ -110,10 +110,10 @@ export const WithNavigation: Story = {
 /** Just the title and the sheet, with no navigation. */
 export const TitleOnly: Story = {
   args: {
-    title: 'After Graduation',
-    subtitle: 'Alex, get ready for Season 2',
+    title: 'Page title',
+    subtitle: 'Subtitle',
     children: (
-      <p style={{ margin: 0 }}>The page goes here.</p>
+      <p style={{ margin: 0 }}>Page content</p>
     ),
   },
 };
