@@ -137,6 +137,7 @@ export const Icons: Story = {
 
 /** A card that holds only an empty state: what's missing, and the one action that fills it. */
 export const EmptyState: Story = {
+  name: 'Empty state',
   render: () => (
     <BothThemes>
       <div style={grid}>

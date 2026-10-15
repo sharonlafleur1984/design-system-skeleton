@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
 | D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
@@ -62,6 +63,17 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D52 · Oct 15, 2026:</b> One page template for every component's Docs tab</summary>
+
+- **Decided by:** Sharon ("This is the template I want you to use for every single page"; "I liked the radio buttons better ... I just care about the content")
+- **The order:** updated date, name, what it does in one line, the React Aria part and a status (Ready, In review or Experimental, a dot and a word), the theme picker, Try it, When to use (use it for, use something else for), Examples (one story each, with a heading, one line and its code), Do and don't, Accessibility (keys, what a screen reader says, the four standard checks, anything different), For engineers (import, props, tokens; folded away) and Related.
+- **One layout, many pages:** the layout lives in `.storybook/component-page.tsx`; each component fills it with a `<name>.page.tsx` file and `parameters.componentPage`. A page can't drift from the others, and a new component gets the whole layout by filling in one object.
+- **Controls:** every setting has a plain name and says what it does ("Disabled: turns it off, so it can't be pressed"); yes-or-no settings read Off and On. Storybook's own radio buttons stay.
+- **Applies to:** every page under Components, and Settings under Patterns. Foundations pages keep their own layout, since they show tokens, not a component.
+
+</details>
 
 <details>
 <summary><b>D51 · Oct 15, 2026:</b> Motion: open and close, a leaving curve, switching views and loading</summary>
