@@ -35,33 +35,42 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-/* The light from a glowing orb. Its strength follows the way light fades with distance, in steps of
-   --_r (a share of the ball's size): almost white at the glass, then the orb's own colors, thinning
-   out over many times its size, so it reaches across the whole section without a visible edge. A
-   gradient (not a blurred shadow) keeps the fade smooth, with no grain. */
+/* The light from a glowing orb, shining out of the ball with no ring: it starts at full strength at the
+   glass and fades smoothly, the way light does, fast close in and then a long soft tail across the
+   section (a bright bloom near the ball plus a broad wash, as distances in ball sizes). A gradient,
+   not a blurred shadow, keeps the fade smooth, with no grain. */
 .ds-orb--glow::before {
-  --_r: calc(var(--_size) * var(--orb-glow-falloff));
+  /* The light's color: half white, half the lightest step of the page's color (the rule the focus glow
+     follows, D45), so it blends with the colors on the page. */
+  --_light: color-mix(in srgb, var(--orb-shine-pool) 50%, var(--orb-color-light));
   content: '';
   position: absolute;
   z-index: -1;
   inset: 50% auto auto 50%;
   translate: -50% -50%;
-  inline-size: calc(var(--_r) * var(--orb-glow-reach) * 2);
-  block-size: calc(var(--_r) * var(--orb-glow-reach) * 2);
+  inline-size: calc(var(--_size) * var(--orb-glow-reach) * 2);
+  block-size: calc(var(--_size) * var(--orb-glow-reach) * 2);
   border-radius: var(--radius-pill);
   pointer-events: none;
   background: radial-gradient(
     circle closest-side,
-    var(--orb-color-light) 0,
-    color-mix(in srgb, var(--orb-color-light) 95%, transparent) calc(var(--_r) * 0.7),
-    color-mix(in srgb, var(--orb-color-glow) 82%, transparent) calc(var(--_r) * 1),
-    color-mix(in srgb, var(--orb-color-glow) 62%, transparent) calc(var(--_r) * 1.5),
-    color-mix(in srgb, var(--orb-color-halo) 46%, transparent) calc(var(--_r) * 2),
-    color-mix(in srgb, var(--orb-color-halo) 32%, transparent) calc(var(--_r) * 3),
-    color-mix(in srgb, var(--orb-color-glow) 20%, transparent) calc(var(--_r) * 5),
-    color-mix(in srgb, var(--orb-color-glow) 12%, transparent) calc(var(--_r) * 8),
-    color-mix(in srgb, var(--orb-color-glow) 6%, transparent) calc(var(--_r) * 14),
-    color-mix(in srgb, var(--orb-color-glow) 2.5%, transparent) calc(var(--_r) * 25),
+    var(--_light) 0,
+    color-mix(in srgb, var(--_light) 98%, transparent) calc(var(--_size) * 0.5),
+    color-mix(in srgb, var(--_light) 94%, transparent) calc(var(--_size) * 0.6),
+    color-mix(in srgb, var(--_light) 74%, transparent) calc(var(--_size) * 0.75),
+    color-mix(in srgb, var(--_light) 49%, transparent) calc(var(--_size) * 1),
+    color-mix(in srgb, var(--_light) 36%, transparent) calc(var(--_size) * 1.25),
+    color-mix(in srgb, var(--_light) 28.5%, transparent) calc(var(--_size) * 1.5),
+    color-mix(in srgb, var(--_light) 20.5%, transparent) calc(var(--_size) * 2),
+    color-mix(in srgb, var(--_light) 16%, transparent) calc(var(--_size) * 2.5),
+    color-mix(in srgb, var(--_light) 12.7%, transparent) calc(var(--_size) * 3),
+    color-mix(in srgb, var(--_light) 8.7%, transparent) calc(var(--_size) * 4),
+    color-mix(in srgb, var(--_light) 6.3%, transparent) calc(var(--_size) * 5),
+    color-mix(in srgb, var(--_light) 3.7%, transparent) calc(var(--_size) * 7),
+    color-mix(in srgb, var(--_light) 2.1%, transparent) calc(var(--_size) * 10),
+    color-mix(in srgb, var(--_light) 1.1%, transparent) calc(var(--_size) * 14),
+    color-mix(in srgb, var(--_light) 0.4%, transparent) calc(var(--_size) * 20),
+    color-mix(in srgb, var(--_light) 0.2%, transparent) calc(var(--_size) * 30),
     transparent 100%
   );
 }

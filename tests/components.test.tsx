@@ -258,12 +258,12 @@ describe('Orb', () => {
     expect(orb.style.top).toBe('65%');
   });
 
-  it('comes in small, medium and large, medium by default', () => {
+  it('comes in small, medium and large, medium by default, and glows by default', () => {
     const { rerender } = render(<Orb />);
-    expect(screen.getByRole('button').className).toBe('ds-orb');
+    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--glow');
     rerender(<Orb size="small" />);
-    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--small');
-    rerender(<Orb size="large" />);
+    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--small ds-orb--glow');
+    rerender(<Orb size="large" look="clear" />);
     expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--large');
   });
 

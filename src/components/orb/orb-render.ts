@@ -20,8 +20,10 @@ export interface OrbColors {
 const LOOKS = {
   // Clear glass: you see through it to a small bright core; its color is a tint.
   clear: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, backdrop: 'light' as const },
-  // Glows: the light is inside the ball, a big, almost white core shining out through the glass.
-  glow: { core: 0.72, coreWhite: 0.92, emissive: 1.1, attenuation: 0.85, backdrop: 'halo' as const },
+  // Glows: the light is inside the ball, a big bright core shining out through the glass. Its color is
+  // half white, half the lightest step of the page's color (as the focus glow, D45), and the glass
+  // glows in it too, so the ball blends into its light.
+  glow: { core: 0.78, coreWhite: 0.5, emissive: 1.6, attenuation: 2.2, backdrop: 'light' as const },
 };
 
 type Three = typeof import('three');
@@ -85,7 +87,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
-    emissive: color(colors.glow),
+    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : color(colors.glow),
     emissiveIntensity: l.emissive,
     envMapIntensity: 0.7,
   });
