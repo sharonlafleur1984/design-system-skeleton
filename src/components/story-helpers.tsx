@@ -1,9 +1,10 @@
-import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { createContext, useContext, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from './glass-light/glass-light';
 import { imageArt } from './glass-lens/lens-art';
 import { LIGHT_CHANGE } from './glass-lens/lens';
 import { LitContext, type Appearance } from './material';
 import { storyPageArt } from './glass-lens/story-art';
+import { Orb, ORB_START } from './orb/orb';
 import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
@@ -222,17 +223,19 @@ export function Row({ label, children }: { label: string; children: ReactNode })
 // Life Hub's marble backgrounds, one per area plus the spare (Figma: Background Texture). Small preview
 // images in .storybook/public; the real files are 6000 x 4000. In dark mode each area's night layer
 // covers its marble (transparent in light mode).
+// Each marble's color family (its area's palette), which its orb glows in. The spare has no area yet;
+// berry pie is the closest family to its coral, an estimate.
 export const marbles = [
-  { area: 'dashboard', name: 'Dashboard', texture: 'texture-sage-cream.jpg' },
-  { area: 'time', name: 'Time', texture: 'texture-seagull.jpg' },
-  { area: 'finance', name: 'Finance', texture: 'texture-sea-nymph.jpg' },
-  { area: 'parenting', name: 'Parenting', texture: 'texture-lilacs-lavender.jpg' },
-  { area: 'health', name: 'Health', texture: 'texture-berry-pie.jpg' },
-  { area: 'home', name: 'Home', texture: 'texture-morning-latte.jpg' },
-  { area: 'office', name: 'Office', texture: 'texture-gold-sand.jpg' },
-  { area: 'professional', name: 'Professional', texture: 'texture-nocturnal-navy.jpg' },
-  { area: 'growth', name: 'Personal growth', texture: 'texture-sunflower-medley.jpg' },
-  { area: null, name: 'Spare (future option B)', texture: 'texture-future-option-b.jpg' },
+  { area: 'dashboard', name: 'Dashboard', texture: 'texture-sage-cream.jpg', palette: 'earth-moss' },
+  { area: 'time', name: 'Time', texture: 'texture-seagull.jpg', palette: 'seagull' },
+  { area: 'finance', name: 'Finance', texture: 'texture-sea-nymph.jpg', palette: 'sea-nymph' },
+  { area: 'parenting', name: 'Parenting', texture: 'texture-lilacs-lavender.jpg', palette: 'lilacs-lavender' },
+  { area: 'health', name: 'Health', texture: 'texture-berry-pie.jpg', palette: 'berry-pie' },
+  { area: 'home', name: 'Home', texture: 'texture-morning-latte.jpg', palette: 'morning-latte' },
+  { area: 'office', name: 'Office', texture: 'texture-gold-sand.jpg', palette: 'gold-sand' },
+  { area: 'professional', name: 'Professional', texture: 'texture-nocturnal-navy.jpg', palette: 'nocturnal-navy' },
+  { area: 'growth', name: 'Personal growth', texture: 'texture-sunflower-medley.jpg', palette: 'sunflower-medley' },
+  { area: null, name: 'Spare (future option B)', texture: 'texture-future-option-b.jpg', palette: 'berry-pie' },
 ] as const;
 export type Marble = (typeof marbles)[number];
 
@@ -279,27 +282,27 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
 }
 
 /**
- * Where every movable light in Storybook starts, as a share of its section: the bottom right (Sharon's
- * rule, Oct 15). Every sun starts here, in any section, theme or mode.
+ * Where every movable light in Storybook starts, as a share of its section: on the right, two thirds down (Sharon's
+ * rule, Oct 15). Every orb starts here, in any section, theme or mode. The same as the Orb's ORB_START.
  */
-export const SUN_START = { x: 0.92, y: 0.9 };
+export const SUN_START = ORB_START;
 
 /**
- * Storybook only: the page's one light, shown as a sun, on every story that shows glass (glass can't
- * be judged without seeing where its light comes from). Drag the sun, or focus it and use the arrow
+ * Storybook only: the page's one light, shown as the orb, on every story that shows glass (glass can't
+ * be judged without seeing where its light comes from). Drag the orb, or focus it and use the arrow
  * keys, and every rim, highlight and shadow follows. It's the page light (data-glass-light), so all
- * glass in the story shares it. Stories with their own light (the Glass playground's sun, the page
- * shell's wheel) keep theirs, and no sun is shown.
+ * glass in the story shares it. Stories with their own light (the Glass playground's orb, the page
+ * shell's wheel) keep theirs, and no second orb is shown.
  */
 export function LightScene({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
-  // Where the sun is, as a share of the scene. It starts at the bottom right.
+  // Where the orb is, as a share of the scene. It starts on the right, two thirds down.
   const [sun, setSun] = useState(SUN_START);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-shell'));
+    const check = () => setShow(!!el.querySelector('.ds-glass, .ds-lens') && !el.querySelector('[data-sun], .ds-orb:not([data-glass-light]), .ds-shell'));
     check();
     const mo = new MutationObserver(check);
     mo.observe(el, { childList: true, subtree: true });
@@ -309,51 +312,9 @@ export function LightScene({ children }: { children: ReactNode }) {
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, show]);
 
-  const clamp = (v: number) => Math.min(1, Math.max(0, v));
-  const moveTo = (e: PointerEvent<HTMLElement>) => {
-    const r = ref.current!.getBoundingClientRect();
-    setSun({ x: clamp((e.clientX - r.left) / r.width), y: clamp((e.clientY - r.top) / r.height) });
-  };
-  const onKey = (e: KeyboardEvent<HTMLElement>) => {
-    const step = e.shiftKey ? 0.1 : 0.02;
-    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
-    if (!d) return;
-    e.preventDefault();
-    setSun((s) => ({ x: clamp(s.x + d[0]), y: clamp(s.y + d[1]) }));
-  };
-  const sunStyle: CSSProperties = {
-    position: 'absolute',
-    zIndex: 5,
-    left: `${sun.x * 100}%`,
-    top: `${sun.y * 100}%`,
-    inlineSize: 'var(--space-5)',
-    blockSize: 'var(--space-5)',
-    marginInlineStart: 'calc(var(--space-5) / -2)',
-    marginBlockStart: 'calc(var(--space-5) / -2)',
-    padding: 0,
-    border: 'none',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
-    boxShadow: '0 0 24px 8px rgba(245, 197, 66, 0.35)',
-    cursor: 'grab',
-    touchAction: 'none',
-  };
   return (
     <div ref={ref} style={{ position: 'relative', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
-      {show && (
-        <button
-          type="button"
-          data-glass-light=""
-          aria-label="Light. Drag it, or use the arrow keys to move it."
-          style={sunStyle}
-          onPointerDown={(e) => {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            moveTo(e);
-          }}
-          onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-          onKeyDown={onKey}
-        />
-      )}
+      {show && <Orb data-glass-light="" position={sun} onPositionChange={setSun} />}
       {children}
     </div>
   );
