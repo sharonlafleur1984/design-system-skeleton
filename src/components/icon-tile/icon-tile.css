@@ -10,7 +10,7 @@
   inline-size: var(--_box);
   block-size: var(--_box);
   /* The same shape at every size; in Round it stops short of a circle, so it never reads as a profile picture. */
-  border-radius: calc(var(--_box) * min(var(--corner-control), 0.35));
+  border-radius: calc(var(--_box) * min(var(--radius-control), 0.35));
   color: inherit;
 }
 .ds-icon-tile--small {

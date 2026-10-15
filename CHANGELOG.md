@@ -22,7 +22,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 - **Icon tile:** an icon in a tile, `filled` or `plain`, in four sizes. Card, Tile and Action tile headers take one at the top or the start (`iconPosition`).
 - **Text parts:** `Heading`, `Body`, `Label` and `Note`, each in the theme's type style.
 - **Motion:** overlays open and close (`--motion-open-duration`, `--motion-open-scale`, `--motion-close-duration`), a leaving curve (`--motion-easing-in`), views fade in when they switch (`--motion-switch-duration`), and a spinner speed (`--motion-spin-duration`). Select's menu and the Settings dialog now animate out as well as in.
-- **Roundness per theme:** `shape.roundness`, Square (Fireside), Standard (Sunrise) or Round (Spotlight). Every corner is worked out from it and the part's size, so a part keeps its shape at every size. Use `--corner-small`, `--corner-medium`, `--corner-large`, `--corner-box`, `--corner-card` and `--corner-panel`.
+- **Roundness per theme:** `shape.roundness`, Square (Fireside), Standard (Sunrise) or Round (Spotlight). Every radius is worked out from it and the part's size, so a part keeps its shape at every size. Use `--radius-small`, `--radius-medium`, `--radius-large`, `--radius-box`, `--radius-card` and `--radius-panel`.
 - **Action tile in every theme:** navigation that switches the page's content, like tabs, with soft-light states (focus is a glow; chosen shows the theme's mark, or `chosenIcon`, and Glass turns milky) and Glass that follows the page's light on a plain background. In the page shell header tiles start as Glass.
 - **One light per page** (experimental): mark an element `data-glass-light` (`PAGE_LIGHT`) and every glass around it is lit from it; fire `LIGHT_CHANGE` after moving it. Both are exported.
 - **`clearArt`** (experimental): lens glass on a background the system doesn't paint.
@@ -34,6 +34,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Changed
 
+- **Foundations, Space, radius and shadow:** the Corners story is called Radius, like the page and the tokens. The Shadow story shows a solid and a glass card under the page's light (drag the sun to move it), and says what uses each shadow token.
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
 - **Switch:** a narrower track (40px, was 44px) and a smaller knob (16px, was 18px) with the same 3px gap on every side.
 - A theme can't set spacing or sizes; they always come from the base. It picks its roundness by name.
@@ -43,7 +44,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Removed
 
-- The fixed corner tokens `radius-control`, `radius-button`, `radius-card`, `radius-panel`, `radius-chip` and `shell-sheet-radius`: use the `--corner-*` values instead.
+- The fixed radius tokens `radius-control`, `radius-button`, `radius-chip`, `shell-sheet-radius` and the old fixed `radius-card` and `radius-panel`: use the worked-out `--radius-*` values instead.
 
 ### Experimental
 

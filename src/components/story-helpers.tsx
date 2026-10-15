@@ -29,7 +29,7 @@ const panel: CSSProperties = {
   flex: '1 1 320px',
   display: 'flow-root',
   padding: 'var(--space-6)',
-  borderRadius: 'var(--corner-panel)',
+  borderRadius: 'var(--radius-panel)',
   background: 'var(--color-surface-page)',
   color: 'var(--color-ink-primary)',
   fontFamily: 'var(--font-family-body)',
@@ -87,7 +87,7 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
   return (
     <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
       {Object.values(storyBackgrounds).map((bg) => (
-        <section key={bg.name} aria-label={bg.name} style={{ padding: 'var(--space-4)', borderRadius: 'var(--corner-panel)', background: bg.value }}>
+        <section key={bg.name} aria-label={bg.name} style={{ padding: 'var(--space-4)', borderRadius: 'var(--radius-panel)', background: bg.value }}>
           <p style={{ ...caption, display: 'inline-block', marginBlockEnd: 'var(--space-3)', padding: '2px 8px', borderRadius: '999px', background: '#fff', color: '#141414' }}>{bg.name}</p>
           {children}
         </section>
@@ -140,7 +140,7 @@ export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) 
                 {themeNames[theme]}
               </h2>
               {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
-              <div style={{ display: 'flow-root', borderRadius: 'var(--corner-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
+              <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
                 <ThemePanel theme={theme} heading={false}>
                   {render(theme)}
                 </ThemePanel>
@@ -241,7 +241,7 @@ export function OnMarble({ marble = marbles[0], appearance = 'glass', children, 
     gap: 'var(--space-3)',
     minBlockSize: '160px',
     padding: 'var(--space-6)',
-    borderRadius: 'var(--corner-panel)',
+    borderRadius: 'var(--radius-panel)',
     background: `linear-gradient(${night}, ${night}), url('${marble.texture}') center / cover`,
   };
   return (
