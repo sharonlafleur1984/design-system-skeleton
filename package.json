@@ -15,7 +15,8 @@
     "test:update": "npm run tokens && vitest run -u",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lantern": "node scripts/lantern/build-lantern.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
@@ -39,6 +40,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.1",
     "axe-core": "^4.13.0",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
