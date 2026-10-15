@@ -15,7 +15,8 @@
     "test:update": "npm run tokens && vitest run -u",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lantern": "node scripts/lantern/build-lantern.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

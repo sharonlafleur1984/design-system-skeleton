@@ -1,0 +1,36 @@
+<!-- @dsCard height=288 -->
+<style>
+  body { margin: 0; background: var(--color-surface-page); }
+  .cover { position: relative; width: 960px; height: 288px; overflow: hidden; background: var(--color-surface-page); }
+  .cover svg { position: absolute; inset: 0; }
+  .accent { fill: var(--color-accent-base); }
+  .deep { fill: var(--color-accent-hover); }
+  .soft { fill: var(--color-accent-soft); }
+  .ink { fill: var(--color-ink-primary); }
+  .sunken { fill: var(--color-surface-sunken); }
+  .text { position: absolute; left: 48px; bottom: 40px; max-width: 440px; }
+  .name { margin: 0; font-family: var(--font-family-display, Georgia, serif); font-size: 112px; line-height: 0.92; color: var(--color-ink-primary); }
+  .tagline { margin: 12px 0 0; font-family: var(--font-family-body, system-ui, sans-serif); font-size: 14px; color: var(--color-ink-secondary); }
+</style>
+<div class="cover">
+  <!--
+    blocks: color-surface-sunken (480 x 288 slab), color-accent-hover (tall 200px slab), color-accent-base (the big orb, r 96), color-ink-primary (base strip, 24px), color-accent-soft (small orbs)
+    arrangement: one tall slab with satellites, bleeding off the top and right edges
+    pattern: a literal motif, the lantern's orb: one large disc and four small ones, "a page has one light, an orb" (README)
+    scales: steps of 24 and 48 (space-5, space-7); orbs are full circles; the slabs are square, like the light's frame
+  -->
+  <svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+    <rect class="sunken" x="480" y="0" width="480" height="288" />
+    <rect class="deep" x="672" y="-24" width="192" height="264" />
+    <rect class="ink" x="480" y="264" width="480" height="24" />
+    <circle class="accent" cx="768" cy="168" r="96" />
+    <circle class="soft" cx="576" cy="72" r="24" />
+    <circle class="soft" cx="912" cy="48" r="12" />
+    <circle class="soft" cx="552" cy="192" r="12" />
+    <circle class="soft" cx="912" cy="216" r="24" />
+  </svg>
+  <div class="text">
+    <h1 class="name">Lantern</h1>
+    <p class="tagline">One shared base, with a theme for each product.</p>
+  </div>
+</div>
