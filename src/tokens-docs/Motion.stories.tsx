@@ -32,7 +32,7 @@ const meta: Meta = {
   tags: ['autodocs'],
   parameters: {
     docs: {
-      description: { component: 'Every motion is a length of time, a curve and a change: a fade, a move or a grow. Try each one below.' },
+      description: { component: 'How things move in each theme. Try each motion, then find its token below.' },
       page: MotionPage,
     },
   },
@@ -142,11 +142,9 @@ const moodTiming: Record<Mood, { arrive: string; celebrate: string }> = {
 const controlRow: CSSProperties = { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3) var(--space-6)' };
 const control: CSSProperties = { display: 'flex', alignItems: 'center', gap: 'var(--space-2)' };
 
-/**
- * Real moments to try, in the theme's own mood. Reduced shows what people see with Reduce motion on in their
- * device settings: everything fades, nothing moves.
- */
+/** In the theme's own mood. Reduced shows what people see with Reduce motion on: everything fades, nothing moves. */
 export const Moments: StoryObj = {
+  name: 'Try each motion',
   render: function Moments() {
     const theme = themeNames[singleTheme(useContext(ThemeContext))];
     const [ref, mood] = useThemeMood(theme);
