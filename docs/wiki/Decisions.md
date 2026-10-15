@@ -1,6 +1,6 @@
 # Decisions
 
-**Last updated:** October 14, 2026
+**Last updated:** October 15, 2026
 
 Newest first.
 
@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D43 | Oct 14, 2026 | Fireside type: Newsreader for titles, Instrument Sans for everything else |
 | D39 | Oct 14, 2026 | Releases attach a ready-built package file |
 | D38 | Oct 14, 2026 | The repo follows how-i-work; ESLint checks the code |
@@ -51,6 +52,18 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D55 · Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
+- **Updates:** the Oct 12 line "Only on artwork the system controls" and the Oct 4 rule that glass is for controls on artwork.
+- **Tradeoff:** lens glass bends the art behind it, so it still needs artwork the system controls. On a plain background there's nothing to bend, so glass shows the classic frosted recipe, not the lens.
+- **Why:** Sharon decided this while reviewing the Style control (Solid or Glass) for the Storybook docs page template.
+- **Details:** Components, Button and Action tile in Storybook (When to use and When not to).
+
+</details>
 
 <details>
 <summary><b>D39 · Oct 14, 2026:</b> Releases attach a ready-built package file</summary>

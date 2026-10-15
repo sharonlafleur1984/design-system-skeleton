@@ -125,7 +125,8 @@
   transform: translateY(1px);
 }
 
-/* Glass: only on artwork the design system controls (After Graduation's header, Life Hub's marble).
+/* Glass: on any background except other glass (Oct 15). Lens glass only on artwork the design system
+   controls (After Graduation's header, Life Hub's marble); elsewhere it's the classic recipe.
    Lit by the shared glass recipe (glass.css) with the settings for glass on artwork, like action tiles.
    With the lens on (glass-lens.css), the canvas draws the glass and the button's own fill steps aside. */
 .ds-button--glass {

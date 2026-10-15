@@ -24,7 +24,7 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**Do:** keep the description to one short line. **Don\'t:** put a button or link inside a tile; each tile is one click target.',
           '',
-          '**When to use:** on artwork the design system controls, like After Graduation\'s header. **When not to:** on a plain page or a photo the system doesn\'t control; use a Card or Button there.',
+          '**When to use:** on artwork, like After Graduation\'s header, or on a plain page. **When not to:** on glass, like a glass card.',
           '',
           '**Accessibility:** switch tiles are one Tab stop, with arrow keys between them and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The chosen tile turns frosted white and shows a star, so color is never the only signal. White text on the header red passes 4.5:1, with lens glass too. Text on glass has no shadow; it uses the same typography as everywhere else. The lens canvas is decorative and hidden from screen readers; focus rings, keyboard behavior and touch targets are the same as the classic glass.',
           '',
