@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useContext, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
-import { ThemeContext, singleTheme, themeNames } from '../components/story-helpers';
+import { ThemeContext, singleTheme, themeList, themeNames } from '../components/story-helpers';
 import { Button } from '../components/button/button';
 import { Body, Heading, Label } from '../components/text/text';
 import { Description, Stories, Title } from '@storybook/addon-docs/blocks';
@@ -134,29 +134,9 @@ function Demo({ mood, arrive, celebrate, reduced = false }: { mood: Mood; arrive
 const pair: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', columnGap: 'var(--space-6)', rowGap: 'var(--space-4)' };
 const half: CSSProperties = { display: 'grid', gridTemplateRows: 'subgrid', gridRow: 'span 2', rowGap: 'var(--space-4)', alignContent: 'start' };
 
-/** The three things most people need, before any detail. */
-export const AtAGlance: StoryObj = {
-  name: 'At a glance',
-  render: function AtAGlance() {
-    const theme = useThemeName();
-    const [ref, mood] = useThemeMood(theme);
-    const rows: [string, string, string][] = [
-      ['How long things take', '80 to 380ms', 'The same in every theme, so a button always feels like a button.'],
-      [`How things arrive in ${theme}`, moods[mood].title, moods[mood].about],
-      ['With Reduce motion on', 'Fade only', 'Nothing slides, bounces or grows, in every theme.'],
-    ];
-    return (
-      <div ref={ref} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-5)' }}>
-        {rows.map(([label, title, about]) => (
-          <Intro key={label} label={label} title={title} about={about} />
-        ))}
-      </div>
-    );
-  },
-};
-
-/** How long controls take to move, the same in every theme. Press Play to run all four at once and compare them. */
+/** How long controls take to move. The same in every theme, so it's shown once. Press Play to run all four at once and compare them. */
 export const Timing: StoryObj = {
+  parameters: { compareAll: false },
   render: function Timing() {
     const [go, setGo] = useState(false);
     return (
@@ -188,29 +168,58 @@ export const Timing: StoryObj = {
   },
 };
 
+/** One theme's card: its name, its mood and what that means, then the demo, all in the theme's own look. */
+function MoodCard({ theme, picked, arrive, celebrate }: { theme: string; picked: boolean; arrive: number; celebrate: number }) {
+  const name = themeNames[theme];
+  const [ref, mood] = useThemeMood(theme);
+  return (
+    <section
+      ref={ref}
+      data-theme={theme}
+      aria-label={name}
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'subgrid',
+        gridRow: 'span 3',
+        rowGap: 'var(--space-4)',
+        padding: 'var(--space-5)',
+        borderRadius: 'var(--corner-panel)',
+        background: 'var(--story-bg-page, var(--color-surface-page))',
+        color: 'var(--color-ink-primary)',
+        // The theme picked above gets Storybook's own blue ring, so the picker and the cards always agree.
+        boxShadow: picked ? '0 0 0 3px #1d6ae5' : '0 0 0 1px #d9d9d9',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--space-2)' }}>
+        <h3 style={{ margin: 0, font: '700 22px/1.2 system-ui, sans-serif', color: 'inherit' }}>{name}</h3>
+        {picked && <span style={{ font: '600 12px/1 system-ui, sans-serif', color: '#1d6ae5' }}>Picked above</span>}
+      </div>
+      <Intro label="Default mood" title={moods[mood].title} about={moods[mood].about} />
+      <Demo mood={mood} arrive={arrive} celebrate={celebrate} />
+    </section>
+  );
+}
+
 /**
- * How things arrive and celebrate. The theme's default sits beside the other mood, and one set of buttons plays
- * both, so you see the difference as it happens. Controls never change with the mood. Pick Compare all to see every
- * theme's default.
+ * How things arrive and celebrate in each theme, side by side: each theme has a default mood, calm or
+ * energetic. One set of buttons plays every card at once, so you see the difference as it happens. Any page
+ * can ask for the other mood with data-motion. Controls never change with the mood.
  */
 export const Moods: StoryObj = {
+  // Always every theme: the comparison is the point. The theme picked above is marked instead.
+  parameters: { compareAll: false },
   render: function Moods() {
-    const theme = useThemeName();
-    const [ref, own] = useThemeMood(theme);
-    const other: Mood = own === 'calm' ? 'energetic' : 'calm';
+    const choice = useContext(ThemeContext);
     const { controls, arrive, celebrate } = useDemoControls();
     return (
-      <div ref={ref} style={{ display: 'grid', gap: 'var(--space-5)' }}>
+      <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
         {controls}
-        <div style={pair}>
-          <section style={half}>
-            <Intro label="Default" title={moods[own].title} about={`${moods[own].about} Every page in ${theme} moves this way.`} />
-            <Demo mood={own} arrive={arrive} celebrate={celebrate} />
-          </section>
-          <section style={half}>
-            <Intro label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} Turned on with data-motion="${other}".`} />
-            <Demo mood={other} arrive={arrive} celebrate={celebrate} />
-          </section>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 'var(--space-4)' }}>
+          {themeList.map((theme) => (
+            <ThemeContext.Provider key={theme} value={theme}>
+              <MoodCard theme={theme} picked={choice === theme} arrive={arrive} celebrate={celebrate} />
+            </ThemeContext.Provider>
+          ))}
         </div>
       </div>
     );
@@ -224,6 +233,8 @@ export const Moods: StoryObj = {
  */
 export const ReducedMotion: StoryObj = {
   name: 'Reduced motion',
+  // The same in every theme, so it's shown once, in the theme picked above.
+  parameters: { compareAll: false },
   render: function ReducedMotion() {
     const theme = useThemeName();
     const [ref, own] = useThemeMood(theme);
