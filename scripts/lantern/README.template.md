@@ -1,9 +1,9 @@
 Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fireside. Sharing a single foundation, each provides its own unique glow. Supported by React Aria components and semantic tokens, Lantern plays with light and glass, gently encouraging them to bring out the best in each other, with every component visibly responding to a single source of light.
 
-## Where the truth lives
+## How Lantern stays up to date
 
 - **The code is the source of truth.** Lantern is built from the design-system-skeleton repo (this copy is from `{{REF}}`) and rebuilt when the code changes.
-- **Storybook shows the same parts, live.** [Open Storybook](https://designsystemskeleton.netlify.app) to try each one.
+- **Storybook shows the same components, live.** [Open Storybook](https://designsystemskeleton.netlify.app) to try each one.
 - **Changes go back as a pull request.** A change made here never stays only in Lantern. Ask Claude to turn it into a pull request.
 - **Previews run the repo's own styles,** so a token edited on this page won't change them. The edit goes into the pull request, and the next rebuild shows it.
 
@@ -21,7 +21,7 @@ Pick a theme at the top to see every token and preview in it.
 
 - Use plain labels in examples, like "Button", "Label" and "Option 1". Never use one product's copy.
 - Use sentence case for every heading, button and label.
-- Use no emoji. Status always carries a word, never color alone.
+- Don't use emoji. Status always carries a word, never color alone.
 - Use React Aria's names: Tag, Toggle button group, Separator and Progress bar. Not chip, segmented control, divider or progress meter.
 - Use the same five status names everywhere (info, warning, success, error and neutral).
 
@@ -30,7 +30,7 @@ Pick a theme at the top to see every token and preview in it.
 - Set text in `color-ink-primary` on `color-surface-page` or `color-surface-card`. Set quieter text in `color-ink-secondary`.
 - Set text on artwork, like Spotlight's header and glass on it, in `color-ink-on-art`. It never flips in dark mode.
 - Fill the one main action, like the primary button, with `color-accent-base`. Its hover is `color-accent-hover`.
-- Show the focus ring in `color-border-focus`, solid, on every part.
+- Show the focus ring in `color-border-focus`, solid, on every component.
 
 Each status has four tokens, and always comes with an icon or a word.
 
@@ -54,7 +54,7 @@ Each theme has its own faces. Use the text styles by role (display, heading, bod
 ## Space, corners and shadow
 
 - Take space from the `space-` steps, and page gutters and section gaps from the `layout-` tokens.
-- Each theme picks its roundness, and every corner follows the part's size (`radius-` tokens).
+- Each theme picks its roundness, and every corner follows the component's size (`radius-` tokens).
 - Use shadows for things that float or lift, like a hovered tile (`shadow-hover`) or a popover (`shadow-float`).
 
 ## Light and glass
@@ -84,11 +84,11 @@ Its four colors belong to Lantern. Use them for the mark and the cover only, nev
 
 ## Icons
 
-There's no shared icon set yet; Icon is Not started. Examples use simple line icons drawn in the text color. Don't draw a product's logo.
+There's no shared icon set yet; the Icon component isn't started yet. Examples use simple line icons drawn in the text color. Don't draw a product's logo.
 
-## Parts and their status
+## Components and their status
 
-Every part has one of four statuses.
+Every component has one of four statuses.
 
 - **Ready:** in the code on `main`.
 - **Pending:** built, and waiting in a pull request.

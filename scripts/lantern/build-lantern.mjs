@@ -260,7 +260,7 @@ for (const [name, p] of Object.entries(pages)) {
 const statusRows = Object.entries(pages)
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([n, p]) => `| ${n} | ${p.title.split('/')[0]} | ${statusWord[p.status]} | ${p.summary} |`);
-write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Part | Group | Status | What it does |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`));
+write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Component | Group | Status | What it does |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`));
 write('components/Cover/preview.html', read('scripts/lantern/cover.html'));
 // Lantern's mark. In the artifact it's an uploaded asset (assets/Logos), so publishing uploads it and records
 // its id in design-system.json's assetGroups; the folder keeps a copy and the group's note.
