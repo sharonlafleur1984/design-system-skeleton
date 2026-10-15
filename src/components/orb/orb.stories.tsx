@@ -34,20 +34,20 @@ export const Related: Story = { ...pageStory('related', { tryIt: false }), tags:
 
 // Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
-/** The orb on every theme's real background, in each one's color. Drag any of them. */
+/** The small orb on every theme's real background, in each one's color. Drag any of them. */
 export const OnEveryBackground: Story = {
   tags: ['!dev'],
   parameters: { layout: 'padded' },
   render: ({ look }) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 'var(--space-4)' }}>
-      <OrbSection backdrop="header" look={look} label="Spotlight header" />
+      <OrbSection backdrop="header" size="small" look={look} label="Spotlight header" />
       {marbles
         .filter((m) => ['dashboard', 'parenting', 'health', 'time'].includes(m.area ?? ''))
         .map((m) => (
-          <OrbSection key={m.name} look={look} backdrop="marble" area={m.area!} texture={m.texture} palette={m.palette} label={`Sunrise, ${m.name}`} />
+          <OrbSection key={m.name} size="small" look={look} backdrop="marble" area={m.area!} texture={m.texture} palette={m.palette} label={`Sunrise, ${m.name}`} />
         ))}
-      <OrbSection backdrop="fireside" look={look} label="Fireside" />
-      <OrbSection backdrop="light" look={look} label="Light page" />
+      <OrbSection backdrop="fireside" size="small" look={look} label="Fireside" />
+      <OrbSection backdrop="light" size="small" look={look} label="Light page" />
     </div>
   ),
 };
