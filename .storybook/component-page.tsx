@@ -578,7 +578,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
         (alwaysDark(t) ? (['dark'] as const) : modes).map((m) => (
           <div key={`${t}-${m}`} className="sb-try__slot">
             {many && (
-              <p className={`sb-try__window-label sb-try__window-label--${m}`}>
+              <p className="sb-try__window-label">
                 {[shownThemes.length > 1 ? themeNames[t] : null, alwaysDark(t) ? 'dark' : modes.length > 1 ? (m === 'dark' ? 'Dark' : 'Light') : null].filter(Boolean).join(', ')}
               </p>
             )}

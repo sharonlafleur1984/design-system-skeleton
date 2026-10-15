@@ -225,15 +225,9 @@
   font-size: 12px;
   font-weight: 600;
   text-align: end;
-}
-/* Each label bar matches its window: light for light mode, dark for dark mode. */
-.sb-try__window-label--light {
+  /* One neutral bar over every window, light or dark, so the windows line up and the eye isn't pulled between them. */
   background: #f6f7f8;
   color: #5c6870;
-}
-.sb-try__window-label--dark {
-  background: #1e2124;
-  color: #c7cdd1;
 }
 /* The window: the component left-aligned, on the theme's page, art or marble. */
 .sb-try__window {
