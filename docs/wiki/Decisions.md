@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
 | D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
 | D48 | Oct 15, 2026 | Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere |
 | D46 | Oct 14, 2026 | Action tile titles one size smaller; action tiles fit their space |
@@ -60,6 +61,18 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D50 · Oct 15, 2026:</b> Storybook: the theme picker sits on the page, and Compare all works on every story</summary>
+
+- **Decided by:** Sharon ("I don't think it's super clear that the drop-down is up there or how it works"; "if I use the all option in the drop-down, I don't actually see all")
+- **On the page:** a Theme picker (Spotlight, Sunrise, Fireside, Compare all) above every story, and once at the top of every Docs page, under the name and what it's for. It changes the same setting as the toolbar, so the two always agree. Controls hidden in a menu are found and used less ([NN/g](https://www.nngroup.com/articles/find-navigation-desktop-not-hamburger)), and seeing which theme is on means never having to remember it (Nielsen: visibility of system status, recognition over recall).
+- **Storybook's own look:** the picker and the theme names in Compare all are neutral gray in system type, the same in every theme, so they're never mistaken for the component on show.
+- **Compare all, everywhere:** handled once in the preview, so every story, Foundations pages included, shows once per theme, side by side, each under its theme's name as a heading. "All" worked only on stories built with a helper before; a choice that works on some pages and not others breaks trust (Nielsen: consistency and standards). Renamed "Compare all" because it says what you get.
+- **Moods show each theme's own first:** Spotlight energetic, Sunrise calm, Fireside energetic (borrowed for now), read from each theme's tokens, then the other mood as what a page can switch to.
+- **Screenshots:** the tests hide the picker (`picker:hide`), so it stays out of every picture.
+
+</details>
 
 <details>
 <summary><b>D49 · Oct 15, 2026:</b> Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size</summary>

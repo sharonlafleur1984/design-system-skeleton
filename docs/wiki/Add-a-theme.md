@@ -20,7 +20,7 @@ A theme is one folder. Storybook, the docs pages, the tests and the package all 
    - text passes 4.5:1 contrast, in light and dark
    - no token is set twice in the theme
    - spacing is left to the base
-7. **Look at it.** Run `npm run storybook`, then pick the new theme in the toolbar.
+7. **Look at it.** Run `npm run storybook`, then pick the new theme in the theme picker above any story.
 8. **Write it up.** Add the theme to [Themes](Themes) and add a decision to [Decisions](Decisions).
 9. **Open a pull request** and add the `update-screenshots` label, so every story gets screenshots in the new theme.
 

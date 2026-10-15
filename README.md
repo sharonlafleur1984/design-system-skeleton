@@ -1,6 +1,6 @@
 # Design system
 
-- **[See it live in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes in the toolbar.
+- **[See it live in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes with the picker above every story.
 - **[Read the project wiki](https://github.com/sharonlafleur1984/design-system-skeleton/wiki)**: the dashboard, roadmap and decisions.
 
 > **This is a work in progress.** In this day of AI design, things are moving fast, and I'm moving a million miles a minute to get relevant design experience for this new age as I look for my next career opportunity. I'd love to share what I'm learning with whoever I end up with next. You can see the whole thing in all its messy glory, but don't expect it to be polished.
@@ -27,7 +27,7 @@ Four automatic checks run on every pull request:
 
 ## Try it
 
-**[See it in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes in the toolbar.
+**[See it in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes with the picker above every story.
 
 Or run it yourself:
 

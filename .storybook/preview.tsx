@@ -3,14 +3,18 @@ import '../src/base.css';
 import themes from '../build/themes.json';
 import '../build/text-styles.css';
 import '../src/components/corners.css';
-import { LightScene, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
+import { Controls, Description, Primary, Stories, Subtitle, Title } from '@storybook/addon-docs/blocks';
+import { DocsThemePicker, THEME_CHOICE_EVENT, ThemePicker } from './theme-picker';
+import { CompareAll, LightScene, ThemeContext, singleTheme, storyBackgrounds, storyBackgroundsCss, type ThemeChoice } from '../src/components/story-helpers';
 
 // Every theme's tokens and fonts, found by file name, so a new theme needs no change here.
 import.meta.glob('../build/css/*.css', { eager: true });
 import.meta.glob('../src/fonts/*.css', { eager: true });
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
-// Stories show one product at a time; "All" shows them side by side for comparing.
+// Stories show one product at a time; "Compare all" shows every story once per theme, side by side.
+// The same picker sits on the page above each story (theme-picker.tsx), because a menu in the toolbar is
+// easy to miss. Screenshot tests hide it with the global picker:hide.
 // A theme marked alwaysDark in its theme.json (Fireside) doesn't change with the Mode switch.
 const preview: Preview = {
   globalTypes: {
@@ -19,7 +23,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Theme',
         icon: 'paintbrush',
-        items: [...themes.map((t) => ({ value: t.id, title: t.name })), { value: 'both', title: 'All' }],
+        items: [...themes.map((t) => ({ value: t.id, title: t.name })), { value: 'both', title: 'Compare all' }],
         dynamicTitle: true,
       },
     },
@@ -35,26 +39,47 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    // Not in the toolbar: screenshot tests set picker:hide so the on-page picker stays out of the pictures.
+    picker: { description: 'Show or hide the theme picker on the page' },
   },
   initialGlobals: { theme: themes[0].id, mode: 'light' },
   decorators: [
     (Story, context) => {
       const choice = (context.globals.theme ?? themes[0].id) as ThemeChoice;
       document.documentElement.setAttribute('data-theme', singleTheme(choice));
+      if (document.documentElement.dataset.themeChoice !== choice) {
+        document.documentElement.dataset.themeChoice = choice;
+        window.dispatchEvent(new Event(THEME_CHOICE_EVENT));
+      }
       // Always set, so screenshots don't change with the test machine's own light or dark setting.
       document.documentElement.setAttribute('data-mode', context.globals.mode === 'dark' ? 'dark' : 'light');
       return (
         <ThemeContext.Provider value={choice}>
           <style>{storyBackgroundsCss}</style>
           {/* Every story that shows glass gets the page's light, as a sun you can move. */}
+          {context.viewMode !== 'docs' && context.globals.picker !== 'hide' && <ThemePicker value={choice} />}
           <LightScene>
-            <Story />
+            {choice === 'both' ? <CompareAll render={(theme) => Story({ globals: { ...context.globals, theme } })} /> : <Story />}
           </LightScene>
         </ThemeContext.Provider>
       );
     },
   ],
   parameters: {
+    // Every Docs page: the theme picker once at the top, under the name and what it's for.
+    docs: {
+      page: () => (
+        <>
+          <Title />
+          <Subtitle />
+          <Description />
+          <DocsThemePicker />
+          <Primary />
+          <Controls />
+          <Stories />
+        </>
+      ),
+    },
     a11y: { test: 'error' },
     layout: 'padded',
     options: {

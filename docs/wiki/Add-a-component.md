@@ -24,7 +24,7 @@ A component is one folder in `src/components/`. Each theme restyles it through t
    - **When to use** and **When not to**
    - **Accessibility:** what screen readers hear and which keys work
 
-   Start with a `Playground`, then one story per variant or state. Use plain labels ("Button", "Label", "Option 1"), never one product's copy ([voice](../../blob/main/docs/voice.md)). Wrap variants in `BothThemes` from `story-helpers.tsx` so every theme shows side by side.
+   Start with a `Playground`, then one story per variant or state. Use plain labels ("Button", "Label", "Option 1"), never one product's copy ([voice](../../blob/main/docs/voice.md)). Wrap variants in `BothThemes` from `story-helpers.tsx` to show them on the theme's real page background. Compare all (the theme picker above every story) shows any story in every theme side by side, with nothing extra to write.
 7. **Test it.** Add a `describe` block to `tests/components.test.tsx`: its role and name, its keyboard behavior, and no axe errors.
 8. **Check it.** Run `npm test`, `npm run typecheck` and `npm run lint`, then look at it in every theme in `npm run storybook`.
 9. **Open a pull request.** Add the `update-screenshots` label so its stories get screenshots in every theme. Add the component to the [Changelog](../../blob/main/CHANGELOG.md) under Unreleased.

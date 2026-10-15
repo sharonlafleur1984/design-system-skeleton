@@ -41,7 +41,7 @@ for (const story of stories) {
       test(name, async ({ page }) => {
         await page.setViewportSize({ width, height: 800 });
         await page.clock.setFixedTime(screenshotTime);
-        await page.goto(`/iframe.html?id=${story.id}&globals=theme:${theme}&viewMode=story`);
+        await page.goto(`/iframe.html?id=${story.id}&globals=theme:${theme};picker:hide&viewMode=story`);
         await page.locator('#storybook-root').waitFor();
         await page.evaluate(() => document.fonts.ready);
         await page.evaluate(imagesReady);

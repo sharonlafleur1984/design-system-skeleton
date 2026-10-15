@@ -22,7 +22,7 @@ Private files aren't here. They're listed in Sharon's private Notion document in
 
 | Document | Read this when |
 |---|---|
-| [Storybook](https://designsystemskeleton.netlify.app/) ([source: src/components](../../tree/main/src/components)) | You want to see every component and token, in every theme. Switch themes in the toolbar. |
+| [Storybook](https://designsystemskeleton.netlify.app/) ([source: src/components](../../tree/main/src/components)) | You want to see every component and token, in every theme. Switch themes with the picker above every story. |
 | [README](../../blob/main/README.md) | You want to know what this is and how to run it |
 | [Changelog](../../blob/main/CHANGELOG.md) | You want to know what changed in a version before an app updates to it |
 | [CLAUDE.md](../../blob/main/CLAUDE.md) | You're an AI or developer starting work |
