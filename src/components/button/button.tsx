@@ -19,7 +19,7 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'className' | 'style'> {
   /** Figma "Style". One primary button per screen, for the main action. Glass is never on glass. */
   variant?: ButtonVariant;
-  /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass, the clear glass button for artwork, lit from the page's light. */
+  /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass, the clear glass button for any background except glass, lit from the page's light. */
   appearance?: Appearance;
   /** Figma "Size". */
   size?: ButtonSize;
