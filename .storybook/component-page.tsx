@@ -712,7 +712,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
                 <section key={kind} className={`sb-page__rule sb-page__rule--${kind}`} aria-labelledby={`sb-rule-${kind}`}>
                   <h2 id={`sb-rule-${kind}`} className="sb-page__verdict">
                     <svg width="28" height="28" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      {kind === 'do' ? <path d="m3 8.5 3 3 7-7" /> : <path d="m4 4 8 8M12 4l-8 8" />}
+                      {kind === 'do' ? <path d="m3 8.5 3 3 7-7" /> : <path d="m3.5 3.5 9 9M12.5 3.5l-9 9" />}
                     </svg>
                     {kind === 'do' ? 'Use it for this' : "Don't use it for this"}
                   </h2>
