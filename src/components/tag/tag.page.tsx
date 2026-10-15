@@ -1,21 +1,16 @@
 import type { ComponentPageInfo } from '../../../.storybook/component-page';
-import { DocLink, docsPath } from '../../../.storybook/component-page';
 import { Tag, TagGroup } from './tag';
 
-// Storybook only: what Tag's Docs page says (the component page template).
+// Storybook only: what Tag's page says (the component page template).
 export const tagPage: ComponentPageInfo = {
   updated: '2026-10-15',
   summary: 'Filters a list, picks from a short set, or shows tags someone can remove.',
-  reactAria: { name: 'TagGroup', href: 'https://react-aria.adobe.com/TagGroup' },
   status: 'ready',
+  builtWith: { reactAria: 'TagGroup' },
   useFor: ['Filtering a list, like Unread.', 'Picking one or more options from a short set, or showing tags someone can remove.'],
   useElse: [
-    <>
-      An action: use <DocLink href={docsPath('Components/Button')}>Button</DocLink>.
-    </>,
-    <>
-      More than eight options: use <DocLink href={docsPath('Components/Select')}>Select</DocLink>.
-    </>,
+    { job: 'An action', instead: { name: 'Button', title: 'Components/Button' } },
+    { job: 'More than eight options', instead: { name: 'Select', title: 'Components/Select' } },
   ],
   do: {
     example: (
@@ -25,7 +20,7 @@ export const tagPage: ComponentPageInfo = {
         <Tag id="3">Tag 3</Tag>
       </TagGroup>
     ),
-    text: 'Keep labels to one or two words, and give the group a label.',
+    rules: ['Keep labels to one or two words.', 'Give the group a label.'],
   },
   dont: {
     example: (
@@ -34,13 +29,13 @@ export const tagPage: ComponentPageInfo = {
         <Tag id="2">Things done this week</Tag>
       </TagGroup>
     ),
-    text: 'Write long labels, or let color mean something on its own.',
+    rules: ['Write long labels.', 'Let color mean something on its own.'],
   },
   keys: [
-    { keys: ['Tab'], does: 'Moves focus into the group, one stop for every tag' },
-    { keys: ['←', '→'], does: 'Moves between tags' },
-    { keys: ['Space', 'Enter'], does: 'Selects or clears the tag' },
-    { keys: ['Delete', 'Backspace'], does: 'Removes the tag, when tags can be removed' },
+    { keys: ['Tab'], result: 'Moves focus into the group, one stop for every tag.' },
+    { keys: ['←', '→'], result: 'Moves between tags.' },
+    { keys: ['Space', 'Enter'], result: 'Selects or clears the tag.' },
+    { keys: ['Delete', 'Backspace'], result: 'Removes the tag, when tags can be removed.' },
   ],
   screenReader: { pattern: '[Label], row, selected', example: 'Tag 1, row, selected' },
   accessibility: [
@@ -51,8 +46,8 @@ export const tagPage: ComponentPageInfo = {
   imports: ['TagGroup', 'Tag'],
   tokens: ['--color-accent-[state]', '--color-surface-glass', '--control-height-[size]', '--radius-medium', '--material-blur', '--color-border-focus'],
   related: [
-    { name: 'Toggle button group', href: docsPath('Components/Toggle button group') },
-    { name: 'Select', href: docsPath('Components/Select') },
-    { name: 'Glass', href: '/?path=/story/foundations-glass--playground' },
+    { name: 'Toggle button group', title: 'Components/Toggle button group' },
+    { name: 'Select', title: 'Components/Select' },
+    { name: 'Glass', title: 'Foundations/Glass', story: 'playground' },
   ],
 };

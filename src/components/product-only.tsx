@@ -11,6 +11,8 @@ import { singleTheme, themeNames } from './story-helpers';
  */
 export const afterGraduationOnly: Decorator = (Story, context) => {
   const theme = singleTheme(context.globals.theme);
+  // A component page says this in its own Try it out windows (componentPage.onlyIn), and keeps its theme bar.
+  if (context.tags.includes('page')) return <Story />;
   if (theme !== 'after-graduation') {
     return (
       <div style={{ padding: 'var(--space-4)' }}>

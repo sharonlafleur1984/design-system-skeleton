@@ -1,5 +1,4 @@
 import type { ComponentPageInfo } from '../../../.storybook/component-page';
-import { DocLink, docsPath } from '../../../.storybook/component-page';
 import { Tab, TabList, TabPanel, Tabs } from './tabs';
 
 const panel = { margin: 0, color: 'var(--color-ink-secondary)' };
@@ -8,16 +7,12 @@ const panel = { margin: 0, color: 'var(--color-ink-secondary)' };
 export const tabsPage: ComponentPageInfo = {
   updated: '2026-10-15',
   summary: 'Switches between views of the same thing on one page.',
-  reactAria: { name: 'Tabs', href: 'https://react-aria.adobe.com/Tabs' },
   status: 'ready',
+  builtWith: { reactAria: 'Tabs' },
   useFor: ['Two to six related views on one page, like Overview and Details.'],
   useElse: [
-    <>
-      Changing how one list shows, like Week or Month: use <DocLink href={docsPath('Components/Toggle button group')}>Toggle button group</DocLink>.
-    </>,
-    <>
-      Going to another page: use <DocLink href={docsPath('Components/Link')}>Link</DocLink>.
-    </>,
+    { job: 'Changing how one list shows, like Week or Month', instead: { name: 'Toggle button group', title: 'Components/Toggle button group' } },
+    { job: 'Going to another page', instead: { name: 'Link', title: 'Components/Link' } },
   ],
   do: {
     example: (
@@ -34,7 +29,7 @@ export const tabsPage: ComponentPageInfo = {
         </TabPanel>
       </Tabs>
     ),
-    text: 'Keep labels to one or two words, and give the list an aria-label.',
+    rules: ['Keep labels to one or two words, and give the list an aria-label.'],
   },
   dont: {
     example: (
@@ -62,12 +57,12 @@ export const tabsPage: ComponentPageInfo = {
         </TabPanel>
       </Tabs>
     ),
-    text: 'Write long labels, or nest tabs inside tabs.',
+    rules: ['Write long labels, or nest tabs inside tabs.'],
   },
   keys: [
-    { keys: ['Tab'], does: 'Moves focus to the chosen tab, then on to its panel' },
-    { keys: ['←', '→'], does: 'Moves to the next or previous tab and shows its panel' },
-    { keys: ['Home', 'End'], does: 'Jumps to the first or last tab' },
+    { keys: ['Tab'], result: 'Moves focus to the chosen tab, then on to its panel.' },
+    { keys: ['←', '→'], result: 'Moves to the next or previous tab and shows its panel.' },
+    { keys: ['Home', 'End'], result: 'Jumps to the first or last tab.' },
   ],
   screenReader: { pattern: '[Label], tab, selected, [n] of [total]', example: 'Overview, tab, selected, 1 of 2' },
   accessibility: [
@@ -77,7 +72,8 @@ export const tabsPage: ComponentPageInfo = {
   imports: ['Tabs', 'TabList', 'Tab', 'TabPanel'],
   tokens: ['--color-accent-base', '--color-ink-[state]', '--color-border-subtle', '--control-height-large', '--motion-switch-duration'],
   related: [
-    { name: 'Toggle button group', href: docsPath('Components/Toggle button group') },
-    { name: 'Link', href: docsPath('Components/Link') },
+    { name: 'Toggle button group', title: 'Components/Toggle button group' },
+    { name: 'Link', title: 'Components/Link' },
   ],
+  states: { disabled: { isDisabled: true } },
 };

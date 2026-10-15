@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
@@ -66,6 +67,24 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
+<summary><b>D56 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
+
+- **Decided by:** Sharon, designing the page with Claude on a canvas, and approving the parts list (Oct 15).
+- **A story, not a Docs page:** so Storybook's bottom panel (Controls, Actions, Interactions, Accessibility) works on it. Sidebar entries per part: Overview, Try it out, Usage rules, Accessibility and Related, each opening the one page at that section. The old stories stay as test stories, hidden from the sidebar (tag `!dev`), so screenshot and accessibility tests still run on them. Replaces D52's Docs tab, Examples and the theme picker's Mode and Background.
+- **Neutral grays:** the page's own grays have no hue, so they never shift how a theme's colors look (Sharon, Oct 15).
+- **The order:** Theme (Spotlight, Sunrise, Fireside or All) and Mode (the page's own light or dark), on the table headers' gray, name and what it does (the status and updated date live in the table, not up top), every description in the same body text; Try it out (the part on its own window, left-aligned; Show code and Copy code; then a table of Is it ready to use, When do I use it, When don't I use it, and What codebase it's built with, React Aria or ours, linked); Usage rules (use it for this, don't use it for this); Accessibility (Trigger, Result and Notes); For engineers, folded; Related.
+- **Status:** Ready, Pending, On hold or Not started, a dot and a word. Anything not built shows an empty state in Try it out and "No design file yet (Figma or Claude)" until it has one. A built part says nothing about a design file: its code is the design.
+- **Controls:** a plain name with the code name under it, what it does, radio buttons. Every option list ends with All: one All is a labeled row, two a labeled grid, Mode's All shows light and dark windows side by side, and State's All shows rest, hover, pressed, focus, disabled and loading. Page settings: Mode (Light, Dark, Auto: dark 7 PM to 7 AM, System), Background (Spotlight's header art and landscape lanes, Sunrise's marble in all ten colors; hidden for Fireside) and a System choice for every device setting a part reacts to: Motion, Contrast, Transparency.
+- **Glass:** on any background except other glass (PR #71). On header art, a sun you drag moves the art's bright spot and the glass light.
+- **A part with nothing to change** drops the Try it out heading and its sidebar entry, but keeps the part and the table.
+- **Motion:** hover 140ms, press 80ms, code panel opens in 220ms; Reduce motion keeps only color fades.
+- **Compare all:** three equal columns when they fit, otherwise one per row; never two plus one.
+- **Accessibility fixes from the canvas review:** no pale text, white text only on a code bar dark enough for it, check results are words not buttons, every choice group named by its label, the first column of each table as row headings, key styling only on real keys.
+- **Applies to:** every part under Components and Patterns, built or planned. Foundations keep their own layout.
+
+</details>
+
+<details>
 <summary><b>D55 · Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
 
 - **Decided by:** Sharon
@@ -81,6 +100,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 <summary><b>D52 · Oct 15, 2026:</b> One page template for every component's Docs tab</summary>
 
 - **Decided by:** Sharon ("This is the template I want you to use for every single page"; "I liked the radio buttons better ... I just care about the content")
+- **Neutral grays:** the page's own grays have no hue, so they never shift how a theme's colors look (Sharon, Oct 15).
 - **The order:** updated date, name, what it does in one line, the React Aria part and a status (Ready, In review or Experimental, a dot and a word), the theme picker, Try it, When to use (use it for, use something else for), Examples (one story each, with a heading, one line and its code), Do and don't, Accessibility (keys, what a screen reader says, the four standard checks, anything different), For engineers (import, props, tokens; folded away) and Related.
 - **One layout, many pages:** the layout lives in `.storybook/component-page.tsx`; each component fills it with a `<name>.page.tsx` file and `parameters.componentPage`. A page can't drift from the others, and a new component gets the whole layout by filling in one object.
 - **Controls:** every setting has a plain name and says what it does ("Disabled: turns it off, so it can't be pressed"); yes-or-no settings read Off and On. Storybook's own radio buttons stay.
@@ -162,7 +182,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decided by:** Sharon ("we need to show a light source on any surface that shows glass"; "the focus is too much")
 - **One light per page:** an element marked `data-glass-light` is the page's light (`PAGE_LIGHT`). Glass with no light of its own is lit from the nearest one around it, so every glass on the page shares one light. Moving it (then firing `LIGHT_CHANGE`) moves every rim, highlight and shadow. A glass group's own `source` or `light` still wins, and with no page light the light tokens are used as before.
 - **Storybook:** each theme panel lights its glass from its own real background (the same art and light as the Glass playground), so glass looks the same in every story as it does in the playground. Groups inside a lit panel don't light themselves (`LitContext`), and a lens leaves glass inside a nested lit container to that container's lens.
-- **Storybook:** every story that shows glass gets the page light as a small sun at the top right. Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
+- **Storybook:** every story that shows glass gets the page light as a small sun. Every movable light in Storybook starts at the bottom right of its section, and is only an orb, with no rays. A full page (the page shell) keeps its light still, where it sits on the real page (updated Oct 15). Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
 - **Balanced light (Sharon: "not balanced, so it's not natural"):**
   - Story panels and self-lit tile groups use the same long reach as the Glass playground, so every tile catches the sun about equally.
   - A bug in the shared glass recipe put the inner highlight on the far edge and the shade on the lit edge (an inset shadow shows opposite its offset). They're swapped back.

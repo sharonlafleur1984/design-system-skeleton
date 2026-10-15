@@ -4,6 +4,8 @@ import { BothThemes, OnMarble, Row, WithReducedMotion, choice, hidden, marbles, 
 import { buttonPage } from './button.page';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
+import { expect, fn, userEvent, within } from 'storybook/test';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -14,17 +16,41 @@ const Plus = () => (
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
-  tags: ['autodocs'],
-  args: { children: 'Button', variant: 'primary', appearance: 'solid', size: 'medium' },
+  args: {
+    children: 'Button',
+    variant: 'primary',
+    appearance: 'solid',
+    size: 'medium',
+    destructive: false,
+    isDisabled: false,
+    isPending: false,
+    // What the Actions tab lists as you use the button.
+    onPress: fn(),
+    onPressStart: fn(),
+    onPressEnd: fn(),
+    onHoverStart: fn(),
+    onHoverEnd: fn(),
+    onFocus: fn(),
+    onBlur: fn(),
+    ...pageArgs,
+  } as Meta<typeof Button>['args'],
   argTypes: {
-    children: words('Label', 'The words on the button'),
-    variant: choice('Variant', 'How important the action is', ['primary', 'secondary', 'tertiary']),
-    size: choice('Size', 'How big it is', ['small', 'medium', 'large']),
-    appearance: choice('Appearance', 'Solid, or clear glass for any background except glass', ['solid', 'glass']),
-    destructive: onOff('Destructive', 'For actions that remove something'),
-    isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed"),
-    isPending: onOff('Loading', 'Shows a spinner while the action runs'),
+    children: words('Label', 'The words on the button\n\n`children`'),
+    variant: choice('Variant', 'How important the action is\n\n`variant`', ['primary', 'secondary', 'tertiary']),
+    appearance: choice('Style', 'Solid, or clear glass for any background except glass\n\n`appearance`', ['solid', 'glass']),
+    size: choice('Size', 'How big it is\n\n`size`', ['small', 'medium', 'large']),
+    destructive: onOff('Destructive', 'For actions that remove something\n\n`destructive`'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed\n\n`isDisabled`"),
+    isPending: onOff('Loading', 'Shows a spinner while the action runs\n\n`isPending`'),
     icon: setting('Icon', 'A decorative icon before the label', { control: false }),
+    ...pageArgTypes({ states: ['rest', 'hover', 'pressed', 'focus', 'disabled', 'loading'], glass: true }),
+    onPress: hidden,
+    onPressStart: hidden,
+    onPressEnd: hidden,
+    onHoverStart: hidden,
+    onHoverEnd: hidden,
+    onFocus: hidden,
+    onBlur: hidden,
     material: hidden,
     loading: hidden,
     disabled: hidden,
@@ -36,11 +62,38 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-/** Every setting, in the Controls tab. */
-export const Playground: Story = {};
+/** Button's page. Every setting is in the Controls tab. */
+export const Overview: Story = {
+  ...pageStory(),
+  tags: ['page'],
+  // The Interactions tab: checks the Try it out button does what it promises, with the settings picked.
+  play: async ({ args, canvasElement, step }) => {
+    const window = canvasElement.querySelector<HTMLElement>('.sb-try__window');
+    if (!window || (args as unknown as Record<string, unknown>).sbState !== 'rest' || Object.values(args).includes('all')) return;
+    const button = within(window).getByRole('button', { name: String(args.children) });
+    await step('Press Tab to reach it: the focus ring shows', async () => {
+      button.focus();
+      await expect(button).toHaveFocus();
+    });
+    await step(args.isDisabled || args.isPending ? 'Press Enter: nothing runs' : 'Press Enter: its action runs once', async () => {
+      await userEvent.keyboard('{Enter}');
+      await expect(args.onPress).toHaveBeenCalledTimes(args.isDisabled || args.isPending ? 0 : 1);
+    });
+  },
+};
+export const TryItOut: Story = { ...pageStory('try'), name: 'Try it out', tags: ['page', 'section'] };
+export const UsageRules: Story = { ...pageStory('usage'), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y'), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related'), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
+
+/** Every setting at its default. */
+export const Playground: Story = { tags: ['!dev'] };
 
 /** Primary for the one main action, Secondary for other choices, Tertiary for side trips. */
 export const Styles: Story = {
+  tags: ['!dev'],
   name: 'Variants',
   render: () => (
     <BothThemes>
@@ -62,6 +115,7 @@ export const Styles: Story = {
 
 /** Medium almost everywhere. Small in dense lists, Large for the main action on a phone. */
 export const Sizes: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Small">
@@ -79,6 +133,7 @@ export const Sizes: Story = {
 
 /** Every state, side by side: rest, hover, pressed, disabled and loading. */
 export const States: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <StatePictures>
@@ -98,6 +153,7 @@ export const States: Story = {
 
 /** For actions that remove something. The label says what goes, so red is never the only signal. */
 export const Destructive: Story = {
+  tags: ['!dev'],
   render: () => (
     <BothThemes>
       <Row label="Destructive">
@@ -155,6 +211,7 @@ function GlassOnArt({ theme }: { theme: unknown }) {
  * Without WebGL, or with Reduce transparency or Increase contrast, it turns frosted.
  */
 export const GlassOnArtwork: Story = {
+  tags: ['!dev'],
   name: 'Glass on artwork',
   // On the Docs page, a window onto the header rather than a whole page of empty content.
   parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
@@ -163,6 +220,7 @@ export const GlassOnArtwork: Story = {
 
 /** Sunrise: glass buttons on all ten marbles, to check the bend and the text on every one, in light and dark mode. */
 export const GlassOnEveryMarble: Story = {
+  tags: ['!dev'],
   name: 'Glass on every marble',
   render: () => (
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
@@ -178,6 +236,7 @@ export const GlassOnEveryMarble: Story = {
 
 /** With Reduce motion on: still Glass, but presses don't swell and phone tilt is off. */
 export const GlassReducedMotion: Story = {
+  tags: ['!dev'],
   name: 'Glass: reduced motion',
   parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '420px' } } },
   render: (_args, { globals }) => (

@@ -12,19 +12,21 @@ import { SettingRow, SettingsDialog, SettingsGroup, type SettingsSectionDef } fr
 import { afterGraduationOnly } from '../product-only';
 import { setting, words } from '../story-helpers';
 import { settingsPage } from './settings.page';
+import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
 const meta: Meta<typeof SettingsDialog> = {
   title: 'Patterns/Settings',
   component: SettingsDialog,
-  tags: ['autodocs'],
-  args: { title: 'Settings' },
+  // The page shows the dialog closed: open, it would cover the whole page. The stories below open it from the header.
+  args: { title: 'Settings', isOpen: false, sections: [], ...pageArgs } as Meta<typeof SettingsDialog>['args'],
   argTypes: {
-    title: words('Title', "The dialog's heading"),
-    sections: setting('Sections', 'Each section: an id, a label and its rows', { control: false }),
-    section: setting('Open section', 'Opens on this section, for deep links like /settings/notifications', { control: false }),
-    isOpen: setting('Open', 'Whether the dialog is showing', { control: false }),
-    onOpenChange: setting('On open change', 'Called when it opens or closes', { control: false }),
-    onSectionChange: setting('On section change', 'Called when someone picks a section', { control: false }),
+    title: words('Title', "The dialog's heading\n\n`title`"),
+    sections: setting('Sections', 'Each section: an id, a label and its rows\n\n`sections`', { control: false }),
+    section: setting('Open section', 'Opens on this section, for deep links like /settings/notifications\n\n`section`', { control: false }),
+    isOpen: setting('Open', 'Whether the dialog is showing\n\n`isOpen`', { control: false }),
+    onOpenChange: setting('On open change', 'Called when it opens or closes\n\n`onOpenChange`', { control: false }),
+    onSectionChange: setting('On section change', 'Called when someone picks a section\n\n`onSectionChange`', { control: false }),
+    ...pageArgTypes(),
   },
   // On the Docs page each story gets its own frame, so a dialog that starts open stays inside its example.
   parameters: { layout: 'fullscreen', componentPage: settingsPage, docs: { story: { inline: false, height: '640px' } } },
@@ -33,6 +35,14 @@ const meta: Meta<typeof SettingsDialog> = {
 };
 export default meta;
 type Story = StoryObj<typeof SettingsDialog>;
+
+/** Settings' page. Every setting is in the Controls tab. */
+export const Overview: Story = { ...pageStory(undefined, { tryIt: false }), tags: ['page'] };
+export const UsageRules: Story = { ...pageStory('usage', { tryIt: false }), name: 'Usage rules', tags: ['page', 'section'] };
+export const Accessibility: Story = { ...pageStory('a11y', { tryIt: false }), tags: ['page', 'section'] };
+export const Related: Story = { ...pageStory('related', { tryIt: false }), tags: ['page', 'section'] };
+
+// Test stories: screenshot and accessibility tests run on them; they stay out of the sidebar.
 
 // Three-way choices, with the label naming the row for screen readers.
 function Choice<T extends string | number>({
@@ -360,15 +370,19 @@ function Demo({ startOpen = false, startSection, title }: { startOpen?: boolean;
  * any tabs or action tile switch: those build a hidden copy of their contents, which would open two dialogs.
  */
 export const FromTheHeader: Story = {
+  tags: ['!dev'],
   render: (args) => <Demo title={args.title} />,
 };
 
 /** Open on Accessibility. Appearance and Accessibility really change the page; try them. */
-export const Accessibility: Story = {
+export const OpenOnAccessibility: Story = {
+  tags: ['!dev'],
+  name: 'Open on Accessibility',
   render: () => <Demo startOpen startSection="accessibility" />,
 };
 
 /** Open on Plan, the way a deep link opens one section. The other sections show planned settings. */
 export const Plan: Story = {
+  tags: ['!dev'],
   render: () => <Demo startOpen startSection="plan" />,
 };
