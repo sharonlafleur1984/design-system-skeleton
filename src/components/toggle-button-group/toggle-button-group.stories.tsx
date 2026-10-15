@@ -1,38 +1,32 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ToggleButton, ToggleButtonGroup } from './toggle-button-group';
-import { BothThemes, StatePictures } from '../story-helpers';
+import { BothThemes, StatePictures, choice, hidden, onOff, words } from '../story-helpers';
+import { toggleButtonGroupPage } from './toggle-button-group.page';
 import { Card } from '../card/card';
 
 const meta: Meta<typeof ToggleButtonGroup> = {
   title: 'Components/Toggle button group',
   component: ToggleButtonGroup,
   tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Pick one of two to five options that change how the same content shows. Built on React Aria\'s ToggleButtonGroup. Called "Segmented control" in Figma.',
-          '',
-          '**When to use:** "Week" or "Month", "List" or "Calendar".',
-          '',
-          '**When not to:** to switch between different content, use tabs. For more than five options, use a select.',
-          '',
-          '**Do:** Keep labels short and about the same length. **Don\'t:** Use it for an action.',
-          '',
-          '**Accessibility:** needs an aria-label. Arrow keys move between options and screen readers hear which one is chosen. The chosen option sits under a glass lens with bolder text, not just color.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    'aria-label': words('Label', 'Names the group for screen readers, like Show by'),
+    appearance: choice('Appearance', 'The sliding indicator: solid, or clear glass for artwork', ['solid', 'glass']),
+    isDisabled: onOff('Disabled', "Turns every option off, so none can be picked"),
+    disallowEmptySelection: hidden,
+    material: hidden,
+    children: hidden,
+    className: hidden,
   },
+  parameters: { componentPage: toggleButtonGroupPage },
 };
 export default meta;
 type Story = StoryObj<typeof ToggleButtonGroup>;
 
-/** Pick one option; the content changes to match. */
+/** Every setting, in the Controls tab. */
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <BothThemes>
-      <ToggleButtonGroup aria-label="Label" defaultSelectedKeys={['1']}>
+      <ToggleButtonGroup defaultSelectedKeys={['1']} {...args} aria-label={args['aria-label'] ?? 'Label'}>
         <ToggleButton id="1">Option 1</ToggleButton>
         <ToggleButton id="2">Option 2</ToggleButton>
         <ToggleButton id="3">Option 3</ToggleButton>
@@ -41,7 +35,7 @@ export const Default: Story = {
   ),
 };
 
-/** Every state, side by side. */
+/** Every state, side by side: rest, hover, focus, selected and disabled. */
 export const States: Story = {
   render: () => (
     <BothThemes>

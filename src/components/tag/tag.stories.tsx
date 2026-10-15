@@ -1,39 +1,33 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tag, TagGroup } from './tag';
-import { BothThemes, StatePictures } from '../story-helpers';
+import { BothThemes, StatePictures, choice, hidden, onOff, setting, words } from '../story-helpers';
+import { tagPage } from './tag.page';
 import { Card } from '../card/card';
 
 const meta: Meta<typeof TagGroup> = {
   title: 'Components/Tag',
   component: TagGroup,
   tags: ['autodocs'],
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Filters, picks and tags in a group. Built on React Aria\'s TagGroup. Called "Chip" in Figma.',
-          '',
-          '**When to use:** to filter a list ("Unread"), to pick one or more options from a short set, or to show tags someone can remove.',
-          '',
-          '**When not to:** for an action, use a button. For more than about eight options, use a select.',
-          '',
-          '**Do:** Keep labels to one or two words. **Don\'t:** Use color to mean something on its own.',
-          '',
-          '**Accessibility:** one Tab stop for the whole group, arrow keys move between tags, Space or Enter selects, Delete or Backspace removes. Selected tags show a check mark as well as a fill. The group needs a visible label or an aria-label. Remove buttons are 24px, the WCAG minimum.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    label: words('Label', 'The name above the group'),
+    'aria-label': words('Hidden label', 'Names the group for screen readers when there is no visible label'),
+    selectionMode: choice('Picking', 'None, pick one, or pick any number', ['none', 'single', 'multiple']),
+    disallowEmptySelection: onOff('Always one picked', "Stops the last selected tag from being cleared"),
+    onRemove: setting('When removed', 'Makes tags removable, and gets the ids of the removed tags', { control: false }),
+    children: hidden,
+    className: hidden,
   },
+  parameters: { componentPage: tagPage },
 };
 export default meta;
 type Story = StoryObj<typeof TagGroup>;
 
-/** Filters: pick any number. */
+/** Filters: pick any number. Every setting, in the Controls tab. */
 export const Filters: Story = {
-  render: () => (
+  render: (args) => (
     <BothThemes>
-      <TagGroup label="Label" selectionMode="multiple" defaultSelectedKeys={['1']}>
+      <TagGroup label="Label" selectionMode="multiple" defaultSelectedKeys={['1']} {...args}>
         <Tag id="1">Tag 1</Tag>
         <Tag id="2">Tag 2</Tag>
         <Tag id="3">Tag 3</Tag>
@@ -43,7 +37,7 @@ export const Filters: Story = {
   ),
 };
 
-/** Pick one. */
+/** Pick one from a short set; one is always picked. */
 export const SingleChoice: Story = {
   render: () => (
     <BothThemes>
@@ -78,7 +72,7 @@ export const Removable: Story = {
   ),
 };
 
-/** Every state, side by side. */
+/** Every state, side by side: rest, hover, focus, selected and disabled. */
 export const States: Story = {
   render: () => (
     <BothThemes>
