@@ -113,9 +113,13 @@ const radioNoAll = (name: string, code: string, does: string, labels: Record<str
  * The page's own Controls rows. Device settings (Motion, Contrast, Transparency) apply to the whole
  * page, as they would in the app, so they have System but no All.
  */
+/** Themes with only a dark look in the system so far (theme.json alwaysDark). */
+const darkOnly = (themes as { id: string; alwaysDark?: boolean }[]).filter((t) => t.alwaysDark).map((t) => t.id);
+
 export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: boolean } = {}) {
   const rows: Record<string, unknown> = {
-    sbMode: radio('Mode', 'data-mode', 'Shows the examples in light or dark mode. Auto is dark from 7 PM to 7 AM. System follows your device.', { light: 'Light', dark: 'Dark', auto: 'Auto', system: 'System' }),
+    // Hidden when the one theme picked has no light look in the system yet (Fireside, for now), since it would change nothing.
+    sbMode: radio('Mode', 'data-mode', 'Shows the examples in light or dark mode. Auto is dark from 7 PM to 7 AM. System follows your device.', { light: 'Light', dark: 'Dark', auto: 'Auto', system: 'System' }, darkOnly.length === 1 ? { if: { global: 'theme', neq: darkOnly[0] } } : {}),
     sbBackground: radioNoAll(
       'Background',
       'background',
@@ -570,12 +574,12 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
   const stage = built ? (
     <div className={`sb-try__windows${many ? ' sb-try__windows--many' : ''}`}>
       {shownThemes.flatMap((t) =>
-        // A theme that's always dark (Fireside) gets one window, whatever Mode says.
+        // A theme with only a dark look in the system so far (Fireside) gets one window, whatever Mode says.
         (alwaysDark(t) ? (['dark'] as const) : modes).map((m) => (
           <div key={`${t}-${m}`} className="sb-try__slot">
             {many && (
               <p className={`sb-try__window-label sb-try__window-label--${m}`}>
-                {[shownThemes.length > 1 ? themeNames[t] : null, alwaysDark(t) ? 'always dark' : modes.length > 1 ? (m === 'dark' ? 'Dark' : 'Light') : null].filter(Boolean).join(', ')}
+                {[shownThemes.length > 1 ? themeNames[t] : null, alwaysDark(t) ? 'dark' : modes.length > 1 ? (m === 'dark' ? 'Dark' : 'Light') : null].filter(Boolean).join(', ')}
               </p>
             )}
             <TryWindow theme={t} mode={m} args={args}>
