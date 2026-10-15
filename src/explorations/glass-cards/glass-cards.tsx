@@ -8,7 +8,7 @@ import type { Area } from './areas';
 import './glass-cards.css';
 
 // Exploration only, not exported from the library. Shows Life Hub's glass cards on each area's marble,
-// lit by the page's one light (the sun in Storybook, which starts at the bottom right). Oct 14: the cards are the real
+// lit by the page's one light (the orb in Storybook, which starts on the right, two thirds down). Oct 14: the cards are the real
 // Card with appearance="glass", drawn by the lens, which bends the area's marble at their edges. In the
 // library, lens glass is for empty cards only (D42); here it's on full cards to see how it looks.
 // Controls are the real React Aria components.
