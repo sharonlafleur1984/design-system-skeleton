@@ -21,7 +21,7 @@ const LOOKS = {
   // Glows: the light is inside the ball, a bright core shining out through clear glass, over the real
   // background, so the ball is see-through around its light. The core is 75% white, 25% the lightest
   // step of the page's color; the glass glows only faintly in it.
-  glow: { core: 0.55, coreWhite: 0.75, emissive: 0.25, attenuation: 4, seeThrough: false },
+  glow: { core: 0.68, coreWhite: 0.75, emissive: 0.6, attenuation: 4, seeThrough: false },
   // Tinted glass: you look through glass in the page's color to a small bright core.
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
   // Completely clear: colorless glass with no core, with the real background behind it bent through.

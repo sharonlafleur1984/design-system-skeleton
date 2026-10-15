@@ -61,11 +61,11 @@
   pointer-events: none;
   background: radial-gradient(
     circle closest-side,
-    color-mix(in srgb, var(--_light) min(100%, calc(57% * var(--_strength))), transparent) 0,
-    color-mix(in srgb, var(--_light) min(100%, calc(56.81% * var(--_strength))), transparent) calc(var(--_size) * 0.5),
-    color-mix(in srgb, var(--_light) min(100%, calc(55.14% * var(--_strength))), transparent) calc(var(--_size) * 0.58),
-    color-mix(in srgb, var(--_light) min(100%, calc(52.55% * var(--_strength))), transparent) calc(var(--_size) * 0.673),
-    color-mix(in srgb, var(--_light) min(100%, calc(49.41% * var(--_strength))), transparent) calc(var(--_size) * 0.78),
+    color-mix(in srgb, var(--_light) min(100%, calc(80% * var(--_strength))), transparent) 0,
+    color-mix(in srgb, var(--_light) min(100%, calc(78% * var(--_strength))), transparent) calc(var(--_size) * 0.5),
+    color-mix(in srgb, var(--_light) min(100%, calc(72% * var(--_strength))), transparent) calc(var(--_size) * 0.58),
+    color-mix(in srgb, var(--_light) min(100%, calc(64% * var(--_strength))), transparent) calc(var(--_size) * 0.673),
+    color-mix(in srgb, var(--_light) min(100%, calc(56% * var(--_strength))), transparent) calc(var(--_size) * 0.78),
     color-mix(in srgb, var(--_light) min(100%, calc(45.93% * var(--_strength))), transparent) calc(var(--_size) * 0.905),
     color-mix(in srgb, var(--_light) min(100%, calc(42.28% * var(--_strength))), transparent) calc(var(--_size) * 1.05),
     color-mix(in srgb, var(--_light) min(100%, calc(38.59% * var(--_strength))), transparent) calc(var(--_size) * 1.218),
