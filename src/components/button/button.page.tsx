@@ -12,6 +12,7 @@ export const buttonPage: ComponentPageInfo = {
     { job: 'Going to another page', instead: { name: 'Link', title: 'Components/Link' } },
     { job: 'Turning a setting on or off', instead: { name: 'Switch', title: 'Components/Switch' } },
     { job: 'Picking one of a few options', instead: { name: 'Toggle button group', title: 'Components/Toggle button group' } },
+    { job: 'A button on glass, like a glass card. Use Solid, never Glass on glass.' },
   ],
   do: {
     example: (
