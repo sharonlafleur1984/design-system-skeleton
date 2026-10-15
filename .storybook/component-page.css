@@ -220,14 +220,30 @@
   background: var(--sb-cell);
 }
 .sb-try__window-label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
   margin: 0;
   padding: 6px 16px;
   font-size: 12px;
   font-weight: 600;
-  text-align: end;
-  /* One neutral bar over every window, light or dark, so the windows line up and the eye isn't pulled between them. */
-  background: #f5f5f5;
-  color: #525252;
+  /* One mid-gray bar over every window, light or dark, so the windows line up; the pill says which mode it is. */
+  background: #c4c4c4;
+  color: #1c1c1c;
+}
+.sb-try__mode-pill {
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+.sb-try__mode-pill--light {
+  background: #ffffff;
+  color: #262626;
+}
+.sb-try__mode-pill--dark {
+  background: #171717;
+  color: #f0f0f0;
 }
 /* The window: the component left-aligned, on the theme's page, art or marble. */
 .sb-try__window {
