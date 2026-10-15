@@ -12,7 +12,8 @@ import.meta.glob('../build/css/*.css', { eager: true });
 import.meta.glob('../src/fonts/*.css', { eager: true });
 
 // The toolbar's theme picker sets data-theme, which switches every token at once.
-// Stories show one product at a time; "Compare all" shows every story once per theme, side by side.
+// Stories show one product at a time; "Compare all" shows every story once per theme, side by side
+// (a story that already shows every theme sets parameters.compareAll = false).
 // The same picker sits on the page above each story (theme-picker.tsx), because a menu in the toolbar is
 // easy to miss. Screenshot tests hide it with the global picker:hide.
 // A theme marked alwaysDark in its theme.json (Fireside) doesn't change with the Mode switch.
@@ -59,7 +60,7 @@ const preview: Preview = {
           {/* Every story that shows glass gets the page's light, as a sun you can move. */}
           {context.viewMode !== 'docs' && context.globals.picker !== 'hide' && <ThemePicker value={choice} />}
           <LightScene>
-            {choice === 'both' ? <CompareAll render={(theme) => Story({ globals: { ...context.globals, theme } })} /> : <Story />}
+            {choice === 'both' && context.parameters.compareAll !== false ? <CompareAll render={(theme) => Story({ globals: { ...context.globals, theme } })} /> : <Story />}
           </LightScene>
         </ThemeContext.Provider>
       );
@@ -76,7 +77,8 @@ const preview: Preview = {
           <DocsThemePicker />
           <Primary />
           <Controls />
-          <Stories />
+          {/* The first story is already shown above with its controls, so the list starts with the second. */}
+          <Stories includePrimary={false} />
         </>
       ),
     },
