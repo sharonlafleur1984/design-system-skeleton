@@ -10,8 +10,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
-| D53 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
-| – | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
+| D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
+| D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
@@ -67,7 +67,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
-<summary><b>D53 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
+<summary><b>D56 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
 
 - **Decided by:** Sharon, designing the page with Claude on a canvas, and approving the parts list (Oct 15).
 - **A story, not a Docs page:** so Storybook's bottom panel (Controls, Actions, Interactions, Accessibility) works on it. Sidebar entries per part: Overview, Try it out, Usage rules, Accessibility and Related, each opening the one page at that section. The old stories stay as test stories, hidden from the sidebar (tag `!dev`), so screenshot and accessibility tests still run on them. Replaces D52's Docs tab, Examples and the theme picker's Mode and Background.
@@ -85,7 +85,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
-<summary><b>Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+<summary><b>D55 · Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
 
 - **Decided by:** Sharon
 - **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
