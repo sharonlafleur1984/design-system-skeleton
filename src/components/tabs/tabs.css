@@ -42,7 +42,7 @@
 }
 .ds-tabs__tab[data-focus-visible],
 .ds-tabs__tab[data-state='focus'] {
-  border-radius: var(--corner-medium);
+  border-radius: var(--radius-medium);
   outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: calc(-1 * var(--space-1));
 }
@@ -70,7 +70,7 @@
 }
 
 .ds-tabs__panel {
-  border-radius: var(--corner-medium);
+  border-radius: var(--radius-medium);
   outline: none;
 }
 .ds-tabs__panel[data-focus-visible] {

@@ -15,7 +15,7 @@
   padding-block: var(--space-1);
   padding-inline: var(--control-padding-inline-medium);
   border: 1px solid var(--_ring);
-  border-radius: var(--_corner, var(--corner-medium));
+  border-radius: var(--_corner, var(--radius-medium));
   background: var(--_bg);
   box-shadow: var(--_shadow);
   color: var(--_ink);
@@ -38,7 +38,7 @@
   content: '';
   position: absolute;
   inset-block-start: 0;
-  inset-inline: 35% var(--_corner, var(--corner-medium));
+  inset-inline: 35% var(--_corner, var(--radius-medium));
   block-size: 1px;
   border-radius: 1px;
   pointer-events: none;
@@ -57,7 +57,7 @@
 
 /* Sizes: Small 24, Medium 32, Large 40 tall. Each size has its own control type style. */
 .ds-button--small {
-  --_corner: var(--corner-small);
+  --_corner: var(--radius-small);
   min-block-size: var(--control-height-small);
   padding-block: 0;
   padding-inline: var(--control-padding-inline-small);
@@ -66,7 +66,7 @@
   line-height: var(--control-type-small-line-height);
 }
 .ds-button--large {
-  --_corner: var(--corner-large);
+  --_corner: var(--radius-large);
   min-block-size: var(--control-height-large);
   padding-inline: var(--control-padding-inline-large);
   font-size: var(--control-type-large-size);
@@ -144,7 +144,7 @@
   --g-contact: var(--glass-contact);
   --g-cast-distance: var(--glass-cast-distance);
   --g-cast-blur: var(--glass-cast-blur);
-  --g-radius: var(--_corner, var(--corner-medium));
+  --g-radius: var(--_corner, var(--radius-medium));
   --_bg: var(--color-surface-glass-on-art);
   --_ink: var(--button-glass-ink);
   --_shadow: var(--g-shadow);

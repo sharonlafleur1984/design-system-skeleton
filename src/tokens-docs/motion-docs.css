@@ -2,7 +2,7 @@
    so screenshots always catch the settled state. */
 .motion-demo__card {
   padding: var(--space-4);
-  border-radius: var(--corner-card);
+  border-radius: var(--radius-card);
   background: var(--color-surface-card);
   box-shadow: var(--shadow-rest);
 }

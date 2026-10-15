@@ -18,7 +18,7 @@
   inline-size: var(--control-box);
   block-size: var(--control-box);
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--corner-box);
+  border-radius: var(--radius-box);
   background: var(--color-surface-glass);
   box-shadow: var(--shadow-glass);
   backdrop-filter: blur(var(--material-blur));

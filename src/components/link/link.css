@@ -13,7 +13,7 @@
   text-decoration-thickness: var(--link-underline-thickness);
   text-underline-offset: var(--link-underline-offset);
   text-decoration-color: color-mix(in srgb, currentColor calc(var(--link-underline-strength) * 1%), transparent);
-  border-radius: calc(var(--space-1) * var(--corner-surface));
+  border-radius: calc(var(--space-1) * var(--radius-surface));
   transition: color var(--motion-duration-fast) var(--motion-easing-out), text-decoration-color var(--motion-duration-fast) var(--motion-easing-out);
 }
 

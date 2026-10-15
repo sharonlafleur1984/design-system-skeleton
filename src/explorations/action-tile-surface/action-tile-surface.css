@@ -20,7 +20,7 @@
   /* The tile row starts where it does on the page shell: about 40px below the light, so the light sits
      above and to the right of the tiles, as it does over After Graduation's header tiles. */
   padding: calc(var(--light-top) + 40px) var(--space-6) var(--space-6);
-  border-radius: var(--corner-panel);
+  border-radius: var(--radius-panel);
   overflow: hidden;
   display: grid;
   align-content: start;
