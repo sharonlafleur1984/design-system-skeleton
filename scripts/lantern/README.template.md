@@ -54,6 +54,10 @@ Pick a theme at the top to see every token and preview in it.
 - Hover fades in 140ms, a press in 80ms, a panel opens in 220ms.
 - With Reduce motion, only color fades are left. Nothing moves on its own for more than 5 seconds.
 
+## Lantern's mark
+
+A copper camp lantern with one amber orb inside, on night iron. Its colors (night iron `#2a1a12`, copper `#b5672f`, amber flame `#f6b25a`, peach glow `#f7c9a6`) are Lantern's own, used only for the mark and the cover, never in a product. Set it on a dark ground only.
+
 ## Icons
 
 There's no shared icon set yet (Icon is Not started). Examples use simple line icons drawn in the text color. Don't draw a product's logo.
