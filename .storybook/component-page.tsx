@@ -8,7 +8,7 @@ import { useGlassLight } from '../src/components/glass-light/glass-light';
 import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
-import { marbles, themeNames } from '../src/components/story-helpers';
+import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
 
 // Storybook only: the one page every component gets (Sharon's template, Oct 15). It's a story, not a
@@ -375,9 +375,9 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   // Every dark window, and the header art, shows the light as a sun you can move. It starts near the
-  // bottom right, where it usually sits, and the window's glass is lit from it.
+  // bottom right, like every light, and the window's glass is lit from it.
   const showSun = bg === 'header' || mode === 'dark';
-  const [sun, setSun] = useState({ x: 0.9, y: 0.75 });
+  const [sun, setSun] = useState(SUN_START);
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
   useLayoutEffect(() => {
