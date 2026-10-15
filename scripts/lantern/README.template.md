@@ -1,11 +1,16 @@
 Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fireside. Sharing a single foundation, each provides its own unique glow. Supported by React Aria components and semantic tokens, Lantern plays with light and glass, gently encouraging them to bring out the best in each other, with every component visibly responding to a single source of light.
 
-## How Lantern stays up to date
+## How Lantern stays in sync with the code
 
-- **The code is the source of truth.** Lantern is built from the design-system-skeleton repo (this copy is from `{{REF}}`) and rebuilt when the code changes.
-- **Storybook shows the same components, live.** [Open Storybook](https://designsystemskeleton.netlify.app) to try each one.
-- **Changes go back as a pull request.** A change made here never stays only in Lantern. Ask Claude to turn it into a pull request.
-- **Previews run the repo's own styles,** so a token edited on this page won't change them. The edit goes into the pull request, and the next rebuild shows it.
+Lantern is generated from code, not drawn by hand. Claude keeps the two in sync.
+
+1. **Source.** The design-system-skeleton repo holds the tokens, components and docs. It's the source of truth. This copy was built from `{{REF}}`.
+2. **Build.** `npm run lantern` turns the tokens into this page's colors, type and spacing, bundles the components for the live previews, and writes a page for each component with its status.
+3. **Publish.** Claude uploads the build to this page.
+4. **Edit.** A change made here goes back to the repo as a pull request, which Claude opens. Nothing changes only in Lantern.
+5. **Rebuild.** Once the pull request merges, the next build brings the change back here. Previews use the repo's own styles, so a token edit shows up only after that rebuild.
+
+To try each component live, [open Storybook](https://designsystemskeleton.netlify.app).
 
 ## Themes
 
