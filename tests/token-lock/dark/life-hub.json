@@ -87,7 +87,7 @@
   "orb-target-small": "44px",
   "orb-target-medium": "44px",
   "orb-target-large": "56px",
-  "orb-glow-reach": 45,
+  "orb-glow-reach": 90,
   "orb-shine-highlight": "rgba(255, 255, 255, 0.95)",
   "orb-shine-pool": "#ffffff",
   "orb-shine-rim-thick": "rgba(255, 255, 255, 0.85)",

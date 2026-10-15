@@ -37,7 +37,7 @@
       "$description": "The light from a glowing orb (look glow). Clear orbs have none.",
       "reach": {
         "$type": "number",
-        "$value": 45,
+        "$value": 90,
         "$description": "How far the light reaches, in ball sizes, before it's gone: far enough to cover the whole section with no visible edge."
       }
     },
