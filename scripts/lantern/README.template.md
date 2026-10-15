@@ -12,6 +12,8 @@ Lantern isn't made in Figma. It's built straight from the code, and Claude keeps
 
 Every component can be tried live in [Storybook](https://designsystemskeleton.netlify.app).
 
+The code lives in the [design-system-skeleton repo](https://github.com/sharonlafleur1984/design-system-skeleton) on GitHub.
+
 ## Themes
 
 Pick a theme at the top to see every token and preview in it.
