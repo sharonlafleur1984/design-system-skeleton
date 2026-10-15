@@ -51,6 +51,11 @@ const caption: CSSProperties = {
 // top right (transparent in light mode). Written as a string, not a CSS file, so the texture's
 // address stays relative to the page, as the build expects.
 export const storyBackgroundsCss = `
+/* A background picked in the bar above the story (a theme's backgrounds in its theme.json) fills the page. */
+:root[data-sb-backdrop] body {
+  background: var(--story-bg-page);
+  background-attachment: fixed;
+}
 /* Space between the items in a theme panel, and a wider gap between groups of still pictures, so each group reads as one. The lens canvas sits behind them, so it is left out (a margin would draw the glass off its element). */
 .ds-story-panel > :not(.ds-lens-canvas) ~ :not(.ds-lens-canvas) {
   margin-block-start: var(--space-4);
@@ -59,7 +64,7 @@ export const storyBackgroundsCss = `
   margin-block-start: var(--space-7);
 }
 [data-theme="life-hub"] {
-  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover, var(--color-surface-page);
+  --story-bg-page: linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), var(--story-backdrop, url('texture-sage-cream.jpg')) center / cover, var(--color-surface-page);
 }
 [data-theme="after-graduation"],
 [data-theme="designer-toolkit"] {

@@ -42,14 +42,32 @@ const preview: Preview = {
     },
     // Not in the toolbar: screenshot tests set picker:hide so the on-page picker stays out of the pictures.
     picker: { description: 'Show or hide the theme picker on the page' },
+    // Set from the bar above the story: one of the theme's backgrounds (its theme.json), or empty for the plain page.
+    background: { description: "A theme's background behind the story" },
   },
   initialGlobals: { theme: themes[0].id, mode: 'light' },
   decorators: [
     (Story, context) => {
       const choice = (context.globals.theme ?? themes[0].id) as ThemeChoice;
       document.documentElement.setAttribute('data-theme', singleTheme(choice));
-      if (document.documentElement.dataset.themeChoice !== choice) {
-        document.documentElement.dataset.themeChoice = choice;
+      // The bar above the story (theme-picker.tsx): its settings, so a Docs page's bar can show them too.
+      const root = document.documentElement;
+      const mode = context.globals.mode === 'dark' ? 'dark' : 'light';
+      // A background only counts while a theme on show has it, so switching to a theme without any shows its plain page.
+      const shownThemes = (themes as { id: string; backgrounds?: { file: string }[] }[]).filter((t) => choice === 'both' || t.id === choice);
+      const picked = typeof context.globals.background === 'string' ? context.globals.background : '';
+      const background = shownThemes.some((t) => t.backgrounds?.some((b) => b.file === picked)) ? picked : '';
+      if (background) {
+        root.dataset.sbBackdrop = '';
+        root.style.setProperty('--story-backdrop', `url('${background}')`);
+      } else {
+        delete root.dataset.sbBackdrop;
+        root.style.removeProperty('--story-backdrop');
+      }
+      if (root.dataset.themeChoice !== choice || root.dataset.sbMode !== mode || (root.dataset.sbBackground ?? '') !== background) {
+        root.dataset.themeChoice = choice;
+        root.dataset.sbMode = mode;
+        root.dataset.sbBackground = background;
         window.dispatchEvent(new Event(THEME_CHOICE_EVENT));
       }
       // Always set, so screenshots don't change with the test machine's own light or dark setting.
@@ -58,7 +76,7 @@ const preview: Preview = {
         <ThemeContext.Provider value={choice}>
           <style>{storyBackgroundsCss}</style>
           {/* Every story that shows glass gets the page's light, as a sun you can move. */}
-          {context.viewMode !== 'docs' && context.globals.picker !== 'hide' && <ThemePicker value={choice} />}
+          {context.viewMode !== 'docs' && context.globals.picker !== 'hide' && <ThemePicker theme={choice} mode={mode} background={background} />}
           <LightScene>
             {choice === 'both' && context.parameters.compareAll !== false ? <CompareAll render={(theme) => Story({ globals: { ...context.globals, theme } })} /> : <Story />}
           </LightScene>
