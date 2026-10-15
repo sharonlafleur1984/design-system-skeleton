@@ -12,7 +12,7 @@
 .ds-settings-modal {
   inline-size: min(100%, var(--dialog-max-inline));
   block-size: min(100%, var(--dialog-max-block));
-  border-radius: var(--radius-panel);
+  border-radius: var(--corner-panel);
   background: var(--color-surface-page);
   box-shadow: var(--shadow-float);
   overflow: hidden;
@@ -96,7 +96,7 @@
   min-block-size: var(--control-height-large);
   padding-inline: var(--space-3);
   border: none;
-  border-radius: var(--radius-control);
+  border-radius: var(--corner-large);
   background: transparent;
   color: var(--color-ink-secondary);
   font-family: var(--font-family-body);

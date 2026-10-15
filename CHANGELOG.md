@@ -17,7 +17,11 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
-- **Card, rebuilt:** the action tile's look for any content, Solid or Glass, with `label`, `title` and `description` in the theme's type styles. Give it `href` or `onPress` and the whole card is a link or button, with the tile's hover, pressed and focus states.
+- **Card, rebuilt:** a surface with the action tile's look, Solid or Glass, never pressable. Parts with their type set by role: `CardHeader` (icon, label and title), `CardBody` and `CardFooter` (buttons and a `note`).
+- **Tile:** a whole tile that's a link (`href`) or button (`onPress`), with an icon, title and description.
+- **Icon tile:** an icon in a tile, `filled` or `plain`, in four sizes. Card, Tile and Action tile headers take one at the top or the start (`iconPosition`).
+- **Text parts:** `Heading`, `Body`, `Label` and `Note`, each in the theme's type style.
+- **Roundness per theme:** `shape.roundness`, Square (Fireside), Standard (Sunrise) or Round (Spotlight). Every corner is worked out from it and the part's size, so a part keeps its shape at every size. Use `--corner-small`, `--corner-medium`, `--corner-large`, `--corner-box`, `--corner-card` and `--corner-panel`.
 - **Action tile in every theme:** navigation that switches the page's content, like tabs, with soft-light states (focus is a glow; chosen shows the theme's mark, or `chosenIcon`, and Glass turns milky) and Glass that follows the page's light on a plain background. In the page shell header tiles start as Glass.
 - **One light per page** (experimental): mark an element `data-glass-light` (`PAGE_LIGHT`) and every glass around it is lit from it; fire `LIGHT_CHANGE` after moving it. Both are exported.
 - **`clearArt`** (experimental): lens glass on a background the system doesn't paint.
@@ -30,10 +34,14 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 ### Changed
 
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
-- A theme can't set spacing, sizes or corners; they always come from the base.
+- A theme can't set spacing or sizes; they always come from the base. It picks its roundness by name.
 - **Card:** opaque, translucent and transparent are gone; `variant` and `interactive` are ignored. Cards are Solid or Glass.
-- **Action tile:** for navigation only. Fills are gone (`fill` is ignored: every Solid tile uses the card surface). Tiles with `href` or `onPress` still work but are deprecated: use Card.
+- **Action tile:** for navigation only. Fills are gone (`fill` is ignored: every Solid tile uses the card surface). Tiles with `href` or `onPress` still work but are deprecated: use Tile.
 - **Glass with Reduce transparency or Increase contrast** turns solid with almost no edge, and a chosen tile shows a line and its mark. Increase contrast also drops the shadows.
+
+### Removed
+
+- The fixed corner tokens `radius-control`, `radius-button`, `radius-card`, `radius-panel`, `radius-chip` and `shell-sheet-radius`: use the `--corner-*` values instead.
 
 ### Experimental
 

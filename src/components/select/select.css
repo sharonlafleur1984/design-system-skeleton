@@ -21,7 +21,7 @@
   padding-block: var(--space-1);
   padding-inline: var(--space-3);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-control);
+  border-radius: var(--corner-medium);
   background: var(--color-surface-card);
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
@@ -58,7 +58,7 @@
   overflow: auto;
   padding: var(--space-1);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-panel);
+  border-radius: var(--corner-panel);
   background: var(--color-surface-card);
   box-shadow: var(--shadow-float);
 }
@@ -68,7 +68,8 @@
 .ds-select__option {
   padding-block: var(--space-2);
   padding-inline: var(--space-3);
-  border-radius: var(--radius-control);
+  /* Concentric: the panel's corner minus its padding, so the rows line up with it. */
+  border-radius: calc(var(--corner-panel) - var(--space-1));
   color: var(--color-ink-primary);
   font-family: var(--font-family-body);
   font-size: var(--control-type-medium-size);

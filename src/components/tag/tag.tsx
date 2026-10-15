@@ -10,6 +10,7 @@ import {
   type TagProps as AriaTagProps,
 } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import './tag.css';
 import { lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 

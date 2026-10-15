@@ -3,6 +3,7 @@ import { useGlassLight } from '../glass-light/glass-light';
 import { shellArt } from '../glass-lens/lens-art';
 import { AppearanceContext, resolveAppearance, type Appearance, type Material } from '../material';
 import './page-shell.css';
+import '../corners.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
 // sheet that rises over its bottom edge (Oct 7: the sheet is as wide as the header's content and always

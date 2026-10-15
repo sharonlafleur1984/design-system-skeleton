@@ -41,11 +41,33 @@ const Box = ({ style, name }: { style: React.CSSProperties; name: string }) => (
   </figure>
 );
 
-/** Radius by purpose: controls, buttons, cards, panels and chips. */
+const shapeRow: React.CSSProperties = { display: 'flex', flexWrap: 'wrap', alignItems: 'end', gap: 'var(--space-4)' };
+const Shape = ({ name, size, corner }: { name: string; size: string; corner: string }) => (
+  <figure style={{ margin: 0, display: 'grid', gap: 'var(--space-2)', justifyItems: 'start' }}>
+    <div style={{ blockSize: size, minInlineSize: size, paddingInline: name === 'corner-box' ? 0 : 'var(--space-4)', background: 'var(--color-surface-card)', border: '1px solid var(--color-border-default)', borderRadius: corner }} />
+    <figcaption><code style={label}>{name}</code></figcaption>
+  </figure>
+);
+
+/**
+ * Corners: each theme sets one roundness (Square, Standard or Round, in `shape-roundness`), and every
+ * corner is worked out from it and the part's own size, so a part keeps the same shape at every size.
+ * Controls take height x roundness / 2; surfaces take padding x roundness x 1.6. Pick a theme in the toolbar.
+ */
 export const Radius: StoryObj = {
+  name: 'Corners',
   render: () => (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 'var(--space-5)' }}>
-      {['control', 'button', 'card', 'panel', 'chip'].map((r) => <Box key={r} name={`radius-${r}`} style={{ borderRadius: `var(--radius-${r})` }} />)}
+    <div style={{ display: 'grid', gap: 'var(--space-6)' }}>
+      <div style={shapeRow}>
+        <Shape name="corner-box" size="var(--control-box)" corner="var(--corner-box)" />
+        <Shape name="corner-small" size="var(--control-height-small)" corner="var(--corner-small)" />
+        <Shape name="corner-medium" size="var(--control-height-medium)" corner="var(--corner-medium)" />
+        <Shape name="corner-large" size="var(--control-height-large)" corner="var(--corner-large)" />
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 'var(--space-5)' }}>
+        <Box name="corner-card" style={{ borderRadius: 'var(--corner-card)' }} />
+        <Box name="corner-panel" style={{ borderRadius: 'var(--corner-panel)' }} />
+      </div>
     </div>
   ),
 };
@@ -55,7 +77,7 @@ export const Shadow: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 'var(--space-7)', padding: 'var(--space-4)' }}>
       {['rest', 'hover', 'float', 'edge'].map((s) => (
-        <Box key={s} name={`shadow-${s}`} style={{ borderRadius: 'var(--radius-card)', border: 'none', boxShadow: `var(--shadow-${s})` }} />
+        <Box key={s} name={`shadow-${s}`} style={{ borderRadius: 'var(--corner-card)', border: 'none', boxShadow: `var(--shadow-${s})` }} />
       ))}
     </div>
   ),

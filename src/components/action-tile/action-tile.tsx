@@ -13,6 +13,7 @@ import {
   type Key,
 } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import { AppearanceContext, LitContext, lensClass, resolveAppearance, type Appearance, type Material } from '../material';

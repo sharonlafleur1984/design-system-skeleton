@@ -8,6 +8,7 @@ import {
   type ToggleButtonProps as AriaToggleButtonProps,
 } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import './toggle-button-group.css';
 import { lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 

@@ -163,8 +163,8 @@
   margin-block-start: calc(-1 * var(--shell-sheet-overlap));
   padding-block: var(--layout-section);
   padding-inline: var(--layout-gutter);
-  border-start-start-radius: var(--shell-sheet-radius);
-  border-start-end-radius: var(--shell-sheet-radius);
+  border-start-start-radius: var(--corner-panel);
+  border-start-end-radius: var(--corner-panel);
   background: var(--color-surface-page);
   color: var(--color-ink-primary);
 }

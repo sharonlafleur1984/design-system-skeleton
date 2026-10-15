@@ -9,23 +9,21 @@
   place-items: center;
   inline-size: var(--_box);
   block-size: var(--_box);
-  border-radius: var(--radius-sm);
+  /* The same shape at every size; in Round it stops short of a circle, so it never reads as a profile picture. */
+  border-radius: calc(var(--_box) * min(var(--corner-control), 0.35));
   color: inherit;
 }
 .ds-icon-tile--small {
   --_box: var(--control-height-small);
   --_icon: var(--control-icon);
-  border-radius: var(--radius-xs);
 }
 .ds-icon-tile--large {
   --_box: var(--control-height-large);
   --_icon: var(--space-6);
-  border-radius: var(--radius-md);
 }
 .ds-icon-tile--xlarge {
   --_box: var(--space-9);
   --_icon: var(--space-7);
-  border-radius: var(--radius-md);
 }
 .ds-icon-tile--filled {
   background: color-mix(in srgb, currentColor 8%, transparent);

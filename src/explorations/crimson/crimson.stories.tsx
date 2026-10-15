@@ -91,7 +91,7 @@ function Header({ reds }: { reds: string[] }) {
       <div
         style={{
           padding: 'var(--space-6)',
-          borderRadius: 'var(--radius-panel)',
+          borderRadius: 'var(--corner-panel)',
           color: '#ffffff',
           background: `radial-gradient(120% 140% at 85% 100%, ${reds[5]}, ${reds[6]} 55%, ${reds[7]})`,
         }}
@@ -100,9 +100,9 @@ function Header({ reds }: { reds: string[] }) {
         <div style={{ marginBlockStart: 'var(--space-2)', color: '#fcc687', fontWeight: 600 }}>Get ready for Season 2</div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)', alignItems: 'center' }}>
-        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-button)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
+        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--corner-medium)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
         <span style={{ color: reds[6], textDecoration: 'underline', fontWeight: 600 }}>A link</span>
-        <span style={{ padding: 'var(--space-1) var(--space-3)', borderRadius: 'var(--radius-chip)', background: reds[1], color: reds[7], fontWeight: 600 }}>Chosen chip</span>
+        <span style={{ padding: 'var(--space-1) var(--space-3)', borderRadius: 'var(--corner-medium)', background: reds[1], color: reds[7], fontWeight: 600 }}>Chosen chip</span>
       </div>
     </div>
   );
@@ -121,14 +121,14 @@ function StatusList({ set, reds }: { set: Status[]; reds: string[] }) {
   return (
     <div style={{ display: 'grid', gap: 'var(--space-2)' }}>
       {set.map((s) => (
-        <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', borderRadius: 'var(--radius-card)', background: s.surface, color: s.ink }}>
+        <div key={s.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', padding: 'var(--space-3) var(--space-4)', borderRadius: 'var(--corner-card)', background: s.surface, color: s.ink }}>
           <span aria-hidden="true" style={{ display: 'grid', placeItems: 'center', inlineSize: 24, blockSize: 24, borderRadius: '50%', background: s.accent, color: '#ffffff', fontWeight: 700, fontSize: 13 }}>{s.icon}</span>
           <strong>{s.name}</strong>
           <span style={{ ...small, color: s.ink }}>{s.accent}</span>
         </div>
       ))}
       <div style={{ display: 'flex', gap: 'var(--space-3)', alignItems: 'center', marginBlockStart: 'var(--space-2)' }}>
-        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--radius-button)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
+        <span style={{ padding: 'var(--space-2) var(--space-4)', borderRadius: 'var(--corner-medium)', background: reds[5], color: '#ffffff', fontWeight: 600 }}>Main button</span>
         <span style={small}>next to the error color</span>
       </div>
     </div>

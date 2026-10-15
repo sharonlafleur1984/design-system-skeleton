@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import './icon-tile.css';
+import '../corners.css';
 
 // Icon tile (Oct 15): an icon in a small square, with a soft background or without one. Atlassian's
 // design system has the same component under the same name. Used in Card, Tile and Action tile

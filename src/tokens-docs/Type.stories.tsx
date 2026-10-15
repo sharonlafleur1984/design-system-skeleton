@@ -186,7 +186,7 @@ export const LightAndDark: StoryObj = {
     return (
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
         {(['light', 'dark'] as const).map((mode) => (
-          <section key={mode} aria-label={`${mode} mode`} data-theme={theme} data-mode={mode} style={{ flex: '1 1 300px', padding: 'var(--space-6)', borderRadius: 'var(--radius-panel)', background: 'var(--color-surface-page)', color: 'var(--color-ink-primary)', fontFamily: 'var(--font-family-body)' }}>
+          <section key={mode} aria-label={`${mode} mode`} data-theme={theme} data-mode={mode} style={{ flex: '1 1 300px', padding: 'var(--space-6)', borderRadius: 'var(--corner-panel)', background: 'var(--color-surface-page)', color: 'var(--color-ink-primary)', fontFamily: 'var(--font-family-body)' }}>
             <p className="ds-text-label-meta" style={{ ...muted, margin: '0 0 var(--space-4)' }}>{mode}</p>
             <Specimen />
           </section>
@@ -221,7 +221,7 @@ export const SmallTextLegibility: StoryObj = {
   },
 };
 
-const rule: React.CSSProperties = { margin: 0, padding: 'var(--space-4)', borderRadius: 'var(--radius-card)', background: 'var(--color-surface-card)', display: 'grid', alignContent: 'start', gap: 'var(--space-2)' };
+const rule: React.CSSProperties = { margin: 0, padding: 'var(--space-4)', borderRadius: 'var(--corner-card)', background: 'var(--color-surface-card)', display: 'grid', alignContent: 'start', gap: 'var(--space-2)' };
 
 /**
  * Which font goes where. In Fireside the serif (Newsreader) is for titles and headings only.
@@ -250,7 +250,7 @@ export const DoAndDont: StoryObj = {
 export const InContext: StoryObj = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'var(--space-4)', maxInlineSize: '960px' }}>
-      <nav aria-label="Documents" style={{ display: 'grid', alignContent: 'start', gap: 'var(--space-2)', padding: 'var(--space-4)', borderRadius: 'var(--radius-card)', background: 'var(--color-surface-card)' }}>
+      <nav aria-label="Documents" style={{ display: 'grid', alignContent: 'start', gap: 'var(--space-2)', padding: 'var(--space-4)', borderRadius: 'var(--corner-card)', background: 'var(--color-surface-card)' }}>
         <h2 className="ds-text-label" style={{ ...muted, margin: 0 }}>Documents</h2>
         <span className="ds-text-control-medium">Onboarding flow review</span>
         <span className="ds-text-control-medium" style={muted}>Checkout spec</span>
@@ -258,7 +258,7 @@ export const InContext: StoryObj = {
         <h2 className="ds-text-label" style={{ ...muted, margin: 'var(--space-4) 0 0' }}>Milestone</h2>
         <span className="ds-text-body-small" style={muted}>None yet</span>
       </nav>
-      <article style={{ gridColumn: 'span 2', display: 'grid', gap: 'var(--space-3)', padding: 'var(--space-6)', borderRadius: 'var(--radius-card)', background: 'var(--color-surface-card)' }}>
+      <article style={{ gridColumn: 'span 2', display: 'grid', gap: 'var(--space-3)', padding: 'var(--space-6)', borderRadius: 'var(--corner-card)', background: 'var(--color-surface-card)' }}>
         <div style={{ display: 'flex', gap: 'var(--space-4)', borderBlockEnd: '1px solid var(--color-border-subtle)', paddingBlockEnd: 'var(--space-2)' }}>
           <span className="ds-text-tab">Write</span>
           <span className="ds-text-tab" style={muted}>Preview</span>

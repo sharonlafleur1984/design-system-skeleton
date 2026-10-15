@@ -66,7 +66,7 @@
   padding-block: var(--space-3);
   padding-inline: var(--space-4) var(--space-7);
   border: 1px solid var(--card-border);
-  border-radius: var(--radius-card);
+  border-radius: var(--corner-card);
   background: var(--tile-fill);
   color: var(--tile-ink);
   font-family: var(--font-family-body);
@@ -406,7 +406,7 @@
     place-items: center;
     padding-block: var(--space-1);
     padding-inline: var(--space-5);
-    border-radius: var(--radius-pill);
+    border-radius: var(--corner-small);
   }
   .ds-tiles--switch .ds-tile__bar-icon svg {
     inline-size: var(--bottom-bar-icon);
@@ -432,7 +432,7 @@
   .ds-tiles--switch .ds-tiles__list .ds-tile[data-focus-visible],
   .ds-tiles--switch .ds-tiles__list .ds-tile[data-state='focus'] {
     outline-color: var(--color-accent-text);
-    border-radius: var(--radius-control);
+    border-radius: var(--corner-small);
   }
 }
 

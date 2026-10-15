@@ -11,6 +11,7 @@ import {
   type SelectProps as AriaSelectProps,
 } from 'react-aria-components';
 import './select.css';
+import '../corners.css';
 
 // Select: pick one from a list that's too long for a segmented control (more than about four options),
 // like a school year or a state. Built on React Aria's Select: it opens with Enter, Space or the arrow

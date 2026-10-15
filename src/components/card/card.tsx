@@ -1,5 +1,6 @@
 import { useContext, useMemo, useRef, type ElementType, type HTMLAttributes, type ReactNode } from 'react';
 import '../material.css';
+import '../corners.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import '../action-tile/action-tile.css';

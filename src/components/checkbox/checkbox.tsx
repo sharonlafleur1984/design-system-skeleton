@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Checkbox as AriaCheckbox, type CheckboxProps as AriaCheckboxProps } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import './checkbox.css';
 
 // Mirrors the Figma "Checkbox" set: checked (true, false) and state (rest, hover, focus, disabled).

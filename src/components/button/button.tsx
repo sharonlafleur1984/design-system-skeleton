@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Button as AriaButton, type ButtonProps as AriaButtonProps } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import './button.css';

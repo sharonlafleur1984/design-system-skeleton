@@ -80,11 +80,9 @@
   "radius-lg": "16px",
   "radius-xl": "24px",
   "radius-pill": "999px",
-  "radius-control": "4px",
-  "radius-button": "12px",
-  "radius-card": "16px",
-  "radius-panel": "24px",
-  "radius-chip": "999px",
+  "radius-roundness-square": 0.2,
+  "radius-roundness-standard": 0.6,
+  "radius-roundness-round": 0.9,
   "space-0": "0px",
   "space-1": "4px",
   "space-2": "8px",
@@ -569,5 +567,6 @@
   "glass-lens-color-split": 0.02,
   "glass-lens-press-swell": 1.02,
   "glass-lens-press-duration": "300ms",
-  "glass-lens-tilt-reach": "40px"
+  "glass-lens-tilt-reach": "40px",
+  "shape-roundness": 0.6
 }

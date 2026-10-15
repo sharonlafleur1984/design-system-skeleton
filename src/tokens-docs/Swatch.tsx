@@ -21,7 +21,7 @@ export function Swatch({ name }: Props) {
         ref={ref}
         style={{
           height: 56,
-          borderRadius: 'var(--radius-card)',
+          borderRadius: 'var(--corner-card)',
           background: `var(--${name})`,
           boxShadow: 'inset 0 0 0 1px var(--color-border-default)',
         }}

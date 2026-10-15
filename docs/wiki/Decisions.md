@@ -10,7 +10,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
-| D48 | Oct 15, 2026 | Card takes the action tile's look, in Solid and Glass; Action tile is for navigation; fills are gone |
+| D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
+| D48 | Oct 15, 2026 | Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere |
 | D46 | Oct 14, 2026 | Action tile titles one size smaller; action tiles fit their space |
 | D45 | Oct 14, 2026 | One light per page, shown in Storybook as a sun on every glass story; a softer focus glow |
 | D44 | Oct 14, 2026 | States stories are still pictures; Playground is where states are tried |
@@ -61,15 +62,31 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
-<summary><b>D48 · Oct 15, 2026:</b> Card takes the action tile's look, in Solid and Glass; Action tile is for navigation; fills are gone</summary>
+<summary><b>D49 · Oct 15, 2026:</b> Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size</summary>
+
+- **Decided by:** Sharon ("Spotlight is pretty round. Sunrise would be in the middle and Fireside is a little more boxy"; "ideally it looks the same shape no matter what size it is"; "call that one square and maybe we can call that standard")
+- **One setting per theme:** `shape.roundness`, picked by name: Spotlight is Round (0.9), Sunrise is Standard (0.6), Fireside is Square (0.2). The numbers are estimates, chosen by eye. A test fails if a theme sets a number instead of a name. Like [Radix Themes' radius setting](https://www.radix-ui.com/themes/docs/theme/radius).
+- **The same shape at every size:** a corner is worked out from the part's own size (`src/components/corners.css`), so a small button is the same shape as a large one. Controls take height × roundness ÷ 2 (at 1 a button would be a pill). Surfaces take padding × roundness × 1.6, from the padding rather than the height, so a tall card never turns into a blob. Rows inside a panel take the panel's corner minus its padding, so the corners line up.
+- **Limits:** checkboxes stop short of round, so one never reads as a radio button; icon tiles stop short of a circle, so one never reads as a profile picture. Switches and progress bars stay pill-shaped in every theme (their tracks are round). Tags follow the theme.
+- **Changes D37's rule for corners only:** spacing and sizes still stay in the base. The fixed corner tokens (`radius-control`, `radius-button`, `radius-card`, `radius-panel`, `radius-chip`, `shell-sheet-radius`) are gone; components use `--corner-small`, `--corner-medium`, `--corner-large`, `--corner-box`, `--corner-card` and `--corner-panel`.
+- **Not yet:** a density setting for spacing. Other libraries keep spacing shared and offer at most one "denser or roomier" setting ([Radix scaling](https://www.radix-ui.com/themes/docs/theme/spacing)); add one only when a product needs it.
+
+</details>
+
+<details>
+<summary><b>D48 · Oct 15, 2026:</b> Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere</summary>
 
 - **Decided by:** Sharon ("the look that you have for action tile should become the look for the card"; "we would only use action tiles if there's navigation"; "I'm only using solid and glass")
-- **Card, rebuilt:** the action tile's surface, states and type, for any content: a `label`, a `title` in the theme's heading style and a `description`, then anything else (like buttons) under them. With `href` or `onPress` the whole card is a link or button, with the tile's hover, pressed and focus states. One stylesheet for both, so Card and Action tile can't drift apart.
+- **Decided by:** Sharon, again ("a card is acting like a surface area"; "regular tiles … a card that is acting like a button … would be a different component"; "Actually, I like note")
+- **Card is a surface, never pressable:** the action tile's look for any content, Solid or Glass, with no hover or pressed state. The buttons and links on it are pressed, never the card. Its parts have their type set by role: `CardHeader` (an optional icon, a label and the title, a real heading at h3 unless `level` says otherwise), `CardBody` (body text) and `CardFooter` (buttons and an optional quiet `note`). Card, Tile and Action tile share one stylesheet, so they can't drift apart. Same model as [Carbon's tiles](https://carbondesignsystem.com/components/tile/usage/): base, clickable and selectable.
+- **Tile:** the clickable one. A whole tile that's a link (`href`) or a button (`onPress`), with an icon, title and description and the tile's hover, pressed and focus states.
+- **Text parts on their own:** `Heading` (display, title, heading, subheading), `Body` (large, default, small), `Label` and `Note`, each in the theme's type style ([Polaris Text](https://polaris.shopify.com/components/typography/text) works the same way). "Note" stays, not "Caption" (Sharon).
+- **Icon tile:** an icon in a tile, `filled` (a soft background) or `plain`, small, medium, large or xlarge. Card, Tile and Action tile headers take one at the top or at the start (`iconPosition`). Like Atlassian's Icon tile.
 - **Removed:** Card's opaque, translucent and transparent, and Action tile's fills (card, raised, sunken, accent and inverse). Accent was the same color as chosen, so an accent tile looked chosen; raised and sunken were really the hover and pressed looks, which are states. `variant`, `interactive` and `fill` are ignored now, so nothing breaks.
-- **Solid and Glass:** every component that can be glass has `appearance`, `solid` (the starting look) or `glass`, the name Atlassian and Fluent use for a look ([Figma: variant properties](https://help.figma.com/hc/en-us/articles/360056440594)). It replaces `material`, whose "default" no one recognized; `material` still works. Button keeps Glass as one of its styles, always real glass.
+- **Solid and Glass:** every component that can be glass has `appearance`, Button included, `solid` (the starting look) or `glass`, the name Atlassian and Fluent use for a look ([Figma: variant properties](https://help.figma.com/hc/en-us/articles/360056440594)). It replaces `material`, whose "default" no one recognized; `material` still works. Button keeps Glass as one of its styles, always real glass.
 - **Glass cards anywhere:** any card can be Glass, not only an empty one. Replaces D42's "glass cards only while empty" and D36's material names.
-- **Action tile is navigation:** tiles switch the page's content, like tabs, and become the bottom bar on phones. A link or button that looks like a tile is a Card. Tiles with `href` or `onPress` still work, but are deprecated.
-- **Stories that each do one job:** Card: Playground, Solid and glass, States, Content, Empty state. Action tile: Playground, Solid and glass, States, Navigation. Links and buttons are explained on Card's Docs page instead of a story of identical tiles.
+- **Action tile is navigation:** tiles switch the page's content, like tabs, and become the bottom bar on phones. A link or button that looks like a tile is a Tile. Tiles with `href` or `onPress` still work, but are deprecated.
+- **Stories that each do one job:** Card: Playground, Solid and glass, Parts, Icons, Empty state. Tile: Playground, Solid and glass, States. Icon tile: Playground, Sizes and backgrounds. Text: Styles. Action tile: Playground, Solid and glass, States, Navigation. Links and buttons are explained on Card's Docs page instead of a story of identical tiles.
 - **Not yet:** the name. "Action tile" could become "Navigation tiles" now that navigation is its only job; Sharon to decide.
 
 </details>

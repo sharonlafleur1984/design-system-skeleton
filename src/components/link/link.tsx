@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Button as AriaButton, Link as AriaLink, type ButtonProps as AriaButtonProps, type LinkProps as AriaLinkProps } from 'react-aria-components';
 import '../shared.css';
+import '../corners.css';
 import './link.css';
 
 // Two link levels, shared by every product (tokens/base/link.json). Each theme sets the colors.

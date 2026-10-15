@@ -2,7 +2,7 @@
 
 **Last updated:** October 14, 2026
 
-Each product has a theme: its colors, type, motion and art. Spacing, sizes and corners come from the shared base, so they're the same in every theme. Each product's own docs only say which theme it uses and link here.
+Each product has a theme: its colors, type, motion, art and roundness. Spacing and sizes come from the shared base, so they're the same in every theme. Roundness is one name per theme (Spotlight Round, Sunrise Standard, Fireside Square), and every corner follows it and the part's size ([D49](Decisions.md)). Each product's own docs only say which theme it uses and link here.
 
 Every theme is a kind of light. To see one, pick it under **Theme** in [Storybook](https://designsystemskeleton.netlify.app/)'s toolbar.
 

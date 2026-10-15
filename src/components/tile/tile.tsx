@@ -1,6 +1,7 @@
 import { useContext, type ReactNode } from 'react';
 import { Button as AriaButton, Link as AriaLink } from 'react-aria-components';
 import '../material.css';
+import '../corners.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import '../action-tile/action-tile.css';

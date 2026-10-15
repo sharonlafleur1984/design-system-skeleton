@@ -19,7 +19,7 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**When to use:** two to five big sections at the top of a page, each with a title and one short line. Put the tiles in `ActionTileGroup behavior="switch"` inside an `ActionTileSwitch`, with one `ActionTilePanel` per tile.',
           '',
-          '**When not to:** for a link or a button that looks like a tile, use **Card** with `href` or `onPress`: same look. For views inside a card, use Tabs. (Tiles with `href` or `onPress` still work, but are deprecated.)',
+          '**When not to:** for a link or a button that looks like a tile, use **Tile**: same look. For views inside a card, use Tabs. (Tiles with `href` or `onPress` still work, but are deprecated.)',
           '',
           '**Solid and glass:** `appearance="solid"` (the starting look) is the theme\'s card surface with a soft shadow. `appearance="glass"` is fully clear: only its edge light and shadow show, and its text takes the color of what it sits on. On artwork the design system paints (Spotlight\'s header), Glass bends the art at its edges. Tiles in the page shell header start as Glass. Fills are gone (Oct 15): hover and pressed are states, not colors to pick.',
           '',
