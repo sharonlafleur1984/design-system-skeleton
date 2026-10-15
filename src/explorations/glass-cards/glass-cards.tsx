@@ -9,7 +9,7 @@ import './glass-cards.css';
 
 // Exploration only, not exported from the library. Shows Life Hub's glass cards on each area's marble,
 // lit by the page's one light (the sun at the top right in Storybook). Oct 14: the cards are the real
-// Card with material="glass", drawn by the lens, which bends the area's marble at their edges. In the
+// Card with appearance="glass", drawn by the lens, which bends the area's marble at their edges. In the
 // library, lens glass is for empty cards only (D42); here it's on full cards to see how it looks.
 // Controls are the real React Aria components.
 
@@ -34,7 +34,7 @@ export function AreaScreen({ area, mode }: { area: Area; mode: Mode }) {
   const title = area.name === 'Dashboard' ? 'Good evening' : area.name;
   return (
     <div ref={ref} className="lh-screen" data-theme="life-hub" data-mode={mode} style={style} aria-label={`${area.name}, ${mode} mode`} role="region">
-      <Card material="glass" className="lh-card">
+      <Card appearance="glass" className="lh-card">
         <h3 className="lh-title">{title}</h3>
         <p className="lh-body">Three things due this week.</p>
         <p className="lh-meta">Updated 2 hours ago</p>
@@ -47,7 +47,7 @@ export function AreaScreen({ area, mode }: { area: Area; mode: Mode }) {
           <Button variant="tertiary">See all</Button>
         </div>
       </Card>
-      <Card material="glass" className="lh-card lh-card--small">
+      <Card appearance="glass" className="lh-card lh-card--small">
         <p className="lh-meta">Next up</p>
         <h3 className="lh-title lh-title--small">Water bill due Friday</h3>
         <p className="lh-data">$84.20 · Oct 10 · 3 of 12 paid</p>

@@ -3,7 +3,6 @@ import { Button } from './button';
 import { BothThemes, OnMarble, Row, WithReducedMotion, marbles, singleTheme, StatePictures } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
 import { Callout } from '../callout/callout';
-import type { Material } from '../material';
 
 const Plus = () => (
   <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -26,7 +25,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**When not to:** To go to another page, use a link. Never put two primary buttons side by side. Never use Glass on a plain page or on a photo the system doesn\'t control; use Secondary there.',
           '',
-          '**Glass (Oct 12):** a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). Its `material` picks the look: Glass (the starting look) or Default (the subtle frosted look). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows Default instead. The glass build is due for a review (issue #60).',
+          '**Glass (Oct 12):** a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows a frosted look instead. The glass build is due for a review (issue #60).',
           '',
           '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
           '',
@@ -123,13 +122,12 @@ const glassRow = (
 );
 
 // After Graduation: glass buttons in the real page shell header (Settings at the top right, a row in the header).
-function OnHeaderArt({ material = 'glass' }: { material?: Material }) {
+function OnHeaderArt() {
   return (
     <div data-theme="after-graduation">
       <PageShell
         title="Page title"
         subtitle="Subtitle"
-        material={material}
         actions={<Button variant="glass" size="small" icon={<Gear />}>Settings</Button>}
         navigation={<div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3)' }}>{glassRow}</div>}
       >
@@ -139,15 +137,15 @@ function OnHeaderArt({ material = 'glass' }: { material?: Material }) {
   );
 }
 
-function GlassOnArt({ theme, material = 'glass' }: { theme: unknown; material?: Material }) {
+function GlassOnArt({ theme }: { theme: unknown }) {
   const t = singleTheme(theme);
   // Fireside's glass and light recipe is still open (designer-toolkit wiki, Skin).
   if (t === 'designer-toolkit') return <Callout tone="info">Fireside's glass hasn't been designed yet.</Callout>;
-  return t === 'life-hub' ? <OnMarble material={material}>{glassRow}</OnMarble> : <OnHeaderArt material={material} />;
+  return t === 'life-hub' ? <OnMarble>{glassRow}</OnMarble> : <OnHeaderArt />;
 }
 
 /**
- * Glass buttons with material Glass on the artwork each product controls: After Graduation's header, and
+ * Glass buttons on the artwork each product controls: After Graduation's header, and
  * Life Hub's marble (the Dashboard's). Pick the theme in the toolbar. The small one is a pill.
  */
 export const GlassOnArtwork: Story = {
@@ -169,13 +167,6 @@ export const GlassOnEveryMarble: Story = {
       ))}
     </div>
   ),
-};
-
-/** The fallback: no WebGL, a lost graphics context, or Reduce transparency or Increase contrast. The classic glass recipe. */
-export const DefaultOnArtwork: Story = {
-  name: 'Default on artwork',
-  parameters: { layout: 'fullscreen' },
-  render: (_args, { globals }) => <GlassOnArt theme={globals.theme} material="default" />,
 };
 
 /** With Reduce motion on: still Glass, but presses don't swell and phone tilt is off. */

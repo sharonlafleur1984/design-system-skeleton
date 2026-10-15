@@ -26,7 +26,7 @@ export { PageShell } from './page-shell/page-shell';
 export type { PageShellProps } from './page-shell/page-shell';
 export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from './action-tile/action-tile';
 export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
-export type { Material } from './material';
+export type { Appearance, Material } from './material';
 export { useGlassLight, PAGE_LIGHT } from './glass-light/glass-light';
 export { LIGHT_CHANGE } from './glass-lens/lens';
 export type { GlassLightOptions } from './glass-light/glass-light';

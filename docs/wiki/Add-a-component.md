@@ -17,7 +17,7 @@ A component is one folder in `src/components/`. Each theme restyles it through t
    - `<name>.stories.tsx`: its Storybook page
 2. **Build it.** Wrap the React Aria component, add a `ds-<name>` class, and import the CSS file. Separator is the smallest example to copy.
 3. **Style it with tokens only.** Every color, size, weight and shadow is a `var(--token)`. The tests fail on raw values (1px and 2px hairlines are allowed), on a `var()` that isn't a token, and on screen-size breakpoints other than the shared ones in `breakpoints.ts`. Focus rings use `--focus-ring-*`. Status colors always come with an icon or a label.
-4. **Sits on artwork?** Give it a `material` prop (`'default' | 'glass'`) and use `materialClass` from `material.ts`.
+4. **Can it be glass?** Give it an `appearance` prop (`'solid' | 'glass'`) and use `resolveAppearance` and `lensClass` from `material.ts`.
 5. **Export it.** Add the component and its props type to `src/components/index.ts`. That's what the package ships.
 6. **Write the stories.** Title `Components/<Name>`, with `tags: ['autodocs']` and a description that covers:
    - what it is, and which React Aria component it's built on

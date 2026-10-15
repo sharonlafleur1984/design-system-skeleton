@@ -76,9 +76,36 @@ describe('Button', () => {
 });
 
 describe('Card', () => {
-  it('renders the element asked for', () => {
-    render(<Card as="section" aria-label="This week">Hi</Card>);
-    expect(screen.getByRole('region', { name: 'This week' }).className).toContain('ds-card--translucent');
+  it('renders the element asked for, Solid by default', () => {
+    render(<Card as="section" aria-label="This week" title="Title">Hi</Card>);
+    const card = screen.getByRole('region', { name: 'This week' });
+    expect(card.className).toContain('ds-card--static');
+    expect(card.className).not.toContain('ds-tile--glass');
+    expect(screen.getByText('Title').className).toContain('ds-tile__title');
+  });
+
+  it('is Glass with appearance="glass", and still with the old material="glass"', () => {
+    render(
+      <>
+        <Card aria-label="New">New</Card>
+        <Card appearance="glass" as="section" aria-label="Glass">Glass</Card>
+        <Card material="glass" as="section" aria-label="Old name">Old</Card>
+      </>,
+    );
+    expect(screen.getByRole('region', { name: 'Glass' }).className).toContain('ds-tile--glass');
+    expect(screen.getByRole('region', { name: 'Old name' }).className).toContain('ds-tile--glass');
+  });
+
+  it('is one link or one button when given href or onPress', async () => {
+    const { container } = render(
+      <>
+        <Card href="#" title="Go somewhere" description="A page" />
+        <Card onPress={() => {}} title="Do something" />
+      </>,
+    );
+    expect(screen.getByRole('link', { name: /Go somewhere/ }).className).toContain('ds-card');
+    expect(screen.getByRole('button', { name: /Do something/ }).className).not.toContain('ds-card--static');
+    await expectNoAxeViolations(container);
   });
 });
 
@@ -355,34 +382,27 @@ describe('Action tile', () => {
     disconnect() {}
   } as unknown as typeof ResizeObserver;
 
-  it('is a button with a solid card fill by default', async () => {
+  it('is Solid by default, and ignores the old fill', async () => {
     const { container } = render(
       <ActionTileGroup aria-label="Tiles">
         <ActionTile onPress={() => {}} title="Title" />
+        <ActionTile onPress={() => {}} fill="accent" title="Old fill" />
       </ActionTileGroup>,
     );
-    const tile = screen.getByRole('button', { name: /Title/ });
-    expect(tile.className).toContain('ds-tile--fill-card');
+    expect(screen.getByRole('button', { name: /^Title/ }).className).not.toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Old fill/ }).className).not.toContain('fill');
     await expectNoAxeViolations(container);
   });
 
-  it('takes another theme surface with fill', () => {
-    render(
-      <ActionTileGroup aria-label="Tiles">
-        <ActionTile onPress={() => {}} fill="accent" title="Title" />
-      </ActionTileGroup>,
-    );
-    expect(screen.getByRole('button', { name: /Title/ }).className).toContain('ds-tile--fill-accent');
-  });
-
-  it('is Glass on the page shell header, unless it asks for Default', () => {
+  it('is Glass on the page shell header, unless it asks for Solid', () => {
     render(
       <PageShell
         title="Page title"
         navigation={
           <ActionTileGroup aria-label="Tiles">
             <ActionTile onPress={() => {}} title="On the header" />
-            <ActionTile onPress={() => {}} material="default" title="Asked for default" />
+            <ActionTile onPress={() => {}} appearance="solid" title="Asked for solid" />
+            <ActionTile onPress={() => {}} material="default" title="Old name" />
           </ActionTileGroup>
         }
       >
@@ -390,6 +410,7 @@ describe('Action tile', () => {
       </PageShell>,
     );
     expect(screen.getByRole('button', { name: /On the header/ }).className).toContain('ds-tile--glass');
-    expect(screen.getByRole('button', { name: /Asked for default/ }).className).toContain('ds-tile--fill-card');
+    expect(screen.getByRole('button', { name: /Asked for solid/ }).className).not.toContain('ds-tile--glass');
+    expect(screen.getByRole('button', { name: /Old name/ }).className).not.toContain('ds-tile--glass');
   });
 });

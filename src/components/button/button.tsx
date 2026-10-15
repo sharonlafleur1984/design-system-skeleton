@@ -10,8 +10,7 @@ import { materialClass, type Material } from '../material';
 // Built on React Aria's Button, which handles press, keyboard, focus and the busy
 // announcement the same way on mouse, touch and screen readers. This file only adds the look.
 // The glass style (Oct 12): for buttons on artwork the design system controls (a theme's header, Life
-// Hub's marble). The container's useGlassLight lights it. Its material picks the look: Glass bends the
-// art at its edge, Default is the subtle frosted look.
+// Hub's marble). The container's useGlassLight lights it, and it bends the art at its edge.
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'glass';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
@@ -22,7 +21,7 @@ export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'classNa
   size?: ButtonSize;
   /** Figma "Destructive". For actions that remove or undo something. */
   destructive?: boolean;
-  /** Only for the glass style: Glass bends the art behind it, Default is the subtle look. */
+  /** @deprecated The glass style is always real glass now. "default" still gives the old frosted look. */
   material?: Material;
   /** Figma "Show Icon". Decorative: the label always says what the button does. */
   icon?: ReactNode;

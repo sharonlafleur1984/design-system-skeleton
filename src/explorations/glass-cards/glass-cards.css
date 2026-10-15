@@ -85,7 +85,7 @@
   background: radial-gradient(140% 120% at calc(100% - var(--light-from-right)) var(--light-top), rgb(20 16 15 / 0) 35%, rgb(20 16 15 / 0.22) 100%);
 }
 
-/* Glass card: the real Card with material="glass", drawn by the lens (Oct 14), which bends the marble at
+/* Glass card: the real Card with appearance="glass", drawn by the lens (Oct 14), which bends the marble at
    its edge and lights it from the page's sun. In light mode a frosted center stays behind the text, so it
    reads as easily as before; at night the area's dark layer already does that job. */
 .lh-card {

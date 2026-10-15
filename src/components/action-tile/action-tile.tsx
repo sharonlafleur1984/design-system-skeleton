@@ -15,15 +15,13 @@ import {
 import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
-import { LitContext, MaterialContext, materialClass, type Material } from '../material';
+import { AppearanceContext, LitContext, lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 import './action-tile.css';
 
-// Action tile: a glass tile you click to make something happen. One look, three behaviors,
-// each on the React Aria piece that keeps it accessible:
-// - In an ActionTileGroup with behavior="switch", tiles swap the content shown elsewhere on the page
-//   (React Aria Tabs underneath: one Tab stop, arrow keys between tiles). After Graduation's episodes.
-// - With href, a tile goes to a page (Link).
-// - With onPress, a tile does an action (Button).
+// Action tile: navigation (Oct 15). In an ActionTileGroup with behavior="switch", tiles switch the
+// page's content, like tabs (React Aria Tabs underneath: one Tab stop, arrow keys between tiles).
+// After Graduation's episodes. For anything else, a link or a button that looks like a tile, use Card:
+// it has the same look. Tiles with href or onPress still work, but are deprecated.
 // Each tile is one click target: never put a button inside a tile.
 //
 // On artwork the design system controls (the page shell's header), tiles are lens glass (Oct 12): the
@@ -59,7 +57,7 @@ export function ActionTilePanel({ className, ...rest }: ActionTilePanelProps) {
 export interface ActionTileGroupProps {
   /** Names the group for screen readers, like "Episodes". */
   'aria-label': string;
-  /** switch: tiles swap content shown elsewhere (inside an ActionTileSwitch). actions: each tile is its own link or button. */
+  /** switch: tiles switch the content shown elsewhere (inside an ActionTileSwitch). actions (deprecated): each tile is its own link or button; use Card instead. */
   behavior?: 'switch' | 'actions';
   children: ReactNode;
 }
@@ -71,7 +69,7 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   // Anywhere else the glass is fully clear (nothing to bend), and the lens draws only its light: the edge,
   // highlight and shadow, which follow the page's light (the light tokens).
   const lit = useContext(LitContext);
-  const inLitContainer = useContext(MaterialContext) !== null || lit;
+  const inLitContainer = useContext(AppearanceContext) !== null || lit;
   const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
   // Sunlight's long reach, as in the Glass playground: every tile in the group catches it evenly.
   useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens, reach: 6 });
@@ -92,7 +90,7 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   );
 }
 
-/** The theme surfaces a tile can be filled with. Each switches its text color with it. */
+/** @deprecated Fills are gone (Oct 15): every Solid tile uses the card surface. */
 export type ActionTileFill = 'card' | 'raised' | 'sunken' | 'accent' | 'inverse';
 
 export interface ActionTileProps {
@@ -110,24 +108,26 @@ export interface ActionTileProps {
   shortTitle?: ReactNode;
   /** In a switch group: matches the ActionTilePanel it shows. */
   id?: Key;
-  /** Goes to this page. */
+  /** @deprecated Tiles are for navigation. For a link that looks like a tile, use Card with href. */
   href?: string;
-  /** Does this when clicked. */
+  /** @deprecated Tiles are for navigation. For a button that looks like a tile, use Card with onPress. */
   onPress?: () => void;
   isDisabled?: boolean;
-  /** default: a solid fill (the default, except on the page shell header, where tiles are glass) with a soft shadow. glass: fully clear, only the edge light and shadow show; on artwork it bends the art at its edges. */
+  /** Solid (the starting look, except on the page shell header, where tiles are Glass) or Glass: fully clear, only its edge light and shadow show, and on artwork it bends the art at its edges. */
+  appearance?: Appearance;
+  /** @deprecated Use appearance: "default" is now "solid". */
   material?: Material;
-  /** The inside color, from the theme's own surfaces, for the default material. Text color follows, so it always passes contrast. Defaults to card. */
+  /** @deprecated Ignored: every Solid tile uses the card surface. */
   fill?: ActionTileFill;
   /** Storybook only: forces a look for the state gallery. */
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, chosenIcon, shortTitle, id, href, onPress, isDisabled, material: ownMaterial, fill = 'card', ...rest }: ActionTileProps) {
-  // On the page shell header, tiles are Glass unless they ask for Default.
-  const containerMaterial = useContext(MaterialContext);
-  const material = ownMaterial ?? containerMaterial ?? 'default';
-  const className = ['ds-tile', 'ds-glass', material === 'glass' ? 'ds-tile--glass' : `ds-tile--fill-${fill}`, materialClass(material)]
+export function ActionTile({ label, title, description, icon, chosenIcon, shortTitle, id, href, onPress, isDisabled, appearance: own, material, fill: _fill, ...rest }: ActionTileProps) {
+  // On the page shell header, tiles are Glass unless they ask for Solid.
+  const container = useContext(AppearanceContext);
+  const appearance = resolveAppearance(own, material) ?? container ?? 'solid';
+  const className = ['ds-tile', 'ds-glass', appearance === 'glass' ? 'ds-tile--glass' : null, lensClass(appearance)]
     .filter(Boolean)
     .join(' ');
   const inSwitch = useContext(SwitchContext);

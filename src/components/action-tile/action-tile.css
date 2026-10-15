@@ -39,7 +39,7 @@
 }
 
 .ds-tile {
-  /* The fill and its text colors. fill="..." swaps all three together, so text always passes contrast. */
+  /* The surface and its text colors: the theme's card surface. Glass and chosen swap all three together. */
   --tile-fill: var(--color-surface-card);
   --tile-ink: var(--color-ink-primary);
   --tile-ink-soft: var(--action-tile-ink-soft);
@@ -75,23 +75,6 @@
   cursor: pointer;
   outline: none;
   -webkit-tap-highlight-color: transparent;
-}
-
-/* The fills a designer can pick: the theme's own surfaces, each with text that passes contrast in
-   light and dark (checked in tests/tokens.test.ts). */
-.ds-tile--fill-raised {
-  --tile-fill: var(--color-surface-raised);
-}
-.ds-tile--fill-sunken {
-  --tile-fill: var(--color-surface-sunken);
-}
-.ds-tile--fill-accent {
-  --tile-fill: var(--color-accent-surface);
-}
-.ds-tile--fill-inverse {
-  --tile-fill: var(--color-surface-inverse);
-  --tile-ink: var(--color-ink-inverse);
-  --tile-ink-soft: var(--color-ink-inverse);
 }
 
 /* Glass: fully clear, with the brighter edge of glass on artwork and the cards' soft shadow. Text takes its color from
@@ -176,7 +159,7 @@
      fill (Glass: its edge catches more light instead).
    - Pressed: it sinks back slightly and the shadow tightens.
    - Chosen (switch tiles): it shows the theme's mark (Spotlight's star, a check elsewhere) and sits
-     flat. Default takes the theme's accent fill; Glass turns milky (the theme's frost over a blur).
+     flat. Solid takes the theme's pale primary color; Glass turns milky (the theme's frost over a blur).
      Mark and fill change together, so color is never the only signal.
    - Focus (keyboard): a soft glow around the tile in the theme's focus color, no ring. Densest right at
      the edge, so it still stands out from the page (WCAG 2.4.7).
@@ -196,7 +179,8 @@
 .ds-tile[data-selected][data-hovered] {
   --g-extra-shadow: var(--shadow-hover);
 }
-.ds-tile[data-pressed] {
+.ds-tile[data-pressed],
+.ds-tile[data-state='pressed'] {
   --g-extra-shadow: var(--shadow-rest);
   scale: 0.985;
   translate: none;

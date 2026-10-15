@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
-import { MaterialContext } from '../material';
+import { AppearanceContext } from '../material';
 import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
 import { PageShell } from '../page-shell/page-shell';
@@ -147,7 +147,7 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
         <ThemePage theme={theme}>
           <h1 style={{ margin: 0, fontFamily: 'var(--type-heading-title-family)' }}>Glass</h1>
           <p style={{ maxInlineSize: '60ch', marginBlockEnd: 'var(--space-6)' }}>{intro}</p>
-          <MaterialContext.Provider value="glass">{set}</MaterialContext.Provider>
+          <AppearanceContext.Provider value="glass">{set}</AppearanceContext.Provider>
         </ThemePage>
       )}
     </div>
@@ -161,7 +161,7 @@ const meta: Meta<Args> = {
     docs: {
       description: {
         component:
-          "The Glass material (the lens), on the real background of the theme picked in the toolbar, in light or dark mode: Spotlight's header, Sunrise's marble, Fireside's page. What's behind the glass bends at its curved edge, and its rim, highlight and shadow come from one light. Drag the sun to move it. Tune the controls; the values that look right become each theme's glass-lens tokens.",
+          "Glass (the lens), on the real background of the theme picked in the toolbar, in light or dark mode: Spotlight's header, Sunrise's marble, Fireside's page. What's behind the glass bends at its curved edge, and its rim, highlight and shadow come from one light. Drag the sun to move it. Tune the controls; the values that look right become each theme's glass-lens tokens.",
       },
     },
   },

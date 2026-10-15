@@ -25,7 +25,7 @@ const meta: Meta<typeof PageShell> = {
           '',
           "**The light:** the wheel is the page's one light source, at the shared `light-from-right` and `light-top` tokens (Life Hub's sun sits in the same place). The red is lightest at the wheel and deepens with distance, the rays fade as they travel, and every glass surface on the page, tiles and cards, in light and dark mode, is lit from it with the shared glass recipe.",
           '',
-          "**Material (Oct 14):** action tiles and glass buttons in the header start as Glass. The shell paints its own art (the red, the rays and the wheel, at its current angle) into one WebGL canvas behind them, which bends the art at their curved edges and never their text. `material=\"default\"` shows the subtle frosted look, which is also what people see without WebGL or with Reduce transparency.",
+          "**Glass (Oct 14):** action tiles and glass buttons in the header are Glass. The shell paints its own art (the red, the rays and the wheel, at its current angle) into one WebGL canvas behind them, which bends the art at their curved edges and never their text. `appearance=\"solid\"` gives the tiles the theme's card surface instead. Without WebGL or with Reduce transparency, people see a frosted look.",
           '',
           '**Motion:** when the page opens, the title slams in, the rays burst, the subtitle fades down, and the wheel turns, then eases to a stop (`shell-entrance` tokens). Reduced motion only fades.',
           '',

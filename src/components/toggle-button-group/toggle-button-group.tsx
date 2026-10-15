@@ -9,9 +9,9 @@ import {
 } from 'react-aria-components';
 import '../material.css';
 import './toggle-button-group.css';
-import { materialClass, type Material } from '../material';
+import { lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 
-const MaterialContext = createContext<Material>('default');
+const IndicatorAppearance = createContext<Appearance>('solid');
 
 // Toggle button group (Figma: "Segmented control"): pick one of two to five options that change how
 // the same content shows ("Week" or "Month"). Built on React Aria's ToggleButtonGroup, which handles
@@ -23,18 +23,20 @@ export interface ToggleButtonGroupProps
   extends Omit<AriaToggleButtonGroupProps, 'className' | 'style' | 'children' | 'selectionMode' | 'orientation'> {
   /** Required: names the group for screen readers, for example "Show by". */
   'aria-label': string;
-  /** The sliding indicator's look. Default is the subtle frosted look. Glass bends the art behind it, on artwork the system controls. */
+  /** The sliding indicator's look: Solid (the starting look) or Glass, which bends the art behind it on artwork the system controls. */
+  appearance?: Appearance;
+  /** @deprecated Use appearance: "default" is now "solid". */
   material?: Material;
   className?: string;
   children: ReactNode;
 }
 
-export function ToggleButtonGroup({ className, children, material = 'default', disallowEmptySelection = true, ...rest }: ToggleButtonGroupProps) {
+export function ToggleButtonGroup({ className, children, appearance, material, disallowEmptySelection = true, ...rest }: ToggleButtonGroupProps) {
   const classes = ['ds-toggle-group'];
   if (className) classes.push(className);
   return (
     <AriaToggleButtonGroup {...rest} selectionMode="single" disallowEmptySelection={disallowEmptySelection} className={classes.join(' ')}>
-      <MaterialContext.Provider value={material}>{children}</MaterialContext.Provider>
+      <IndicatorAppearance.Provider value={resolveAppearance(appearance, material) ?? 'solid'}>{children}</IndicatorAppearance.Provider>
     </AriaToggleButtonGroup>
   );
 }
@@ -49,7 +51,7 @@ export interface ToggleButtonProps extends Omit<AriaToggleButtonProps, 'classNam
 }
 
 export function ToggleButton({ className, children, ...rest }: ToggleButtonProps) {
-  const indicator = ['ds-toggle-group__indicator', materialClass(useContext(MaterialContext))].filter(Boolean).join(' ');
+  const indicator = ['ds-toggle-group__indicator', lensClass(useContext(IndicatorAppearance))].filter(Boolean).join(' ');
   const classes = ['ds-toggle-group__option'];
   if (className) classes.push(className);
   return (

@@ -83,12 +83,12 @@ function Frame({ theme, extra, mode, label }: { theme: string; extra: string; mo
           </ActionTileGroup>
         </div>
         <ActionTileGroup aria-label={`${label}, glass`}>
-          <ActionTile material="glass" data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
-          <ActionTile material="glass" label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
-          <ActionTile material="glass" label={<Locked />} title="Important Dates" description="Opens after you pick your schools" onPress={() => {}} />
+          <ActionTile appearance="glass" data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
+          <ActionTile appearance="glass" label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
+          <ActionTile appearance="glass" label={<Locked />} title="Important Dates" description="Opens after you pick your schools" onPress={() => {}} />
         </ActionTileGroup>
       </LitContext.Provider>
-      <Card variant="translucent">
+      <Card>
         <p style={{ margin: 0 }}>A card on the same page, lit by the same light.</p>
       </Card>
       <div className="ats-actions">
