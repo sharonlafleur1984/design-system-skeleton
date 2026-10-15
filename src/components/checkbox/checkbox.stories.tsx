@@ -1,33 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox } from './checkbox';
-import { BothThemes, Row, StatePictures } from '../story-helpers';
+import { BothThemes, Row, StatePictures, hidden, onOff, setting, words } from '../story-helpers';
+import { checkboxPage } from './checkbox.page';
 
 const meta: Meta<typeof Checkbox> = {
   title: 'Components/Checkbox',
   component: Checkbox,
   tags: ['autodocs'],
   args: { label: 'Label' },
-  parameters: {
-    docs: {
-      description: {
-        component: [
-          'Turns one option on or off, or marks a task done. From the Figma "Checkbox" set (checked, state).',
-          '',
-          '**When to use:** Lists where people can pick several, and to-do items.',
-          '',
-          '**When not to:** For a setting that takes effect right away, use a Switch. For one choice from a list, use radio buttons.',
-          '',
-          '**Accessibility:** Built on React Aria: a real checkbox input inside the label. Works with Space, touch and a screen reader.',
-        ].join('\n'),
-      },
-    },
+  argTypes: {
+    label: words('Label', 'The words next to the box. Clicking them toggles it too'),
+    isSelected: onOff('Checked', 'Whether the box is checked'),
+    isDisabled: onOff('Disabled', "Turns it off, so it can't be changed"),
+    onChange: setting('On change', 'Runs when it is checked or unchecked', { control: false }),
+    checked: hidden,
+    defaultChecked: hidden,
+    disabled: hidden,
+    'data-state': hidden,
+    className: hidden,
   },
+  parameters: { componentPage: checkboxPage },
 };
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
+/** Every setting, in the Controls tab. */
 export const Playground: Story = {};
 
+/** Every state, checked and unchecked: rest, hover, focus and disabled. */
 export const States: Story = {
   render: () => (
     <BothThemes>
