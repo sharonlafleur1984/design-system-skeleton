@@ -10,14 +10,6 @@ Supported by React Aria components and semantic tokens, Lantern plays with light
 | Sunrise | Light, Dark, Auto, System | Glass on marble, an experiment with light and glass |
 | Fireside | Light, Dark, Auto, System | A simpler approach: basic components with subtle glass accents |
 
-## Writing
-
-- Use plain labels in examples, like "Button", "Label" and "Option 1". Never use one product's copy.
-- Use sentence case for every heading, button and label.
-- Don't use emoji. Status always carries a word, never color alone.
-- Use React Aria's names: Tag, Toggle button group, Separator and Progress bar. Not chip, segmented control, divider or progress meter.
-- Use the same five status names everywhere (info, warning, success, error and neutral).
-
 ## Foundations
 
 ### Color
