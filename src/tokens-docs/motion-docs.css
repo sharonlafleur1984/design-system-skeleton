@@ -69,3 +69,12 @@
   inset-inline-start: calc(100% - 16px);
   transition: inset-inline-start var(--d) var(--e);
 }
+
+/* The Reduce motion demo: the same token changes base.css makes for everyone with the setting on, scoped to
+   this one demo so the rest of the page keeps moving. */
+.motion-demo--reduced {
+  --motion-arrive-easing: var(--motion-easing-out);
+  --motion-arrive-distance: 0px;
+  --motion-celebrate-easing: var(--motion-easing-out);
+  --motion-celebrate-scale: 1;
+}

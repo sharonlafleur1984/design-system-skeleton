@@ -45,12 +45,15 @@ export const Timing: StoryObj = {
   },
 };
 
-/** One mood: a label saying whose it is, its name, and what it's for, each in the theme's own type styles. */
-function MoodPanel({ mood, label, title, about }: { mood: 'calm' | 'energetic'; label: string; title: string; about: string }) {
+/**
+ * One case: a label saying when it applies, its name, and what happens, each in the theme's own type
+ * styles, then a demo. `reduced` shows the demo as it plays with Reduce motion on.
+ */
+function MoodPanel({ mood, label, title, about, reduced = false }: { mood: 'calm' | 'energetic'; label: string; title: string; about: string; reduced?: boolean }) {
   const [run, setRun] = useState(0);
   const [won, setWon] = useState(0);
   return (
-    <section data-motion={mood} style={{ flex: '1 1 280px', display: 'grid', gap: 'var(--space-4)', alignContent: 'start' }}>
+    <section data-motion={mood} className={reduced ? 'motion-demo--reduced' : undefined} style={{ flex: '1 1 280px', display: 'grid', gap: 'var(--space-4)', alignContent: 'start' }}>
       <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
         <Label>{label}</Label>
         <Heading level={3} variant="heading">
@@ -60,17 +63,17 @@ function MoodPanel({ mood, label, title, about }: { mood: 'calm' | 'energetic'; 
       </div>
       <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
         <Button variant="secondary" size="small" onPress={() => setRun((r) => r + 1)}>Play arrival</Button>
-        <Button variant="secondary" size="small" onPress={() => setWon((w) => w + 1)}>Finish a step</Button>
+        <Button variant="secondary" size="small" onPress={() => setWon((w) => w + 1)}>Finish something</Button>
       </div>
       <div key={run} className={run ? 'motion-demo__play' : undefined} style={{ display: 'grid', gap: 'var(--space-3)' }}>
-        {['Junior year', 'Senior year', 'After graduation'].map((s, i) => (
+        {['Item 1', 'Item 2', 'Item 3'].map((s, i) => (
           <div key={s} className="motion-demo__card" style={{ '--i': i } as CSSProperties}>{s}</div>
         ))}
       </div>
       <div style={{ minHeight: 40 }}>
         <span key={won} className={`motion-demo__badge${won ? ' motion-demo__badge--won' : ''}`}>
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          Step done
+          Done
         </span>
       </div>
     </section>
@@ -79,7 +82,7 @@ function MoodPanel({ mood, label, title, about }: { mood: 'calm' | 'energetic'; 
 
 const moods = {
   calm: { title: 'Calm', about: 'Things settle into place and never bounce. For everyday pages: settings, lists, reading.' },
-  energetic: { title: 'Energetic', about: 'Things snap in, overshoot and settle. For earned moments: a step done, a win, a season unlocking.' },
+  energetic: { title: 'Energetic', about: 'Things snap in, overshoot and settle. For earned moments, like finishing something.' },
 } as const;
 type Mood = keyof typeof moods;
 
@@ -102,16 +105,25 @@ function MoodsView() {
   const other: Mood = own === 'calm' ? 'energetic' : 'calm';
   return (
     <div ref={ref} style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-7)' }}>
-      <MoodPanel mood={own} label={`${theme}'s mood`} title={moods[own].title} about={`${moods[own].about} Every page in ${theme} uses it unless it asks for the other.`} />
-      <MoodPanel mood={other} label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} A page switches with data-motion="${other}".`} />
+      <MoodPanel mood={own} label="Default" title={moods[own].title} about={`${moods[own].about} Every page in ${theme} moves this way unless it asks for the other mood.`} />
+      <MoodPanel mood={other} label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} A page turns it on with data-motion="${other}".`} />
+      <MoodPanel
+        mood={own}
+        reduced
+        label="When someone turns on Reduce motion"
+        title="Fade only"
+        about="Both moods only fade: nothing slides, bounces or grows. People turn it on in their device settings, under Accessibility: Motion on iPhone and iPad, Display on a Mac, Visual effects on Windows."
+      />
     </div>
   );
 }
 
 /**
- * Arrivals and celebrations use a mood, calm or energetic. Each theme has its own (Spotlight: energetic,
- * Sunrise: calm, Fireside: energetic for now, borrowed from Spotlight), shown first. Any page can switch to
- * the other with data-motion. Controls never change with the mood. With reduced motion on, both only fade.
+ * Arrivals and celebrations use a mood, calm or energetic. Each theme has a default (Spotlight: energetic,
+ * Sunrise: calm, Fireside: energetic for now, borrowed from Spotlight). A page can ask for the other mood
+ * with data-motion. When someone turns on Reduce motion in their device settings
+ * ([where to find it on each device, MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)),
+ * both moods only fade. Controls never change with the mood.
  */
 export const Moods: StoryObj = {
   render: () => <MoodsView />,

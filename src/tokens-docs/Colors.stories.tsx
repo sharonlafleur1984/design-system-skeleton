@@ -39,7 +39,7 @@ export const ThisThemeOnly: Story = {
     return theme === 'life-hub' ? (
       <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
     ) : (
-      <p>After Graduation has no extra colors. Paths and categories use icons and labels instead.</p>
+      <p>Spotlight has no extra colors. Paths and categories use icons and labels instead.</p>
     );
   },
 };
