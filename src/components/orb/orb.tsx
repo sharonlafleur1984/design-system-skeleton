@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react';
 import type { GlassArt } from '../glass-lens/lens-art';
 import { renderOrb, type OrbLook } from './orb-render';
 import './orb.css';
@@ -81,6 +81,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   // How light the background behind a glowing orb is (0 dark, 1 light), so its light can look equally
   // bright on every background (orb.css).
   const [lum, setLum] = useState(0);
+  // Whether the background behind it is patterned (a marble) rather than solid, so its light can brighten
+  // the pattern instead of hazing over it (orb.css).
+  const [pattern, setPattern] = useState(false);
   // Draw the glass in this orb's colors, at its size on screen (sharp on high-density screens). It
   // redraws when the theme or mode around it changes.
   const [colorKey, setColorKey] = useState(0);
@@ -113,9 +116,12 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         // How light that background is, so the glow can look equally bright on it (orb.css).
         const data = painted.getContext('2d')?.getImageData(0, 0, px, px).data;
         if (data) {
-          let sum = 0;
-          for (let i = 0; i < data.length; i += 4) sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
-          setLum(sum / (data.length / 4));
+          const shades: number[] = [];
+          for (let i = 0; i < data.length; i += 4) shades.push((0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255);
+          const mean = shades.reduce((a, b) => a + b, 0) / shades.length;
+          const spread = Math.sqrt(shades.reduce((a, b) => a + (b - mean) ** 2, 0) / shades.length);
+          setLum(mean);
+          setPattern(spread > 0.02);
         }
       }
     }
@@ -146,23 +152,35 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   const tint = palette
     ? Object.fromEntries(Object.entries({ light: 100, glow: 200, halo: 300, body: 400, shade: 600 }).map(([part, shade]) => [`--orb-color-${part}`, `var(--palette-${palette}-${shade})`]))
     : undefined;
+  const at = { left: `${position.x * 100}%`, top: `${position.y * 100}%` };
   return (
-    <button
-      type="button"
-      aria-label={ariaLabel}
-      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, look === 'glow' && 'ds-orb--glow', picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
-      style={{ ...tint, ...(look === 'glow' ? { '--_lum': lum.toFixed(2) } : {}), ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
-      onPointerDown={(e) => {
-        e.currentTarget.setPointerCapture(e.pointerId);
-        moveTo(e);
-      }}
-      onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-      onKeyDown={onKeyDown}
-      {...rest}
-    >
-      <span ref={glassRef} className="ds-orb__glass" aria-hidden="true">
-        {picture && <img className="ds-orb__render" src={picture} alt="" draggable={false} />}
-      </span>
-    </button>
+    <>
+      {/* The light is its own layer beside the ball, so it can blend with the section behind it. */}
+      {look === 'glow' && (
+        <span
+          aria-hidden="true"
+          className={['ds-orb-light', size !== 'medium' && `ds-orb-light--${size}`].filter(Boolean).join(' ')}
+          data-pattern={pattern ? '' : undefined}
+          style={{ ...tint, '--_lum': lum.toFixed(2), ...at } as CSSProperties}
+        />
+      )}
+      <button
+        type="button"
+        aria-label={ariaLabel}
+        className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, look === 'glow' && 'ds-orb--glow', picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
+        style={{ ...tint, ...style, ...at }}
+        onPointerDown={(e) => {
+          e.currentTarget.setPointerCapture(e.pointerId);
+          moveTo(e);
+        }}
+        onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
+        onKeyDown={onKeyDown}
+        {...rest}
+      >
+        <span ref={glassRef} className="ds-orb__glass" aria-hidden="true">
+          {picture && <img className="ds-orb__render" src={picture} alt="" draggable={false} />}
+        </span>
+      </button>
+    </>
   );
 }

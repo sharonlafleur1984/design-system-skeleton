@@ -35,12 +35,14 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-/* The light from a glowing orb, shining out of the ball with no ring: it starts at full strength at the
+/* The light from a glowing orb, its own layer beside the ball (so it can blend with the section
+   behind it), shining out of the ball with no ring: it starts at full strength at the
    glass and fades smoothly, the way light does, fast close in and then a long soft tail across the
    section (a bright bloom near the ball plus a broad wash, as distances in ball sizes, in 35 small steps so
    no step shows as a ring; soft at the ball, reaching far). A gradient,
    not a blurred shadow, keeps the fade smooth, with no grain. */
-.ds-orb--glow::before {
+.ds-orb-light {
+  --_size: var(--orb-size-medium);
   /* The light's color: half white, half the lightest step of the page's color (the rule the focus glow
      follows, D45), so it blends with the colors on the page. On a light background, white light
      vanishes, so the orb (orb.tsx) sets --_lum to how light the background behind it is (0 dark,
@@ -49,10 +51,8 @@
   --_tint: color-mix(in srgb, var(--orb-color-halo) calc(var(--_lum, 0) * 100%), var(--orb-color-light));
   --_light: color-mix(in srgb, var(--orb-shine-pool) calc(50% - var(--_lum, 0) * 40%), var(--_tint));
   --_strength: calc(1 + var(--_lum, 0) * 1.8);
-  content: '';
   position: absolute;
-  z-index: -1;
-  inset: 50% auto auto 50%;
+  z-index: 4;
   translate: -50% -50%;
   inline-size: calc(var(--_size) * var(--orb-glow-reach) * 2);
   block-size: calc(var(--_size) * var(--orb-glow-reach) * 2);
@@ -98,6 +98,18 @@
     color-mix(in srgb, var(--_light) min(100%, calc(0.14% * var(--_strength))), transparent) calc(var(--_size) * 77.59),
     transparent 100%
   );
+}
+
+.ds-orb-light--small {
+  --_size: var(--orb-size-small);
+}
+.ds-orb-light--large {
+  --_size: var(--orb-size-large);
+}
+/* On a patterned background (a marble), light brightens the pattern it falls on, the way sun lights a
+   surface, instead of laying a haze over it (Sharon: great on solid, less so on patterns). */
+.ds-orb-light[data-pattern] {
+  mix-blend-mode: screen;
 }
 
 .ds-orb__glass {
