@@ -3,6 +3,8 @@ import { useContext, useLayoutEffect, useRef, useState, type CSSProperties } fro
 import { ThemeContext, singleTheme, themeList, themeNames } from '../components/story-helpers';
 import { Button } from '../components/button/button';
 import { Body, Heading, Label } from '../components/text/text';
+import { Select } from '../components/select/select';
+import { Tab, TabList, TabPanel, Tabs } from '../components/tabs/tabs';
 import { Description, Stories, Title } from '@storybook/addon-docs/blocks';
 import { DocsThemePicker } from '../../.storybook/theme-picker';
 import './motion-docs.css';
@@ -50,6 +52,12 @@ const steps: [string, string, string, string, string][] = [
   ['fast', 'Fast', '140ms', 'Hover, a color change, a switch', 'var(--motion-easing-out)'],
   ['base', 'Base', '220ms', 'A tab or panel moving into place', 'var(--motion-easing-in-out)'],
   ['slow', 'Slow', '380ms', 'Fading in, a progress bar filling', 'var(--motion-easing-out)'],
+];
+
+const curves: [string, string, string][] = [
+  ['out', 'Arriving', 'Starts fast and lands softly. Things entering, and hover.'],
+  ['in', 'Leaving', 'Starts slowly and speeds away. Things closing or being removed.'],
+  ['in-out', 'Back and forth', 'Speeds up, then slows down. Changes that can go either way, like a switch or a tab.'],
 ];
 
 const moods = {
@@ -134,7 +142,7 @@ function Demo({ mood, arrive, celebrate, reduced = false }: { mood: Mood; arrive
 const pair: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', columnGap: 'var(--space-6)', rowGap: 'var(--space-4)' };
 const half: CSSProperties = { display: 'grid', gridTemplateRows: 'subgrid', gridRow: 'span 2', rowGap: 'var(--space-4)', alignContent: 'start' };
 
-/** How long controls take to move. The same in every theme, so it's shown once. Press Play to run all four at once and compare them. */
+/** How long controls take to move, and how their speed changes along the way. The same in every theme, so it's shown once. Press Play to run every row at once and compare them. */
 export const Timing: StoryObj = {
   parameters: { compareAll: false },
   render: function Timing() {
@@ -159,9 +167,22 @@ export const Timing: StoryObj = {
             </div>
           </div>
         ))}
+        <Label>Curves: how speed changes along the way</Label>
+        {curves.map(([token, name, use]) => (
+          <div key={token} style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) 2fr', gap: 'var(--space-4)', alignItems: 'center' }}>
+            <div style={{ display: 'grid', gap: 'var(--space-1)' }}>
+              <Body>
+                <strong>{name}:</strong> {use}
+              </Body>
+              <code style={code}>--motion-easing-{token}</code>
+            </div>
+            <div className={`motion-demo__track${go ? ' motion-demo__track--go' : ''}`} style={{ '--d': 'var(--motion-duration-slow)', '--e': `var(--motion-easing-${token})` } as CSSProperties}>
+              <div className="motion-demo__dot" />
+            </div>
+          </div>
+        ))}
         <p style={note}>
-          Things entering or hovered use <code style={code}>--motion-easing-out</code>; changes that go both ways use <code style={code}>--motion-easing-in-out</code>. Items in a list arrive{' '}
-          <code style={code}>--motion-stagger</code> (60ms) apart.
+          Items in a list arrive <code style={code}>--motion-stagger</code> (60ms) apart.
         </p>
       </div>
     );
@@ -172,6 +193,7 @@ export const Timing: StoryObj = {
 function MoodCard({ theme, arrive, celebrate }: { theme: string; arrive: number; celebrate: number }) {
   const name = themeNames[theme];
   const [ref, mood] = useThemeMood(theme);
+  const other: Mood = mood === 'calm' ? 'energetic' : 'calm';
   return (
     <section
       ref={ref}
@@ -180,7 +202,7 @@ function MoodCard({ theme, arrive, celebrate }: { theme: string; arrive: number;
       style={{
         display: 'grid',
         gridTemplateRows: 'subgrid',
-        gridRow: 'span 3',
+        gridRow: 'span 4',
         rowGap: 'var(--space-4)',
         padding: 'var(--space-5)',
         borderRadius: 'var(--corner-panel)',
@@ -192,6 +214,16 @@ function MoodCard({ theme, arrive, celebrate }: { theme: string; arrive: number;
       <h3 style={{ margin: 0, font: '700 22px/1.2 system-ui, sans-serif', color: 'inherit' }}>{name}</h3>
       <Intro label="Default mood" title={moods[mood].title} about={moods[mood].about} />
       <Demo mood={mood} arrive={arrive} celebrate={celebrate} />
+      {/* The other mood is there when someone wants it, without making every card twice as long. */}
+      <details className="motion-demo__more">
+        <summary>
+          <Label>Show the other mood</Label>
+        </summary>
+        <div style={{ display: 'grid', gap: 'var(--space-4)', marginBlockStart: 'var(--space-3)' }}>
+          <Intro label="When a page asks for it" title={moods[other].title} about={`${moods[other].about} Turned on with data-motion="${other}".`} />
+          <Demo mood={other} arrive={arrive} celebrate={celebrate} />
+        </div>
+      </details>
     </section>
   );
 }
@@ -218,6 +250,84 @@ export const Moods: StoryObj = {
             </ThemeContext.Provider>
           ))}
         </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * Menus, popovers, dialogs and tooltips fade in and grow a little from where they were opened, then close
+ * quicker on the leaving curve. They use React Aria's own opening and closing moments
+ * ([React Aria: animation](https://react-spectrum.adobe.com/react-aria/styling.html#animation)). The same in every theme.
+ */
+export const OpenAndClose: StoryObj = {
+  name: 'Open and close',
+  parameters: { compareAll: false },
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--space-5)', maxInlineSize: '420px' }}>
+      <Intro
+        label="Opening, then closing"
+        title="220ms in, 140ms out"
+        about="Open the menu and pick an option to see both. Closing is quicker, because the person is already done with it."
+      />
+      <Select
+        label="Option"
+        placeholder="Open the menu"
+        options={[
+          { id: 'one', label: 'Option 1' },
+          { id: 'two', label: 'Option 2' },
+          { id: 'three', label: 'Option 3' },
+        ]}
+      />
+      <code style={code}>--motion-open-duration, --motion-open-scale, --motion-close-duration</code>
+    </div>
+  ),
+};
+
+/** When tabs or action tiles change what's shown, the new content fades in, so the change isn't abrupt. The same in every theme. */
+export const SwitchingViews: StoryObj = {
+  name: 'Switching views',
+  parameters: { compareAll: false },
+  render: () => (
+    <div style={{ display: 'grid', gap: 'var(--space-5)', maxInlineSize: '560px' }}>
+      <Intro label="Switching" title="A 140ms fade" about="Pick a tab to see the new content fade in. Nothing slides, so it's kept with Reduce motion." />
+      <Tabs>
+        <TabList aria-label="Views">
+          <Tab id="one">Tab 1</Tab>
+          <Tab id="two">Tab 2</Tab>
+          <Tab id="three">Tab 3</Tab>
+        </TabList>
+        {['one', 'two', 'three'].map((id, i) => (
+          <TabPanel key={id} id={id}>
+            <Body>Content for tab {i + 1}.</Body>
+          </TabPanel>
+        ))}
+      </Tabs>
+      <code style={code}>--motion-switch-duration</code>
+    </div>
+  ),
+};
+
+/** A button that's busy shows a spinner, one turn every 800ms, and can't be pressed twice. The same in every theme. */
+export const Loading: StoryObj = {
+  parameters: { compareAll: false },
+  render: function Loading() {
+    const [busy, setBusy] = useState(false);
+    return (
+      <div style={{ display: 'grid', gap: 'var(--space-5)', maxInlineSize: '420px' }}>
+        <Intro label="Waiting" title="One turn every 800ms" about="Press the button to see it load for two seconds." />
+        <div>
+          <Button
+            isPending={busy}
+            onPress={() => {
+              setBusy(true);
+              setTimeout(() => setBusy(false), 2000);
+            }}
+          >
+            Save
+          </Button>
+        </div>
+        <code style={code}>--motion-spin-duration</code>
       </div>
     );
   },

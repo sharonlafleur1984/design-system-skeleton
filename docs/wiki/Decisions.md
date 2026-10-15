@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
 | D49 | Oct 15, 2026 | Each theme picks its roundness (Square, Standard or Round); every corner follows the part's size |
 | D48 | Oct 15, 2026 | Card is a surface with typed parts; Tile is the clickable one; Action tile is for navigation; Solid and Glass everywhere |
@@ -61,6 +62,19 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D51 · Oct 15, 2026:</b> Motion: open and close, a leaving curve, switching views and loading</summary>
+
+- **Decided by:** Sharon ("what all motion tokens are available in aria that I can take advantage of and add here?"; "where are all of the other different motions that you just told me about")
+- **What React Aria gives:** no motion tokens, since it's unstyled, but the moments to animate: overlays mark when they're opening (`data-entering`) and closing (`data-exiting`), and React Aria waits for the animation before removing them ([React Aria: animation](https://react-spectrum.adobe.com/react-aria/styling.html#animation)).
+- **Open and close (`motion.open`, `motion.close`):** overlays fade in and grow from 96% over 220ms, and close in 140ms on the leaving curve, because the person is already done with them. Select's menu and the Settings dialog use it. With Reduce motion they only fade.
+- **A leaving curve (`motion.easing.in`):** starts slowly and speeds away, for things closing or being removed. Material 3's standard accelerate curve ([Material 3: easing and duration](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)). Arriving uses `out`, back and forth uses `in-out`.
+- **Switching views (`motion.switch`):** a 140ms fade when tabs or action tiles change what's shown. Nothing moves, so it's kept with Reduce motion.
+- **Loading (`motion.spin`):** one spinner turn every 800ms; the Button's spinner used a fixed value before.
+- **The Motion page** shows each one with a real component to try: Select, Tabs and Button. Every value is shared by all themes. The numbers are estimates, chosen to sit on the existing steps.
+
+</details>
 
 <details>
 <summary><b>D50 · Oct 15, 2026:</b> Storybook: the theme picker sits on the page, and Compare all works on every story</summary>

@@ -77,3 +77,14 @@
   outline: var(--focus-ring-width) solid var(--color-border-focus);
   outline-offset: var(--focus-ring-offset);
 }
+
+/* Switching views (motion.switch): the new panel fades in, so the change isn't abrupt. Fading is kept with
+   Reduce motion, since nothing moves. */
+.ds-tabs__panel {
+  animation: ds-switch-in var(--motion-switch-duration) var(--motion-easing-out);
+}
+@keyframes ds-switch-in {
+  from {
+    opacity: 0;
+  }
+}

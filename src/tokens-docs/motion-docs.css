@@ -78,3 +78,12 @@
   --motion-celebrate-easing: var(--motion-easing-out);
   --motion-celebrate-scale: 1;
 }
+
+/* "Show the other mood": a plain disclosure, with the label as the click target. */
+.motion-demo__more > summary {
+  cursor: pointer;
+  inline-size: fit-content;
+}
+.motion-demo__more > summary > * {
+  display: inline;
+}

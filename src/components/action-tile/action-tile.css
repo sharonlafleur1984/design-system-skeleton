@@ -464,3 +464,14 @@
 .ds-tile--plain {
   padding-inline: var(--space-4);
 }
+
+/* Switching views (motion.switch): the new section fades in when a tile is chosen, so the change isn't
+   abrupt. Fading is kept with Reduce motion, since nothing moves. */
+.ds-tile-panel {
+  animation: ds-tile-switch-in var(--motion-switch-duration) var(--motion-easing-out);
+}
+@keyframes ds-tile-switch-in {
+  from {
+    opacity: 0;
+  }
+}
