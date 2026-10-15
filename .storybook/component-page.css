@@ -251,7 +251,8 @@
   isolation: isolate;
   flex: 1;
   overflow: clip;
-  padding: 56px 32px;
+  /* The same space on every side (Sharon). */
+  padding: 56px;
 }
 .sb-try__window--plain {
   background: var(--color-surface-page);

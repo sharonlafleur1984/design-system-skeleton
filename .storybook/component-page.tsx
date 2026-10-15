@@ -467,6 +467,10 @@ function CodeBar({ code }: { code: string }) {
             );
           }}
         >
+          {/* Two pages to copy, and a check once copied; the same size and line as Show code's icon. */}
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" aria-hidden="true">
+            {copied ? <path d="M3 8.5 6.5 12 13 4.5" strokeLinecap="round" /> : <><rect x="5.5" y="5.5" width="8" height="8" rx="1.5" /><path d="M10.5 3.5V3A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" /></>}
+          </svg>
           {copied ? 'Copied' : 'Copy code'}
         </button>
         <span className="sb-page__vh" role="status">
