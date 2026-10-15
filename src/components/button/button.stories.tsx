@@ -37,7 +37,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     children: words('Label', 'The words on the button\n\n`children`'),
     variant: choice('Variant', 'How important the action is\n\n`variant`', ['primary', 'secondary', 'tertiary']),
-    appearance: choice('Style', 'Solid, or clear glass. Glass goes on any background except other glass.\n\n`appearance`', ['solid', 'glass']),
+    appearance: choice('Style', 'Solid, or clear glass for any background except glass\n\n`appearance`', ['solid', 'glass']),
     size: choice('Size', 'How big it is\n\n`size`', ['small', 'medium', 'large']),
     destructive: onOff('Destructive', 'For actions that remove something\n\n`destructive`'),
     isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed\n\n`isDisabled`"),
@@ -205,9 +205,10 @@ function GlassOnArt({ theme }: { theme: unknown }) {
 }
 
 /**
- * Clear glass, only on artwork the design system paints: Spotlight's header and Sunrise's marble. Its
+ * Clear glass on the artwork the design system paints: Spotlight's header and Sunrise's marble. Its
  * rim, highlight and shadow come from the page's light, and the art bends at its curved edge while the
- * label stays crisp. Without WebGL, or with Reduce transparency or Increase contrast, it turns frosted.
+ * label stays crisp. Glass works on a plain page too (frosted, with nothing to bend), never on glass (D55).
+ * Without WebGL, or with Reduce transparency or Increase contrast, it turns frosted.
  */
 export const GlassOnArtwork: Story = {
   tags: ['!dev'],
