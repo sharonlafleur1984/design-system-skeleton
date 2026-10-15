@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D59 | Oct 15, 2026 | The page's light is drawn by the renderer: the surface is lit, not covered (experimental) |
 | D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
@@ -67,6 +68,17 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D59 · Oct 15, 2026:</b> The page's light is drawn by the renderer: the surface is lit, not covered (experimental)</summary>
+
+- **Decided by:** Sharon ("build the renderer-lit light first, beside today's glow"; "I only wanna build it if I can build it in the actual code later").
+- **What it is:** `useLitSurface` draws a section's background as a matte surface in three.js, with a point light hanging just above it at the light's position. The renderer works out how light falls off with distance and angle, so it brightens the pattern it falls on instead of covering it, and parts far from the light keep their own look. It uses the same art the glass lens already paints (no screen reading), so it works in the apps, not only Storybook.
+- **Looks the same everywhere:** light surfaces already reflect most light, so the lamp is scaled to how light the surface is, and dark and light backgrounds look equally lit. Its color follows D57: 75% white, 25% the area's lightest color; pure white on plain pages.
+- **Where it falls short today:** without 3D, or behind art the system doesn't paint (photos, people's content), nothing is drawn and the CSS glow is used. The glass button's lens still bends the unlit background; lighting what the lens sees is the next step.
+- **Status:** experimental, beside today's glow on a test page (Components/Orb, Lit by the renderer). Moving light (D58: Sunrise's time of day, Illuminate) will draw it live with the same hook.
+
+</details>
 
 <details>
 <summary><b>D58 · Oct 15, 2026:</b> The light may move on real pages; staying still is a choice</summary>

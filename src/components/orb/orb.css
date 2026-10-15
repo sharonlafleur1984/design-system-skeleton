@@ -43,6 +43,8 @@
    not a blurred shadow, keeps the fade smooth, with no grain. */
 .ds-orb-light {
   --_size: var(--orb-size-medium);
+  /* A surface lit by the renderer (lit-surface.ts) sets this to 0: its light comes from the renderer. */
+  opacity: var(--orb-light-layer, 1);
   /* The light's color: 75% white, 25% the lightest step of the page's color (Sharon: half and half was
      too saturated), so it blends with the colors on the page. On a light background, white light
      vanishes, so the orb (orb.tsx) sets --_lum to how light the background behind it is (0 dark,

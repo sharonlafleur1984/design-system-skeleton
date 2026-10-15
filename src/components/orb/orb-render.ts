@@ -32,6 +32,11 @@ const LOOKS = {
 type Three = typeof import('three');
 let shared: Promise<{ THREE: Three; renderer: import('three').WebGLRenderer; env: import('three').Texture; brightEnv: import('three').Texture }> | undefined;
 
+/** The one renderer every orb and lit surface shares (three.js, loaded the first time it's needed). */
+export function sharedRenderer() {
+  return setup();
+}
+
 function setup() {
   shared ??= (async () => {
     const probe = document.createElement('canvas');

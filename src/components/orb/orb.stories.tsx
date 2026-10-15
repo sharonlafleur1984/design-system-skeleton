@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Orb } from './orb';
-import { OrbSection } from './orb-example';
+import { OrbSection, type OrbSectionProps } from './orb-example';
 import { choice, hidden, marbles, setting } from '../story-helpers';
 import { orbPage } from './orb.page';
 import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
@@ -50,6 +50,33 @@ export const OnEveryBackground: Story = {
             .map((m) => <OrbSection key={m.name} size="small" look={look} backdrop="marble" area={m.area!} texture={m.texture} palette={m.palette} label={`Sunrise, ${m.name}`} />)}
         {shows('designer-toolkit') && <OrbSection backdrop="fireside" size="small" look={look} label="Fireside" />}
         {shows('life-hub') && <OrbSection backdrop="light" size="small" look={look} label="Light page" />}
+      </div>
+    );
+  },
+};
+
+/** Today's glow beside the renderer-lit light (D59), on the picked theme's backgrounds. Drag either orb. */
+export const LitByTheRenderer: Story = {
+  tags: ['!dev'],
+  parameters: { layout: 'padded' },
+  render: (_args, { globals }) => {
+    const shows = (theme: string) => globals.theme === 'both' || globals.theme === theme;
+    const pair = (key: string, props: Omit<OrbSectionProps, 'label' | 'lit'>, name: string) => (
+      <div key={key} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+        <OrbSection {...props} size="small" label={`${name}, today's glow`} />
+        <OrbSection {...props} size="small" lit label={`${name}, lit by the renderer`} />
+      </div>
+    );
+    return (
+      <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
+        <p style={{ margin: 0, color: 'var(--color-ink-secondary)' }}>Left: today&apos;s glow. Right: lit by the renderer.</p>
+        {shows('after-graduation') && pair('header', { backdrop: 'header' }, 'Spotlight header')}
+        {shows('life-hub') &&
+          marbles
+            .filter((m) => ['dashboard', 'parenting', 'health', 'time'].includes(m.area ?? ''))
+            .map((m) => pair(m.name, { backdrop: 'marble', area: m.area!, texture: m.texture, palette: m.palette }, `Sunrise, ${m.name}`))}
+        {shows('designer-toolkit') && pair('fireside', { backdrop: 'fireside' }, 'Fireside')}
+        {shows('life-hub') && pair('light', { backdrop: 'light' }, 'Light page')}
       </div>
     );
   },

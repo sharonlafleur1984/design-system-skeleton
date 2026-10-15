@@ -36,6 +36,8 @@ export { ActionTile, ActionTileGroup, ActionTileSwitch, ActionTilePanel } from '
 export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileSwitchProps, ActionTilePanelProps } from './action-tile/action-tile';
 export type { Appearance, Material } from './material';
 export { useGlassLight, PAGE_LIGHT } from './glass-light/glass-light';
+export { useLitSurface } from './glass-light/lit-surface';
+export type { LitSurfaceOptions } from './glass-light/lit-surface';
 export { Orb, ORB_START } from './orb/orb';
 export type { OrbProps, OrbPosition, OrbSize } from './orb/orb';
 export type { OrbLook } from './orb/orb-render';

@@ -56,7 +56,7 @@ function pageRgb(el: HTMLElement): number[] | undefined {
 }
 
 /** The first color painted behind an element: its own background, or the nearest one around it. */
-function colorBehind(el: HTMLElement | null) {
+export function colorBehind(el: HTMLElement | null) {
   for (let node = el; node; node = node.parentElement) {
     const bg = getComputedStyle(node).backgroundColor;
     if (bg && bg !== 'transparent' && !/rgba\(.*,\s*0\)$/.test(bg)) return bg;
