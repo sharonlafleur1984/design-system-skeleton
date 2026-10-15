@@ -29,12 +29,15 @@ describe('component CSS uses tokens only', () => {
       expect(colors).toEqual([]);
     });
 
-    it(`${file}: no raw font weights (weights come from type styles and font-weight tokens)`, () => {
-      const weights = [...css.matchAll(/font-weight\s*:\s*([^;}]+)/g)]
-        .map((m) => m[1].trim())
-        .filter((v) => !v.startsWith('var(') && v !== 'inherit');
-      expect(weights).toEqual([]);
-    });
+    // Typography comes from tokens too: type styles, font tokens or a component's own tokens.
+    for (const prop of ['font-weight', 'font-size', 'font-family', 'line-height', 'letter-spacing']) {
+      it(`${file}: no raw ${prop} (typography comes from tokens)`, () => {
+        const raw = [...css.matchAll(new RegExp(`(?<![\\w-])${prop}\\s*:\\s*([^;}]+)`, 'g'))]
+          .map((m) => m[1].trim())
+          .filter((v) => !v.startsWith('var(') && v !== 'inherit');
+        expect(raw).toEqual([]);
+      });
+    }
 
     it(`${file}: no raw sizes except 1px and 2px hairlines`, () => {
       const sizes = (css.match(/\b\d+(?:\.\d+)?px\b/g) ?? []).filter((v) => v !== '1px' && v !== '2px');
