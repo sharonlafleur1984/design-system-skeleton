@@ -19,6 +19,7 @@ export const buttonPage: ComponentPageInfo = {
     <>
       Picking one of a few options: use <DocLink href={docsPath('Components/Toggle button group')}>Toggle button group</DocLink>.
     </>,
+    'A button on glass, like a glass card: use Solid, never Glass on glass.',
   ],
   do: {
     example: (
