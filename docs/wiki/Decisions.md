@@ -1,8 +1,20 @@
 # Decisions
 
-**Last updated:** October 14, 2026
+**Last updated:** October 15, 2026
 
 Newest first.
+
+<details>
+<summary><b>Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
+- **Updates:** the Oct 12 line "Only on artwork the system controls" and the Oct 4 rule that glass is for controls on artwork.
+- **Tradeoff:** lens glass bends the art behind it, so it still needs artwork the system controls. On a plain background there's nothing to bend, so glass shows the classic frosted recipe, not the lens.
+- **Why:** Sharon decided this while reviewing the Style control (Solid or Glass) for the Storybook docs page template.
+- **Details:** Components, Button and Action tile in Storybook (When to use and When not to).
+
+</details>
 
 <details>
 <summary><b>Oct 14, 2026:</b> Components use React Aria's names; "theme" is the one word; themes are Spotlight, Sunrise and Fireside</summary>
