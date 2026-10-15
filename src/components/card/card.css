@@ -1,25 +1,44 @@
-/* Card (rebuilt Oct 15). Its look is the action tile's (action-tile.css): the surface, Solid and Glass,
-   the states and the label, title and description type. This file only adds what a card does
-   differently. */
+/* Card (Oct 15): a surface. Its look is the action tile's (action-tile.css): Solid and Glass, the
+   shadow and the light. This file lays out its parts: header, body and footer. */
 .ds-card {
-  /* No reserved space for the chosen mark: cards are never chosen. */
-  padding-inline: var(--space-4);
-}
-
-/* A card that only holds content isn't pressable: no pointer, and it never lifts. */
-.ds-card--static {
+  /* No reserved space for a chosen mark, and never pressable: cards don't move or take a pointer. */
+  gap: var(--space-3);
+  padding: var(--space-4);
   cursor: auto;
 }
 
-/* Anything else the card holds (buttons, a list, an empty state's message), under the title. */
-.ds-card__body {
+.ds-card__header {
   display: grid;
-  gap: var(--space-2);
-  margin-block-start: var(--space-2);
+  gap: var(--space-1);
   min-inline-size: 0;
 }
 
-/* A Glass card that lights itself: its frame holds the lens canvas behind it. */
+.ds-card__body {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  color: var(--tile-ink);
+}
+.ds-card__body > :is(p, ul, ol) {
+  margin: 0;
+}
+
+.ds-card__footer {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.ds-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.ds-card__note {
+  --text-note-color: var(--tile-ink-soft);
+}
+
+/* Glass that lights itself: its frame holds the lens canvas behind it. */
 .ds-card-frame {
   position: relative;
   isolation: isolate;

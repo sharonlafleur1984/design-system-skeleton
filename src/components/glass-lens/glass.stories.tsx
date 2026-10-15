@@ -28,9 +28,9 @@ function GlassSet() {
         <ActionTile onPress={() => {}} data-state="chosen" label="Chosen" title="Title" description="Description" />
       </ActionTileGroup>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
-        <Button variant="glass">Button</Button>
-        <Button variant="glass">Button</Button>
-        <Button variant="glass">Button</Button>
+        <Button appearance="glass">Button</Button>
+        <Button appearance="glass">Button</Button>
+        <Button appearance="glass">Button</Button>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { Card } from './card';
+import { Card, CardBody, CardFooter, CardHeader } from './card';
 import { Button } from '../button/button';
-import { BothThemes, Row, StatePictures } from '../story-helpers';
+import { BothThemes, Row, storyIcons } from '../story-helpers';
 import type { Appearance } from '../material';
+import type { IconPosition } from '../tile-header';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
@@ -13,19 +14,19 @@ const meta: Meta<typeof Card> = {
     docs: {
       description: {
         component: [
-          'Groups related content, or is one big link or button. Same look as Action tile, in every theme: a label, a title and a description in the theme\'s own type styles, on a Solid or Glass surface.',
+          'A surface for related content, in every theme. Solid or Glass, with nothing on it until you add its parts.',
           '',
-          '**Solid and glass:** `appearance="solid"` (the starting look) is the theme\'s card surface with a soft shadow. `appearance="glass"` is clear glass: its edge, highlight and shadow come from the page\'s light, its text takes the color of what it sits on, and on artwork the design system paints (Life Hub\'s marble, Spotlight\'s header) it bends the art at its edges. Opaque, translucent and transparent are gone (Oct 15).',
+          '**Parts:** `CardHeader` (an optional icon, a label and the title), `CardBody` (the main content: text in the body style, or anything else) and `CardFooter` (buttons, and an optional quiet `note`). Each part has its type already chosen from the theme, so every card reads the same way. The text parts (Heading, Body, Label, Note) work on their own too: see Text.',
           '',
-          '**Content:** `title` is the card\'s name, in the theme\'s heading style. `label` (a small line above it) and `description` (a short line under it) are optional. Anything else, like buttons, goes inside as children, under the description.',
+          '**Solid and glass:** `appearance="solid"` (the starting look) is the theme\'s card surface with a soft shadow. `appearance="glass"` is clear glass: its edge, highlight and shadow come from the page\'s light, its text takes the color of what it sits on, and on artwork the design system paints (Life Hub\'s marble, Spotlight\'s header) it bends the art at its edges.',
           '',
-          '**Pressable:** give the card `href` to go to a page (React Aria Link) or `onPress` to do something (React Aria Button). Then the whole card is one click target, with the same hover, pressed and focus states as Action tile. Never put a button or link inside a pressable card. A card that only holds content doesn\'t move.',
+          '**Icons:** give the header an `icon`, in an icon tile, `filled` (a soft background) or `plain`, in four sizes. `iconPosition="top"` puts it above the label; `"start"` puts it before the label and title.',
           '',
-          '**When to use:** a group of related content, or a big choice that leads somewhere. **When not to:** to switch between sections of a page, use Action tile; to box a single line of text, use nothing.',
+          '**Never pressable:** the buttons and links on a card are pressed, never the card itself, so a card has no hover or pressed state. For a whole tile that\'s a link or button, use **Tile**. To switch between sections of a page, use **Action tile**.',
           '',
           '**Do:** let the shadow lift the card; no borders needed. **Don\'t:** nest cards inside cards.',
           '',
-          '**Accessibility:** pick the right element with `as` (for example `section` or `article`). A pressable card is a real link or button: screen readers hear its title, label and description, and keyboard focus is a soft glow in the theme\'s focus color. With Reduce transparency or Increase contrast on, Glass turns solid.',
+          '**Accessibility:** the title is a real heading. Its `level` (h3 by default) sets its rank in the page outline without changing its look. Pick the card\'s own element with `as` (for example `section` or `article`). With Reduce transparency or Increase contrast on, Glass turns solid.',
         ].join('\n'),
       },
     },
@@ -34,39 +35,46 @@ const meta: Meta<typeof Card> = {
 export default meta;
 type Story = StoryObj<typeof Card>;
 
-const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 3)), 1fr))', gap: 'var(--space-3)', flex: '1 1 auto' };
+const grid: CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, calc(var(--space-10) * 4)), 1fr))', gap: 'var(--space-3)', flex: '1 1 auto' };
 
-type PlaygroundArgs = { appearance: Appearance; pressable: boolean; showLabel: boolean; label: string; title: string; showDescription: boolean; description: string; showButton: boolean };
+const ExampleButton = () => (
+  <Button size="small" variant="secondary">
+    Button
+  </Button>
+);
 
-/** Try it: pick Solid or Glass, make it pressable, and turn each part on or off. */
+type PlaygroundArgs = {
+  appearance: Appearance;
+  showIcon: boolean;
+  iconPosition: IconPosition;
+  iconVariant: 'filled' | 'plain';
+  showLabel: boolean;
+  title: string;
+  showBody: boolean;
+  showButton: boolean;
+  showNote: boolean;
+};
+
+/** Try it: pick Solid or Glass, and turn each part on or off. */
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { appearance: 'solid', pressable: false, showLabel: true, label: 'Label', title: 'Title', showDescription: true, description: 'Description', showButton: true },
+  args: { appearance: 'solid', showIcon: true, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Title', showBody: true, showButton: true, showNote: true },
   argTypes: {
     appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
-    pressable: { name: 'Pressable (the whole card is a button)', control: 'boolean' },
+    showIcon: { name: 'Icon', control: 'boolean' },
+    iconPosition: { name: 'Icon position', control: 'inline-radio', options: ['top', 'start'], if: { arg: 'showIcon' } },
+    iconVariant: { name: 'Icon background', control: 'inline-radio', options: ['filled', 'plain'], if: { arg: 'showIcon' } },
     showLabel: { name: 'Label', control: 'boolean' },
-    label: { name: 'Label text', if: { arg: 'showLabel' } },
     title: { name: 'Title' },
-    showDescription: { name: 'Description', control: 'boolean' },
-    description: { name: 'Description text', if: { arg: 'showDescription' } },
-    showButton: { name: 'Button inside', control: 'boolean', if: { arg: 'pressable', truthy: false } },
+    showBody: { name: 'Body', control: 'boolean' },
+    showButton: { name: 'Button', control: 'boolean' },
+    showNote: { name: 'Note', control: 'boolean' },
   },
-  render: ({ appearance, pressable, showLabel, label, title, showDescription, description, showButton }) => (
+  render: ({ appearance, showIcon, iconPosition, iconVariant, showLabel, title, showBody, showButton, showNote }) => (
     <div style={grid}>
-      <Card
-        appearance={appearance}
-        onPress={pressable ? () => {} : undefined}
-        label={showLabel ? label : undefined}
-        title={title}
-        description={showDescription ? description : undefined}
-      >
-        {!pressable && showButton && (
-          <div>
-            <Button size="small" variant="secondary">
-              Button
-            </Button>
-          </div>
-        )}
+      <Card appearance={appearance}>
+        <CardHeader icon={showIcon ? storyIcons.calendar : undefined} iconPosition={iconPosition} iconVariant={iconVariant} label={showLabel ? 'Label' : undefined} title={title} />
+        {showBody && <CardBody>Body text. A sentence or two about what this card holds.</CardBody>}
+        {(showButton || showNote) && <CardFooter note={showNote ? 'Note' : undefined}>{showButton && <ExampleButton />}</CardFooter>}
       </Card>
     </div>
   ),
@@ -78,50 +86,60 @@ export const SolidAndGlass: Story = {
   render: () => (
     <BothThemes>
       <div style={grid}>
-        <Card appearance="solid" label="Solid" title="Title" description="Description" />
-        <Card appearance="glass" label="Glass" title="Title" description="Description" />
+        {(['solid', 'glass'] as Appearance[]).map((a) => (
+          <Card key={a} appearance={a}>
+            <CardHeader label={a === 'glass' ? 'Glass' : 'Solid'} title="Title" />
+            <CardBody>Body text.</CardBody>
+            <CardFooter note="Note">
+              <ExampleButton />
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </BothThemes>
   ),
 };
 
-/** A pressable card's states: rest, hover, pressed, keyboard focus and disabled, in Solid and Glass. */
-export const States: Story = {
-  render: () => (
-    <BothThemes>
-      <StatePictures>
-        {(['solid', 'glass'] as Appearance[]).map((a) => (
-          <Row key={a} label={a === 'glass' ? 'Glass' : 'Solid'}>
-            <div style={grid}>
-              <Card appearance={a} onPress={() => {}} label="Rest" title="Title" description="Description" />
-              <Card appearance={a} onPress={() => {}} data-state="hover" label="Hover" title="Title" description="Description" />
-              <Card appearance={a} onPress={() => {}} data-state="pressed" label="Pressed" title="Title" description="Description" />
-              <Card appearance={a} onPress={() => {}} data-state="focus" label="Focus" title="Title" description="Description" />
-              <Card appearance={a} onPress={() => {}} isDisabled label="Disabled" title="Title" description="Description" />
-            </div>
-          </Row>
-        ))}
-      </StatePictures>
-    </BothThemes>
-  ),
-};
-
-/** What a card can hold: the title is the only part most cards need. Label, description and anything else (like buttons) are optional. */
-export const Content: Story = {
+/** The parts, alone and together: header, body and footer, each with its type already chosen. */
+export const Parts: Story = {
   render: () => (
     <BothThemes>
       <div style={grid}>
-        <Card title="Title only" />
-        <Card label="Label" title="Label and title" />
-        <Card title="Title and description" description="One short line" />
-        <Card label="Label" title="With a button" description="One short line">
-          <div>
-            <Button size="small" variant="secondary">
-              Button
-            </Button>
-          </div>
+        <Card>
+          <CardHeader title="Header only" />
+        </Card>
+        <Card>
+          <CardHeader label="Label" title="Header and body" />
+          <CardBody>Body text. A sentence or two about what this card holds.</CardBody>
+        </Card>
+        <Card>
+          <CardHeader label="Label" title="All three" />
+          <CardBody>Body text. A sentence or two about what this card holds.</CardBody>
+          <CardFooter note="Note">
+            <ExampleButton />
+          </CardFooter>
         </Card>
       </div>
+    </BothThemes>
+  ),
+};
+
+/** Icons in the header: on top or at the start, with a soft background (filled) or without (plain). */
+export const Icons: Story = {
+  render: () => (
+    <BothThemes>
+      {(['top', 'start'] as IconPosition[]).map((position) => (
+        <Row key={position} label={position === 'top' ? 'Top' : 'Start'}>
+          <div style={grid}>
+            {(['filled', 'plain'] as const).map((variant) => (
+              <Card key={variant}>
+                <CardHeader icon={storyIcons.calendar} iconPosition={position} iconVariant={variant} label={variant === 'filled' ? 'Filled' : 'Plain'} title="Title" />
+                <CardBody>Body text.</CardBody>
+              </Card>
+            ))}
+          </div>
+        </Row>
+      ))}
     </BothThemes>
   ),
 };
@@ -131,20 +149,15 @@ export const EmptyState: Story = {
   render: () => (
     <BothThemes>
       <div style={grid}>
-        <Card appearance="glass" title="Nothing here yet" description="Add the first item to see it here.">
-          <div>
-            <Button size="small" variant="secondary">
-              Button
-            </Button>
-          </div>
-        </Card>
-        <Card appearance="solid" title="Nothing here yet" description="Add the first item to see it here.">
-          <div>
-            <Button size="small" variant="secondary">
-              Button
-            </Button>
-          </div>
-        </Card>
+        {(['glass', 'solid'] as Appearance[]).map((a) => (
+          <Card key={a} appearance={a}>
+            <CardHeader icon={storyIcons.book} title="Nothing here yet" />
+            <CardBody>Add the first item to see it here.</CardBody>
+            <CardFooter>
+              <ExampleButton />
+            </CardFooter>
+          </Card>
+        ))}
       </div>
     </BothThemes>
   ),

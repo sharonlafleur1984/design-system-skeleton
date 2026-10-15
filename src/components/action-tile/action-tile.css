@@ -435,3 +435,32 @@
     border-radius: var(--radius-control);
   }
 }
+
+/* The header Card, Tile and Action tile share (tile-header.tsx): an optional icon tile, then the label
+   and title. With the icon on top it sits above the label, with a little more room under it; at the
+   start it sits before the label and title, centered on them. */
+.ds-tile__title {
+  margin: 0;
+}
+.ds-tile__icon {
+  margin-block-end: var(--space-1);
+}
+.ds-tile__head--start {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.ds-tile__head--start .ds-tile__icon {
+  margin-block-end: 0;
+}
+.ds-tile__head-text {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+/* Tile (tile.tsx): never chosen, so no room is kept for the chosen mark. */
+.ds-tile--plain {
+  padding-inline: var(--space-4);
+}

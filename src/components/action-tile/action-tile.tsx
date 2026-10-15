@@ -17,6 +17,8 @@ import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import { AppearanceContext, LitContext, lensClass, resolveAppearance, type Appearance, type Material } from '../material';
 import './action-tile.css';
+import { TileHeader, type IconPosition } from '../tile-header';
+import type { IconTileSize } from '../icon-tile/icon-tile';
 
 // Action tile: navigation (Oct 15). In an ActionTileGroup with behavior="switch", tiles switch the
 // page's content, like tabs (React Aria Tabs underneath: one Tab stop, arrow keys between tiles).
@@ -102,8 +104,14 @@ export interface ActionTileProps {
   description?: ReactNode;
   /** Shown when the tile is chosen, in place of the theme's mark (Spotlight's star, a check elsewhere). Any icon works. Decorative: screen readers hear "selected". */
   chosenIcon?: ReactNode;
-  /** The tile's icon in the phone bottom bar. Decorative: the name next to it is what's read out. */
+  /** The tile's icon: in the phone bottom bar always, and in the tile itself when iconPosition is set. Decorative: the name next to it is what's read out. */
   icon?: ReactNode;
+  /** Shows the icon in the tile, in an icon tile: top (above the label) or start (before the label and title). Leave out to show it only in the phone bottom bar. */
+  iconPosition?: IconPosition;
+  /** The icon tile in the tile: filled (a soft background, the default) or plain. */
+  iconVariant?: 'filled' | 'plain';
+  /** The icon tile's size in the tile: small, medium (the default), large or xlarge. */
+  iconSize?: IconTileSize;
   /** One or two words for the phone bottom bar, like "Schools". Falls back to the title. */
   shortTitle?: ReactNode;
   /** In a switch group: matches the ActionTilePanel it shows. */
@@ -123,7 +131,7 @@ export interface ActionTileProps {
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, chosenIcon, shortTitle, id, href, onPress, isDisabled, appearance: own, material, fill: _fill, ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, iconPosition, iconVariant, iconSize, chosenIcon, shortTitle, id, href, onPress, isDisabled, appearance: own, material, fill: _fill, ...rest }: ActionTileProps) {
   // On the page shell header, tiles are Glass unless they ask for Solid.
   const container = useContext(AppearanceContext);
   const appearance = resolveAppearance(own, material) ?? container ?? 'solid';
@@ -134,8 +142,7 @@ export function ActionTile({ label, title, description, icon, chosenIcon, shortT
   const body = (
     <>
       <span className="ds-tile__glass" aria-hidden="true" />
-      {label && <span className="ds-tile__label">{label}</span>}
-      <span className="ds-tile__title">{title}</span>
+      <TileHeader icon={iconPosition ? icon : undefined} iconPosition={iconPosition} iconVariant={iconVariant} iconSize={iconSize} label={label} title={title} />
       {description && <span className="ds-tile__description">{description}</span>}
       <span className="ds-tile__star" aria-hidden="true">
         {chosenIcon}

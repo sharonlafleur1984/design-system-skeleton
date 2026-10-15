@@ -14,7 +14,11 @@ const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
   tags: ['autodocs'],
-  args: { children: 'Button', variant: 'primary', size: 'medium' },
+  args: { children: 'Button', variant: 'primary', appearance: 'solid', size: 'medium' },
+  argTypes: {
+    variant: { control: 'inline-radio', options: ['primary', 'secondary', 'tertiary'] },
+    appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
+  },
   parameters: {
     docs: {
       description: {
@@ -25,7 +29,7 @@ const meta: Meta<typeof Button> = {
           '',
           '**When not to:** To go to another page, use a link. Never put two primary buttons side by side. Never use Glass on a plain page or on a photo the system doesn\'t control; use Secondary there.',
           '',
-          '**Glass (Oct 12):** a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows a frosted look instead. The glass build is due for a review (issue #60).',
+          '**Solid and glass:** `appearance="solid"` (the default) is the button in its style (primary, secondary or tertiary). `appearance="glass"` is a clear glass button for artwork. The container lights it from the page\'s one light (`useGlassLight`). When the container passes its art (the page shell does; Life Hub screens pass their marble with `imageArt`), Glass is drawn by one WebGL canvas behind the group that paints the art and bends it at the button\'s curved edge, strongest at the very edge and clear in the middle, with a 1px rim brightest facing the light, a soft highlight inside it and a shadow falling away from it. The label and icon stay crisp HTML on top and never bend or blur. A pressed button swells about 2%, label and all, and settles back; on phones, tilting nudges the light. All motion is off with Reduce motion. With no WebGL, a lost graphics context, Reduce transparency or Increase contrast, it shows a frosted look instead. The glass build is due for a review (issue #60).',
           '',
           '**Do:** Start the label with a verb that says what happens ("Save changes"). **Don\'t:** Use "Submit" or "Click here".',
           '',
@@ -114,10 +118,10 @@ const Gear = () => (
 
 const glassRow = (
   <>
-    <Button variant="glass" size="large" icon={<Plus />}>Button</Button>
-    <Button variant="glass">Button</Button>
-    <Button variant="glass" size="small">Small</Button>
-    <Button variant="glass" isDisabled>Disabled</Button>
+    <Button appearance="glass" size="large" icon={<Plus />}>Button</Button>
+    <Button appearance="glass">Button</Button>
+    <Button appearance="glass" size="small">Small</Button>
+    <Button appearance="glass" isDisabled>Disabled</Button>
   </>
 );
 
@@ -128,7 +132,7 @@ function OnHeaderArt() {
       <PageShell
         title="Page title"
         subtitle="Subtitle"
-        actions={<Button variant="glass" size="small" icon={<Gear />}>Settings</Button>}
+        actions={<Button appearance="glass" size="small" icon={<Gear />}>Settings</Button>}
         navigation={<div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--space-3)' }}>{glassRow}</div>}
       >
         <p style={{ margin: 0 }}>Page content</p>
@@ -161,8 +165,8 @@ export const GlassOnEveryMarble: Story = {
     <div style={{ display: 'grid', gap: 'var(--space-3)' }}>
       {marbles.map((m) => (
         <OnMarble key={m.texture} marble={m}>
-          <Button variant="glass" icon={<Plus />}>Button</Button>
-          <Button variant="glass" size="small">Small</Button>
+          <Button appearance="glass" icon={<Plus />}>Button</Button>
+          <Button appearance="glass" size="small">Small</Button>
         </OnMarble>
       ))}
     </div>

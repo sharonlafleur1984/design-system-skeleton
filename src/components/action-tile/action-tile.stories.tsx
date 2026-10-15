@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
-import { BothThemes, Row, WithReducedMotion, StatePictures } from '../story-helpers';
+import { BothThemes, Row, WithReducedMotion, StatePictures, storyIcons } from '../story-helpers';
+import type { IconPosition } from '../tile-header';
 import { PageShell } from '../page-shell/page-shell';
 import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
 import { afterGraduationOnly } from '../product-only';
@@ -26,6 +27,8 @@ const meta: Meta<typeof ActionTile> = {
           '',
           '**States:** soft light throughout, no hard lines. Hover rises 4px with a deeper shadow; pressed sinks back slightly; chosen shows the theme\'s mark (Spotlight\'s star, a check elsewhere, or any icon through `chosenIcon`), takes the theme\'s pale primary color (Glass turns milky) and sits flat; focus glows; disabled fades to half. With reduced motion nothing moves, but the shadow still changes.',
           '',
+          '**Icons:** give each tile an `icon`. It always shows in the phone bottom bar; set `iconPosition` (top or start) to show it in the tile too, in an icon tile, `filled` or `plain`. The chosen mark stays in the top-right corner.',
+          '',
           '**Phones:** under 600px the same tiles become the bottom bar, each an icon (`icon`) and a short name (`shortTitle`), so it\'s one set of tabs on every screen.',
           '',
           '**Accessibility:** one Tab stop, with arrow keys between tiles and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The mark and the color change together, so color is never the only sign a tile is chosen. Keyboard focus is a soft glow in the theme\'s focus color. With Reduce transparency or Increase contrast on, Glass tiles turn solid, and a chosen one shows a line in its text color with its mark.',
@@ -41,13 +44,13 @@ type Story = StoryObj<typeof ActionTile>;
 const panelStyle: CSSProperties = { marginBlockStart: 'var(--space-4)' };
 
 const tiles = [
-  { id: 'one', label: 'Label', title: 'Tile 1', description: 'Description' },
-  { id: 'two', label: 'Label', title: 'Tile 2', description: 'Description' },
-  { id: 'three', label: 'Label', title: 'Tile 3', description: 'Description' },
+  { id: 'one', label: 'Label', title: 'Tile 1', description: 'Description', icon: storyIcons.book },
+  { id: 'two', label: 'Label', title: 'Tile 2', description: 'Description', icon: storyIcons.wallet },
+  { id: 'three', label: 'Label', title: 'Tile 3', description: 'Description', icon: storyIcons.calendar },
 ];
 
 /** Three tiles that switch the content under them, the first chosen. */
-function NavigationTiles({ appearance, label = 'Navigation', showLabel = true, showDescription = true, title }: { appearance?: Appearance; label?: string; showLabel?: boolean; showDescription?: boolean; title?: string }) {
+function NavigationTiles({ appearance, label = 'Navigation', showLabel = true, showDescription = true, title, iconPosition, iconVariant }: { appearance?: Appearance; label?: string; showLabel?: boolean; showDescription?: boolean; title?: string; iconPosition?: IconPosition; iconVariant?: 'filled' | 'plain' }) {
   return (
     <ActionTileSwitch defaultSelectedKey="one">
       <ActionTileGroup aria-label={label} behavior="switch">
@@ -56,6 +59,9 @@ function NavigationTiles({ appearance, label = 'Navigation', showLabel = true, s
             key={e.id}
             id={e.id}
             appearance={appearance}
+            icon={e.icon}
+            iconPosition={iconPosition}
+            iconVariant={iconVariant}
             label={showLabel ? e.label : undefined}
             title={i === 0 && title ? title : e.title}
             description={showDescription ? e.description : undefined}
@@ -71,18 +77,23 @@ function NavigationTiles({ appearance, label = 'Navigation', showLabel = true, s
   );
 }
 
-type PlaygroundArgs = { appearance: Appearance; showLabel: boolean; title: string; showDescription: boolean };
+type PlaygroundArgs = { appearance: Appearance; showIcon: boolean; iconPosition: IconPosition; iconVariant: 'filled' | 'plain'; showLabel: boolean; title: string; showDescription: boolean };
 
 /** Try it: pick Solid or Glass, turn the label and description on or off, and press the tiles. */
 export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { appearance: 'solid', showLabel: true, title: 'Tile 1', showDescription: true },
+  args: { appearance: 'solid', showIcon: false, iconPosition: 'top', iconVariant: 'filled', showLabel: true, title: 'Tile 1', showDescription: true },
   argTypes: {
     appearance: { name: 'Appearance', control: 'inline-radio', options: ['solid', 'glass'] },
+    showIcon: { name: 'Icon', control: 'boolean' },
+    iconPosition: { name: 'Icon position', control: 'inline-radio', options: ['top', 'start'], if: { arg: 'showIcon' } },
+    iconVariant: { name: 'Icon background', control: 'inline-radio', options: ['filled', 'plain'], if: { arg: 'showIcon' } },
     showLabel: { name: 'Label', control: 'boolean' },
     title: { name: 'First title' },
     showDescription: { name: 'Description', control: 'boolean' },
   },
-  render: ({ appearance, showLabel, title, showDescription }) => <NavigationTiles appearance={appearance} showLabel={showLabel} showDescription={showDescription} title={title} label="Playground" />,
+  render: ({ appearance, showIcon, iconPosition, iconVariant, showLabel, title, showDescription }) => (
+    <NavigationTiles appearance={appearance} iconPosition={showIcon ? iconPosition : undefined} iconVariant={iconVariant} showLabel={showLabel} showDescription={showDescription} title={title} label="Playground" />
+  ),
 };
 
 /** The two appearances on the theme's own page: Solid (the card surface) and Glass (clear, only its edge light and shadow). Drag the sun to move the light. */

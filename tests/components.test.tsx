@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
-import { ActionTile, ActionTileGroup, PageShell, Button, Card, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
+import { ActionTile, ActionTileGroup, PageShell, Button, Card, CardHeader, CardBody, CardFooter, Tile, IconTile, Heading, Body, Label, Note, Callout, ProgressBar, Checkbox, Switch, Separator, Link, LinkButton, Tag, TagGroup, Tabs, TabList, Tab, TabPanel, ToggleButtonGroup, ToggleButton, Select } from '../src/components';
 // The old names, kept as aliases so apps that use them keep working.
 import { ProgressMeter, Divider, Chip, ChipGroup, SegmentedControl, Segment } from '../src/components';
 
@@ -77,9 +77,12 @@ describe('Button', () => {
 
 describe('Card', () => {
   it('renders the element asked for, Solid by default', () => {
-    render(<Card as="section" aria-label="This week" title="Title">Hi</Card>);
+    render(
+      <Card as="section" aria-label="This week">
+        <CardHeader title="Title" />
+      </Card>,
+    );
     const card = screen.getByRole('region', { name: 'This week' });
-    expect(card.className).toContain('ds-card--static');
     expect(card.className).not.toContain('ds-tile--glass');
     expect(screen.getByText('Title').className).toContain('ds-tile__title');
   });
@@ -96,16 +99,59 @@ describe('Card', () => {
     expect(screen.getByRole('region', { name: 'Old name' }).className).toContain('ds-tile--glass');
   });
 
-  it('is one link or one button when given href or onPress', async () => {
+  it('is a surface with typed parts, and the title is a real heading', async () => {
+    const { container } = render(
+      <Card as="section" aria-label="Bills">
+        <CardHeader label="Label" title="Water bill" level={2} />
+        <CardBody>Due Friday.</CardBody>
+        <CardFooter note="Updated today">
+          <button type="button">Pay</button>
+        </CardFooter>
+      </Card>,
+    );
+    expect(screen.getByRole('heading', { level: 2, name: 'Water bill' })).toBeTruthy();
+    expect(screen.getByText('Updated today').className).toContain('ds-text--note');
+    await expectNoAxeViolations(container);
+  });
+});
+
+describe('Tile', () => {
+  it('is one link or one button, with its icon decorative', async () => {
+    const icon = <svg viewBox="0 0 24 24" />;
     const { container } = render(
       <>
-        <Card href="#" title="Go somewhere" description="A page" />
-        <Card onPress={() => {}} title="Do something" />
+        <Tile href="#" icon={icon} title="Go somewhere" description="A page" />
+        <Tile onPress={() => {}} title="Do something" />
       </>,
     );
-    expect(screen.getByRole('link', { name: /Go somewhere/ }).className).toContain('ds-card');
-    expect(screen.getByRole('button', { name: /Do something/ }).className).not.toContain('ds-card--static');
+    expect(screen.getByRole('link', { name: /Go somewhere/ }).className).toContain('ds-tile');
+    expect(screen.getByRole('button', { name: /Do something/ })).toBeTruthy();
+    expect(container.querySelector('.ds-icon-tile')?.getAttribute('aria-hidden')).toBe('true');
     await expectNoAxeViolations(container);
+  });
+});
+
+describe('Icon tile', () => {
+  it('is read out only when it has a label', () => {
+    render(<IconTile icon={<svg viewBox="0 0 24 24" />} label="Calendar" size="large" variant="plain" />);
+    const tile = screen.getByRole('img', { name: 'Calendar' });
+    expect(tile.className).toContain('ds-icon-tile--large');
+    expect(tile.className).toContain('ds-icon-tile--plain');
+  });
+});
+
+describe('Text parts', () => {
+  it('keep the look and the heading level separate', () => {
+    render(
+      <>
+        <Heading level={4} variant="title">Title</Heading>
+        <Body>Body</Body>
+        <Label>Label</Label>
+        <Note>Note</Note>
+      </>,
+    );
+    expect(screen.getByRole('heading', { level: 4, name: 'Title' }).className).toContain('ds-text--title');
+    expect(screen.getByText('Label').className).toContain('ds-text--label');
   });
 });
 

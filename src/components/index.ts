@@ -2,8 +2,15 @@ import './shared.css';
 
 export { Button } from './button/button';
 export type { ButtonProps, ButtonVariant, ButtonSize } from './button/button';
-export { Card } from './card/card';
-export type { CardProps, CardVariant } from './card/card';
+export { Card, CardHeader, CardBody, CardFooter } from './card/card';
+export type { CardProps, CardVariant, CardHeaderProps } from './card/card';
+export { Tile } from './tile/tile';
+export type { TileProps } from './tile/tile';
+export { IconTile } from './icon-tile/icon-tile';
+export type { IconTileProps, IconTileSize } from './icon-tile/icon-tile';
+export { Heading, Body, Label, Note } from './text/text';
+export type { HeadingProps, HeadingVariant, TextPartProps } from './text/text';
+export type { IconPosition, TileHeaderOptions } from './tile-header';
 export { Callout } from './callout/callout';
 export type { CalloutProps, CalloutTone, LegacyCalloutTone } from './callout/callout';
 export { ProgressBar, ProgressMeter } from './progress-bar/progress-bar';

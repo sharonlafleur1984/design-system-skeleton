@@ -4,19 +4,22 @@ import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
 import './button.css';
-import { materialClass, type Material } from '../material';
+import { lensClass, type Appearance, type Material } from '../material';
 
 // Mirrors the Figma "Button" component set: Style, Size, Destructive, Is Enabled, Show Icon.
 // Built on React Aria's Button, which handles press, keyboard, focus and the busy
 // announcement the same way on mouse, touch and screen readers. This file only adds the look.
 // The glass style (Oct 12): for buttons on artwork the design system controls (a theme's header, Life
 // Hub's marble). The container's useGlassLight lights it, and it bends the art at its edge.
+/** primary, secondary and tertiary. ("glass" still works: use appearance="glass".) */
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'glass';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'className' | 'style'> {
-  /** Figma "Style". One primary button per screen, for the main action. Glass is only for artwork. */
+  /** Figma "Style". One primary button per screen, for the main action. */
   variant?: ButtonVariant;
+  /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass, the clear glass button for artwork, lit from the page's light. */
+  appearance?: Appearance;
   /** Figma "Size". */
   size?: ButtonSize;
   /** Figma "Destructive". For actions that remove or undo something. */
@@ -43,6 +46,7 @@ export function Button({
   variant = 'primary',
   size = 'medium',
   destructive = false,
+  appearance,
   material = 'glass',
   icon,
   isPending,
@@ -54,8 +58,10 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const pending = isPending ?? loading ?? false;
-  const classes = ['ds-button', `ds-button--${variant}`, `ds-button--${size}`];
-  if (variant === 'glass') classes.push('ds-glass', ...[materialClass(material)].filter((c): c is string => !!c));
+  const glass = appearance === 'glass' || variant === 'glass';
+  const classes = ['ds-button', `ds-button--${glass ? 'glass' : variant}`, `ds-button--${size}`];
+  // The old material="default" still gives the frosted look without the lens.
+  if (glass) classes.push('ds-glass', ...[lensClass(material === 'default' ? 'solid' : 'glass')].filter((c): c is string => !!c));
   if (destructive) classes.push('ds-button--destructive');
   if (className) classes.push(className);
   return (

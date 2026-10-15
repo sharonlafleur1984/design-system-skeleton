@@ -297,3 +297,31 @@ export function LightScene({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
+// Storybook only: simple line icons for stories (24 x 24, drawn in the text color).
+const lineIcon = (d: ReactNode) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {d}
+  </svg>
+);
+export const storyIcons = {
+  calendar: lineIcon(
+    <>
+      <rect x="4" y="5" width="16" height="15" rx="2" />
+      <path d="M4 10h16M8 3v4M16 3v4" />
+    </>,
+  ),
+  star: lineIcon(<path d="m12 4 2.5 5 5.5.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.5-.8z" />),
+  wallet: lineIcon(
+    <>
+      <rect x="3" y="6" width="18" height="13" rx="2" />
+      <path d="M3 10h18M16 14.5h2" />
+    </>,
+  ),
+  book: lineIcon(
+    <>
+      <path d="M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z" />
+      <path d="M5 17a3 3 0 0 1 3-3h10" />
+    </>,
+  ),
+};
