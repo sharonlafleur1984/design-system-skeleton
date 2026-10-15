@@ -100,8 +100,8 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
 export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
 // Storybook's own chrome, not any theme: the same in every column.
-// The theme's name is the biggest thing in its column (above any theme's title size), so it's clear what everything under it belongs to.
-const compareHeading: CSSProperties = { margin: 0, font: '700 32px/1.2 system-ui, sans-serif', color: '#2e3438' };
+// Small and on the right, in from the rounded corner, so the theme's name labels its column without competing with the part's name (Sharon, Oct 15).
+const compareHeading: CSSProperties = { margin: 0, font: '600 12px/1.4 system-ui, sans-serif', color: '#5c6870', textAlign: 'end', paddingInlineEnd: '16px' };
 
 /** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
 const InComparePanel = createContext(false);
@@ -135,8 +135,8 @@ export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) 
         {themeList.map((theme) => (
           <ThemeContext.Provider key={theme} value={theme}>
             <InComparePanel.Provider value>
-              {/* The theme's name as a heading above its column, in Storybook's own type, so it's clear
-                  which theme everything under it belongs to. */}
+              {/* The theme's name above its column, in Storybook's own type, so it's clear which theme
+                  everything under it belongs to. */}
               <section aria-labelledby={`compare-${theme}`} style={{ minWidth: 0, display: 'grid', gap: '8px', alignContent: 'start' }}>
                 <h2 id={`compare-${theme}`} style={compareHeading}>
                   {themeNames[theme]}
