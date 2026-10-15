@@ -13,7 +13,7 @@ Design system: one shared base (structure, naming, scales, status names and rule
 - **Every fact needs a source link,** or a label saying it's an estimate.
 - **Ask before changing or deleting anything.** A recommendation is not approval.
 - **Wiki pages are edited in `docs/wiki/`,** never in the GitHub Wiki tab.
-- **Code and Storybook are the source of truth.** Figma is for ideas and follows the code. A token change must update the token lock (`npm run test:update`); a visual change needs the `update-screenshots` label. Both are reviewed in the pull request.
+- **Code and Storybook are the source of truth.** Figma is for ideas and follows the code. A token change must update the token lock (`npm run test:update`); a visual change needs its screenshots approved (the "Approve the new screenshots" box in the pull request, or the `update-screenshots` label). Both are reviewed in the pull request.
 - **Decisions update Storybook in the same pull request.** When a decision changes how something looks or works, update its Storybook docs (component descriptions, Foundations pages, story notes) in the same pull request, and list what changed in the pull request description. If docs keep getting missed anyway, add a test that fails when a decision names a component or token whose Storybook docs weren't touched.
 - **Base or theme?** A value every product shares goes in `tokens/base/`. A product's look goes in `tokens/themes/<product>/`. A new shared name must be added to every theme, or the contract test fails.
 - **Never color alone:** status colors always come with an icon or a label.
