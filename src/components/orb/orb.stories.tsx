@@ -8,8 +8,9 @@ import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component
 const meta: Meta<typeof Orb> = {
   title: 'Components/Orb',
   component: Orb,
-  // On its own page the orb starts in the middle, like every component's example.
-  args: { size: 'medium', look: 'glow', defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
+  // On its own page the orb starts in the middle, like every component's example. It opens in dark
+  // mode, where its light shows best (Sharon).
+  args: { size: 'medium', look: 'glow', defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs, sbMode: 'dark' } as Meta<typeof Orb>['args'],
   argTypes: {
     size: choice('Size', 'How big it is: small 16px (the height of body text, for Try it out windows), medium 32px (the usual), large 48px\n\n`size`', ['small', 'medium', 'large']),
     look: choice('Look', 'Glow: lit from inside, its light spreading over the section. Tinted: glass in the page\'s color. Clear: completely see-through\n\n`look`', ['glow', 'tinted', 'clear']),
