@@ -23,7 +23,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   defaultPosition?: OrbPosition;
   /** Called while it's dragged, or moved with the arrow keys. */
   onPositionChange?: (position: OrbPosition) => void;
-  /** How big it is. Small is the height of body text (Try it out windows use it); medium is the usual. */
+  /** How big it is: small 16px, the height of body text (Try it out windows use it); medium 32px, the usual; large 48px. */
   size?: OrbSize;
   /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.

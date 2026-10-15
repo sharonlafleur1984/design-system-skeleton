@@ -2,20 +2,20 @@
   "orb": {
     "$description": "The orb: the light you drag when exploring glass in Storybook. A small glass marble that glows in its theme's color. The glow is wide on purpose: it's the light itself. Full pages never show one; their light stays at light-from-right and light-top.",
     "size": {
-      "$description": "The marble, in three sizes. Medium is the usual one.",
+      "$description": "The marble, in three sizes on the 8px grid: 16, 32 and 48. Medium is the usual one.",
       "small": {
         "$type": "dimension",
-        "$value": "{type.body-default.size}",
+        "$value": "16px",
         "$description": "The height of body text, so it sits beside words. Try it out windows use it."
       },
       "medium": {
         "$type": "dimension",
-        "$value": "34px",
+        "$value": "32px",
         "$description": "The usual orb: glass stories and the Glass playground."
       },
       "large": {
         "$type": "dimension",
-        "$value": "52px"
+        "$value": "48px"
       }
     },
     "target": {
@@ -30,7 +30,7 @@
       },
       "large": {
         "$type": "dimension",
-        "$value": "60px"
+        "$value": "56px"
       }
     },
     "glow": {

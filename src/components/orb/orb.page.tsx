@@ -30,7 +30,7 @@ export const orbPage: ComponentPageInfo = {
   ],
   screenReader: { pattern: 'name, button', example: 'Light. Drag it, or use the arrow keys to move it., button' },
   accessibility: [
-    'The button is at least 44 by 44 pixels (60 for large), larger than the marble, so it is easy to grab.',
+    'The button is at least 44 by 44 pixels (56 for large), larger than the marble, so it is easy to grab.',
     "Nothing moves on its own, so there's no motion to reduce.",
   ],
   imports: ['Orb', 'ORB_START'],

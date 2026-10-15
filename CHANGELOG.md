@@ -15,7 +15,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Added
 
-- **Orb:** the light you drag when exploring glass, a glowing glass marble in the theme's color (`Orb`, `ORB_START`, tokens `--orb-*`). In Sunrise, `palette` sets an area's color family. `size` is small (the height of body text), medium or large.
+- **Orb:** the light you drag when exploring glass, a glowing glass marble in the theme's color (`Orb`, `ORB_START`, tokens `--orb-*`). In Sunrise, `palette` sets an area's color family. `size` is small (16px), medium (32px) or large (48px).
 - **Storybook: every part has a page.** The component page is a story now, so Controls, Actions, Interactions and Accessibility work on it. Every planned part has a page with its status (Ready, Pending, On hold or Not started), so the sidebar shows the whole library.
 - **Fireside**, the designer toolkit's theme: always dark, in Retro's colors.
 - **Theme names:** Spotlight (After Graduation), Sunrise (Life Hub), Fireside (designer toolkit).
