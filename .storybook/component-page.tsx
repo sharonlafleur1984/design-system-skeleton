@@ -21,11 +21,11 @@ import './component-page.css';
 /** Ready: in the code on main. Pending: built, waiting in an open pull request. On hold: waits until a product needs it. */
 export type Status = 'ready' | 'pending' | 'on-hold' | 'not-started';
 
-export const statusInfo: Record<Status, { label: string; empty?: { title: string; body: string } }> = {
+export const statusInfo: Record<Status, { label: string; empty?: { title: string } }> = {
   ready: { label: 'Ready' },
-  pending: { label: 'Pending', empty: { title: 'Being built right now', body: 'Nothing to try yet. Check back when the status says Ready.' } },
-  'on-hold': { label: 'On hold', empty: { title: 'Taking a breather', body: 'Work on this one is paused until a product needs it.' } },
-  'not-started': { label: 'Not started', empty: { title: 'Still on the drawing board', body: 'Nothing to try yet.' } },
+  pending: { label: 'Pending', empty: { title: 'Being built right now' } },
+  'on-hold': { label: 'On hold', empty: { title: 'Taking a breather' } },
+  'not-started': { label: 'Not started', empty: { title: 'Still on the drawing board' } },
 };
 
 const repo = 'https://github.com/sharonlafleur1984/design-system-skeleton/blob/main/';
@@ -217,7 +217,7 @@ function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
   );
   return (
     <div className="sb-page__bar">
-      {field('sb-page-theme', 'Theme', theme, [...themeList.map((t) => ({ id: t.id, name: t.name })), { id: 'both', name: 'Compare all' }], (v) => update({ theme: v }))}
+      {field('sb-page-theme', 'Theme', theme, [...themeList.map((t) => ({ id: t.id, name: t.name })), { id: 'both', name: 'All', hint: 'every theme side by side' }], (v) => update({ theme: v }))}
       {field(
         'sb-page-mode',
         'Mode',
@@ -470,19 +470,14 @@ function CodeBar({ code }: { code: string }) {
 
 function EmptyState({ status }: { status: Status }) {
   const empty = statusInfo[status].empty ?? statusInfo['not-started'].empty!;
+  // The words sit inside the dashed outline of a part still being drawn, with the pencil beside it.
   return (
     <div className="sb-try__empty">
-      <svg className="sb-try__empty-art" width="132" height="64" viewBox="0 0 132 64" fill="none" aria-hidden="true">
-        <rect x="2" y="12" width="104" height="40" rx="20" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 5" />
-        <g className="sb-try__pencil">
-          <path d="M112 40 126 26l4 4-14 14-6 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-          <path d="M122 30l4 4" stroke="currentColor" strokeWidth="1.5" />
-        </g>
+      <p className="sb-try__empty-title">{empty.title}</p>
+      <svg className="sb-try__pencil" width="20" height="20" viewBox="110 24 22 22" fill="none" aria-hidden="true">
+        <path d="M112 40 126 26l4 4-14 14-6 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M122 30l4 4" stroke="currentColor" strokeWidth="1.5" />
       </svg>
-      <div>
-        <p className="sb-try__empty-title">{empty.title}</p>
-        <p className="sb-try__empty-body">{empty.body}</p>
-      </div>
     </div>
   );
 }

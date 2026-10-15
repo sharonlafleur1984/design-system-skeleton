@@ -72,13 +72,10 @@
   gap: 8px 16px;
   padding: 6px 8px 6px 12px;
   border-radius: 8px;
-  background: #f6f6f6;
-  color: #2e3438;
+  /* The same gray as the table headers in Try it out, so the selected choice stands out and the top balances the page. */
+  background: var(--sb-head);
+  color: var(--sb-ink);
   font-size: 13px;
-}
-.sb-page[data-page='dark'] .sb-page__field {
-  background: #3a3f44;
-  color: #e6e9eb;
 }
 .sb-page__field-label {
   font-weight: 700;
@@ -100,7 +97,7 @@
   transition: background-color 140ms var(--sb-ease);
 }
 .sb-page__choice[data-hovered] {
-  background: rgb(0 0 0 / 0.06);
+  background: rgb(0 0 0 / 0.08);
 }
 .sb-page__choice[data-selected] {
   background: #ffffff;
@@ -368,26 +365,22 @@
   inset-block-end: 10px;
   inset-inline-start: 16px;
 }
-/* Nothing built yet: a dashed outline being drawn, and what to expect. */
+/* Nothing built yet: the words inside a dashed outline, centered, with a pencil drawing it. */
 .sb-try__empty {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 8px;
   color: var(--color-ink-tertiary, #6b747b);
 }
 .sb-try__empty-title {
   margin: 0;
+  padding: 10px 24px;
+  border: 1.5px dashed currentColor;
+  border-radius: 999px;
   color: var(--color-ink-primary);
   font-size: 16px;
   font-weight: 700;
-}
-.sb-try__empty-body {
-  max-inline-size: 420px;
-  margin: 4px 0 0;
-  color: var(--color-ink-secondary);
-  font-size: 14px;
-  line-height: 1.5;
 }
 .sb-try__pencil {
   animation: sb-pencil 520ms var(--sb-ease) both;
