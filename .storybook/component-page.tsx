@@ -9,6 +9,7 @@ import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
 import { Orb } from '../src/components/orb/orb';
+import { EmptyState } from './empty-state';
 import { LitBackground } from '../src/components/glass-light/lit-background';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
 import './component-page.css';
@@ -68,6 +69,8 @@ export interface ComponentPageInfo {
   codeName?: string;
   /** The part is the light itself (the Orb), so its windows don't add a second orb, and each example gets its own stage to sit in the middle of. */
   isLight?: boolean;
+  /** The page and its examples open in dark mode, where the part shows best (the Orb's light), until Mode is picked. */
+  opensDark?: boolean;
   /** The themes it's made for, when not all of them. Try it out says so in the others. */
   onlyIn?: string[];
 }
@@ -122,7 +125,7 @@ const darkOnly = (themes as { id: string; alwaysDark?: boolean }[]).filter((t) =
 
 export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: boolean } = {}) {
   const rows: Record<string, unknown> = {
-    // Hidden when the one theme picked has no light look in the system yet (Fireside, for now), since it would change nothing.
+    // Hidden when the one theme picked has no light look (theme.json alwaysDark), since it would change nothing.
     sbMode: radio('Mode', 'data-mode', 'Shows the examples in light or dark mode. Auto is dark from 7 PM to 7 AM. System follows your device.', { light: 'Light', dark: 'Dark', auto: 'Auto', system: 'System' }, darkOnly.length === 1 ? { if: { global: 'theme', neq: darkOnly[0] } } : {}),
     sbBackground: radioNoAll(
       'Background',
@@ -197,7 +200,7 @@ export function resolveMode(mode: unknown): 'light' | 'dark' {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
+function PageBar({ theme, pageMode, page }: { theme: string; pageMode: string; page: string }) {
   const field = (id: string, label: string, value: string, choices: { id: string; name: string; hint?: string }[], onPick: (v: string) => void) => (
     <div className="sb-page__field">
       <span className="sb-page__field-label" id={id}>
@@ -236,7 +239,7 @@ function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
           { id: 'auto', name: 'Auto', hint: 'dark from 7 PM to 7 AM' },
           { id: 'system', name: 'System', hint: 'follows your device' },
         ],
-        (v) => update({ pageMode: v }),
+        (v) => update({ pageMode: v, pageModeFor: page }),
       )}
     </div>
   );
@@ -486,18 +489,9 @@ function CodeBar({ code }: { code: string }) {
   );
 }
 
-function EmptyState({ status }: { status: Status }) {
+function StatusEmpty({ status }: { status: Status }) {
   const empty = statusInfo[status].empty ?? statusInfo['not-started'].empty!;
-  // The words sit inside the dashed outline of a part still being drawn, with the pencil beside it.
-  return (
-    <div className="sb-try__empty">
-      <p className="sb-try__empty-title">{empty.title}</p>
-      <svg className="sb-try__pencil" width="20" height="20" viewBox="110 24 22 22" fill="none" aria-hidden="true">
-        <path d="M112 40 126 26l4 4-14 14-6 2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-        <path d="M122 30l4 4" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
-    </div>
-  );
+  return <EmptyState title={empty.title} />;
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -600,7 +594,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
             )}
             <TryWindow theme={t} mode={m} args={args} isLight={info.isLight}>
               {info.onlyIn && !info.onlyIn.includes(t) ? (
-                <p className="sb-try__not-here">This component hasn&apos;t been made for the {themeNames[t]} theme yet.</p>
+                <EmptyState title={`Not made for ${themeNames[t]} yet`} />
               ) : (
                 <Matrix rows={rows} args={args} render={render} />
               )}
@@ -611,7 +605,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
     </div>
   ) : (
     <div className="sb-try__window sb-try__window--plain" data-theme={shownThemes[0]} data-mode={modes[0]}>
-      <EmptyState status={info.status} />
+      <StatusEmpty status={info.status} />
     </div>
   );
   const reactAria = 'reactAria' in info.builtWith ? info.builtWith.reactAria : null;
@@ -619,7 +613,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
 
   return (
     <div className="sb-page" data-page={resolveMode(pageMode)}>
-      <PageBar theme={theme} pageMode={pageMode} />
+      <PageBar theme={theme} pageMode={pageMode} page={name} />
 
       {/* A div, not a header: Page shell's example has its own header, and a page can have only one. */}
       <div id="sb-section-overview" className="sb-page__header">
@@ -902,6 +896,14 @@ function PropTable({ argTypes }: { argTypes: PageArgTypes }) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AnyStory = StoryObj<Meta<any>>;
 
+/** The page's Mode: what was picked, except a page that opens in dark shows dark until Mode is picked on it. */
+function pageModeFor(context: StoryContext) {
+  const info = context.parameters.componentPage as ComponentPageInfo;
+  const page = context.title.split('/').at(-1) ?? '';
+  if (info.opensDark && context.globals.pageModeFor !== page) return 'dark';
+  return String(context.globals.pageMode ?? 'light');
+}
+
 function pageRender(section: Section | undefined, tryIt: boolean) {
   return function PageStory(args: Record<string, unknown>, context: StoryContext) {
     return (
@@ -913,7 +915,7 @@ function pageRender(section: Section | undefined, tryIt: boolean) {
         argTypes={context.argTypes as PageArgTypes}
         initialArgs={context.initialArgs}
         theme={String(context.globals.theme ?? themeList[0].id)}
-        pageMode={String(context.globals.pageMode ?? 'light')}
+        pageMode={pageModeFor(context)}
         section={section}
         tryIt={tryIt}
       />

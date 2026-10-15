@@ -12,6 +12,8 @@ export const orbPage: ComponentPageInfo = {
   status: 'ready',
   builtWith: { source: 'src/components/orb/orb.tsx' },
   isLight: true,
+  // Its light shows best in dark mode, so its page opens there (Sharon).
+  opensDark: true,
   useFor: ['Exploring light on glass, one component at a time: drag the orb, and every rim, highlight and shadow follows.'],
   useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family.", 'Glow, the default, is lit from inside, and its light spreads over the whole section. Tinted is glass in the page\'s color, and clear is colorless glass that bends the real background behind it (pass the section\'s art as backdrop); neither glows.'],
   useElse: [{ job: 'A full page: its light stays still where it was placed (the light tokens)', instead: { name: 'Page shell', title: 'Components/Page shell' } }],

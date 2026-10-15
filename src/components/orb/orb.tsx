@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ButtonHTMLAttributes, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react';
-import type { GlassArt } from '../glass-lens/lens-art';
+import { resolveColor, type GlassArt } from '../glass-lens/lens-art';
 import { renderOrb, type OrbLook } from './orb-render';
 import './orb.css';
 
@@ -150,9 +150,16 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         }
       }
     }
-    // On a background with no color, the whole ball and the light inside it are white too.
-    const w = (part: string) => (white ? '#ffffff' : c(part));
-    renderOrb(px, look, { light: w('light'), glow: w('glow'), halo: w('halo'), body: w('body') }, behind)
+    // On a background with no color, the whole ball and its light are the theme's plain light too.
+    const plainLight = cs.getPropertyValue('--orb-color-plain').trim() || '#ffffff';
+    // A theme whose plain light warms as it fades (Fireside) warms the glass the same way: the core
+    // stays its near-white light, and the renderer shades the glass around it in the warm color, like
+    // a lantern's flame through its glass.
+    const plainFar = cs.getPropertyValue('--orb-color-plain-far').trim();
+    const warm = white && (resolveColor(plainFar, el)?.[3] ?? 0) > 0;
+    const w = (part: string) => (white ? plainLight : c(part));
+    const glass = (part: string) => (warm ? plainFar : w(part));
+    renderOrb(px, look, { light: w('light'), glow: glass('glow'), halo: glass('halo'), body: glass('body'), warm }, behind)
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));
     return () => {

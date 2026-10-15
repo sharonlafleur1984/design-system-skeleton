@@ -101,9 +101,36 @@
   );
 }
 
-/* A plain light or dark background has no color to blend with, so the light is pure white. */
+/* A plain light or dark background has no color to blend with: the theme's plain light (pure white, or
+   Fireside's warm white). */
 .ds-orb-light[data-neutral] {
-  --_light: var(--orb-shine-pool);
+  --_light: var(--orb-color-plain);
+}
+/* A theme may warm its plain light as it fades (Fireside, like a lantern on a wall): a haze in its warm
+   color, faint by the ball so the light there stays near white, strongest a couple of ball sizes out,
+   then fading with the light, in small steps so no ring shows. Transparent (the other themes) draws nothing. */
+.ds-orb-light[data-neutral]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--orb-color-plain-far) 18%, transparent) 0,
+    color-mix(in srgb, var(--orb-color-plain-far) 30%, transparent) calc(var(--_size) * 0.6),
+    color-mix(in srgb, var(--orb-color-plain-far) 42%, transparent) calc(var(--_size) * 1.2),
+    color-mix(in srgb, var(--orb-color-plain-far) 48%, transparent) calc(var(--_size) * 2),
+    color-mix(in srgb, var(--orb-color-plain-far) 46%, transparent) calc(var(--_size) * 3),
+    color-mix(in srgb, var(--orb-color-plain-far) 38%, transparent) calc(var(--_size) * 5),
+    color-mix(in srgb, var(--orb-color-plain-far) 28%, transparent) calc(var(--_size) * 8),
+    color-mix(in srgb, var(--orb-color-plain-far) 19%, transparent) calc(var(--_size) * 12),
+    color-mix(in srgb, var(--orb-color-plain-far) 11%, transparent) calc(var(--_size) * 18),
+    color-mix(in srgb, var(--orb-color-plain-far) 6%, transparent) calc(var(--_size) * 26),
+    color-mix(in srgb, var(--orb-color-plain-far) 3%, transparent) calc(var(--_size) * 36),
+    color-mix(in srgb, var(--orb-color-plain-far) 1.2%, transparent) calc(var(--_size) * 48),
+    color-mix(in srgb, var(--orb-color-plain-far) 0.4%, transparent) calc(var(--_size) * 62),
+    transparent 100%
+  );
 }
 .ds-orb-light--small {
   --_size: var(--orb-size-small);
