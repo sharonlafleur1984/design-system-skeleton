@@ -2,15 +2,15 @@ Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fir
 
 ## How Lantern stays in sync with the code
 
-Lantern is generated from code, not drawn by hand. Claude keeps the two in sync.
+Lantern isn't drawn by hand. It's built from the code, and Claude keeps the two in step.
 
-1. **Source.** The code holds the tokens, components and docs. It's the source of truth.
-2. **Build.** One command turns the code into this page: its colors, type, spacing, live previews and component pages.
-3. **Publish.** Claude uploads the build to this page.
-4. **Edit.** A change made here goes back to the repo as a pull request, which Claude opens. Nothing changes only in Lantern.
-5. **Rebuild.** Once the pull request merges, the next build brings the change back here.
+1. Everything starts in the code: the tokens, the components and the docs.
+2. One command turns that code into this page, live previews and all.
+3. Claude publishes the result here.
+4. If you change something here, Claude turns it into a pull request, so the change lands in the code first.
+5. Once it's merged, the next build brings it back here.
 
-To try each component live, [open Storybook](https://designsystemskeleton.netlify.app).
+Want to try a component? [Open Storybook](https://designsystemskeleton.netlify.app) and play with it.
 
 ## Themes
 
