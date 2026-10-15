@@ -119,7 +119,7 @@ const darkOnly = (themes as { id: string; alwaysDark?: boolean }[]).filter((t) =
 
 export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: boolean } = {}) {
   const rows: Record<string, unknown> = {
-    // Hidden when the one theme picked has no light look in the system yet (Fireside, for now), since it would change nothing.
+    // Hidden when the one theme picked has no light look (theme.json alwaysDark), since it would change nothing.
     sbMode: radio('Mode', 'data-mode', 'Shows the examples in light or dark mode. Auto is dark from 7 PM to 7 AM. System follows your device.', { light: 'Light', dark: 'Dark', auto: 'Auto', system: 'System' }, darkOnly.length === 1 ? { if: { global: 'theme', neq: darkOnly[0] } } : {}),
     sbBackground: radioNoAll(
       'Background',

@@ -35,7 +35,13 @@ export const ThisThemeOnly: Story = {
   name: 'This theme only',
   render: (_args, { globals }) => {
     const theme = singleTheme(globals.theme);
-    if (theme === 'designer-toolkit') return <p>Fireside has no extra colors. Peach copper is the primary color, used rarely: the main action, focus and the selected item.</p>;
+    if (theme === 'designer-toolkit')
+      return (
+        <>
+          <p>Peach copper is Fireside's primary color, used rarely: the main action, focus and the selected item. The shell stays dark in both modes; only the work area, behind the prototype and the wiki, changes with light and dark mode.</p>
+          <SwatchGroup title="Work area" names={namesWith('shell-work-', 'designer-toolkit')} />
+        </>
+      );
     return theme === 'life-hub' ? (
       <SwatchGroup title="Life Hub areas" names={namesWith('color-area-', 'life-hub')} />
     ) : (
