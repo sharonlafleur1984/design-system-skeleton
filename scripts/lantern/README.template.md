@@ -17,13 +17,11 @@ The full story behind the journey can be found in the [design-system-skeleton](h
 
 ## Themes
 
-Pick a theme at the top to see every token and preview in it.
-
-| Theme | Product | Look |
+| Theme | Modes | Look |
 | --- | --- | --- |
-| Spotlight, Spotlight dark | After Graduation | Crimson on warm white, with a header lit from one light |
-| Sunrise, Sunrise dark | Life Hub | Warm ink on marble, one marble color per life area |
-| Fireside | Designer toolkit | Copper on deep teal, dark only for now |
+| Spotlight | Light, Dark, Auto, System | Crimson on warm white, with anime styling and visuals |
+| Sunrise | Light, Dark, Auto, System | Glass on marble, an experiment with light and glass |
+| Fireside | Light, Dark, Auto, System | A simpler approach: basic components with subtle glass accents |
 
 ## Writing
 
