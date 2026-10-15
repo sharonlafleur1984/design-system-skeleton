@@ -10,14 +10,15 @@ import { lensClass, type Appearance, type Material } from '../material';
 // Mirrors the Figma "Button" component set: Style, Size, Destructive, Is Enabled, Show Icon.
 // Built on React Aria's Button, which handles press, keyboard, focus and the busy
 // announcement the same way on mouse, touch and screen readers. This file only adds the look.
-// The glass style (Oct 12): for buttons on artwork the design system controls (a theme's header, Life
-// Hub's marble). The container's useGlassLight lights it, and it bends the art at its edge.
+// Glass (Oct 15): for any background except other glass. The container's useGlassLight lights it.
+// On artwork the design system controls (After Graduation's header, Life Hub's marble), lens on
+// draws it as lens glass.
 /** primary, secondary and tertiary. ("glass" still works: use appearance="glass".) */
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'glass';
 export type ButtonSize = 'small' | 'medium' | 'large';
 
 export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'className' | 'style'> {
-  /** Figma "Style". One primary button per screen, for the main action. */
+  /** Figma "Style". One primary button per screen, for the main action. Glass is never on glass. */
   variant?: ButtonVariant;
   /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass, the clear glass button for artwork, lit from the page's light. */
   appearance?: Appearance;
