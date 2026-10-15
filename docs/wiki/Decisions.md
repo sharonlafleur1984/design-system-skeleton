@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D60 | Oct 15, 2026 | Lantern's cover is lit by its own orb: the drawing stays, the renderer adds the glass, the light on the copper and the shadow |
 | D59 | Oct 15, 2026 | The page's light is drawn by the renderer: the surface is lit, not covered; the default everywhere the orb lights glass |
 | D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
@@ -68,6 +69,23 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D60 · Oct 15, 2026:</b> Lantern's cover is lit by its own orb: the drawing stays, the renderer adds the glass, the light on the copper and the shadow</summary>
+
+- **Decided by:** Sharon, after seven rounds of pictures. She turned down a 3D lantern ("I don't want it to be 3-D. I still want it to look like Graphic") and kept the orb ("very signature to us"); she asked for "just a bit more like glass", the natural shadow below, the parts overlapping the way a real lantern's do, highlights in the name's color, the handle 20% smaller so it sits on the cap with a lip, and the lantern a little lower. Her verdict: "I love it so much!"
+- **The drawing stays the drawing:** the copper lantern, the amber orb and its glow, and her small curved highlights. The renderer (three.js, the one renderer the orbs share) adds only what real light does:
+  - **Glass:** a clear glass globe the window's shape, in front of the drawn inside, so it bends the orb's glow a little toward the edges. Its tint is the window's own faint fill. No reflections are added.
+  - **Copper:** her shapes as a shallow relief seen straight on, so it stays flat. The handle hangs behind the cap with its ends tucked in; the glass and its ring are seated into the cap and the base (before, the ring sat over the cap but under the base). Front faces keep exactly her color (D59's even light); only the edges the orb can reach catch its light: the ring's inner edge, the cap's lower lip and the base's upper lip. The handle is in the cap's shadow. The light is the name's peach, `#f7c9a6`, so the copper picks up the word's color, and it's set so no edge is brighter than the name.
+  - **Floor:** the orb lights the floor and the base shades it, seen from as high as the drawn shadow's flatness says (44 wide, 7 tall). The shadow is as soft as the orb is big. It's drawn as light only, added to the ground.
+- **Changes to the drawing itself** (the mark in Assets too): the handle is 80% of its size, so it sits inside the cap's ends with a small lip; the window's ring is the handle and base's copper, `#8a4f27` (it was `#b5672f`); her glass highlights are the name's peach; the lantern sits 8px lower on the cover, so it no longer lines up with the tagline's baseline.
+- **Where it shows:** Lantern's cover and the top of Storybook's Welcome page, one source (`scripts/lantern/cover.html`), lit by `src/lantern/cover-light.ts`.
+- **Without 3D,** or if anything can't be drawn, the cover shows the drawing exactly as it is, with its drawn glow and shadow. Nothing moves, so Reduce motion changes nothing.
+- **Readable:** the name is 10.8:1 and the tagline 7.9:1 against the brightest lit floor behind them.
+- **Known cost:** three.js is now in Lantern's bundle (1.3 MB, was 0.6 MB). The orb needs it there anyway once PR #82 reaches Lantern.
+- **Not the Design System cover rules:** Lantern's artifact type asks covers for "no images, no gradients or shadows the tokens don't define". Lantern's cover keeps Sharon's drawn mark instead of blocks and a pattern, so it was already its own; the lit layers are drawn by the renderer from that drawing.
+
+</details>
 
 <details>
 <summary><b>D59 · Oct 15, 2026:</b> The page's light is drawn by the renderer: the surface is lit, not covered; the default everywhere the orb lights glass</summary>
