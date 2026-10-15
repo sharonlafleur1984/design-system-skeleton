@@ -15,6 +15,11 @@ export interface OrbColors {
   glow: string;
   halo: string;
   body: string;
+  /**
+   * The glass glows in its own warm color around a smaller white core, like a lantern's flame
+   * through its glass (Fireside on a plain page), instead of glowing white all over.
+   */
+  warm?: boolean;
 }
 
 const LOOKS = {
@@ -94,7 +99,7 @@ const cache = new Map<string, Promise<string>>();
  */
 export function renderOrb(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLCanvasElement): Promise<string> {
   if (behind) return draw(px, look, colors, behind);
-  const key = [px, look, colors.light, colors.glow, colors.halo, colors.body].join('|');
+  const key = [px, look, colors.light, colors.glow, colors.halo, colors.body, colors.warm].join('|');
   let picture = cache.get(key);
   if (!picture) {
     picture = draw(px, look, colors);
@@ -106,7 +111,10 @@ export function renderOrb(px: number, look: OrbLook, colors: OrbColors, behind?:
 
 async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLCanvasElement) {
   const { THREE, renderer, env, brightEnv } = await setup();
-  const l = LOOKS[look];
+  // A warm glow: a smaller white core, the glass glowing in the warm color around it and holding a
+  // little of it, so the renderer shades white at the middle to peach at the edge.
+  const warm = look === 'glow' && !!colors.warm;
+  const l = warm ? { ...LOOKS.glow, core: 0, coreWhite: 1, emissive: 0.3, attenuation: 3 } : LOOKS[look];
   const color = (c: string) => new THREE.Color(c);
   const scene = new THREE.Scene();
   scene.environment = l.seeThrough ? brightEnv : env;
@@ -128,7 +136,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
   const core = new THREE.MeshBasicMaterial({ color: color(colors.light).lerp(new THREE.Color('#ffffff'), l.coreWhite) });
   const glass = new THREE.MeshPhysicalMaterial({
     // Clear glass has no color of its own.
-    color: l.seeThrough ? new THREE.Color('#ffffff') : color(colors.glow),
+    color: l.seeThrough ? new THREE.Color('#ffffff') : warm ? color(colors.light) : color(colors.glow),
     transmission: 1,
     ior: 1.5,
     thickness: 1.4,
@@ -139,13 +147,41 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
-    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.75) : color(colors.glow),
+    emissive: warm ? color(colors.glow) : look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.75) : color(colors.glow),
     emissiveIntensity: l.emissive,
     // Clear glass reflects its studio at full, real strength: about 4% face-on, nearly all at the edge.
     envMapIntensity: l.seeThrough ? 1 : 0.7,
   });
   scene.add(new THREE.Mesh(geometries[1], glass));
   if (l.core) scene.add(new THREE.Mesh(geometries[0], core));
+  // A warm glow's flame: one soft glow the renderer shades inside the ball, white where it faces you
+  // at the middle, warming to the glass's warm color, and fading to nothing at the glass's edge, with
+  // no steps. Drawn over the glass (glass bends only solid things), so it glows through it.
+  const shells: import('three').Material[] = [];
+  if (warm) {
+    const flame = new THREE.ShaderMaterial({
+      uniforms: { warmColor: { value: color(colors.glow) }, white: { value: new THREE.Color('#ffffff') } },
+      vertexShader: 'varying vec3 vNormal; void main() { vNormal = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `uniform vec3 warmColor; uniform vec3 white; varying vec3 vNormal;
+        void main() {
+          float facing = clamp(vNormal.z, 0.0, 1.0);
+          float glow = pow(facing, 1.6);
+          vec3 tint = mix(warmColor, white, pow(facing, 10.0));
+          gl_FragColor = vec4(tint * glow * 0.85, 1.0);
+          #include <colorspace_fragment>
+        }`,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      depthTest: false,
+    });
+    shells.push(flame);
+    const g = new THREE.SphereGeometry(0.97, 64, 64);
+    geometries.push(g);
+    const mesh = new THREE.Mesh(g, flame);
+    mesh.renderOrder = 2;
+    scene.add(mesh);
+  }
   const key = new THREE.DirectionalLight(0xffffff, 2.2);
   key.position.set(1.2, 1.5, 4);
   scene.add(key, new THREE.AmbientLight(0xffffff, 0.25));
@@ -159,6 +195,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors, behind?: HTMLC
   const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());
   core.dispose();
+  shells.forEach((m) => m.dispose());
   glass.dispose();
   backdrop?.dispose();
   return url;
