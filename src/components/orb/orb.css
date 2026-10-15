@@ -100,14 +100,18 @@
   );
 }
 
+/* A plain light or dark background has no color to blend with, so the light is pure white. */
+.ds-orb-light[data-neutral] {
+  --_light: var(--orb-shine-pool);
+}
 .ds-orb-light--small {
   --_size: var(--orb-size-small);
 }
 .ds-orb-light--large {
   --_size: var(--orb-size-large);
 }
-/* On a patterned background (a marble), light brightens the pattern it falls on, the way sun lights a
-   surface, instead of laying a haze over it (Sharon: great on solid, less so on patterns). */
+/* On a background with color of its own (a marble, header art), light brightens what it falls on, the
+   way sun lights a surface, so any pattern shows through its tint instead of under a haze (Sharon). */
 .ds-orb-light[data-pattern] {
   mix-blend-mode: screen;
 }

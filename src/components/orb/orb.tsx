@@ -45,6 +45,16 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
+/** The theme's own page color around an element, as 0 to 255 red, green and blue. */
+function pageRgb(el: HTMLElement): number[] | undefined {
+  const probe = document.createElement('span');
+  probe.style.color = 'var(--color-surface-page)';
+  el.appendChild(probe);
+  const m = getComputedStyle(probe).color.match(/[\d.]+/g);
+  probe.remove();
+  return m ? m.slice(0, 3).map(Number) : undefined;
+}
+
 /** The first color painted behind an element: its own background, or the nearest one around it. */
 function colorBehind(el: HTMLElement | null) {
   for (let node = el; node; node = node.parentElement) {
@@ -81,9 +91,12 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   // How light the background behind a glowing orb is (0 dark, 1 light), so its light can look equally
   // bright on every background (orb.css).
   const [lum, setLum] = useState(0);
-  // Whether the background behind it is patterned (a marble) rather than solid, so its light can brighten
-  // the pattern instead of hazing over it (orb.css).
+  // Whether the background behind it has color of its own (a marble, header art), so its light brightens
+  // what's beneath and any pattern shows through (orb.css).
   const [pattern, setPattern] = useState(false);
+  // Whether the background behind it has no color of its own (a plain light or dark page): then there's
+  // no color to blend with, so the light is pure white (Sharon).
+  const [neutral, setNeutral] = useState(false);
   // Draw the glass in this orb's colors, at its size on screen (sharp on high-density screens). It
   // redraws when the theme or mode around it changes.
   const [colorKey, setColorKey] = useState(0);
@@ -104,6 +117,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     let live = true;
     // Glow and clear are see-through, so they're drawn over the patch of real background behind them.
     let behind: HTMLCanvasElement | undefined;
+    let white = false;
     if (look !== 'tinted') {
       const painted = paintBehind(el, backdrop, px);
       if (!painted) {
@@ -117,15 +131,27 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
         const data = painted.getContext('2d')?.getImageData(0, 0, px, px).data;
         if (data) {
           const shades: number[] = [];
-          for (let i = 0; i < data.length; i += 4) shades.push((0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255);
+          const avg = [0, 0, 0];
+          for (let i = 0; i < data.length; i += 4) {
+            shades.push((0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255);
+            for (let k = 0; k < 3; k++) avg[k] += data[i + k];
+          }
+          // Plain means the theme's own page color is what's behind it (no art, no area color).
+          const page = pageRgb(el);
+          const off = page ? avg.reduce((d, v, k) => d + Math.abs(v / shades.length - page[k]), 0) / (3 * 255) : 1;
+          const plain = off < 0.06;
+          setNeutral(plain);
+          if (plain) white = true;
           const mean = shades.reduce((a, b) => a + b, 0) / shades.length;
-          const spread = Math.sqrt(shades.reduce((a, b) => a + (b - mean) ** 2, 0) / shades.length);
           setLum(mean);
-          setPattern(spread > 0.02);
+          // Any background with color of its own (a marble, header art) may hold a pattern, even one too
+          // faint to measure under a dark night layer, so its light brightens what's beneath it.
+          setPattern(!plain);
         }
       }
     }
-    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') }, behind)
+    // On a background with no color, the light inside is pure white too.
+    renderOrb(px, look, { light: white ? '#ffffff' : c('light'), glow: c('glow'), halo: c('halo'), body: c('body') }, behind)
       .then((url) => live && setPicture(url))
       .catch(() => live && setPicture(undefined));
     return () => {
@@ -161,6 +187,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
           aria-hidden="true"
           className={['ds-orb-light', size !== 'medium' && `ds-orb-light--${size}`].filter(Boolean).join(' ')}
           data-pattern={pattern ? '' : undefined}
+          data-neutral={neutral ? '' : undefined}
           style={{ ...tint, '--_lum': lum.toFixed(2), ...at } as CSSProperties}
         />
       )}
