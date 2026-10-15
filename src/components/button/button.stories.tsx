@@ -20,7 +20,7 @@ const meta: Meta<typeof Button> = {
     children: words('Label', 'The words on the button'),
     variant: choice('Variant', 'How important the action is', ['primary', 'secondary', 'tertiary']),
     size: choice('Size', 'How big it is', ['small', 'medium', 'large']),
-    appearance: choice('Appearance', 'Solid, or clear glass for artwork', ['solid', 'glass']),
+    appearance: choice('Appearance', 'Solid, or clear glass. Glass goes on any background except other glass', ['solid', 'glass']),
     destructive: onOff('Destructive', 'For actions that remove something'),
     isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed"),
     isPending: onOff('Loading', 'Shows a spinner while the action runs'),
