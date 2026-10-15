@@ -100,8 +100,8 @@ export function OnEveryBackground({ children }: { children: ReactNode }) {
 export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((t) => [t.id, t.name]));
 
 // Storybook's own chrome, not any theme: the same in every column.
-// The theme's name is the biggest thing in its column (above any theme's title size), so it's clear what everything under it belongs to.
-const compareHeading: CSSProperties = { margin: 0, font: '700 32px/1.2 system-ui, sans-serif', color: '#2e3438' };
+// Small and on the right, in from the rounded corner, so the theme's name labels its column without competing with the part's name (Sharon, Oct 15).
+const compareHeading: CSSProperties = { margin: 0, font: '600 12px/1.4 system-ui, sans-serif', color: '#525252', textAlign: 'end', paddingInlineEnd: '16px' };
 
 /** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
 const InComparePanel = createContext(false);
@@ -129,29 +129,43 @@ export function BothThemes({ children }: { children: ReactNode }) {
  */
 export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-4)' }}>
-      {themeList.map((theme) => (
-        <ThemeContext.Provider key={theme} value={theme}>
-          <InComparePanel.Provider value>
-            {/* The theme's name as a heading above its column, in Storybook's own type, so it's clear
-                which theme everything under it belongs to. */}
-            <section aria-labelledby={`compare-${theme}`} style={{ flex: '1 1 320px', display: 'grid', gap: '8px', alignContent: 'start' }}>
-              <h2 id={`compare-${theme}`} style={compareHeading}>
-                {themeNames[theme]}
-              </h2>
-              {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
-              <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
-                <ThemePanel theme={theme} heading={false}>
-                  {render(theme)}
-                </ThemePanel>
-              </div>
-            </section>
-          </InComparePanel.Provider>
-        </ThemeContext.Provider>
-      ))}
+    <div className="ds-compare-all">
+      <style>{compareAllCss}</style>
+      <div className="ds-compare-all__grid">
+        {themeList.map((theme) => (
+          <ThemeContext.Provider key={theme} value={theme}>
+            <InComparePanel.Provider value>
+              {/* The theme's name above its column, in Storybook's own type, so it's clear which theme
+                  everything under it belongs to. */}
+              <section aria-labelledby={`compare-${theme}`} style={{ minWidth: 0, display: 'grid', gap: '8px', alignContent: 'start' }}>
+                <h2 id={`compare-${theme}`} style={compareHeading}>
+                  {themeNames[theme]}
+                </h2>
+                {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
+                <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d4d4d4' }}>
+                  <ThemePanel theme={theme} heading={false}>
+                    {render(theme)}
+                  </ThemePanel>
+                </div>
+              </section>
+            </InComparePanel.Provider>
+          </ThemeContext.Provider>
+        ))}
+      </div>
     </div>
   );
 }
+
+// Every theme in equal columns when they all fit at 320px or wider, otherwise one theme per row.
+// Never a row of two with one left over, which reads as if the last theme mattered less.
+const compareColumn = 320;
+const compareGap = 16;
+const compareAllCss = `
+.ds-compare-all { container-type: inline-size; }
+.ds-compare-all__grid { display: grid; gap: ${compareGap}px; grid-template-columns: minmax(0, 1fr); }
+@container (min-width: ${themeList.length * compareColumn + (themeList.length - 1) * compareGap}px) {
+  .ds-compare-all__grid { grid-template-columns: repeat(${themeList.length}, minmax(0, 1fr)); }
+}`;
 
 /**
  * One theme's panel: its real page background, and the glass on it lit and bent from that background,
