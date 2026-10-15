@@ -1,10 +1,11 @@
-Lantern holds the light, and each product's theme is its own light: Spotlight (After Graduation), Sunrise (Life Hub) and Fireside (the designer toolkit). One shared base, with a theme for each product. Every part is built on React Aria Components and styled with tokens only.
+Lantern holds the light. It's one design system, and each product's theme is its own light: Spotlight, Sunrise and Fireside. Every part is built on React Aria Components and styled with tokens only.
 
 ## Where the truth lives
 
-- **The code is the source of truth.** Lantern is built from the design-system-skeleton repo (this copy: `{{REF}}`) and rebuilt whenever it changes. Storybook shows the same parts, live: https://designsystemskeleton.netlify.app
-- **A change made here goes back to the repo as a pull request,** never only into Lantern. Ask Claude to turn it into one.
-- **Previews run the repo's own styles,** so editing a token on this page won't change them. The token goes into the pull request, and the next rebuild shows it.
+- **The code is the source of truth.** Lantern is built from the design-system-skeleton repo (this copy is from `{{REF}}`) and rebuilt when the code changes.
+- **Storybook shows the same parts, live.** [Open Storybook](https://designsystemskeleton.netlify.app) to try each one.
+- **Changes go back as a pull request.** A change made here never stays only in Lantern. Ask Claude to turn it into a pull request.
+- **Previews run the repo's own styles,** so a token edited on this page won't change them. The edit goes into the pull request, and the next rebuild shows it.
 
 ## Themes
 
@@ -12,58 +13,86 @@ Pick a theme at the top to see every token and preview in it.
 
 | Theme | Product | Look |
 | --- | --- | --- |
-| Spotlight, Spotlight dark | After Graduation | Crimson on warm white; a header lit from one light |
+| Spotlight, Spotlight dark | After Graduation | Crimson on warm white, with a header lit from one light |
 | Sunrise, Sunrise dark | Life Hub | Warm ink on marble, one marble color per life area |
-| Fireside | Designer toolkit | Copper on deep teal; always dark |
+| Fireside | Designer toolkit | Copper on deep teal, dark only for now |
 
 ## Writing
 
-- Plain labels in examples: "Button", "Label", "Option 1". Never one product's copy.
-- Sentence case for every heading, button and label.
-- No emoji. Status always carries a word, never color alone.
-- Use React Aria's names: Tag (not chip), Toggle button group (not segmented control), Separator (not divider), Progress bar (not progress meter).
-- The status names are info, warning, success, error and neutral, everywhere.
+- Use plain labels in examples, like "Button", "Label" and "Option 1". Never use one product's copy.
+- Use sentence case for every heading, button and label.
+- Use no emoji. Status always carries a word, never color alone.
+- Use React Aria's names: Tag, Toggle button group, Separator and Progress bar. Not chip, segmented control, divider or progress meter.
+- Use the same five status names everywhere (info, warning, success, error and neutral).
 
 ## Color
 
-- Set text in `color-ink-primary` on `color-surface-page` and `color-surface-card`; quieter text in `color-ink-secondary`.
-- Text on artwork (Spotlight's header, glass on it) is `color-ink-on-art`, which never flips in dark mode.
-- `color-accent-base` is the one main action's fill, like the primary button. Hover is `color-accent-hover`.
-- Status uses its four tokens per status: `-surface` behind, `-accent` for the icon, `-accent-strong` for borders, `-ink` for text. Always with an icon or a word.
-- The focus ring is `color-border-focus`, solid, on every part.
+- Set text in `color-ink-primary` on `color-surface-page` or `color-surface-card`. Set quieter text in `color-ink-secondary`.
+- Set text on artwork, like Spotlight's header and glass on it, in `color-ink-on-art`. It never flips in dark mode.
+- Fill the one main action, like the primary button, with `color-accent-base`. Its hover is `color-accent-hover`.
+- Show the focus ring in `color-border-focus`, solid, on every part.
+
+Each status has four tokens, and always comes with an icon or a word.
+
+| Token ends in | Use it for |
+| --- | --- |
+| `-surface` | The background |
+| `-accent` | The icon |
+| `-accent-strong` | The border |
+| `-ink` | The text |
 
 ## Type
 
-- Each theme has its own faces. Spotlight: Atkinson Hyperlegible Next, with Cinzel only for the cover title. Sunrise: Fraunces for titles, Figtree for everything else. Fireside: Newsreader for titles, Instrument Sans for everything else, JetBrains Mono for code.
-- Use the text styles by role (display, heading, body, label, data, code), never a raw size.
+Each theme has its own faces. Use the text styles by role (display, heading, body, label, data, code), never a raw size.
+
+| Theme | Titles | Everything else | Code |
+| --- | --- | --- | --- |
+| Spotlight | Atkinson Hyperlegible Next (Cinzel for the cover title only) | Atkinson Hyperlegible Next | The device's mono font |
+| Sunrise | Fraunces | Figtree | The device's mono font |
+| Fireside | Newsreader | Instrument Sans | JetBrains Mono |
 
 ## Space, corners and shadow
 
-- Space comes from the `space-` steps; page gutters and section gaps from `layout-`.
+- Take space from the `space-` steps, and page gutters and section gaps from the `layout-` tokens.
 - Each theme picks its roundness, and every corner follows the part's size (`radius-` tokens).
-- Shadows are for things that float or lift, like a hovered tile (`shadow-hover`) or a popover (`shadow-float`).
+- Use shadows for things that float or lift, like a hovered tile (`shadow-hover`) or a popover (`shadow-float`).
 
 ## Light and glass
 
-- A page has one light, an orb, sitting toward the bottom right or top right. Glass rims, highlights and shadows all come from it.
+- A page has one light, an orb, toward the bottom right. Glass rims, highlights and shadows all come from it.
 - The light is only ever an orb. Rays belong to After Graduation's own header, not the system.
 - Glass goes on any background except other glass. With Reduce transparency or More contrast, it turns solid.
 
 ## Motion
 
-- Hover fades in 140ms, a press in 80ms, a panel opens in 220ms.
-- With Reduce motion, only color fades are left. Nothing moves on its own for more than 5 seconds.
+- Hover fades in over 140ms, a press over 80ms, and a panel opens over 220ms.
+- With Reduce motion, only color fades are left.
+- Nothing moves on its own for more than 5 seconds.
 
 ## Lantern's mark
 
-A copper camp lantern with one amber orb inside, on night iron. Its colors (night iron `#2a1a12`, copper `#b5672f`, amber flame `#f6b25a`, peach glow `#f7c9a6`) are Lantern's own, used only for the mark and the cover, never in a product. Set it on a dark ground only.
+The mark is a copper camp lantern with one amber orb inside, on night iron. Set it on a dark ground only.
+
+Its four colors belong to Lantern. Use them for the mark and the cover only, never in a product.
+
+| Color | Value |
+| --- | --- |
+| Night iron | `#2a1a12` |
+| Copper | `#b5672f` |
+| Amber flame | `#f6b25a` |
+| Peach glow | `#f7c9a6` |
 
 ## Icons
 
-There's no shared icon set yet (Icon is Not started). Examples use simple line icons drawn in the text color. Don't draw a product's logo.
+There's no shared icon set yet; Icon is Not started. Examples use simple line icons drawn in the text color. Don't draw a product's logo.
 
 ## Parts and their status
 
-Ready is in the code on `main`; Pending is built and waiting in a pull request; On hold waits until a product needs it; Not started is planned.
+Every part has one of four statuses.
+
+- **Ready:** in the code on `main`.
+- **Pending:** built, and waiting in a pull request.
+- **On hold:** planned, waiting until a product needs it.
+- **Not started:** planned, nothing built yet.
 
 {{STATUS_TABLE}}
