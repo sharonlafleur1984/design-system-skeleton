@@ -34,6 +34,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 ### Changed
 
 - Error callouts have their own symbol (×), so they never differ from warnings by color alone.
+- **Switch:** a narrower track (40px, was 44px) and a smaller knob (16px, was 18px) with the same 3px gap on every side.
 - A theme can't set spacing or sizes; they always come from the base. It picks its roundness by name.
 - **Card:** opaque, translucent and transparent are gone; `variant` and `interactive` are ignored. Cards are Solid or Glass.
 - **Action tile:** for navigation only. Fills are gone (`fill` is ignored: every Solid tile uses the card surface). Tiles with `href` or `onPress` still work but are deprecated: use Tile.

@@ -42,7 +42,7 @@
     "switch": {
       "width": {
         "$type": "dimension",
-        "$value": "44px"
+        "$value": "40px"
       },
       "height": {
         "$type": "dimension",
@@ -50,7 +50,8 @@
       },
       "knob": {
         "$type": "dimension",
-        "$value": "18px"
+        "$value": "16px",
+        "$description": "Knob size: the track height minus an even 3px gap and the 1px border on every side."
       }
     },
     "meter": {

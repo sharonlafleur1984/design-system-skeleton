@@ -30,7 +30,9 @@
 .ds-switch__knob {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-start: var(--space-1);
+  /* The same gap on all four sides: what's left of the track's inner height around the knob. */
+  --_gap: calc((var(--control-switch-height) - 2px - var(--control-switch-knob)) / 2);
+  inset-inline-start: var(--_gap);
   display: block;
   inline-size: var(--control-switch-knob);
   block-size: var(--control-switch-knob);
@@ -41,7 +43,7 @@
   transform: translateY(-50%);
 }
 .ds-switch[data-selected] .ds-switch__knob {
-  inset-inline-start: calc(100% - var(--control-switch-knob) - var(--space-1));
+  inset-inline-start: calc(100% - var(--control-switch-knob) - var(--_gap));
 }
 
 .ds-switch[data-focus-visible] .ds-switch__track {
