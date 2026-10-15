@@ -603,7 +603,6 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
 
       {/* A div, not a header: Page shell's example has its own header, and a page can have only one. */}
       <div id="sb-section-overview" className="sb-page__header">
-        <p className="sb-page__updated">Updated {formatDate(info.updated)}</p>
         <h1 className="sb-page__h1">{name}</h1>
         <p className="sb-page__summary">{info.summary}</p>
       </div>
