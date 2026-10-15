@@ -8,7 +8,7 @@ export default meta;
 
 const code: CSSProperties = { fontFamily: 'var(--font-family-data)', fontSize: 'var(--type-body-small-size)', color: 'var(--color-ink-secondary)' };
 const note: CSSProperties = { margin: 0, color: 'var(--color-ink-secondary)', maxWidth: '60ch' };
-const h: CSSProperties = { margin: 0, fontFamily: 'var(--font-family-heading, inherit)', fontSize: 'var(--type-heading-small-size, 1.25rem)' };
+const h: CSSProperties = { margin: 0, fontFamily: 'var(--type-heading-subheading-family)', fontSize: 'var(--type-heading-subheading-size)' };
 
 const steps: [string, string, string, string][] = [
   ['instant', '80ms', 'Press', 'var(--motion-easing-out)'],

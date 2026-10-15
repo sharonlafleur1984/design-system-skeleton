@@ -70,8 +70,8 @@
   translate: 0 calc(-1 * var(--motion-lift-large));
 }
 .ds-card--interactive:focus-within {
-  outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--color-border-focus);
+  outline-offset: var(--focus-ring-offset);
 }
 
 @media (prefers-reduced-motion: no-preference) {

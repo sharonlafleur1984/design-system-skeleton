@@ -7,7 +7,6 @@ import { areas } from '../src/explorations/glass-cards/areas';
 // This checks the math the header itself uses (layer by layer, worst-case marble behind the glass), so it
 // runs in a moment instead of screenshotting every frame. A few screenshots confirm the math matches.
 
-const rgbHex = (r: number, g: number, b: number) => '#' + [r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('');
 
 const nights = [...areas.map((a) => a.layer), mixColor('#dd816c', '#2a2625', 0.65)];
 const minutes = Array.from({ length: 24 * 60 }, (_, m) => m / 60);

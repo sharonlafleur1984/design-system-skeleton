@@ -40,11 +40,13 @@ npm run build-storybook && npm run test:visual   # visual tests
 
 ## Use it in an app
 
-Apps install a tagged version straight from GitHub, so an update only arrives when the app chooses it:
+Apps install one version's package file from its [GitHub Release](https://github.com/sharonlafleur1984/design-system-skeleton/releases), so an update only arrives when the app chooses it. The file holds only the built components, theme CSS and fonts, not the whole repo:
 
 ```bash
-npm install github:sharonlafleur1984/design-system-skeleton#v0.2.0
+npm install https://github.com/sharonlafleur1984/design-system-skeleton/releases/download/v0.4.0/design-system-skeleton-0.4.0.tgz
 ```
+
+Release files start at v0.4.0. Earlier versions install from their tag instead (`github:sharonlafleur1984/design-system-skeleton#v0.3.0`). What changed in each version: [CHANGELOG.md](CHANGELOG.md).
 
 Then load the theme, its fonts, the base page styles and the component styles once, set the theme on the page, and import components:
 
@@ -66,7 +68,13 @@ import 'design-system-skeleton/text-styles.css';
 
 There's one class per type style (`ds-text-display-cover` to `ds-text-code`), one per control size (`ds-text-control-small`, `-medium`, `-large`), and `ds-text-button` and `ds-text-tab`. They work in every theme. Every style is listed in Storybook under Foundations, Type, Text styles.
 
-Installing runs `npm run build:lib`, which turns `src/components` into the package in `dist/`. To release a change, merge it, then tag `main` with the next version.
+To release a version:
+
+1. Open a pull request that bumps `version` in `package.json` and moves the Unreleased notes in `CHANGELOG.md` under that version.
+2. Merge it, then tag `main` with the version (`v0.4.0`).
+3. The tag runs `.github/workflows/release.yml`, which tests and builds the package and attaches the file to a new GitHub Release.
+
+Anything marked `@experimental` (the glass light and lens code) may change in any version.
 
 ## Where things are
 

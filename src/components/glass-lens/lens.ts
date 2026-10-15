@@ -12,6 +12,10 @@ import { createLensRenderer, MAX_LENS_RECTS, type LensLook, type LensRenderer, t
 import { num, resolveColor, type GlassArt } from './lens-art';
 import './glass-lens.css';
 
+/**
+ * Options for the Glass material's lens.
+ * @experimental Part of the glass build under review (issue #60). It may change in any version.
+ */
 export interface LensOptions {
   /** The art behind the glass. */
   art: GlassArt;

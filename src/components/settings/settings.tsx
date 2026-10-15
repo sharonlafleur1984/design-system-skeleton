@@ -14,6 +14,7 @@ import {
 import { Button } from '../button/button';
 import '../shared.css';
 import './settings.css';
+import { PHONE } from '../breakpoints';
 
 // Settings: a full-size dialog for app-wide settings, like Claude's. Sections run down the left on
 // tablet and desktop; on phones the section list comes first and each section opens with a Back button.
@@ -38,7 +39,6 @@ export interface SettingsDialogProps {
   title?: string;
 }
 
-const PHONE = '(max-width: 37.4375rem)'; // phones (compact), as in settings.css
 function usePhone() {
   const [phone, setPhone] = useState(() => typeof window !== 'undefined' && window.matchMedia(PHONE).matches);
   useEffect(() => {
@@ -52,11 +52,10 @@ function usePhone() {
 
 export function SettingsDialog({ isOpen, onOpenChange, sections, section, onSectionChange, title = 'Settings' }: SettingsDialogProps) {
   const phone = usePhone();
-  const [selected, setSelected] = useState<Key>(section ?? sections[0]?.id);
+  // The open section: the section prop when the app controls it, otherwise the last one picked here.
+  const [picked, setSelected] = useState<Key>(section ?? sections[0]?.id);
+  const selected = section ?? picked;
   const [showList, setShowList] = useState(true);
-  useEffect(() => {
-    if (section !== undefined) setSelected(section);
-  }, [section]);
   const current = sections.find((s) => s.id === selected) ?? sections[0];
   const panelId = useId();
   return (
@@ -84,6 +83,8 @@ export function SettingsDialog({ isOpen, onOpenChange, sections, section, onSect
                 showList ? (
                   // Phones: the section list first. Each opens its section with a Back button.
                   <nav aria-label={`${title} sections`} className="ds-settings__body ds-settings__body--list">
+                    {/* role="list" on purpose: Safari drops list semantics from a list with list-style: none. */}
+                    {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
                     <ul className="ds-settings__nav" role="list">
                       {sections.map((s) => (
                         <li key={String(s.id)}>
