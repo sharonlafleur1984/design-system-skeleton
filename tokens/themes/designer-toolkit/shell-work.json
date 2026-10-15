@@ -1,0 +1,32 @@
+{
+  "shell": {
+    "work": {
+      "$description": "The work area: the space behind the prototype and beside the wiki. It's the only part of Fireside that changes with light and dark mode; the toolkit's chrome and components stay dark. Values from the toolkit's shell (designer-toolkit-code src/styles/shell.css, --work).",
+      "background": {
+        "$type": "color",
+        "$value": "#dfeaed",
+        "$description": "Behind the prototype and the wiki. Light: pale blue-gray (oklch 0.93 0.012 217)."
+      },
+      "ink": {
+        "$type": "color",
+        "$value": "#14262b",
+        "$description": "Text on the work area."
+      },
+      "ink-quiet": {
+        "$type": "color",
+        "$value": "#4a5b60",
+        "$description": "Quieter text on the work area: the wiki's body text and labels."
+      },
+      "line": {
+        "$type": "color",
+        "$value": "rgba(20, 38, 43, 0.12)",
+        "$description": "Lines on the work area, like the wiki's dividers."
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{palette.rust.700}",
+        "$description": "The selected page in the wiki's side nav: the primary color, darkened to read on light."
+      }
+    }
+  }
+}

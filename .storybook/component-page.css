@@ -432,7 +432,7 @@
   }
 }
 
-/* Tables: Question, Answer and Notes; the first column is the row's heading. */
+/* Tables: Question, Answer and Notes in equal thirds; the first column is the row's heading. */
 .sb-page__tablewrap {
   padding: 4px 12px 12px;
   overflow-x: auto;
@@ -462,10 +462,10 @@
   vertical-align: top;
 }
 .sb-page__table tbody th {
-  inline-size: 30%;
+  inline-size: 33%;
 }
 .sb-page__table td:nth-child(2) {
-  inline-size: 30%;
+  inline-size: 34%;
 }
 .sb-page__list {
   display: flex;

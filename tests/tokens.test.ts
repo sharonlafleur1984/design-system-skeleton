@@ -269,3 +269,24 @@ describe('every theme has what Storybook and the package need', () => {
     });
   }
 });
+
+// Fireside's work area (behind the prototype and the wiki) is the one part that changes with the mode,
+// so its text must read on it in light and in dark.
+const workPairs: [string, string][] = [
+  ['shell-work-ink', 'shell-work-background'],
+  ['shell-work-ink-quiet', 'shell-work-background'],
+  ['shell-work-selected', 'shell-work-background'],
+];
+describe('work area contrast (WCAG 2.2 AA, 4.5:1)', () => {
+  for (const t of themes.filter((x) => 'shell-work-background' in load(x))) {
+    const modes: [string, Record<string, string>][] = [['light', load(t)], ...(darkThemes.includes(t) ? [['dark', loadDark(t)] as [string, Record<string, string>]] : [])];
+    for (const [mode, tokens] of modes) {
+      for (const [fg, bg] of workPairs) {
+        it(`${t} ${mode}: ${fg} on ${bg}`, () => {
+          const ratio = hex(tokens[fg], tokens[bg]);
+          expect(ratio, `${ratio.toFixed(2)}:1`).toBeGreaterThanOrEqual(4.5);
+        });
+      }
+    }
+  }
+});
