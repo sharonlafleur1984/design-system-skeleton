@@ -1,18 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { AppearanceContext } from '../material';
 import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
+import { Orb } from '../orb/orb';
 import { PageShell } from '../page-shell/page-shell';
-import { singleTheme, type Theme } from '../story-helpers';
+import { singleTheme, SUN_START, type Theme } from '../story-helpers';
 import { firesideArt, sunriseArt } from './story-art';
 import { LIGHT_CHANGE } from './lens';
 
 // Storybook only: the Glass playground. The glass sits on the real background of the theme picked in
-// the toolbar, in light or dark mode, and the sun is the page's one light: drag it (or use the arrow
-// keys) and every rim, highlight and shadow follows. In Spotlight the sun is the header's own light,
-// so the wheel and its rays move with it.
+// the toolbar, in light or dark mode.
+// - Sunrise and Fireside explore the light: the light is only an orb (no rays), starting at the bottom
+//   right. Drag it (or use the arrow keys) and every rim, highlight and shadow follows.
+// - Spotlight is a full page (its header), so the light stays still where it sits on the real page
+//   (the light tokens Sharon placed): no orb, and nothing moves it.
 
 const pageBackground: Partial<Record<Theme, string>> = {
   'life-hub': "linear-gradient(var(--color-area-dashboard-night), var(--color-area-dashboard-night)), url('texture-sage-cream.jpg') center / cover",
@@ -62,33 +65,13 @@ type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: nu
 function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings }: Args & { theme: Theme }) {
   const set = <GlassSet />;
   const ref = useRef<HTMLDivElement>(null);
-  // Where the sun is, as a share of the page.
-  const [sun, setSun] = useState({ x: 0.8, y: 0.12 });
+  // Where the orb is, as a share of the page. It starts on the right, two thirds down.
+  const [sun, setSun] = useState(SUN_START);
   const spotlight = theme === 'after-graduation';
 
   useEffect(() => {
-    // In Spotlight the sun is the header's own light: its art (the red, the rays, the wheel) moves too.
-    const shell = ref.current?.querySelector<HTMLElement>('.ds-shell');
-    if (shell && ref.current) {
-      const page = ref.current.getBoundingClientRect();
-      const r = shell.getBoundingClientRect();
-      shell.style.setProperty('--light-from-right', `${((1 - sun.x) * 100).toFixed(1)}%`);
-      shell.style.setProperty('--light-top', `${(sun.y * page.height - (r.top - page.top)).toFixed(0)}px`);
-    }
     window.dispatchEvent(new Event(LIGHT_CHANGE));
   }, [sun, theme, bend, edgeDepth, colorSplit, edgeLight, shadow]);
-
-  const moveTo = (e: PointerEvent<HTMLElement>) => {
-    const r = ref.current!.getBoundingClientRect();
-    setSun({ x: Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), y: Math.min(1, Math.max(0, (e.clientY - r.top) / r.height)) });
-  };
-  const onKey = (e: KeyboardEvent<HTMLElement>) => {
-    const step = e.shiftKey ? 0.1 : 0.02;
-    const d = ({ ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] } as Record<string, number[]>)[e.key];
-    if (!d) return;
-    e.preventDefault();
-    setSun((s) => ({ x: Math.min(1, Math.max(0, s.x + d[0])), y: Math.min(1, Math.max(0, s.y + d[1])) }));
-  };
 
   // The Demo story shows each theme's own glass settings; the Playground's controls override them.
   const tuning = themeSettings ? ({ position: 'relative' } as CSSProperties) : ({
@@ -106,47 +89,19 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
     ['--glass-lens-shadow-distance' as string]: '4px',
     ['--glass-lens-shadow-blur' as string]: '14px',
   } as CSSProperties);
-  const sunStyle: CSSProperties = {
-    position: 'absolute',
-    left: `${sun.x * 100}%`,
-    top: `${sun.y * 100}%`,
-    zIndex: 5,
-    inlineSize: 'var(--space-6)',
-    blockSize: 'var(--space-6)',
-    marginInlineStart: 'calc(var(--space-6) / -2)',
-    marginBlockStart: 'calc(var(--space-6) / -2)',
-    padding: 0,
-    border: 'none',
-    borderRadius: '50%',
-    background: 'radial-gradient(circle, #fff7d6 0 30%, #f5c542 45%, rgba(245, 197, 66, 0) 72%)',
-    boxShadow: '0 0 32px 12px rgba(245, 197, 66, 0.35)',
-    cursor: 'grab',
-    touchAction: 'none',
-  };
-  const intro = "Glass bends what's behind it at its curved edge, and its rim and shadow come from one light. Drag the sun, or focus it and use the arrow keys.";
+  const intro = "Glass bends what's behind it at its curved edge, and its rim and shadow come from one light.";
 
   return (
     <div ref={ref} style={tuning}>
-      <button
-        type="button"
-        data-sun=""
-        aria-label="Sun. Drag it, or use the arrow keys to move the light."
-        style={sunStyle}
-        onPointerDown={(e) => {
-          e.currentTarget.setPointerCapture(e.pointerId);
-          moveTo(e);
-        }}
-        onPointerMove={(e) => e.currentTarget.hasPointerCapture(e.pointerId) && moveTo(e)}
-        onKeyDown={onKey}
-      />
+      {!spotlight && <Orb data-sun="" position={sun} onPositionChange={setSun} />}
       {spotlight ? (
-        <PageShell title="Glass" subtitle="Drag the sun" navigation={set}>
-          <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} In Spotlight the sun is the header&apos;s own light, so the wheel and its rays follow it.</p>
+        <PageShell title="Spotlight" navigation={set}>
+          <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} This is a full page, so the light stays where it sits on the real page.</p>
         </PageShell>
       ) : (
         <ThemePage theme={theme}>
           <h1 style={{ margin: 0, fontFamily: 'var(--type-heading-title-family)' }}>Glass</h1>
-          <p style={{ maxInlineSize: '60ch', marginBlockEnd: 'var(--space-6)' }}>{intro}</p>
+          <p style={{ maxInlineSize: '60ch', marginBlockEnd: 'var(--space-6)' }}>{intro} Drag the light, or focus it and use the arrow keys.</p>
           <AppearanceContext.Provider value="glass">{set}</AppearanceContext.Provider>
         </ThemePage>
       )}
@@ -161,7 +116,7 @@ const meta: Meta<Args> = {
     docs: {
       description: {
         component:
-          "Glass (the lens), on the real background of the theme picked in the toolbar, in light or dark mode: Spotlight's header, Sunrise's marble, Fireside's page. What's behind the glass bends at its curved edge, and its rim, highlight and shadow come from one light. Drag the sun to move it. Tune the controls; the values that look right become each theme's glass-lens tokens.",
+          "Glass (the lens), on the real background of the theme picked in the toolbar, in light or dark mode: Spotlight's header, Sunrise's marble, Fireside's page. What's behind the glass bends at its curved edge, and its rim, highlight and shadow come from one light. In Sunrise and Fireside the light is an orb you can drag; Spotlight is a full page, so its light stays still. Tune the controls; the values that look right become each theme's glass-lens tokens.",
       },
     },
   },
@@ -178,7 +133,7 @@ const meta: Meta<Args> = {
 };
 export default meta;
 
-/** Drag the sun, and tune the glass with the controls. */
+/** Tune the glass with the controls. In Sunrise and Fireside, drag the light too. */
 export const Playground: StoryObj<Args> = {};
 
 /** Each theme's own glass, matched side by side to the Oct 14 shader demo: a faintly milky body, the view bending at the round ends, a bright line along the edge facing the sun, and a soft shadow falling away from it. */

@@ -13,7 +13,7 @@ A theme is one folder. Storybook, the docs pages, the tests and the package all 
    ```
    `name` is what people see in Storybook's Theme picker. `order` is its place in that list.
 3. **Change the look, not the space.** Change colors, type, motion and art in the theme's files, and pick the roundness in `shape.json`: `square`, `standard` or `round`. Spacing and sizes stay in `tokens/base/`; a test fails if a theme sets them.
-4. **Dark mode.** Put dark values in a `dark/` folder inside the theme, only for names the theme already has. A theme that's always dark has no `dark/` folder; set `"alwaysDark": true`. A theme that's mostly dark can still have a light mode for one part: Fireside's `dark/` folder changes only its work area ([D54](Decisions.md)).
+4. **Dark mode.** Put dark values in a `dark/` folder inside the theme, only for names the theme already has. A theme that's always dark has no `dark/` folder; set `"alwaysDark": true`. A theme that's mostly dark can still have a light mode for one part: Fireside's `dark/` folder changes only its work area ([D61](Decisions.md)).
 5. **Fonts.** Add `src/fonts/<id>.css`, listing only the weights the type tokens use.
 6. **Build and test.** Run `npm run test:update`. It builds the tokens, records the new theme's values in the token lock, and runs every check:
    - every shared token name is defined

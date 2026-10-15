@@ -38,6 +38,9 @@ for (const t of repoThemes) {
     lanternThemes.push({ id: `${slug}-dark`, name: `${t.name} dark`, repo: t.id, file: `build/json-dark/${t.id}.json` });
   }
 }
+// Light looks and Fireside first, so Lantern never opens on Spotlight dark; that look waits for the glass parts.
+const order = ['spotlight', 'sunrise', 'fireside', 'sunrise-dark', 'spotlight-dark'];
+lanternThemes.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 const values = Object.fromEntries(lanternThemes.map((t) => [t.id, json(t.file)]));
 
 // The comment after each variable in the theme CSS says what it's for.
@@ -50,9 +53,10 @@ const isColor = (v) => typeof v === 'string' && /^(#[0-9a-f]{3,8}|(rgba?|hsla?|o
 const isLength = (v) => typeof v === 'string' && /^-?[0-9.]+(px|rem|em|%)?$/.test(v.trim());
 const skipped = [];
 
-// ---- Colors: the shared color names and the palettes, one value per theme.
+// ---- Colors: the shared color names, one value per theme. Each theme's raw palette has its own
+// names, so Lantern leaves palettes out; a palette listed by name would show Spotlight's in every theme.
 const first = values[lanternThemes[0].id];
-const colorNames = Object.keys(first).filter((k) => k.startsWith('color-') || k.startsWith('palette-'));
+const colorNames = Object.keys(first).filter((k) => k.startsWith('color-'));
 const colorTokens = [];
 for (const name of colorNames) {
   const value = {};
@@ -64,7 +68,8 @@ for (const name of colorNames) {
     skipped.push(name);
     continue;
   }
-  colorTokens.push({ name, value, usage: usage[name] ?? 'From the theme CSS.' });
+  // Shown without the color- prefix so Lantern's narrow name column fits the whole name; the note keeps the code name.
+  colorTokens.push({ name: name.replace(/^color-/, ''), value, usage: `${usage[name] ?? 'From the theme CSS.'} In code: --${name}.` });
 }
 
 // ---- Spacing, radius and shadow come from the shared base (the same in every theme), except where noted.
@@ -205,7 +210,7 @@ const { pages, renderToStaticMarkup } = require(wordsFile);
 // styles and the base, exactly as the repo ships them. Lantern's own token edits don't reach the
 // previews: the code is the source of truth, so a token change goes back to the repo as a pull request.
 const themeCss = repoThemes.map((t) => read(`build/css/${t.id}.css`)).join('\n');
-let css = [readFileSync(join(out, 'components/bundle.css'), 'utf8'), themeCss, read('build/text-styles.css'), read('src/base.css'), '.lantern-preview{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px;background:var(--color-surface-page);color:var(--color-ink-primary);font-family:var(--font-family-body)}'].join('\n');
+let css = [readFileSync(join(out, 'components/bundle.css'), 'utf8'), themeCss, read('build/text-styles.css'), read('src/base.css'), '.lantern-preview{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px;color:var(--color-ink-primary);font-family:var(--font-family-body)}'].join('\n');
 css = css.replace(/@import[^;]+;/g, '');
 write('components/bundle.css', css);
 
@@ -259,9 +264,13 @@ for (const [name, p] of Object.entries(pages)) {
 // ---- The brand book, the cover and the index.
 const statusRows = Object.entries(pages)
   .sort(([a], [b]) => a.localeCompare(b))
-  .map(([n, p]) => `| ${n} | ${p.title.split('/')[0]} | ${statusWord[p.status]} | ${p.summary} |`);
-write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Part | Group | Status | What it does |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`));
+  .map(([n, p]) => `| [${n}](${storybook}${storyId(p.title)}--overview) | ${p.title.split('/')[0].replace(/s$/, '')} | \`${statusWord[p.status]}\` | ${p.summary} |`);
+write('README.md', read('scripts/lantern/README.template.md').replace('{{STATUS_TABLE}}', ['| Component | Group | Status | Description |', '| --- | --- | --- | --- |', ...statusRows].join('\n')).replace('{{REF}}', `${branch}@${sha}`).replace('{{UPDATED}}', new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })));
 write('components/Cover/preview.html', read('scripts/lantern/cover.html'));
+// Lantern's mark. In the artifact it's an uploaded asset (assets/Logos), so publishing uploads it and records
+// its id in design-system.json's assetGroups; the folder keeps a copy and the group's note.
+write('assets/Logos/lantern-mark.svg', read('scripts/lantern/lantern-mark.svg'));
+write('assets/Logos/README.md', "# Logos\n\nLantern's mark: a copper camp lantern with one amber orb inside. It's drawn for a dark ground (night iron, `#2a1a12`); don't set it on a light page. Keep its colors as they are: night iron, copper, amber flame and peach glow are Lantern's own, not any theme's.\n");
 write(
   'design-system.json',
   JSON.stringify(

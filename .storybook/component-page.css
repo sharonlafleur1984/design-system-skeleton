@@ -325,37 +325,6 @@
   flex-direction: column;
   gap: 12px;
 }
-/* The sun on header art: drag it, or focus it and use the arrow keys. */
-.sb-try__sun {
-  position: absolute;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 44px;
-  block-size: 44px;
-  margin: -22px 0 0 -22px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  cursor: grab;
-  touch-action: none;
-}
-.sb-try__sun:active {
-  cursor: grabbing;
-}
-.sb-try__sun:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-.sb-try__sun-core {
-  inline-size: 22px;
-  block-size: 22px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff8e1 0%, #ffd98a 55%, #ffb84d 100%);
-  box-shadow: 0 0 18px 6px #ffd98a99;
-}
 /* The hint and the stand-in note sit on a scrim, so they read on light art too. */
 .sb-try__hint,
 .sb-try__standin {
@@ -456,7 +425,7 @@
   }
 }
 
-/* Tables: Question, Answer and Notes; the first column is the row's heading. */
+/* Tables: Question, Answer and Notes in equal thirds; the first column is the row's heading. */
 .sb-page__tablewrap {
   padding: 4px 12px 12px;
   overflow-x: auto;
@@ -486,10 +455,10 @@
   vertical-align: top;
 }
 .sb-page__table tbody th {
-  inline-size: 30%;
+  inline-size: 33%;
 }
 .sb-page__table td:nth-child(2) {
-  inline-size: 30%;
+  inline-size: 34%;
 }
 .sb-page__list {
   display: flex;

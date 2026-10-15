@@ -10,8 +10,10 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
-| D54 | Oct 15, 2026 | Fireside's light mode changes only the work area |
-| D53 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
+| D61 | Oct 15, 2026 | Fireside's light mode changes only the work area |
+| D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
+| D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
+| D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
@@ -67,7 +69,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
-<summary><b>D54 · Oct 15, 2026:</b> Fireside's light mode changes only the work area</summary>
+<summary><b>D61 · Oct 15, 2026:</b> Fireside's light mode changes only the work area</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Fireside has a light mode, but the shell and most components stay dark in both modes. Light mode changes only the work area: the background behind the prototype and the wiki, the text on it (it turns dark), the wiki's lines, and the selected page in the wiki's side nav, which shows the primary color. These are five Fireside-only tokens, `shell-work-*`, with the toolkit's own values from its shell (designer-toolkit-code `src/styles/shell.css`). Checkboxes on the wiki stay gray in both modes.
@@ -77,7 +79,20 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
-<summary><b>D53 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
+<summary><b>D57 · Oct 15, 2026:</b> The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass</summary>
+
+- **Decided by:** Sharon, after three first directions ("not a big fan of any of these"): "take the primary color of an area and apply it as a light source with lots and lots of glowing"; "the stroke seems to be even all the way around… that would never happen"; "a little brighter"; "these orbs should go into my design library… the color will change based on the theme."
+- **One orb, in the library:** `Orb` (and `ORB_START`, on the right, two thirds down) replaces the three looks Storybook had: the page light's flat yellow dot, the Glass playground's dot with a glow, and Try it out's sun with a core and halo.
+- **The look:** a small glass marble, darker at the top, with a bright crescent where light catches its top edge and light pooling at the bottom. Its rim isn't the same thickness all the way round: thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own color.
+- **Its color is the theme's:** Spotlight's red, Fireside's peach copper, and in Sunrise the area's own color family (Dashboard's Earth Moss by default; `palette` sets another, like `seagull` for Time). Tokens: `orb.color.*` in each theme; size, glow and shine in the base (`orb.*`).
+- **Still true (D45):** orb only, no rays; it starts on the right of its section, two thirds down (Sharon: "bottom right, but not all the way at the bottom, like 2/3 down"); drag it or use the arrow keys (Shift moves farther); its button is 44px; nothing moves on its own, so there's no motion to reduce. Full pages (the page shell) never get an orb: their light stays still at `light-from-right` and `light-top`.
+- **On its own page, centered (Sharon):** the Orb's page shows it in the middle of its examples, like any other component. Everywhere else it starts on the right, two thirds down. `defaultPosition` sets where an orb that keeps its own place starts.
+- **Storybook:** a page for Orb under Components, and a test story with the orb on every theme's real background. Try it out's hint now says "Drag the light to move it".
+
+</details>
+
+<details>
+<summary><b>D56 · Oct 15, 2026:</b> The component page is a story; every planned part has a page and a status</summary>
 
 - **Decided by:** Sharon, designing the page with Claude on a canvas, and approving the parts list (Oct 15).
 - **A story, not a Docs page:** so Storybook's bottom panel (Controls, Actions, Interactions, Accessibility) works on it. Sidebar entries per part: Overview, Try it out, Usage rules, Accessibility and Related, each opening the one page at that section. The old stories stay as test stories, hidden from the sidebar (tag `!dev`), so screenshot and accessibility tests still run on them. Replaces D52's Docs tab, Examples and the theme picker's Mode and Background.
@@ -91,6 +106,18 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Compare all:** three equal columns when they fit, otherwise one per row; never two plus one.
 - **Accessibility fixes from the canvas review:** no pale text, white text only on a code bar dark enough for it, check results are words not buttons, every choice group named by its label, the first column of each table as row headings, key styling only on real keys.
 - **Applies to:** every part under Components and Patterns, built or planned. Foundations keep their own layout.
+
+</details>
+
+<details>
+<summary><b>D55 · Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
+- **Updates:** the Oct 12 line "Only on artwork the system controls" and the Oct 4 rule that glass is for controls on artwork.
+- **Tradeoff:** lens glass bends the art behind it, so it still needs artwork the system controls. On a plain background there's nothing to bend, so glass shows the classic frosted recipe, not the lens.
+- **Why:** Sharon decided this while reviewing the Style control (Solid or Glass) for the Storybook docs page template.
+- **Details:** Components, Button and Action tile in Storybook (When to use and When not to).
 
 </details>
 
@@ -180,7 +207,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decided by:** Sharon ("we need to show a light source on any surface that shows glass"; "the focus is too much")
 - **One light per page:** an element marked `data-glass-light` is the page's light (`PAGE_LIGHT`). Glass with no light of its own is lit from the nearest one around it, so every glass on the page shares one light. Moving it (then firing `LIGHT_CHANGE`) moves every rim, highlight and shadow. A glass group's own `source` or `light` still wins, and with no page light the light tokens are used as before.
 - **Storybook:** each theme panel lights its glass from its own real background (the same art and light as the Glass playground), so glass looks the same in every story as it does in the playground. Groups inside a lit panel don't light themselves (`LitContext`), and a lens leaves glass inside a nested lit container to that container's lens.
-- **Storybook:** every story that shows glass gets the page light as a small sun at the top right. Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
+- **Storybook:** every story that shows glass gets the page light as a small sun. Every movable light in Storybook starts on the right of its section, two thirds down (D57), and is only an orb, with no rays. A full page (the page shell) keeps its light still, where it sits on the real page (updated Oct 15). Drag it, or focus it and use the arrow keys. Stories with their own light (the Glass playground's sun, the page shell's wheel) keep theirs.
 - **Balanced light (Sharon: "not balanced, so it's not natural"):**
   - Story panels and self-lit tile groups use the same long reach as the Glass playground, so every tile catches the sun about equally.
   - A bug in the shared glass recipe put the inner highlight on the far edge and the shade on the lit edge (an inset shadow shows opposite its offset). They're swapped back.
