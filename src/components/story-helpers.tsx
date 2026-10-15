@@ -279,6 +279,12 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
 }
 
 /**
+ * Where every movable light in Storybook starts, as a share of its section: the bottom right (Sharon's
+ * rule, Oct 15). Every sun starts here, in any section, theme or mode.
+ */
+export const SUN_START = { x: 0.92, y: 0.9 };
+
+/**
  * Storybook only: the page's one light, shown as a sun, on every story that shows glass (glass can't
  * be judged without seeing where its light comes from). Drag the sun, or focus it and use the arrow
  * keys, and every rim, highlight and shadow follows. It's the page light (data-glass-light), so all
@@ -288,8 +294,8 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
 export function LightScene({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
-  // Where the sun is, as a share of the scene: top right, above the content.
-  const [sun, setSun] = useState({ x: 0.97, y: 0 });
+  // Where the sun is, as a share of the scene. It starts at the bottom right.
+  const [sun, setSun] = useState(SUN_START);
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;

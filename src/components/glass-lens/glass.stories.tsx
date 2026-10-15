@@ -5,7 +5,7 @@ import { AppearanceContext } from '../material';
 import { ActionTile, ActionTileGroup } from '../action-tile/action-tile';
 import { Button } from '../button/button';
 import { PageShell } from '../page-shell/page-shell';
-import { singleTheme, type Theme } from '../story-helpers';
+import { singleTheme, SUN_START, type Theme } from '../story-helpers';
 import { firesideArt, sunriseArt } from './story-art';
 import { LIGHT_CHANGE } from './lens';
 
@@ -62,8 +62,8 @@ type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: nu
 function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings }: Args & { theme: Theme }) {
   const set = <GlassSet />;
   const ref = useRef<HTMLDivElement>(null);
-  // Where the sun is, as a share of the page.
-  const [sun, setSun] = useState({ x: 0.8, y: 0.12 });
+  // Where the sun is, as a share of the page. It starts at the bottom right.
+  const [sun, setSun] = useState(SUN_START);
   const spotlight = theme === 'after-graduation';
 
   useEffect(() => {
