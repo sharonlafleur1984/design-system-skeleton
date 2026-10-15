@@ -228,12 +228,12 @@ describe('Separator', () => {
 });
 
 describe('Orb', () => {
-  it('is a named button that starts at the bottom right', () => {
+  it('is a named button that starts on the right, two thirds down', () => {
     render(<Orb position={ORB_START} onPositionChange={() => {}} />);
     const orb = screen.getByRole('button', { name: 'Light. Drag it, or use the arrow keys to move it.' });
-    expect(ORB_START).toEqual({ x: 0.92, y: 0.9 });
+    expect(ORB_START).toEqual({ x: 0.92, y: 0.67 });
     expect(orb.style.left).toBe('92%');
-    expect(orb.style.top).toBe('90%');
+    expect(orb.style.top).toBe('67%');
   });
 
   it('moves with the arrow keys, farther with Shift, and stays inside its section', async () => {
@@ -255,7 +255,7 @@ describe('Orb', () => {
     const orb = screen.getByRole('button');
     orb.focus();
     await userEvent.keyboard('{ArrowUp}');
-    expect(orb.style.top).toBe('88%');
+    expect(orb.style.top).toBe('65%');
   });
 
   it("glows in an area's color family when given one", () => {

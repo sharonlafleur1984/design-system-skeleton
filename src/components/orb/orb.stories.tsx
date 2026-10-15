@@ -11,8 +11,8 @@ const meta: Meta<typeof Orb> = {
   // On its own page the orb starts in the middle, like every component's example.
   args: { defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
   argTypes: {
-    position: setting('Position', 'Where it is in its section, from 0 to 1 across and down. Leave out and it keeps its own, starting at the bottom right (ORB_START)\n\n`position`', { control: false }),
-    defaultPosition: setting('Starts at', 'Where it starts when it keeps its own place. Leave out for the bottom right\n\n`defaultPosition`', { control: false }),
+    position: setting('Position', 'Where it is in its section, from 0 to 1 across and down. Leave out and it keeps its own, starting on the right, two thirds down (ORB_START)\n\n`position`', { control: false }),
+    defaultPosition: setting('Starts at', 'Where it starts when it keeps its own place. Leave out for the right, two thirds down\n\n`defaultPosition`', { control: false }),
     onPositionChange: setting('On position change', 'Called while it is dragged or moved with the arrow keys\n\n`onPositionChange`', { control: false }),
     palette: setting('Color family', "A color family from the theme's palette, for an area's own color. Leave out for the theme's\n\n`palette`", { control: false }),
     ...pageArgTypes(),

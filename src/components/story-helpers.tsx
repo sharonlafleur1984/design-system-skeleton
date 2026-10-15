@@ -282,7 +282,7 @@ export function WithReducedMotion({ children }: { children: ReactNode }) {
 }
 
 /**
- * Where every movable light in Storybook starts, as a share of its section: the bottom right (Sharon's
+ * Where every movable light in Storybook starts, as a share of its section: on the right, two thirds down (Sharon's
  * rule, Oct 15). Every orb starts here, in any section, theme or mode. The same as the Orb's ORB_START.
  */
 export const SUN_START = ORB_START;
@@ -297,7 +297,7 @@ export const SUN_START = ORB_START;
 export function LightScene({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
-  // Where the orb is, as a share of the scene. It starts at the bottom right.
+  // Where the orb is, as a share of the scene. It starts on the right, two thirds down.
   const [sun, setSun] = useState(SUN_START);
   useLayoutEffect(() => {
     const el = ref.current;

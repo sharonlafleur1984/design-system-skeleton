@@ -375,8 +375,8 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const bg = theme === 'after-graduation' && (picked === 'header' || picked === 'landscape') ? picked : theme === 'life-hub' && picked === 'marble' ? 'marble' : 'plain';
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  // Every dark window, and the header art, shows the light as the orb you can move. It starts near the
-  // bottom right, like every light, and the window's glass is lit from it.
+  // Every dark window, and the header art, shows the light as the orb you can move. It starts on the
+  // right, two thirds down, like every light, and the window's glass is lit from it.
   const showSun = bg === 'header' || mode === 'dark';
   const [sun, setSun] = useState(SUN_START);
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);

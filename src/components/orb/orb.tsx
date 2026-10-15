@@ -11,8 +11,8 @@ export interface OrbPosition {
   y: number;
 }
 
-/** Where every orb starts: the bottom right of its section (Sharon's rule, Oct 15). */
-export const ORB_START: OrbPosition = { x: 0.92, y: 0.9 };
+/** Where every orb starts: on the right of its section, two thirds of the way down (Sharon's rule, Oct 15). */
+export const ORB_START: OrbPosition = { x: 0.92, y: 0.67 };
 
 export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'children' | 'onKeyDown' | 'onPointerDown' | 'onPointerMove'> {
   /** Where the orb is in its section. Leave out to let the orb keep its own place, starting at ORB_START. */

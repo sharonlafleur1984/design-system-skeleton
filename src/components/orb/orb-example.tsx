@@ -40,7 +40,7 @@ export interface OrbSectionProps {
   area?: string;
   texture?: string;
   palette?: string;
-  /** Where the orb starts. Defaults to the bottom right, like every orb; the Orb's own page centers it. */
+  /** Where the orb starts. Defaults to the right, two thirds down, like every orb; the Orb's own page centers it. */
   start?: { x: number; y: number };
   /** A name for the section, for screen readers. */
   label: string;

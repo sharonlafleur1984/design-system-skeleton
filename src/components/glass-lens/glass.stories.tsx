@@ -65,7 +65,7 @@ type Args = { bend: number; edgeDepth: number; colorSplit: number; edgeLight: nu
 function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow, themeSettings }: Args & { theme: Theme }) {
   const set = <GlassSet />;
   const ref = useRef<HTMLDivElement>(null);
-  // Where the orb is, as a share of the page. It starts at the bottom right.
+  // Where the orb is, as a share of the page. It starts on the right, two thirds down.
   const [sun, setSun] = useState(SUN_START);
   const spotlight = theme === 'after-graduation';
 
