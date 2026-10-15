@@ -101,7 +101,7 @@ export const themeNames: Record<Theme, string> = Object.fromEntries(themes.map((
 
 // Storybook's own chrome, not any theme: the same in every column.
 // Small and on the right, in from the rounded corner, so the theme's name labels its column without competing with the part's name (Sharon, Oct 15).
-const compareHeading: CSSProperties = { margin: 0, font: '600 12px/1.4 system-ui, sans-serif', color: '#5c6870', textAlign: 'end', paddingInlineEnd: '16px' };
+const compareHeading: CSSProperties = { margin: 0, font: '600 12px/1.4 system-ui, sans-serif', color: '#525252', textAlign: 'end', paddingInlineEnd: '16px' };
 
 /** True inside one theme's panel of the Compare all view, which Storybook's preview builds for every story. */
 const InComparePanel = createContext(false);
@@ -142,7 +142,7 @@ export function CompareAll({ render }: { render: (theme: Theme) => ReactNode }) 
                   {themeNames[theme]}
                 </h2>
                 {/* A hairline around each column, so a theme whose page matches the background still reads as its own column. */}
-                <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d9d9d9' }}>
+                <div style={{ display: 'flow-root', borderRadius: 'var(--radius-panel)', boxShadow: '0 0 0 1px #d4d4d4' }}>
                   <ThemePanel theme={theme} heading={false}>
                     {render(theme)}
                   </ThemePanel>
