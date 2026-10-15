@@ -10,7 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
-| – | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
+| D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
@@ -66,7 +66,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
-<summary><b>Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+<summary><b>D55 · Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
 
 - **Decided by:** Sharon
 - **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
