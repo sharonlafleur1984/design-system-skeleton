@@ -1,3 +1,5 @@
+*Updated {{UPDATED}}*
+
 Lantern is a design system with three unique themes: Spotlight, Sunrise, and Fireside. Sharing a single foundation, each provides its own unique glow.
 
 Supported by React Aria components and semantic tokens, Lantern plays with light and glass, gently encouraging them to bring out the best in each other, with every component visibly responding to a single source of light.
@@ -96,5 +98,3 @@ Lantern wasn't created in Figma. It was built straight from the code.
 Interact with the entire component library in [Storybook](https://designsystemskeleton.netlify.app).
 
 The full story behind the journey can be found in the [design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton/wiki) wiki page.
-
-Updated {{UPDATED}}
