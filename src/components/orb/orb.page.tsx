@@ -11,6 +11,7 @@ export const orbPage: ComponentPageInfo = {
   summary: 'Shows where the light comes from while you explore glass, as a glowing glass marble you can drag.',
   status: 'ready',
   builtWith: { source: 'src/components/orb/orb.tsx' },
+  isLight: true,
   useFor: ['Exploring light on glass, one component at a time: drag the orb, and every rim, highlight and shadow follows.'],
   useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family."],
   useElse: [{ job: 'A full page: its light stays still where it was placed (the light tokens)', instead: { name: 'Page shell', title: 'Components/Page shell' } }],
