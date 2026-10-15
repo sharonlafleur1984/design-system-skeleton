@@ -26,6 +26,7 @@ const meta: Meta<typeof ActionTile> = {
           '**Do:** keep the description to one short line. **Don\'t:** put a button or link inside a tile; each tile is one click target.',
           '',
           '**States:** soft light throughout, no hard lines. Hover rises 4px with a deeper shadow; pressed sinks back slightly; chosen shows the theme\'s mark (Spotlight\'s star, a check elsewhere, or any icon through `chosenIcon`), takes the theme\'s pale primary color (Glass turns milky) and sits flat; focus glows; disabled fades to half. With reduced motion nothing moves, but the shadow still changes.',
+          '**When to use:** on artwork, like After Graduation\'s header, or on a plain page. **When not to:** on glass, like a glass card.',
           '',
           '**Icons:** give each tile an `icon`. It always shows in the phone bottom bar; set `iconPosition` (top or start) to show it in the tile too, in an icon tile, `filled` or `plain`. The chosen mark stays in the top-right corner.',
           '',
