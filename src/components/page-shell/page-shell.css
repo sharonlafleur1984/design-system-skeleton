@@ -147,6 +147,8 @@
 }
 
 .ds-shell__nav {
+  /* Tiles on the header art glow with the light focus glow, whatever the mode. */
+  --tile-focus-glow: var(--color-border-focus-glow-on-dark);
   margin-block-start: var(--layout-title-gap);
 }
 

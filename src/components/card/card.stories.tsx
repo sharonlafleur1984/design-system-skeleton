@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { ReactNode } from 'react';
 import { Card } from './card';
 import { Button } from '../button/button';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Card> = {
   title: 'Components/Card',
@@ -19,6 +20,8 @@ const meta: Meta<typeof Card> = {
           '**When not to:** To box a single line of text, or to nest cards inside cards.',
           '',
           '**Glass:** each theme decides. Life Hub cards are glass, lit by one sun in the header (top right); After Graduation cards are solid. Buttons inside a card get no blur of their own, so it is never glass on glass.',
+          '',
+          '**Glass material (the lens): empty cards only.** A card that holds just an empty state can be `material="glass"`: it has nothing to read yet, so it can play with the light like a control. Once it has content, set it back to `default`, so what people read sits on a steady surface. See the Empty state story.',
           '',
           '**Do:** Let shadows lift cards; no borders needed. **Don\'t:** Make a card interactive unless the whole card does one thing.',
           '',
@@ -55,8 +58,10 @@ export const Variants: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <Card variant="opaque" interactive><Content title="Rest" /></Card>
-      <Card variant="opaque" interactive data-state="hover"><Content title="Hover" /></Card>
+      <StatePictures>
+        <Card variant="opaque" interactive><Content title="Rest" /></Card>
+        <Card variant="opaque" interactive data-state="hover"><Content title="Hover" /></Card>
+      </StatePictures>
     </BothThemes>
   ),
 };
@@ -71,6 +76,29 @@ export const WithControls: Story = {
           <Button size="small" variant="secondary">Button</Button>
         </div>
       </Card>
+    </BothThemes>
+  ),
+};
+
+/** The two cards side by side. The theme panel lights the glass from its own background and the sun. */
+function Lit({ children }: { children: ReactNode }) {
+  return <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>{children}</div>;
+}
+
+/** Glass while the card is empty; the default material once it has content. */
+export const EmptyState: Story = {
+  render: () => (
+    <BothThemes>
+      <Lit>
+        <Card material="glass" style={{ alignItems: 'center', textAlign: 'center' }}>
+          <Content title="Empty state" />
+          <Button size="small" variant="secondary">Button</Button>
+        </Card>
+        <Card>
+          <Content title="Card title" />
+          <Button size="small" variant="secondary">Button</Button>
+        </Card>
+      </Lit>
     </BothThemes>
   ),
 };

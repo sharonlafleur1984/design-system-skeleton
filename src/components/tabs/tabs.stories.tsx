@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tab, TabList, TabPanel, Tabs } from './tabs';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs',
@@ -51,18 +51,20 @@ export const Default: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <Tabs defaultSelectedKey="selected" disabledKeys={['disabled']}>
-        <TabList aria-label="Tab states">
-          <Tab id="rest">Rest</Tab>
-          <Tab id="hover" data-state="hover">Hover</Tab>
-          <Tab id="focus" data-state="focus">Focus</Tab>
-          <Tab id="selected">Selected</Tab>
-          <Tab id="disabled">Disabled</Tab>
-        </TabList>
-        {['rest', 'hover', 'focus', 'selected', 'disabled'].map((id) => (
-          <TabPanel key={id} id={id}><p style={panel}>Panel for {id}.</p></TabPanel>
-        ))}
-      </Tabs>
+      <StatePictures>
+        <Tabs defaultSelectedKey="selected" disabledKeys={['disabled']}>
+          <TabList aria-label="Tab states">
+            <Tab id="rest">Rest</Tab>
+            <Tab id="hover" data-state="hover">Hover</Tab>
+            <Tab id="focus" data-state="focus">Focus</Tab>
+            <Tab id="selected">Selected</Tab>
+            <Tab id="disabled">Disabled</Tab>
+          </TabList>
+          {['rest', 'hover', 'focus', 'selected', 'disabled'].map((id) => (
+            <TabPanel key={id} id={id}><p style={panel}>Panel for {id}.</p></TabPanel>
+          ))}
+        </Tabs>
+      </StatePictures>
     </BothThemes>
   ),
 };

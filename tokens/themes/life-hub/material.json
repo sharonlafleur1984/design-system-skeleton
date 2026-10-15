@@ -160,16 +160,16 @@
       "$description": "The tight shadow right under the glass's edge."
     },
     "lens": {
-      "$description": "Lens glass (Oct 12): action tiles and glass buttons on artwork the design system controls. A WebGL canvas bends the art at the glass's curved edge, never its text. Tuned by Sharon. Used only while the lens is drawing; otherwise the glass keeps the classic recipe above.",
+      "$description": "Lens glass (Oct 12): action tiles and glass buttons on artwork the design system controls. A WebGL canvas bends the art at the glass's curved edge, never its text. Tuned by Sharon. Used only while the lens is drawing; otherwise the glass keeps the classic recipe above. Matched to the Oct 14 shader demo Sharon approved: a faintly milky body, a bright line on the edge facing the light, the view bending at the round ends, and a soft shadow falling away from the light.",
       "body": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.05)",
-        "$description": "The glass's body: white at this strength over the art."
+        "$value": "rgba(255, 255, 255, 0)",
+        "$description": "No white body in light mode: on the light marble, any white wash reads as frost. Glass shows by its bending and its edge instead."
       },
       "tint": {
         "$type": "color",
-        "$value": "rgba(217, 192, 128, 0.04)",
-        "$description": "A warm sand tint at this strength (Life Hub's gold sand 300), so the glass reads as glass, not a hole."
+        "$value": "rgba(255, 255, 255, 0)",
+        "$description": "No tint: like the demo, the glass is clear apart from its faint white body."
       },
       "rim-width": {
         "$type": "dimension",
@@ -178,18 +178,18 @@
       },
       "rim-lit": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.55)",
+        "$value": "rgba(255, 246, 226, 0.90)",
         "$description": "The rim where it faces the light, at its brightest."
       },
       "rim-faint": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.10)",
-        "$description": "The rim everywhere else, so the edge never disappears."
+        "$value": "rgba(255, 255, 255, 0.04)",
+        "$description": "The rim away from the light: barely there, so the edge is drawn by the light as it moves, never as a fixed border."
       },
       "highlight": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.10)",
-        "$description": "The soft band of light just inside the edge that faces the light."
+        "$value": "rgba(255, 246, 226, 0.14)",
+        "$description": "The band of light just inside the edge that faces the light. Gentle on the light marble, so it never turns into frost."
       },
       "shadow-color": {
         "$type": "color",
@@ -198,22 +198,22 @@
       },
       "shadow-distance": {
         "$type": "dimension",
-        "$value": "2px",
-        "$description": "How far the shadow falls away from the light."
+        "$value": "4px",
+        "$description": "How far the shadow falls away from the light. Short, so the glass rests near the page instead of floating high above it."
       },
       "shadow-blur": {
         "$type": "dimension",
-        "$value": "24px",
-        "$description": "How soft the shadow is."
+        "$value": "14px",
+        "$description": "How soft the shadow is: tight enough to read as glass close to the surface."
       },
       "bend": {
         "$type": "number",
-        "$value": 1,
+        "$value": "1.5",
         "$description": "How strongly the edge bends the art (1 is a true rounded bevel)."
       },
       "edge-depth": {
         "$type": "dimension",
-        "$value": "22px",
+        "$value": "28px",
         "$description": "How far in from the edge the glass curves and bends the art. Never more than 95% of half the glass's height; the middle stays clear."
       },
       "color-split": {

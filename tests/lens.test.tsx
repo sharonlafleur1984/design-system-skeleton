@@ -155,6 +155,37 @@ describe('lens', () => {
     stop();
   });
 
+  it('glides into a new state instead of jumping (chosen turning milky)', async () => {
+    const { glass, draws, stop } = setup();
+    flush(16);
+    expect(draws.at(-1)!.rects[0].milk).toBe(0);
+    glass.style.setProperty('--glass-milk', '1');
+    await settle();
+    flush(32);
+    const first = draws.at(-1)!.rects[0].milk!;
+    // One frame in, it has only started: no jump.
+    expect(first).toBeGreaterThan(0);
+    expect(first).toBeLessThan(0.3);
+    // It keeps drawing on its own until it arrives: most of the way within the slow motion step, all of it soon after.
+    for (let t = 48; t <= 1200; t += 16) flush(t);
+    const milks = draws.map((d) => d.rects[0].milk!);
+    expect(milks.at(-1)).toBe(1);
+    // Every step moves forward, never back.
+    milks.slice(1).forEach((m, i) => expect(m).toBeGreaterThanOrEqual(milks[i]));
+    stop();
+  });
+
+  it('jumps straight to a new state with reduced motion', async () => {
+    document.documentElement.setAttribute('data-reduce-motion', '');
+    const { glass, draws, stop } = setup();
+    flush(16);
+    glass.style.setProperty('--glass-milk', '1');
+    await settle();
+    flush(32);
+    expect(draws.at(-1)!.rects[0].milk).toBe(1);
+    stop();
+  });
+
   it('turns press motion off with reduced motion', async () => {
     document.documentElement.setAttribute('data-reduce-motion', '');
     const { glass, draws, stop } = setup();

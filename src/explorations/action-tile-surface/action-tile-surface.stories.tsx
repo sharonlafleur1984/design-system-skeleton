@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { ActionTile, ActionTileGroup } from '../../components/action-tile/action-tile';
 import { Button } from '../../components/button/button';
 import { Card } from '../../components/card/card';
 import { useGlassLight } from '../../components/glass-light/glass-light';
+import { clearArt, imageArt } from '../../components/glass-lens/lens-art';
+import { LitContext } from '../../components/material';
 import './action-tile-surface.css';
 
 // Review layout: neutral first, then Life Hub, then After Graduation, each in light mode, dark mode
@@ -19,7 +21,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Action tile in two variants: **light** for light backgrounds and **dark** for dark ones, each with rest, chosen and disabled. Chosen tiles use a pale tint of the brand color, the color of where you are (Life Hub: the area’s color; After Graduation: its crimson; Neutral: gray), in both modes, so the primary button stays the strongest thing on the page. Locked replaces disabled: a lock, the word Locked, and why. Same page frame and light in every panel. Light mode is day: light fades with distance. Dark mode uses the glass of After Graduation’s header tiles in every product.',
+          'Action tile in two variants: **light** for light backgrounds and **dark** for dark ones, each with rest, chosen and disabled. Chosen tiles use a pale tint of the brand color, the color of where you are (Life Hub: the area’s color; After Graduation: its crimson; Neutral: gray), in both modes, so the primary button stays the strongest thing on the page. Locked replaces disabled: a lock, the word Locked, and why. Same page frame and light in every panel. Light mode is day: light fades with distance. Dark mode uses the glass of After Graduation’s header tiles in every product. Oct 14: each panel adds a row of Glass tiles drawn by the lens and lit by the page\'s sun (move it to see); on Life Hub\'s marble the lens bends the marble.',
       },
     },
   },
@@ -56,7 +58,14 @@ function Locked() {
 function Frame({ theme, extra, mode, label }: { theme: string; extra: string; mode: Mode; label: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const night = mode === 'dark';
-  useGlassLight(ref, { selector: '.ds-glass' });
+  // Oct 14: a row of Glass tiles under the Default ones, drawn by the lens and lit by the page's sun. On
+  // Life Hub's marble the lens bends the marble; elsewhere the glass is clear and only its light shows.
+  const marble = extra === 'ats-lifehub' && mode !== 'pattern';
+  const lens = useMemo(
+    () => ({ art: marble ? imageArt({ src: 'texture-sage-cream.jpg', overlay: night ? 'var(--color-area-finance-night)' : undefined }) : clearArt() }),
+    [marble, night],
+  );
+  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6 });
   const variant = night ? 'ats-dark' : 'ats-light';
   return (
     <div
@@ -65,13 +74,20 @@ function Frame({ theme, extra, mode, label }: { theme: string; extra: string; mo
       data-theme={theme}
       data-mode={night ? 'dark' : 'light'}
     >
-      <div className={variant}>
-        <ActionTileGroup aria-label={label}>
-          <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
-          <ActionTile label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
-          <ActionTile label={<Locked />} title="Important Dates" description="Opens after you pick your schools" onPress={() => {}} />
+      <LitContext.Provider value>
+        <div className={variant}>
+          <ActionTileGroup aria-label={label}>
+            <ActionTile data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
+            <ActionTile label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
+            <ActionTile label={<Locked />} title="Important Dates" description="Opens after you pick your schools" onPress={() => {}} />
+          </ActionTileGroup>
+        </div>
+        <ActionTileGroup aria-label={`${label}, glass`}>
+          <ActionTile material="glass" data-state="chosen" label="Chosen" title="Explore Schools" description="Select your favorites" onPress={() => {}} />
+          <ActionTile material="glass" label="Rest" title="Financial Planning" description="How will you pay for it?" onPress={() => {}} />
+          <ActionTile material="glass" label={<Locked />} title="Important Dates" description="Opens after you pick your schools" onPress={() => {}} />
         </ActionTileGroup>
-      </div>
+      </LitContext.Provider>
       <Card variant="translucent">
         <p style={{ margin: 0 }}>A card on the same page, lit by the same light.</p>
       </Card>

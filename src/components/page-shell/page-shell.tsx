@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useGlassLight } from '../glass-light/glass-light';
 import { shellArt } from '../glass-lens/lens-art';
+import { MaterialContext, type Material } from '../material';
 import './page-shell.css';
 
 // After Graduation's page shell (Decisions, Oct 4): the header runs edge to edge and the page is a
@@ -30,9 +31,12 @@ export interface PageShellProps {
   children: ReactNode;
   className?: string;
   /**
-   * Lens glass for the action tiles and glass buttons in the header (on by default). Off shows the
-   * classic glass, the same look people get without WebGL or with Reduce transparency.
+   * The look of the action tiles and glass buttons in the header. Glass (the starting look) bends the
+   * header art at their edges. Default is the subtle frosted look, the same look people get without
+   * WebGL or with Reduce transparency.
    */
+  material?: Material;
+  /** @deprecated Use material: true is "glass", false is "default". */
   glassLens?: boolean;
 }
 
@@ -49,9 +53,10 @@ const Wheel = () => (
   </svg>
 );
 
-export function PageShell({ title, subtitle, navigation, actions, children, className, glassLens = true }: PageShellProps) {
+export function PageShell({ title, subtitle, navigation, actions, children, className, material, glassLens }: PageShellProps) {
   const shell = useRef<HTMLDivElement>(null);
-  const lens = useMemo(() => (glassLens ? { art: shellArt(), selector: '.ds-shell__header .ds-lens' } : false), [glassLens]);
+  const glass = (material ?? (glassLens === false ? 'default' : 'glass')) === 'glass';
+  const lens = useMemo(() => (glass ? { art: shellArt(), selector: '.ds-shell__header .ds-lens' } : false), [glass]);
   useGlassLight(shell, { source: '.ds-shell__wheel', selector: '.ds-glass', lens });
   // Where the header's glass tiles sit, so the rays fade behind them (shell-art-ray-behind-glass).
   useLayoutEffect(() => {
@@ -92,7 +97,11 @@ export function PageShell({ title, subtitle, navigation, actions, children, clas
             {actions && <div className="ds-shell__actions">{actions}</div>}
           </div>
           {subtitle && <p className="ds-shell__subtitle">{subtitle}</p>}
-          {navigation && <div className="ds-shell__nav">{navigation}</div>}
+          {navigation && (
+            <div className="ds-shell__nav">
+              <MaterialContext.Provider value={glass ? 'glass' : 'default'}>{navigation}</MaterialContext.Provider>
+            </div>
+          )}
         </div>
       </header>
       <main className="ds-shell__sheet">

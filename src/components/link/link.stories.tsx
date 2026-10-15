@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties } from 'react';
 import { Link, LinkButton } from './link';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 
 const meta: Meta<typeof Link> = {
   title: 'Components/Link',
@@ -78,16 +78,18 @@ const focus: CSSProperties = { outline: '2px solid var(--color-border-focus)', o
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <div style={{ ...row, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-        <Link href="#">Rest</Link>
-        <Link href="#" style={hover}>Hover</Link>
-        <Link href="#" style={{ ...hover, ...focus }}>Focus</Link>
-      </div>
-      <div style={{ ...row, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-        <Link level="quiet" href="#">Rest</Link>
-        <Link level="quiet" href="#" style={quietHover}>Hover</Link>
-        <Link level="quiet" href="#" style={{ ...quietHover, ...focus }}>Focus</Link>
-      </div>
+      <StatePictures>
+        <div style={{ ...row, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+          <Link href="#">Rest</Link>
+          <Link href="#" style={hover}>Hover</Link>
+          <Link href="#" style={{ ...hover, ...focus }}>Focus</Link>
+        </div>
+        <div style={{ ...row, justifyContent: 'flex-start', flexWrap: 'wrap' }}>
+          <Link level="quiet" href="#">Rest</Link>
+          <Link level="quiet" href="#" style={quietHover}>Hover</Link>
+          <Link level="quiet" href="#" style={{ ...quietHover, ...focus }}>Focus</Link>
+        </div>
+      </StatePictures>
     </BothThemes>
   ),
 };

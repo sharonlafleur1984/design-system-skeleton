@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ToggleButton, ToggleButtonGroup } from './toggle-button-group';
-import { BothThemes } from '../story-helpers';
+import { BothThemes, StatePictures } from '../story-helpers';
 import { Card } from '../card/card';
 
 const meta: Meta<typeof ToggleButtonGroup> = {
@@ -45,13 +45,15 @@ export const Default: Story = {
 export const States: Story = {
   render: () => (
     <BothThemes>
-      <ToggleButtonGroup aria-label="ToggleButton states" defaultSelectedKeys={['selected']}>
-        <ToggleButton id="rest">Rest</ToggleButton>
-        <ToggleButton id="hover" data-state="hover">Hover</ToggleButton>
-        <ToggleButton id="focus" data-state="focus">Focus</ToggleButton>
-        <ToggleButton id="selected">Selected</ToggleButton>
-        <ToggleButton id="disabled" isDisabled>Disabled</ToggleButton>
-      </ToggleButtonGroup>
+      <StatePictures>
+        <ToggleButtonGroup aria-label="ToggleButton states" defaultSelectedKeys={['selected']}>
+          <ToggleButton id="rest">Rest</ToggleButton>
+          <ToggleButton id="hover" data-state="hover">Hover</ToggleButton>
+          <ToggleButton id="focus" data-state="focus">Focus</ToggleButton>
+          <ToggleButton id="selected">Selected</ToggleButton>
+          <ToggleButton id="disabled" isDisabled>Disabled</ToggleButton>
+        </ToggleButtonGroup>
+      </StatePictures>
     </BothThemes>
   ),
 };

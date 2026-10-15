@@ -1,4 +1,6 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, useRef, type ReactNode } from 'react';
+import { useGlassLight } from '../glass-light/glass-light';
+import { clearArt } from '../glass-lens/lens-art';
 import {
   Button as AriaButton,
   Link as AriaLink,
@@ -13,6 +15,7 @@ import {
 import '../material.css';
 import '../glass.css';
 import '../glass-lens/glass-lens.css';
+import { LitContext, MaterialContext, materialClass, type Material } from '../material';
 import './action-tile.css';
 
 // Action tile: a glass tile you click to make something happen. One look, three behaviors,
@@ -62,8 +65,18 @@ export interface ActionTileGroupProps {
 }
 /** Three across on tablet and up. On phones, switch tiles become the bottom bar and action tiles stack. */
 export function ActionTileGroup({ behavior = 'actions', children, ...rest }: ActionTileGroupProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  // The page shell lights its own tiles (with its art). Anywhere else, the group lights its Glass tiles
+  // itself, on whatever plain color is behind it.
+  // Anywhere else the glass is fully clear (nothing to bend), and the lens draws only its light: the edge,
+  // highlight and shadow, which follow the page's light (the light tokens).
+  const lit = useContext(LitContext);
+  const inLitContainer = useContext(MaterialContext) !== null || lit;
+  const lens = useMemo(() => (inLitContainer ? false : { art: clearArt(), selector: '.ds-tile--glass' }), [inLitContainer]);
+  // Sunlight's long reach, as in the Glass playground: every tile in the group catches it evenly.
+  useGlassLight(ref, { selector: inLitContainer ? ':not(*)' : '.ds-tile--glass', lens, reach: 6 });
   return (
-    <div className={`ds-tiles ds-tiles--${behavior}`}>
+    <div ref={ref} className={`ds-tiles ds-tiles--${behavior}`}>
       {behavior === 'switch' ? (
         <SwitchContext.Provider value>
           <AriaTabList aria-label={rest['aria-label']} className="ds-tiles__list">
@@ -79,6 +92,9 @@ export function ActionTileGroup({ behavior = 'actions', children, ...rest }: Act
   );
 }
 
+/** The theme surfaces a tile can be filled with. Each switches its text color with it. */
+export type ActionTileFill = 'card' | 'raised' | 'sunken' | 'accent' | 'inverse';
+
 export interface ActionTileProps {
   /** Optional. Small line above the title, like "Episode 1". */
   label?: ReactNode;
@@ -86,6 +102,8 @@ export interface ActionTileProps {
   title: ReactNode;
   /** Optional. One short line about what happens there. */
   description?: ReactNode;
+  /** Shown when the tile is chosen, in place of the theme's mark (Spotlight's star, a check elsewhere). Any icon works. Decorative: screen readers hear "selected". */
+  chosenIcon?: ReactNode;
   /** The tile's icon in the phone bottom bar. Decorative: the name next to it is what's read out. */
   icon?: ReactNode;
   /** One or two words for the phone bottom bar, like "Schools". Falls back to the title. */
@@ -97,11 +115,21 @@ export interface ActionTileProps {
   /** Does this when clicked. */
   onPress?: () => void;
   isDisabled?: boolean;
+  /** default: a solid fill (the default, except on the page shell header, where tiles are glass) with a soft shadow. glass: fully clear, only the edge light and shadow show; on artwork it bends the art at its edges. */
+  material?: Material;
+  /** The inside color, from the theme's own surfaces, for the default material. Text color follows, so it always passes contrast. Defaults to card. */
+  fill?: ActionTileFill;
   /** Storybook only: forces a look for the state gallery. */
   'data-state'?: 'hover' | 'focus' | 'chosen';
 }
 
-export function ActionTile({ label, title, description, icon, shortTitle, id, href, onPress, isDisabled, ...rest }: ActionTileProps) {
+export function ActionTile({ label, title, description, icon, chosenIcon, shortTitle, id, href, onPress, isDisabled, material: ownMaterial, fill = 'card', ...rest }: ActionTileProps) {
+  // On the page shell header, tiles are Glass unless they ask for Default.
+  const containerMaterial = useContext(MaterialContext);
+  const material = ownMaterial ?? containerMaterial ?? 'default';
+  const className = ['ds-tile', 'ds-glass', material === 'glass' ? 'ds-tile--glass' : `ds-tile--fill-${fill}`, materialClass(material)]
+    .filter(Boolean)
+    .join(' ');
   const inSwitch = useContext(SwitchContext);
   const body = (
     <>
@@ -110,7 +138,7 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
       <span className="ds-tile__title">{title}</span>
       {description && <span className="ds-tile__description">{description}</span>}
       <span className="ds-tile__star" aria-hidden="true">
-        ✦
+        {chosenIcon}
       </span>
       <span className="ds-tile__bar">
         {icon && (
@@ -125,20 +153,20 @@ export function ActionTile({ label, title, description, icon, shortTitle, id, hr
   const state = rest['data-state'];
   if (inSwitch) {
     return (
-      <AriaTab id={id} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaTab id={id} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaTab>
     );
   }
   if (href) {
     return (
-      <AriaLink href={href} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+      <AriaLink href={href} isDisabled={isDisabled} className={className} data-state={state}>
         {body}
       </AriaLink>
     );
   }
   return (
-    <AriaButton onPress={onPress} isDisabled={isDisabled} className="ds-tile ds-glass ds-lens" data-state={state}>
+    <AriaButton onPress={onPress} isDisabled={isDisabled} className={className} data-state={state}>
       {body}
     </AriaButton>
   );

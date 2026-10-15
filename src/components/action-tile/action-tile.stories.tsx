@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useRef, type CSSProperties, type ReactNode } from 'react';
-import { useGlassLight } from '../glass-light/glass-light';
-import { OnEveryBackground, WithReducedMotion, storyBackgrounds } from '../story-helpers';
+import { useRef, type CSSProperties, type PointerEvent, type ReactNode } from 'react';
+import { LIGHT_CHANGE } from '../glass-lens/lens';
+import { BothThemes, Row, WithReducedMotion, StatePictures } from '../story-helpers';
 import { PageShell } from '../page-shell/page-shell';
-
-const onDark: CSSProperties = { padding: 'var(--space-4)', borderRadius: 'var(--radius-panel)', background: storyBackgrounds.dark.value };
-import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch } from './action-tile';
+import { ActionTile, ActionTileGroup, ActionTilePanel, ActionTileSwitch, type ActionTileFill } from './action-tile';
 import { afterGraduationOnly } from '../product-only';
+import type { Material } from '../material';
 
 const meta: Meta<typeof ActionTile> = {
   title: 'Components/Action tile',
@@ -16,188 +15,202 @@ const meta: Meta<typeof ActionTile> = {
     docs: {
       description: {
         component: [
-          'A glass tile you click to make something happen. One look, three behaviors, each on the React Aria piece that keeps it accessible.',
+          'A card you press to make something happen, in every theme. One look, three behaviors, each on the React Aria piece that keeps it accessible.',
           '',
-          '**Switch:** in an `ActionTileGroup behavior="switch"`, tiles swap content shown elsewhere on the page, like After Graduation\'s tiles. **Link:** give it `href` to go to a page. **Action:** give it `onPress`.',
+          '**Switch:** in an `ActionTileGroup behavior="switch"`, tiles swap content shown elsewhere on the page (React Aria Tabs). **Link:** give it `href` to go to a page (React Aria Link). **Action:** give it `onPress` (React Aria Button).',
           '',
-          '**When not to:** for views inside a card, use Tabs. For a plain action, use Button.',
+          '**When to use:** a few big choices at the top of a page, each with a title and one short line. **When not to:** for views inside a card, use Tabs. For a plain action, use Button.',
           '',
           '**Do:** keep the description to one short line. **Don\'t:** put a button or link inside a tile; each tile is one click target.',
           '',
-          '**When to use:** on artwork the design system controls, like After Graduation\'s header. **When not to:** on a plain page or a photo the system doesn\'t control; use a Card or Button there.',
+          '**Material (Oct 14):** `material="default"` is a solid fill with a soft shadow and light catching its edge. `material="glass"` is fully clear: only the edge light and the shadow show, so it looks the same in every theme and its text takes the color of what it sits on. On artwork the design system controls (Spotlight\'s header), Glass also bends the art at its edges. The glass build is due for a review (issue #60).',
           '',
-          '**Accessibility:** switch tiles are one Tab stop, with arrow keys between them and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The chosen tile turns frosted white and shows a star, so color is never the only signal. White text on the header red passes 4.5:1, with lens glass too. Text on glass has no shadow; it uses the same typography as everywhere else. The lens canvas is decorative and hidden from screen readers; focus rings, keyboard behavior and touch targets are the same as the classic glass.',
+          '**Fill:** with Default, `fill` picks the inside color from the theme\'s own surfaces: `card` (the default), `raised`, `sunken`, `accent` or `inverse`. Each one switches the text color with it, so it passes 4.5:1 contrast in light and dark mode. The fill changes with light and dark mode on its own.',
           '',
-          '**Light:** lit from the page\'s one light (in the page shell, the wheel): rims are brightest facing it, shadows fall away from it, and light weakens with distance.',
+          '**Accessibility:** switch tiles are one Tab stop, with arrow keys between them and Home and End to the ends; screen readers hear "tab, 2 of 3, selected." The chosen tile shows the theme\'s mark (Spotlight\'s star, a check elsewhere, or any icon through `chosenIcon`) and changes its fill: the accent fill for Default; for Glass, it turns milky (the theme\'s frost over a blur of what\'s behind it). Its text color never changes, so it reads wherever the other tiles do. Keyboard focus is a soft glow in the theme\'s focus color, with no ring. With Reduce transparency or Increase contrast on, Glass tiles turn solid in the theme\'s color with almost no edge, and a chosen tile shows a line in its text color with its mark.',
           '',
-          '**Lens glass (Oct 12):** on artwork the design system controls (After Graduation\'s header), tiles are lens glass. The art behind them bends at their curved edge, strongest at the very edge and clear in the middle, with almost no blur. Their text and icons never bend or blur: they stay crisp HTML on top. Anywhere else, tiles keep the classic glass recipe, the same one cards use.',
+          '**States (Oct 14):** soft light throughout, no hard lines. Hover rises 4px with a deeper shadow and a faint tint; pressed sinks back slightly; chosen shows the theme\'s mark, takes its fill (or, for Glass, turns milky) and sits flat; focus glows; disabled fades to half with no shadow.',
           '',
-          '**How the lens works:** the page shell paints its art (the red, the rays and the wheel) into one WebGL canvas behind the row of tiles, not one per tile. For each tile the canvas works out how far each point is from the tile\'s rounded edge and treats the glass as a rounded bevel 22px deep (`glass-lens-edge-depth`): flat in the middle, tilting most at the edge, so the art shifts most there. It adds a faint color split, a 5% white body with a 4% warm tint, a 1px rim brightest facing the light, a soft highlight just inside that edge and a shadow 2px away from the light. While it draws, the tile\'s own fill steps aside (a chosen tile keeps its frosted white). It only redraws when something changes and pauses off screen.',
+          '**Light (Oct 14):** Glass catches the page\'s one light even on a plain background: its edge, highlight and shadow face the light and follow it when it moves (see "Glass: move the light"). On art the design system paints, it also bends the art at its edges.',
           '',
-          '**Motion:** the glass moves over the art as you scroll; a pressed tile swells about 2%, text and all, and settles back over 300ms; on phones, tilting nudges the light so highlights drift, then ease back when the phone is still. On iPhone, motion access is asked for on your first tap on a tile, never on load. Reduced motion, from the device or Settings, turns all of it off.',
-          '',
-          '**Fallback:** with no WebGL, a lost graphics context, Reduce transparency or Increase contrast, tiles show the classic glass recipe exactly (and solid glass for Reduce transparency and Increase contrast). Never a blank tile.',
-          '',
-          '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. Hover only happens with a mouse; on phones the tiles move to a bottom bar.',
+          '**Hover:** the tile rises 4px (`motion-lift-large`) and its shadow deepens; a chosen tile settles back down. With reduced motion it doesn\'t move, but the shadow still changes. On phones, switch tiles move to a bottom bar.',
         ].join('\n'),
       },
     },
   },
-  // Clear glass with white text needs something behind it, so these stories sit on Dark until you
-  // pick another background with Storybook's Background button. "On every background" shows them all.
-  // After Graduation only for now; with Life Hub picked, afterGraduationOnly shows a message instead.
-  decorators: [
-    (Story, context) => (
-      <div data-theme="after-graduation" style={context.globals.backgrounds?.value ? undefined : onDark}>
-        <Story />
-      </div>
-    ),
-    afterGraduationOnly,
-  ],
 };
 export default meta;
 type Story = StoryObj<typeof ActionTile>;
 
-// Storybook only: lights the tiles from low on the right, as the wheel does in the page shell.
-// No background of its own: pick one with Storybook's Background button, or see "On every background".
-// The full art (light, rays, wheel) lives only in Page shell.
-function OnHeader({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useGlassLight(ref, { light: { x: 0.85, y: 1 }, selector: '.ds-tile' });
-  const style: CSSProperties = {
-    position: 'relative',
-    isolation: 'isolate',
-    overflow: 'hidden',
-    padding: 'var(--layout-gutter)',
-  };
-  return <div ref={ref} style={style}>{children}</div>;
-}
-
-// The switched content sits on the page, like the sheet in Page shell, so its dark text stays readable.
-const panelOnPage: CSSProperties = {
-  marginBlockStart: 'var(--space-4)',
-  padding: 'var(--space-4)',
-  borderRadius: 'var(--radius-panel)',
-  background: 'var(--color-surface-page)',
-  color: 'var(--color-ink-primary)',
-};
+// The switched content, below the tiles.
+const panelStyle: CSSProperties = { marginBlockStart: 'var(--space-4)' };
 
 const tiles = [
-  { id: 'explore', label: 'Label', title: 'Tile 1', description: 'Description' },
-  { id: 'pay', label: 'Label', title: 'Tile 2', description: 'Description' },
-  { id: 'dates', label: 'Label', title: 'Tile 3', description: 'Description' },
+  { id: 'one', label: 'Label', title: 'Tile 1', description: 'Description' },
+  { id: 'two', label: 'Label', title: 'Tile 2', description: 'Description' },
+  { id: 'three', label: 'Label', title: 'Tile 3', description: 'Description' },
 ];
+const fills: ActionTileFill[] = ['card', 'raised', 'sunken', 'accent', 'inverse'];
 
-/** Chosen, rest and disabled tiles on every test background at once: light, dark, mid-tone, a busy pattern and a gradient. */
-export const EveryBackground: Story = {
-  name: 'On every background',
+/** The two materials: Default (a solid fill) and Glass (fully clear, only the edge light and shadow). */
+export const Materials: Story = {
   render: () => (
-    <OnEveryBackground>
-      <OnHeader>
-        <ActionTileGroup aria-label="Tiles">
-          <ActionTile data-state="chosen" label="Chosen" title="Title" description="Description" onPress={() => {}} />
-          <ActionTile label="Rest" title="Title" description="Description" onPress={() => {}} />
-          <ActionTile isDisabled label="Disabled" title="Title" description="Description" onPress={() => {}} />
-        </ActionTileGroup>
-      </OnHeader>
-    </OnEveryBackground>
-  ),
-};
-
-/** Switch: three tiles, the first chosen. Use the arrow keys to move between them. */
-export const Switch: Story = {
-  render: () => (
-    <ActionTileSwitch defaultSelectedKey="explore">
-      <OnHeader>
-        <ActionTileGroup aria-label="Navigation" behavior="switch">
-          {tiles.map((e) => (
-            <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
-          ))}
-        </ActionTileGroup>
-      </OnHeader>
-      {tiles.map((e) => (
-        <ActionTilePanel key={e.id} id={e.id} style={panelOnPage}>
-          {e.title} content
-        </ActionTilePanel>
-      ))}
-    </ActionTileSwitch>
-  ),
-};
-
-/** Links and actions: each tile is its own link or button. */
-export const LinksAndActions: Story = {
-  render: () => (
-    <OnHeader>
-      <ActionTileGroup aria-label="Tiles">
-        <ActionTile href="#" label="Link" title="Title" description="Goes to another page" />
-        <ActionTile onPress={() => {}} label="Action" title="Title" description="Does something on this page" />
-        <ActionTile isDisabled label="Disabled" title="Title" description="Description" />
+    <BothThemes>
+      <ActionTileGroup aria-label="Materials">
+        <ActionTile onPress={() => {}} label="Default" title="Title" description="Description" />
+        <ActionTile onPress={() => {}} material="glass" label="Glass" title="Title" description="Description" />
       </ActionTileGroup>
-    </OnHeader>
+    </BothThemes>
   ),
 };
 
-type PlaygroundArgs = { showLabel: boolean; label: string; title: string; showDescription: boolean; description: string };
-
-/** Try it: turn the label and description on or off, and change the words. */
-export const Playground: StoryObj<PlaygroundArgs> = {
-  args: { showLabel: true, label: 'Label', title: 'Tile 1', showDescription: true, description: 'Description' },
-  argTypes: {
-    showLabel: { name: 'Label', control: 'boolean' },
-    label: { name: 'Label text', if: { arg: 'showLabel' } },
-    showDescription: { name: 'Description', control: 'boolean' },
-    description: { name: 'Description text', if: { arg: 'showDescription' } },
-  },
-  render: ({ showLabel, label, title, showDescription, description }) => (
-    <OnHeader>
-      <ActionTileGroup aria-label="Playground">
-        <ActionTile onPress={() => {}} title={title} label={showLabel ? label : undefined} description={showDescription ? description : undefined} />
+/** Every fill a Default tile can have, from the theme's own surfaces. The text color switches with each one. */
+export const Fills: Story = {
+  render: () => (
+    <BothThemes>
+      <ActionTileGroup aria-label="Fills">
+        {fills.map((f) => (
+          <ActionTile key={f} onPress={() => {}} fill={f} label={f} title="Title" description="Description" />
+        ))}
       </ActionTileGroup>
-    </OnHeader>
+    </BothThemes>
+  ),
+};
+
+/** Every state: rest, hover, keyboard focus, chosen and disabled, in both materials. */
+export const States: Story = {
+  render: () => (
+    <BothThemes>
+      <StatePictures>
+        {(['default', 'glass'] as Material[]).map((m) => (
+          <Row key={m} label={m === 'glass' ? 'Glass' : 'Default'}>
+            <ActionTileGroup aria-label={`States, ${m}`}>
+              <ActionTile material={m} label="Rest" title="Title" description="Description" />
+              <ActionTile material={m} data-state="hover" label="Hover" title="Title" description="Description" />
+              <ActionTile material={m} data-state="focus" label="Focus" title="Title" description="Description" />
+              <ActionTile material={m} data-state="chosen" label="Chosen" title="Title" description="Description" />
+              <ActionTile material={m} isDisabled label="Disabled" title="Title" description="Description" />
+            </ActionTileGroup>
+          </Row>
+        ))}
+      </StatePictures>
+    </BothThemes>
   ),
 };
 
 /** Variants: the title is the only required part. Label and description are each optional. */
 export const Variants: Story = {
   render: () => (
-    <OnHeader>
+    <BothThemes>
       <ActionTileGroup aria-label="Variants">
         <ActionTile onPress={() => {}} title="Title only" />
         <ActionTile onPress={() => {}} label="Label" title="Label and title" />
         <ActionTile onPress={() => {}} title="Title and description" description="One short line" />
         <ActionTile onPress={() => {}} label="Label" title="All three" description="One short line" />
       </ActionTileGroup>
-    </OnHeader>
+    </BothThemes>
   ),
 };
 
-/** Every state: rest, hover, keyboard focus, chosen and disabled. */
-export const States: Story = {
+/** Switch: three tiles, the first chosen. Use the arrow keys to move between them. */
+export const Switch: Story = {
   render: () => (
-    <OnHeader>
-      <ActionTileGroup aria-label="States">
-        <ActionTile label="Rest" title="Title" description="Description" />
-        <ActionTile data-state="hover" label="Hover" title="Title" description="Description" />
-        <ActionTile data-state="focus" label="Keyboard focus" title="Title" description="Description" />
-        <ActionTile data-state="chosen" label="Chosen" title="Title" description="Description" />
+    <BothThemes>
+      <ActionTileSwitch defaultSelectedKey="one">
+        <ActionTileGroup aria-label="Navigation" behavior="switch">
+          {tiles.map((e) => (
+            <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
+          ))}
+        </ActionTileGroup>
+        {tiles.map((e) => (
+          <ActionTilePanel key={e.id} id={e.id} style={panelStyle}>
+            {e.title} content
+          </ActionTilePanel>
+        ))}
+      </ActionTileSwitch>
+    </BothThemes>
+  ),
+};
+
+/** Links and actions: each tile is its own link or button. */
+export const LinksAndActions: Story = {
+  render: () => (
+    <BothThemes>
+      <ActionTileGroup aria-label="Tiles">
+        <ActionTile href="#" label="Link" title="Title" description="Goes to another page" />
+        <ActionTile onPress={() => {}} label="Action" title="Title" description="Does something on this page" />
         <ActionTile isDisabled label="Disabled" title="Title" description="Description" />
       </ActionTileGroup>
-    </OnHeader>
+    </BothThemes>
   ),
 };
 
-// Lens glass needs art the design system controls, so these stories use the real page shell header.
-function ShellWithTiles({ glassLens = true }: { glassLens?: boolean }) {
+type PlaygroundArgs = { material: Material; fill: ActionTileFill; showLabel: boolean; label: string; title: string; showDescription: boolean; description: string };
+
+/** Try it: pick the material and fill, turn the label and description on or off, and change the words. */
+export const Playground: StoryObj<PlaygroundArgs> = {
+  args: { material: 'default', fill: 'card', showLabel: true, label: 'Label', title: 'Tile 1', showDescription: true, description: 'Description' },
+  argTypes: {
+    material: { name: 'Material', control: 'inline-radio', options: ['default', 'glass'] },
+    fill: { name: 'Fill', control: 'select', options: fills, if: { arg: 'material', eq: 'default' } },
+    showLabel: { name: 'Label', control: 'boolean' },
+    label: { name: 'Label text', if: { arg: 'showLabel' } },
+    showDescription: { name: 'Description', control: 'boolean' },
+    description: { name: 'Description text', if: { arg: 'showDescription' } },
+  },
+  render: ({ material, fill, showLabel, label, title, showDescription, description }) => (
+    <ActionTileGroup aria-label="Playground">
+      <ActionTile onPress={() => {}} material={material} fill={fill} title={title} label={showLabel ? label : undefined} description={showDescription ? description : undefined} />
+    </ActionTileGroup>
+  ),
+};
+
+// Storybook only: the page's light follows the pointer. It moves the light tokens the tiles read
+// (--light-from-right, --light-top) and tells the glass to relight.
+function LightFollowsPointer({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const move = (e: PointerEvent<HTMLDivElement>) => {
+    const group = ref.current?.querySelector<HTMLElement>('.ds-tiles');
+    if (!group) return;
+    const r = group.getBoundingClientRect();
+    group.style.setProperty('--light-from-right', `${(((r.right - e.clientX) / r.width) * 100).toFixed(1)}%`);
+    group.style.setProperty('--light-top', `${(e.clientY - r.top).toFixed(0)}px`);
+    window.dispatchEvent(new Event(LIGHT_CHANGE));
+  };
   return (
-    <ActionTileSwitch defaultSelectedKey="explore">
+    <div ref={ref} onPointerMove={move} style={{ padding: 'var(--space-7) var(--space-4)' }}>
+      {children}
+    </div>
+  );
+}
+
+/** Glass on a plain background: nothing bends, but the edges, highlight and shadow follow the light. Move the pointer around the tiles to move the light. */
+export const GlassFollowsTheLight: Story = {
+  name: 'Glass: move the light',
+  render: () => (
+    <BothThemes>
+      <LightFollowsPointer>
+        <ActionTileGroup aria-label="Glass tiles">
+          <ActionTile onPress={() => {}} material="glass" label="Label" title="Tile 1" description="Description" />
+          <ActionTile onPress={() => {}} material="glass" label="Label" title="Tile 2" description="Description" />
+          <ActionTile onPress={() => {}} material="glass" label="Label" title="Tile 3" description="Description" />
+        </ActionTileGroup>
+      </LightFollowsPointer>
+    </BothThemes>
+  ),
+};
+
+// Glass on artwork needs art the design system controls: Spotlight's page shell header.
+function ShellWithTiles() {
+  return (
+    <ActionTileSwitch defaultSelectedKey="one">
       <PageShell
         title="Page title"
         subtitle="Subtitle"
-        glassLens={glassLens}
         navigation={
           <ActionTileGroup aria-label="Navigation" behavior="switch">
             {tiles.map((e) => (
-              <ActionTile key={e.id} id={e.id} label={e.label} title={e.title} description={e.description} />
+              <ActionTile key={e.id} id={e.id} material="glass" label={e.label} title={e.title} description={e.description} />
             ))}
           </ActionTileGroup>
         }
@@ -213,30 +226,22 @@ function ShellWithTiles({ glassLens = true }: { glassLens?: boolean }) {
 }
 
 /**
- * Lens glass on After Graduation's header art: the rays and the wheel bend at each tile's curved edge,
- * clear in the middle, and the words stay crisp. Rims are brightest facing the wheel. Press a tile to see
- * it swell and settle. (Life Hub has no action tile skin yet.)
+ * Glass on Spotlight's header art: the rays and the wheel bend at each tile's curved edge, clear in the
+ * middle, and the words stay crisp. Edges are brightest facing the wheel. (The page shell is Spotlight's
+ * for now.)
  */
-export const LensOnArtwork: Story = {
-  name: 'Lens glass on artwork',
+export const GlassOnArtwork: Story = {
+  name: 'Glass on artwork',
   parameters: { layout: 'fullscreen' },
+  decorators: [afterGraduationOnly],
   render: () => <ShellWithTiles />,
 };
 
-/**
- * The fallback: what people see without WebGL, after the graphics context is lost, or with Reduce
- * transparency or Increase contrast (then the glass also turns solid). The classic glass recipe.
- */
-export const LensFallback: Story = {
-  name: 'Lens glass: fallback',
+/** With Reduce motion on (Settings, or the device): Glass still bends the art, but presses don't swell and phone tilt is off. */
+export const GlassReducedMotion: Story = {
+  name: 'Glass: reduced motion',
   parameters: { layout: 'fullscreen' },
-  render: () => <ShellWithTiles glassLens={false} />,
-};
-
-/** With Reduce motion on (Settings, or the device): the lens still bends the art, but presses don't swell and phone tilt is off. */
-export const LensReducedMotion: Story = {
-  name: 'Lens glass: reduced motion',
-  parameters: { layout: 'fullscreen' },
+  decorators: [afterGraduationOnly],
   render: () => (
     <WithReducedMotion>
       <ShellWithTiles />

@@ -10,6 +10,8 @@
 
 .ats-frame {
   box-sizing: border-box;
+  /* Glass tiles take their text color from what they sit on, so the frame sets it for its own mode. */
+  color: var(--color-ink-primary);
   position: relative;
   isolation: isolate;
   inline-size: 1024px;

@@ -9,6 +9,7 @@ import {
   lensOffset,
   lightDirection,
   lightStrength,
+  easeToward,
   pressSwell,
   sdNormal,
   sdRoundBox,
@@ -112,7 +113,9 @@ describe('light', () => {
 describe('press', () => {
   it('swells, then settles back to rest by the end', () => {
     expect(pressSwell(0, 300)).toBe(0);
-    expect(pressSwell(75, 300)).toBeCloseTo(1);
+    expect(pressSwell(120, 300)).toBeCloseTo(1);
+    // Starts gently: a third of the way into the rise it has swollen well under half.
+    expect(pressSwell(40, 300)).toBeLessThan(0.4);
     expect(pressSwell(200, 300)).toBeGreaterThan(0);
     expect(pressSwell(200, 300)).toBeLessThan(1);
     expect(pressSwell(300, 300)).toBe(0);
@@ -148,5 +151,17 @@ describe('phone tilt', () => {
   });
   it('ignores empty readings', () => {
     expect(tiltStep(tiltRest, { beta: null, gamma: null }, 16)).toEqual(tiltRest);
+  });
+});
+
+describe('easing toward a target', () => {
+  it('glides part of the way each frame, whatever the frame rate', () => {
+    expect(easeToward(0, 1, 100, 100)).toBeCloseTo(1 - Math.exp(-1));
+    // Two 50ms frames land where one 100ms frame does.
+    expect(easeToward(easeToward(0, 1, 50, 100), 1, 50, 100)).toBeCloseTo(easeToward(0, 1, 100, 100));
+    expect(easeToward(0, 1, 1000, 100)).toBeGreaterThan(0.99);
+  });
+  it('jumps straight there with reduced motion (no time to ease)', () => {
+    expect(easeToward(0, 1, 16, 0)).toBe(1);
   });
 });

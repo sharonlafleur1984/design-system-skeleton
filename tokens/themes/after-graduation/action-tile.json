@@ -1,0 +1,24 @@
+{
+  "action-tile": {
+    "chosen-mark": {
+      "$value": "\"✦\"",
+      "$type": "string",
+      "$description": "The star: After Graduation's mark for a chosen tile. With the fill, it means color is never the only sign a tile is chosen."
+    },
+    "chosen-frost": {
+      "$value": "rgba(255, 255, 255, 0.22)",
+      "$type": "color",
+      "$description": "A chosen Glass tile turns milky: this frost over a blur of what's behind it. White frost over the header red: strong enough to read as chosen, while the white text keeps 4.5:1. The text sits on top, untouched."
+    },
+    "title-large": {
+      "$value": 1,
+      "$type": "number",
+      "$description": "1: a tile's title uses the theme's title size; 0: its heading size, one step down. Spotlight's heading is the same size as its body text, so its tiles use the title size (Sharon, Oct 14)."
+    },
+    "ink-soft": {
+      "$value": "{color.ink.secondary}",
+      "$type": "color",
+      "$description": "The tile's label and description color on its own fill. Fireside uses its warm grey: its secondary text color is a honey yellow that read wrong next to the cream title (Sharon, Oct 14)."
+    }
+  }
+}

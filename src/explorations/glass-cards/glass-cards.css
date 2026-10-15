@@ -85,57 +85,14 @@
   background: radial-gradient(140% 120% at calc(100% - var(--light-from-right)) var(--light-top), rgb(20 16 15 / 0) 35%, rgb(20 16 15 / 0.22) 100%);
 }
 
-/* Glass card, drawn by the shared glass recipe (glass.css) with Life Hub's settings for each mode.
-   The light helper sets --light-k (0 to 1): the light's strength at this card, weaker with distance. */
-.lh-glass {
-  position: relative;
-  display: grid;
+/* Glass card: the real Card with material="glass", drawn by the lens (Oct 14), which bends the marble at
+   its edge and lights it from the page's sun. In light mode a frosted center stays behind the text, so it
+   reads as easily as before; at night the area's dark layer already does that job. */
+.lh-card {
+  gap: 0;
 }
-.lh-glass__content {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  padding: var(--space-4);
-  border-radius: var(--radius-card);
-  backdrop-filter: var(--glass-bend, none);
-  --g-rim-color: rgb(var(--sun));
-  --g-rim-strength: 1;
-  --g-rim-glint: var(--glint);
-  --g-rim-spread-x: var(--rim-w);
-  --g-rim-spread-y: var(--rim-h);
-  --g-rim-base: var(--rim-base);
-  --g-highlight: rgb(var(--sun) / calc(var(--bevel) * var(--light-k)));
-  --g-shade: var(--shade);
-  --g-cast: rgb(var(--ink) / calc(var(--cast) * var(--lh-shadow, 1)));
-  --g-contact: rgb(var(--ink) / calc(var(--contact) * var(--lh-shadow, 1)));
-  --g-cast-distance: 11.3px;
-  --g-cast-blur: var(--cast-blur);
-}
-
-/* Light mode frost: clear edges that bend the marble, a frosted center behind the text. */
-.lh-glass__frost {
-  position: absolute;
-  inset: 1px;
-  border-radius: 15px;
-  pointer-events: none;
-  background: radial-gradient(130% 130% at 100% 0%, rgb(253 251 241 / min(calc(var(--lh-frost) + 0.08), 0.97)), rgb(253 251 249 / var(--lh-frost)) 55%, rgb(250 247 241 / var(--lh-frost)));
-  backdrop-filter: blur(12px);
-  --feather: 8px;
-  -webkit-mask:
-    linear-gradient(to right, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent),
-    linear-gradient(to bottom, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent) intersect,
-    linear-gradient(to bottom, transparent, #000 var(--feather), #000 calc(100% - var(--feather)), transparent);
-}
-.lh-glass--small .lh-glass__frost {
-  inset: 0;
-  border-radius: 16px;
-  --feather: 3px;
-}
-.lh-screen[data-mode='dark'] .lh-glass__frost {
-  display: none;
+.lh-screen[data-mode='light'] .lh-card[data-lens='on'] {
+  background: rgb(253 251 249 / var(--lh-frost));
 }
 
 /* Type, on Life Hub's type sizes: title Heading 20/24, body Body small 14/20, metadata Label meta 12/16,
@@ -166,7 +123,7 @@
   line-height: 16px;
   color: var(--meta);
 }
-.lh-glass--small .lh-meta {
+.lh-card--small .lh-meta {
   margin: 0;
 }
 .lh-data {
@@ -261,15 +218,5 @@
   text-decoration-thickness: 1px;
 }
 
-/* Glass falls back to solid for people who ask for it (Reduce Transparency, Increase Contrast). */
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .lh-glass__content {
-    backdrop-filter: none;
-  }
-  .lh-screen[data-mode='light'] .lh-glass__content {
-    background: #fdfbf9;
-  }
-  .lh-screen[data-mode='dark'] .lh-glass__content {
-    background: #2a2625;
-  }
-}
+/* Reduce Transparency and Increase Contrast: the Card turns solid on its own (material.css). */
+

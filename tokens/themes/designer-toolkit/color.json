@@ -364,6 +364,16 @@
       "focus": {
         "$value": "#f3c097",
         "$type": "color"
+      },
+      "focus-glow": {
+        "$type": "color",
+        "$value": "#fcf8f4",
+        "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.peach.100, the lightest step on the theme's primary color line (Sharon, Oct 14)."
+      },
+      "focus-glow-on-dark": {
+        "$type": "color",
+        "$value": "#fcf8f4",
+        "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.peach.100, the lightest step on the theme's primary color line (Sharon, Oct 14)."
       }
     },
     "accent": {
