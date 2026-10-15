@@ -11,9 +11,9 @@ Lantern wasn't created in Figma. It was built straight from the code.
 3. Changes made here go back as a pull request, so nothing drifts.
 4. Once merged, the next build brings them back.
 
-Every component can be tried live in [Storybook](https://designsystemskeleton.netlify.app).
+Interact with the entire component library in [Storybook](https://designsystemskeleton.netlify.app).
 
-Decisions, guides and the full story behind each one are in the [design-system-skeleton wiki](https://github.com/sharonlafleur1984/design-system-skeleton/wiki).
+The full story behind the journey can be found in the [design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton/wiki) wiki page.
 
 ## Themes
 
