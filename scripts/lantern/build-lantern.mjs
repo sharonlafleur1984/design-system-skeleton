@@ -68,7 +68,8 @@ for (const name of colorNames) {
     skipped.push(name);
     continue;
   }
-  colorTokens.push({ name, value, usage: usage[name] ?? 'From the theme CSS.' });
+  // Shown without the color- prefix so Lantern's narrow name column fits the whole name; the note keeps the code name.
+  colorTokens.push({ name: name.replace(/^color-/, ''), value, usage: `${usage[name] ?? 'From the theme CSS.'} In code: --${name}.` });
 }
 
 // ---- Spacing, radius and shadow come from the shared base (the same in every theme), except where noted.
