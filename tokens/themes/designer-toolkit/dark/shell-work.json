@@ -1,0 +1,27 @@
+{
+  "shell": {
+    "work": {
+      "background": {
+        "$type": "color",
+        "$value": "#161a1b",
+        "$description": "Behind the prototype and the wiki. Dark: near-black blue-gray (oklch 0.215 0.006 217)."
+      },
+      "ink": {
+        "$type": "color",
+        "$value": "{color.ink.primary}"
+      },
+      "ink-quiet": {
+        "$type": "color",
+        "$value": "{color.ink.tertiary}"
+      },
+      "line": {
+        "$type": "color",
+        "$value": "{color.border.default}"
+      },
+      "selected": {
+        "$type": "color",
+        "$value": "{color.accent.base}"
+      }
+    }
+  }
+}
