@@ -4,15 +4,15 @@
   /* Lantern's own colors (Sharon, Oct 15): night iron, copper, amber flame, peach glow. They belong to
      Lantern's mark and cover only; the themes keep their own. */
   .cover { position: relative; width: 960px; height: 288px; overflow: hidden; background: #2a1a12; }
-  .mark { position: absolute; left: 40px; top: 8px; }
-  .text { position: absolute; left: 282px; bottom: 68px; max-width: 640px; }
+  .mark { position: absolute; left: -20px; top: 8px; }
+  .text { position: absolute; left: 216px; bottom: 68px; max-width: 640px; }
   .name { margin: 0; font: 400 112px/0.92 Georgia, 'Iowan Old Style', serif; color: #f7c9a6; }
-  .tagline { margin: 20px 0 0 4px; font: 16px/1.5 system-ui, sans-serif; color: #d8b49a; }
+  .tagline { margin: 26px 0 0 4px; font: 16px/1.5 system-ui, sans-serif; color: #d8b49a; }
 </style>
 <div class="cover">
   <!--
     blocks: one night-iron ground (#2a1a12), the lantern's copper (#8a4f27, #b5672f) and its amber orb (#f6b25a)
-    arrangement: the lantern on the left, as marks usually lead, with the name 72px from its glass, close enough to read as one (Sharon, Oct 15); the tagline 16px, 20px under the name
+    arrangement: golden ratio (Sharon, Oct 15). The space right of the name is phi times the lantern's space on its left (name at x = 216, about 395 wide, leaving 349); the lantern is centered in that left space (its middle at x = 108). Tagline 16px = 112 / phi^4, 26px = 16 x phi under the name.
     pattern: a literal motif, the lantern and its one orb, "a page has one light, an orb" (README)
     scales: the mark at 1.6x its 160 x 175 drawing; no rays, only the orb's halo
   -->
