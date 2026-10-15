@@ -15,9 +15,18 @@ import type { OrbLook } from './orb-render';
 export type OrbBackdrop = 'header' | 'marble' | 'fireside' | 'light';
 
 /** Spotlight's header red, lightest at the light, as Try it out paints it. The glass bends the same paint. */
-function headerArt(sun: { x: number; y: number }): GlassArt {
-  return {
+function headerArt(start: { x: number; y: number }): { art: GlassArt; move: (sun: { x: number; y: number }) => void } {
+  let at = start;
+  let repaint: (() => void) | undefined;
+  const art: GlassArt = {
+    subscribe(r) {
+      repaint = r;
+      return () => {
+        repaint = undefined;
+      };
+    },
     paint(ctx, { width, height }, container) {
+      const sun = at;
       const color = (css: string) => {
         const c = resolveColor(css, container) ?? [0, 0, 0, 0];
         return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})`;
@@ -34,6 +43,12 @@ function headerArt(sun: { x: number; y: number }): GlassArt {
       return true;
     },
   };
+  // Moving the light repaints the same art, so the glass never has to be rebuilt.
+  const move = (sun: { x: number; y: number }) => {
+    at = sun;
+    repaint?.();
+  };
+  return { art, move };
 }
 
 export interface OrbSectionProps {
@@ -61,15 +76,19 @@ export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sa
   const ref = useRef<HTMLElement>(null);
   const litRef = useRef<HTMLCanvasElement>(null);
   const [sun, setSun] = useState(start);
+  // The header art follows the light. It stays one art that's told where the light is and asks the glass
+  // to repaint, because a new art would rebuild the glass, flashing its plain box.
+  const [header] = useState(() => headerArt(start));
   const night = `var(--color-area-${area}-night)`;
   const lens = useMemo(
-    () => ({ art: backdrop === 'header' ? headerArt(sun) : backdrop === 'marble' ? imageArt({ src: texture, overlay: night }) : backdrop === 'fireside' ? firesideArt : clearArt() }),
-    [backdrop, texture, night, sun],
+    () => ({ art: backdrop === 'header' ? header.art : backdrop === 'marble' ? imageArt({ src: texture, overlay: night }) : backdrop === 'fireside' ? firesideArt : clearArt() }),
+    [backdrop, texture, night, header],
   );
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: '[data-sun]' });
   useLayoutEffect(() => {
+    header.move(sun);
     window.dispatchEvent(new Event(LIGHT_CHANGE));
-  }, [sun]);
+  }, [sun, header]);
   // The light's color: 75% white, 25% the area's lightest color; pure white on a plain page or Fireside.
   const plain = backdrop === 'light' || backdrop === 'fireside';
   const lightColor = plain ? 'white' : `color-mix(in srgb, white 75%, ${palette ? `var(--palette-${palette}-100)` : 'var(--orb-color-light)'})`;

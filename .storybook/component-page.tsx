@@ -356,9 +356,18 @@ function Matrix({ rows, args, render }: { rows: Expand[]; args: Record<string, u
  * the light shown only as an orb. No rays: they belong to After Graduation's own header, not the system.
  * The same paint goes to the glass, so it bends exactly what's behind it.
  */
-function headerArt(sun: { x: number; y: number }): GlassArt {
-  return {
+function headerArt(start: { x: number; y: number }): { art: GlassArt; move: (sun: { x: number; y: number }) => void } {
+  let at = start;
+  let repaint: (() => void) | undefined;
+  const art: GlassArt = {
+    subscribe(r) {
+      repaint = r;
+      return () => {
+        repaint = undefined;
+      };
+    },
     paint(ctx, { width, height }, container) {
+      const sun = at;
       const color = (css: string) => {
         const c = resolveColor(css, container) ?? [0, 0, 0, 0];
         return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})`;
@@ -375,6 +384,12 @@ function headerArt(sun: { x: number; y: number }): GlassArt {
       return true;
     },
   };
+  // Moving the light repaints the same art, so the glass never has to be rebuilt.
+  const move = (sun: { x: number; y: number }) => {
+    at = sun;
+    repaint?.();
+  };
+  return { art, move };
 }
 
 /** One example window: the theme, the mode and the background picked, with its glass lit. */
@@ -391,11 +406,15 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   // page shows only the Orb, in the middle, so its windows add none.
   const showSun = !isLight && (bg === 'header' || mode === 'dark');
   const [sun, setSun] = useState(SUN_START);
-  const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
+  // One header art for the window's life: it's told where the light is and asks the glass to repaint,
+  // because a new art would rebuild the glass and flash its plain box.
+  const [header] = useState(() => headerArt(SUN_START));
+  const lens = useMemo(() => ({ art: bg === 'header' ? header.art : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, header]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
   useLayoutEffect(() => {
+    header.move(sun);
     window.dispatchEvent(new Event(LIGHT_CHANGE));
-  }, [sun, bg, mode]);
+  }, [sun, bg, mode, header]);
 
   const style = {
     // The header art's bright spot sits at the orb.
