@@ -11,6 +11,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | ID | Date | Decision |
 |---|---|---|
 | D53 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
+| – | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
 | D52 | Oct 15, 2026 | One page template for every component's Docs tab |
 | D51 | Oct 15, 2026 | Motion: open and close, a leaving curve, switching views and loading |
 | D50 | Oct 15, 2026 | Storybook: the theme picker sits on the page, and Compare all works on every story |
@@ -80,6 +81,18 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Compare all:** three equal columns when they fit, otherwise one per row; never two plus one.
 - **Accessibility fixes from the canvas review:** no pale text, white text only on a code bar dark enough for it, check results are words not buttons, every choice group named by its label, the first column of each table as row headings, key styling only on real keys.
 - **Applies to:** every part under Components and Patterns, built or planned. Foundations keep their own layout.
+
+</details>
+
+<details>
+<summary><b>Oct 15, 2026:</b> Glass works on plain backgrounds too; never glass on glass</summary>
+
+- **Decided by:** Sharon
+- **Decision:** glass buttons and action tiles can go on plain backgrounds, not only on artwork. The one rule left: never glass on glass, like a glass button on a glass card.
+- **Updates:** the Oct 12 line "Only on artwork the system controls" and the Oct 4 rule that glass is for controls on artwork.
+- **Tradeoff:** lens glass bends the art behind it, so it still needs artwork the system controls. On a plain background there's nothing to bend, so glass shows the classic frosted recipe, not the lens.
+- **Why:** Sharon decided this while reviewing the Style control (Solid or Glass) for the Storybook docs page template.
+- **Details:** Components, Button and Action tile in Storybook (When to use and When not to).
 
 </details>
 

@@ -28,7 +28,7 @@ const meta: Meta<typeof ActionTile> = {
     label: words('Label', 'A small line above the title\n\n`label`'),
     description: words('Description', 'One short line about what happens there\n\n`description`'),
     shortTitle: words('Short title', 'One or two words for the phone bottom bar. Falls back to the title\n\n`shortTitle`'),
-    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page\n\n`appearance`', ['solid', 'glass']),
+    appearance: choice('Style', 'Solid, or clear glass that takes its light from the page. Never on other glass\n\n`appearance`', ['solid', 'glass']),
     icon: setting('Icon', 'Shown in the phone bottom bar, and in the tile when Icon position is set\n\n`icon`', { control: false }),
     iconPosition: choice('Icon position', 'Shows the icon in the tile: above the label, or before the label and title\n\n`iconPosition`', ['top', 'start']),
     iconVariant: choice('Icon background', 'A soft background behind the icon, or the icon alone\n\n`iconVariant`', ['filled', 'plain']),
