@@ -1,9 +1,12 @@
-import { useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import { renderOrb, type OrbLook } from './orb-render';
 import './orb.css';
 
 // The orb: the light you drag when exploring glass, one component at a time. It sits inside a
 // positioned section and moves within it; whatever lights glass from it (useGlassLight's source)
 // follows. Full pages never show an orb: their light stays still at the light tokens.
+// The glass is drawn by a real renderer (orb-render.ts). Until that picture is ready, or where a
+// browser can't draw 3D, the CSS glass shows instead.
 
 /** Where the orb is, as a share of its section: 0 is the left or top edge, 1 the right or bottom. */
 export interface OrbPosition {
@@ -25,6 +28,8 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   onPositionChange?: (position: OrbPosition) => void;
   /** How big it is: small 16px, the height of body text (Try it out windows use it); medium 32px, the usual; large 48px. */
   size?: OrbSize;
+  /** Clear glass with a small bright core, or glass that glows from inside. */
+  look?: OrbLook;
   /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.
    * Leave it out to use the theme's orb color.
@@ -34,8 +39,32 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', look = 'clear', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
   const [own, setOwn] = useState(defaultPosition);
+  const glassRef = useRef<HTMLSpanElement>(null);
+  const [picture, setPicture] = useState<string>();
+  // Draw the glass in this orb's colors, at its size on screen (sharp on high-density screens). It
+  // redraws when the theme or mode around it changes.
+  const [colorKey, setColorKey] = useState(0);
+  useEffect(() => {
+    const mo = new MutationObserver(() => setColorKey((k) => k + 1));
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-mode'] });
+    return () => mo.disconnect();
+  }, []);
+  useEffect(() => {
+    const el = glassRef.current;
+    const px = Math.round((el?.getBoundingClientRect().width ?? 0) * Math.min(window.devicePixelRatio || 1, 3));
+    if (!el || !px) return;
+    const cs = getComputedStyle(el);
+    const c = (part: string) => cs.getPropertyValue(`--orb-color-${part}`).trim();
+    let live = true;
+    renderOrb(px, look, { light: c('light'), glow: c('glow'), halo: c('halo'), body: c('body') })
+      .then((url) => live && setPicture(url))
+      .catch(() => live && setPicture(undefined));
+    return () => {
+      live = false;
+    };
+  }, [size, look, palette, colorKey]);
   const position = controlled ?? own;
   const move = (p: OrbPosition) => {
     if (!controlled) setOwn(p);
@@ -61,7 +90,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     <button
       type="button"
       aria-label={ariaLabel}
-      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, className].filter(Boolean).join(' ')}
+      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, picture && 'ds-orb--rendered', className].filter(Boolean).join(' ')}
       style={{ ...tint, ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
@@ -71,7 +100,9 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
       onKeyDown={onKeyDown}
       {...rest}
     >
-      <span className="ds-orb__glass" aria-hidden="true" />
+      <span ref={glassRef} className="ds-orb__glass" aria-hidden="true">
+        {picture && <img className="ds-orb__render" src={picture} alt="" draggable={false} />}
+      </span>
     </button>
   );
 }
