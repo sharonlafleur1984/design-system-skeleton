@@ -47,6 +47,13 @@ Interactive components are built on [React Aria Components](https://react-aria.a
 - **react-aria:** looks up React Aria's docs and examples. Check it before building or changing an interactive component.
 - **storybook:** reads this Storybook and writes and tests stories. It only works while `npm run storybook` is running.
 
+## Lantern, the design system in Claude
+
+Lantern is this design system as a Claude artifact (Design System type), so designs and decks in Claude can use it: https://claude.ai/artifact/WbvH4oqmtQUZcGJyL5XR6J (private; Sharon shares it). The code stays the source of truth:
+
+- `npm run lantern` builds its files from this repo into `lantern/project/` (git-ignored); Claude publishes that folder to the artifact. Rebuild after any change to tokens, a component or a page's words.
+- A change made in Lantern goes back here as a pull request, never only into the artifact.
+
 ## Outside the repo (private)
 
 - Life Hub's original design: [Figma, Life Hub Library](https://www.figma.com/design/gVTJl0ARMijPyuMpeprg5c/Life-Hub-Library)
