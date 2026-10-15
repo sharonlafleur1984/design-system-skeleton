@@ -14,6 +14,8 @@ export interface OrbPosition {
 /** Where every orb starts: on the right of its section, two thirds of the way down (Sharon's rule, Oct 15). */
 export const ORB_START: OrbPosition = { x: 0.92, y: 0.67 };
 
+export type OrbSize = 'small' | 'medium' | 'large';
+
 export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'children' | 'onKeyDown' | 'onPointerDown' | 'onPointerMove'> {
   /** Where the orb is in its section. Leave out to let the orb keep its own place, starting at ORB_START. */
   position?: OrbPosition;
@@ -21,6 +23,8 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   defaultPosition?: OrbPosition;
   /** Called while it's dragged, or moved with the arrow keys. */
   onPositionChange?: (position: OrbPosition) => void;
+  /** How big it is. Small is the height of body text (Try it out windows use it); medium is the usual. */
+  size?: OrbSize;
   /**
    * A color family from the theme's palette, like 'seagull', so the orb glows in an area's own color.
    * Leave it out to use the theme's orb color.
@@ -30,7 +34,7 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, size = 'medium', palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
   const [own, setOwn] = useState(defaultPosition);
   const position = controlled ?? own;
   const move = (p: OrbPosition) => {
@@ -57,7 +61,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
     <button
       type="button"
       aria-label={ariaLabel}
-      className={className ? `ds-orb ${className}` : 'ds-orb'}
+      className={['ds-orb', size !== 'medium' && `ds-orb--${size}`, className].filter(Boolean).join(' ')}
       style={{ ...tint, ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);

@@ -1,20 +1,34 @@
-/* The orb: the light you drag when exploring glass. A 44px button holding a small glass marble in the
+/* The orb: the light you drag when exploring glass. A button (44px or more) holding a glass marble, in three sizes, in the
    theme's color (--orb-color-*). The marble is darker at the top, with a bright crescent where light
    catches its top edge and light pooling at the bottom. Its rim isn't even, as real glass never is:
    thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own
    color. Nothing moves on its own, so there's no motion to reduce. */
 .ds-orb {
+  --_size: var(--orb-size-medium);
+  --_target: var(--orb-target-medium);
+  --_k: var(--orb-glow-scale-medium);
   position: absolute;
   z-index: 5;
-  inline-size: var(--orb-target);
-  block-size: var(--orb-target);
-  margin: calc(var(--orb-target) / -2) 0 0 calc(var(--orb-target) / -2);
+  inline-size: var(--_target);
+  block-size: var(--_target);
+  margin: calc(var(--_target) / -2) 0 0 calc(var(--_target) / -2);
   padding: 0;
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
   cursor: grab;
   touch-action: none;
+}
+/* Small is the height of body text; large is for a bigger stage. The glow reaches less or farther to match. */
+.ds-orb--small {
+  --_size: var(--orb-size-small);
+  --_target: var(--orb-target-small);
+  --_k: var(--orb-glow-scale-small);
+}
+.ds-orb--large {
+  --_size: var(--orb-size-large);
+  --_target: var(--orb-target-large);
+  --_k: var(--orb-glow-scale-large);
 }
 .ds-orb:active {
   cursor: grabbing;
@@ -27,8 +41,8 @@
   position: absolute;
   inset: 50% auto auto 50%;
   translate: -50% -50%;
-  inline-size: var(--orb-size);
-  block-size: var(--orb-size);
+  inline-size: var(--_size);
+  block-size: var(--_size);
   border-radius: var(--radius-pill);
   pointer-events: none;
   background:
@@ -41,7 +55,7 @@
     inset 2px -1px 2px -1px var(--orb-shine-rim-side),
     inset 1px 1px 1px 0 var(--orb-shine-rim-thin),
     inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent),
-    0 0 var(--orb-glow-near-blur) var(--orb-glow-near-spread) var(--orb-color-glow),
-    0 0 var(--orb-glow-mid-blur) var(--orb-glow-mid-spread) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
-    0 0 var(--orb-glow-far-blur) var(--orb-glow-far-spread) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+    0 0 calc(var(--orb-glow-near-blur) * var(--_k)) calc(var(--orb-glow-near-spread) * var(--_k)) var(--orb-color-glow),
+    0 0 calc(var(--orb-glow-mid-blur) * var(--_k)) calc(var(--orb-glow-mid-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
+    0 0 calc(var(--orb-glow-far-blur) * var(--_k)) calc(var(--orb-glow-far-spread) * var(--_k)) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
 }

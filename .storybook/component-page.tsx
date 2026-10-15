@@ -65,7 +65,7 @@ export interface ComponentPageInfo {
   states?: Partial<Record<StateName, Record<string, unknown>>>;
   /** The name to write in Show code. Defaults to the component's own name. */
   codeName?: string;
-  /** The part is the light itself (the Orb), so its windows don't add a second orb. */
+  /** The part is the light itself (the Orb), so its windows don't add a second orb, and each example gets its own stage to sit in the middle of. */
   isLight?: boolean;
   /** The themes it's made for, when not all of them. Try it out says so in the others. */
   onlyIn?: string[];
@@ -278,6 +278,14 @@ function Demo({ component: C, args, info }: { component: ComponentType<Record<st
       </div>
     );
   }
+  // The Orb places itself in its section, so each one gets its own stage; alone, the stage fills the window.
+  if (info.isLight) {
+    return (
+      <div className="sb-try__stage">
+        <C {...propsFor(args, info)} />
+      </div>
+    );
+  }
   return <C {...propsFor(args, info)} />;
 }
 
@@ -378,7 +386,8 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   // Every dark window, and the header art, shows the light as the orb you can move. It starts on the
-  // right, two thirds down, like every light, and the window's glass is lit from it. The Orb's own
+  // right, two thirds down, like every light, small (the height of the text), and the window's glass is
+  // lit from it. The Orb's own
   // page shows only the Orb, in the middle, so its windows add none.
   const showSun = !isLight && (bg === 'header' || mode === 'dark');
   const [sun, setSun] = useState(SUN_START);
@@ -398,7 +407,7 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {showSun && (
         <>
-          <Orb data-sb-sun="" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} />
+          <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} />
           <span className="sb-try__hint">Drag the light to move it</span>
         </>
       )}

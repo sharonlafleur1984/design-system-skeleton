@@ -30,11 +30,11 @@ export const orbPage: ComponentPageInfo = {
   ],
   screenReader: { pattern: 'name, button', example: 'Light. Drag it, or use the arrow keys to move it., button' },
   accessibility: [
-    'The button is 44 by 44 pixels, larger than the marble, so it is easy to grab.',
+    'The button is at least 44 by 44 pixels (60 for large), larger than the marble, so it is easy to grab.',
     "Nothing moves on its own, so there's no motion to reduce.",
   ],
   imports: ['Orb', 'ORB_START'],
-  tokens: ['--orb-color-[part]', '--orb-size', '--orb-target', '--orb-glow-[size]', '--orb-shine-[part]'],
+  tokens: ['--orb-color-[part]', '--orb-size-[size]', '--orb-target-[size]', '--orb-glow-[reach]', '--orb-glow-scale-[size]', '--orb-shine-[part]'],
   related: [
     { name: 'Glass', title: 'Foundations/Glass' },
     { name: 'Page shell', title: 'Components/Page shell' },

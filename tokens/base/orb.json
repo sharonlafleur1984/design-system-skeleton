@@ -2,29 +2,104 @@
   "orb": {
     "$description": "The orb: the light you drag when exploring glass in Storybook. A small glass marble that glows in its theme's color. The glow is wide on purpose: it's the light itself. Full pages never show one; their light stays at light-from-right and light-top.",
     "size": {
-      "$type": "dimension",
-      "$value": "34px",
-      "$description": "The marble. Its button is always 44px, so it's easy to grab."
+      "$description": "The marble, in three sizes. Medium is the usual one.",
+      "small": {
+        "$type": "dimension",
+        "$value": "{type.body-default.size}",
+        "$description": "The height of body text, so it sits beside words. Try it out windows use it."
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "34px",
+        "$description": "The usual orb: glass stories and the Glass playground."
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "52px"
+      }
     },
     "target": {
-      "$type": "dimension",
-      "$value": "44px",
-      "$description": "The button around the marble: the touch target."
+      "$description": "The button around the marble: the touch target, never under 44px.",
+      "small": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "60px"
+      }
     },
     "glow": {
-      "near-blur": { "$type": "dimension", "$value": "14px" },
-      "near-spread": { "$type": "dimension", "$value": "5px" },
-      "mid-blur": { "$type": "dimension", "$value": "44px" },
-      "mid-spread": { "$type": "dimension", "$value": "18px" },
-      "far-blur": { "$type": "dimension", "$value": "120px", "$description": "How far the light spills around the orb." },
-      "far-spread": { "$type": "dimension", "$value": "50px" }
+      "near-blur": {
+        "$type": "dimension",
+        "$value": "14px"
+      },
+      "near-spread": {
+        "$type": "dimension",
+        "$value": "5px"
+      },
+      "mid-blur": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "mid-spread": {
+        "$type": "dimension",
+        "$value": "18px"
+      },
+      "far-blur": {
+        "$type": "dimension",
+        "$value": "120px",
+        "$description": "How far the light spills around the orb."
+      },
+      "far-spread": {
+        "$type": "dimension",
+        "$value": "50px"
+      },
+      "scale": {
+        "$description": "How far the glow reaches, compared with medium's, so a smaller orb glows less far.",
+        "small": {
+          "$type": "number",
+          "$value": 0.5
+        },
+        "medium": {
+          "$type": "number",
+          "$value": 1
+        },
+        "large": {
+          "$type": "number",
+          "$value": 1.5
+        }
+      }
     },
     "shine": {
-      "highlight": { "$type": "color", "$value": "rgba(255, 255, 255, 0.95)", "$description": "The crescent where light catches the top of the glass." },
-      "pool": { "$type": "color", "$value": "#ffffff", "$description": "Light pooling at the bottom, after passing through the glass." },
-      "rim-thick": { "$type": "color", "$value": "rgba(255, 255, 255, 0.85)", "$description": "The rim along the bottom, where the glass is thickest." },
-      "rim-side": { "$type": "color", "$value": "rgba(255, 255, 255, 0.45)" },
-      "rim-thin": { "$type": "color", "$value": "rgba(255, 255, 255, 0.3)", "$description": "The rim at the top, where the glass is thinnest." }
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.95)",
+        "$description": "The crescent where light catches the top of the glass."
+      },
+      "pool": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$description": "Light pooling at the bottom, after passing through the glass."
+      },
+      "rim-thick": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.85)",
+        "$description": "The rim along the bottom, where the glass is thickest."
+      },
+      "rim-side": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.45)"
+      },
+      "rim-thin": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.3)",
+        "$description": "The rim at the top, where the glass is thinnest."
+      }
     }
   }
 }

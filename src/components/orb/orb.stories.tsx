@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Orb } from './orb';
 import { OrbSection } from './orb-example';
-import { hidden, marbles, setting } from '../story-helpers';
+import { choice, hidden, marbles, setting } from '../story-helpers';
 import { orbPage } from './orb.page';
 import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
@@ -9,8 +9,9 @@ const meta: Meta<typeof Orb> = {
   title: 'Components/Orb',
   component: Orb,
   // On its own page the orb starts in the middle, like every component's example.
-  args: { defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
+  args: { size: 'medium', defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
   argTypes: {
+    size: choice('Size', 'How big it is. Small is the height of body text, for Try it out windows; medium is the usual\n\n`size`', ['small', 'medium', 'large']),
     position: setting('Position', 'Where it is in its section, from 0 to 1 across and down. Leave out and it keeps its own, starting on the right, two thirds down (ORB_START)\n\n`position`', { control: false }),
     defaultPosition: setting('Starts at', 'Where it starts when it keeps its own place. Leave out for the right, two thirds down\n\n`defaultPosition`', { control: false }),
     onPositionChange: setting('On position change', 'Called while it is dragged or moved with the arrow keys\n\n`onPositionChange`', { control: false }),
