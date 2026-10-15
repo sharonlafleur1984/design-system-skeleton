@@ -15,6 +15,8 @@ export interface OrbColors {
   glow: string;
   halo: string;
   body: string;
+  /** The page behind the orb, which clear glass bends. */
+  page: string;
 }
 
 const LOOKS = {
@@ -24,9 +26,9 @@ const LOOKS = {
   glow: { core: 0.78, coreWhite: 0.5, emissive: 1.6, attenuation: 2.2, seeThrough: false },
   // Tinted glass: you look through glass in the page's color to a small bright core.
   tinted: { core: 0.5, coreWhite: 0.6, emissive: 0.35, attenuation: 1.6, seeThrough: false },
-  // Completely clear: no core and no color, so the page behind shows straight through; only the
-  // highlights and the reflections at its edge say it's glass.
-  clear: { core: 0, coreWhite: 0, emissive: 0, attenuation: Infinity, seeThrough: true },
+  // Completely clear: colorless glass with no core. The page behind is bent through it, and only the
+  // reflections, the highlights and the bright edges say it's glass, like a bubble.
+  clear: { core: 0, coreWhite: 0, emissive: 0.12, attenuation: Infinity, seeThrough: true },
 };
 
 type Three = typeof import('three');
@@ -54,7 +56,7 @@ const cache = new Map<string, Promise<string>>();
 
 /** The orb as a picture (a data URL), for `px` pixels on screen (drawn at twice that, for sharpness). */
 export function renderOrb(px: number, look: OrbLook, colors: OrbColors): Promise<string> {
-  const key = [px, look, colors.light, colors.glow, colors.halo, colors.body].join('|');
+  const key = [px, look, colors.light, colors.glow, colors.halo, colors.body, colors.page].join('|');
   let picture = cache.get(key);
   if (!picture) {
     picture = draw(px, look, colors);
@@ -70,10 +72,10 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   const color = (c: string) => new THREE.Color(c);
   const scene = new THREE.Scene();
   scene.environment = env;
-  // What the glass bends: its own light color, so the inside reads the same on any background. Clear
-  // glass is drawn on black instead, and the black becomes see-through afterwards (below).
-  // Smooth glass (roughness 0) and a sharp studio room keep the reflections crisp.
-  scene.background = l.seeThrough ? new THREE.Color('#000000') : color(colors.light);
+  // What the glass bends: for glow and tinted, its own light color, so the inside reads the same on
+  // any background; for clear, the page behind it. Smooth glass (roughness 0) and a sharp studio room
+  // keep the reflections crisp.
+  scene.background = color(l.seeThrough ? colors.page : colors.light);
 
   // The ball fills the picture, a hair past its edges: rays that only skim the glass there miss
   // everything and draw a dotted dark rim, so that sliver is left outside the picture.
@@ -82,12 +84,9 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
 
   const geometries = [new THREE.SphereGeometry(l.core || 0.01, 64, 64), new THREE.SphereGeometry(1, 128, 128)];
   const core = new THREE.MeshBasicMaterial({ color: color(colors.light).lerp(new THREE.Color('#ffffff'), l.coreWhite) });
-  // Clear glass: nothing of its own, only what its surface reflects (brightest at the edges) and the
-  // highlights.
-  const glass = l.seeThrough
-    ? new THREE.MeshPhysicalMaterial({ color: new THREE.Color('#000000'), roughness: 0, ior: 1.5, clearcoat: 1, clearcoatRoughness: 0, envMapIntensity: 1.2 })
-    : new THREE.MeshPhysicalMaterial({
-    color: color(colors.glow),
+  const glass = new THREE.MeshPhysicalMaterial({
+    // Clear glass has no color of its own.
+    color: l.seeThrough ? new THREE.Color('#ffffff') : color(colors.glow),
     transmission: 1,
     ior: 1.5,
     thickness: 1.4,
@@ -97,7 +96,7 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
     attenuationColor: color(colors.body),
     attenuationDistance: l.attenuation,
     // The orb is a light, so the glass glows a little in its own color, and the room's walls in its edge stay faint.
-    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : color(colors.glow),
+    emissive: look === 'glow' ? color(colors.light).lerp(new THREE.Color('#ffffff'), 0.5) : l.seeThrough ? new THREE.Color('#ffffff') : color(colors.glow),
     emissiveIntensity: l.emissive,
     envMapIntensity: 0.7,
   });
@@ -111,34 +110,10 @@ async function draw(px: number, look: OrbLook, colors: OrbColors) {
   const drawn = Math.min(px * 2, 1024);
   renderer.setSize(drawn, drawn, false);
   renderer.render(scene, camera);
-  const url = l.seeThrough ? blackToClear(renderer.domElement) : renderer.domElement.toDataURL('image/png');
+  const url = renderer.domElement.toDataURL('image/png');
   geometries.forEach((g) => g.dispose());
   core.dispose();
   glass.dispose();
   return url;
 }
 
-/** Clear glass was drawn on black: each pixel's brightness becomes how much it covers the page, so
- * black turns see-through and the reflections and highlights stay. */
-function blackToClear(source: HTMLCanvasElement) {
-  const canvas = document.createElement('canvas');
-  canvas.width = source.width;
-  canvas.height = source.height;
-  const ctx = canvas.getContext('2d')!;
-  ctx.drawImage(source, 0, 0);
-  const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const d = image.data;
-  for (let i = 0; i < d.length; i += 4) {
-    const a = Math.max(d[i], d[i + 1], d[i + 2]);
-    if (a === 0) {
-      d[i + 3] = 0;
-      continue;
-    }
-    d[i] = (d[i] * 255) / a;
-    d[i + 1] = (d[i + 1] * 255) / a;
-    d[i + 2] = (d[i + 2] * 255) / a;
-    d[i + 3] = a;
-  }
-  ctx.putImageData(image, 0, 0);
-  return canvas.toDataURL('image/png');
-}
