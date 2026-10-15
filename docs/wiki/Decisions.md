@@ -75,6 +75,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **The look:** a small glass marble, darker at the top, with a bright crescent where light catches its top edge and light pooling at the bottom. Its rim isn't the same thickness all the way round: thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own color.
 - **Its color is the theme's:** Spotlight's red, Fireside's peach copper, and in Sunrise the area's own color family (Dashboard's Earth Moss by default; `palette` sets another, like `seagull` for Time). Tokens: `orb.color.*` in each theme; size, glow and shine in the base (`orb.*`).
 - **Still true (D45):** orb only, no rays; it starts at the bottom right of its section; drag it or use the arrow keys (Shift moves farther); its button is 44px; nothing moves on its own, so there's no motion to reduce. Full pages (the page shell) never get an orb: their light stays still at `light-from-right` and `light-top`.
+- **On its own page, centered (Sharon):** the Orb's page shows it in the middle of its examples, like any other component. Everywhere else it starts at the bottom right. `defaultPosition` sets where an orb that keeps its own place starts.
 - **Storybook:** a page for Orb under Components, and a test story with the orb on every theme's real background. Try it out's hint now says "Drag the light to move it".
 
 </details>

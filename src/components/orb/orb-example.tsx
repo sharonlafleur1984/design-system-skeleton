@@ -40,13 +40,15 @@ export interface OrbSectionProps {
   area?: string;
   texture?: string;
   palette?: string;
+  /** Where the orb starts. Defaults to the bottom right, like every orb; the Orb's own page centers it. */
+  start?: { x: number; y: number };
   /** A name for the section, for screen readers. */
   label: string;
 }
 
-export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, label }: OrbSectionProps) {
+export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, start = ORB_START, label }: OrbSectionProps) {
   const ref = useRef<HTMLElement>(null);
-  const [sun, setSun] = useState(ORB_START);
+  const [sun, setSun] = useState(start);
   const night = `var(--color-area-${area}-night)`;
   const lens = useMemo(
     () => ({ art: backdrop === 'header' ? headerArt(sun) : backdrop === 'marble' ? imageArt({ src: texture, overlay: night }) : backdrop === 'fireside' ? firesideArt : clearArt() }),

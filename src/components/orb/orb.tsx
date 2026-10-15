@@ -17,6 +17,8 @@ export const ORB_START: OrbPosition = { x: 0.92, y: 0.9 };
 export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type' | 'children' | 'onKeyDown' | 'onPointerDown' | 'onPointerMove'> {
   /** Where the orb is in its section. Leave out to let the orb keep its own place, starting at ORB_START. */
   position?: OrbPosition;
+  /** Where it starts when it keeps its own place. Defaults to ORB_START; its own Storybook page centers it. */
+  defaultPosition?: OrbPosition;
   /** Called while it's dragged, or moved with the arrow keys. */
   onPositionChange?: (position: OrbPosition) => void;
   /**
@@ -28,8 +30,8 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, onPositionChange, palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
-  const [own, setOwn] = useState(ORB_START);
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+  const [own, setOwn] = useState(defaultPosition);
   const position = controlled ?? own;
   const move = (p: OrbPosition) => {
     if (!controlled) setOwn(p);
