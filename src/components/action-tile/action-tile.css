@@ -463,8 +463,10 @@
   min-inline-size: 0;
 }
 
-/* Tile (tile.tsx): never chosen, so no room is kept for the chosen mark. */
+/* Tile (tile.tsx): never chosen, so no room is kept for the chosen mark. On its own it never shrinks
+   below the width a group of action tiles keeps (12rem), unless its space is narrower than that. */
 .ds-tile--plain {
+  min-inline-size: min(100%, calc(var(--space-10) * 3));
   padding-inline: var(--space-4);
 }
 
