@@ -31,7 +31,7 @@ One page on how a value gets from a token file to a product's screen. Open this 
 
 ## Where the materials come from
 
-Components that can be glass take an `appearance`: `solid` (their normal surface) or `glass` (one WebGL canvas per group draws the glass, lit from the page's light, and bends the art behind on artwork; in `glass-lens/`). Card and Action tile share one look, in `action-tile.css`. The glass code is experimental until [issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60).
+Components that can be glass take an `appearance`: `solid` (their normal surface) or `glass` (one WebGL canvas per group draws the glass, lit from the page's light, and bends the art behind on artwork; in `glass-lens/`). Card and Action tile share one look, in `action-tile.css`. The glass code is experimental until [issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60).
 
 ## Related
 

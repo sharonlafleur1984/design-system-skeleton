@@ -29,7 +29,7 @@ export const statusInfo: Record<Status, { label: string; empty?: { title: string
   'not-started': { label: 'Not started', empty: { title: 'Still on the drawing board' } },
 };
 
-const repo = 'https://github.com/sharonlafleur1984/design-system-skeleton/blob/main/';
+const repo = 'https://github.com/sharonlafleur1984/lantern-design-system/blob/main/';
 
 export interface ComponentPageInfo {
   /** The day the page was last checked, as YYYY-MM-DD. */

@@ -4,7 +4,7 @@
 
 | Now | Next | Later |
 |---|---|---|
-| **What After Graduation needs next:** a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42) | **Can Life Hub use it?** Life Hub loads its theme and builds its pages from these components | **Glass review:** the Glass material's build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)) |
+| **What After Graduation needs next:** a [phone bottom bar](https://github.com/sharonlafleur1984/lantern-design-system/issues/41), an [icon set](https://github.com/sharonlafleur1984/lantern-design-system/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/lantern-design-system/issues/42) | **Can Life Hub use it?** Life Hub loads its theme and builds its pages from these components | **Glass review:** the Glass material's build ([issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60)) |
 | **A header for every theme:** Spotlight's page shell, the Sunrise sky header and the Fireside toolbar | **Fireside's font** | **Figma in sync** with the code |
 
 ## Milestones

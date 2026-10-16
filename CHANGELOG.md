@@ -51,7 +51,7 @@ Versions follow [semantic versioning](https://semver.org/): before 1.0, a minor 
 
 ### Experimental
 
-These may change in any version, even a patch: `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` (the glass light and lens code). See [issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60).
+These may change in any version, even a patch: `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` (the glass light and lens code). See [issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60).
 
 ## 0.3.0: October 7, 2026
 
