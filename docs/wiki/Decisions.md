@@ -11,6 +11,9 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | ID | Date | Decision |
 |---|---|---|
 | D61 | Oct 15, 2026 | Fireside's light mode changes only the work area |
+| D60 | Oct 15, 2026 | Lantern's cover is lit by its own orb: the drawing stays, the renderer adds the glass, the light on the copper and the shadow |
+| D59 | Oct 15, 2026 | The page's light is drawn by the renderer: the surface is lit, not covered; the default everywhere the orb lights glass |
+| D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
@@ -79,6 +82,46 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
+<summary><b>D60 · Oct 15, 2026:</b> Lantern's cover is lit by its own orb: the drawing stays, the renderer adds the glass, the light on the copper and the shadow</summary>
+
+- **Decided by:** Sharon, after seven rounds of pictures. She turned down a 3D lantern ("I don't want it to be 3-D. I still want it to look like Graphic") and kept the orb ("very signature to us"); she asked for "just a bit more like glass", the natural shadow below, the parts overlapping the way a real lantern's do, highlights in the name's color, the handle 20% smaller so it sits on the cap with a lip, and the lantern a little lower. Her verdict: "I love it so much!"
+- **The drawing stays the drawing:** the copper lantern, the amber orb and its glow, and her small curved highlights. The renderer (three.js, the one renderer the orbs share) adds only what real light does:
+  - **Glass:** a clear glass globe the window's shape, in front of the drawn inside, so it bends the orb's glow a little toward the edges. Its tint is the window's own faint fill. No reflections are added.
+  - **Copper:** her shapes as a shallow relief seen straight on, so it stays flat. The handle hangs behind the cap with its ends tucked in; the glass and its ring are seated into the cap and the base (before, the ring sat over the cap but under the base). Front faces keep exactly her color (D59's even light); only the edges the orb can reach catch its light: the ring's inner edge, the cap's lower lip and the base's upper lip. The handle is in the cap's shadow. The light is the name's peach, `#f7c9a6`, so the copper picks up the word's color, and it's set so no edge is brighter than the name.
+  - **Floor:** the orb lights the floor and the base shades it, seen from as high as the drawn shadow's flatness says (44 wide, 7 tall). The shadow is as soft as the orb is big. It's drawn as light only, added to the ground.
+- **Changes to the drawing itself** (the mark in Assets too): the handle is 80% of its size, so it sits inside the cap's ends with a small lip; the window's ring is the handle and base's copper, `#8a4f27` (it was `#b5672f`); her glass highlights are the name's peach; the lantern sits 8px lower on the cover, so it no longer lines up with the tagline's baseline.
+- **Where it shows:** Lantern's cover and the top of Storybook's Welcome page, one source (`scripts/lantern/cover.html`), lit by `src/lantern/cover-light.ts`.
+- **Without 3D,** or if anything can't be drawn, the cover shows the drawing exactly as it is, with its drawn glow and shadow. Nothing moves, so Reduce motion changes nothing.
+- **Readable:** the name is 10.8:1 and the tagline 7.9:1 against the brightest lit floor behind them.
+- **Known cost:** three.js is now in Lantern's bundle (1.3 MB, was 0.6 MB). The orb needs it there anyway once PR #82 reaches Lantern.
+- **Not the Design System cover rules:** Lantern's artifact type asks covers for "no images, no gradients or shadows the tokens don't define". Lantern's cover keeps Sharon's drawn mark instead of blocks and a pattern, so it was already its own; the lit layers are drawn by the renderer from that drawing.
+
+</details>
+
+<details>
+<summary><b>D59 · Oct 15, 2026:</b> The page's light is drawn by the renderer: the surface is lit, not covered; the default everywhere the orb lights glass</summary>
+
+- **Decided by:** Sharon ("build the renderer-lit light first, beside today's glow"; "I only wanna build it if I can build it in the actual code later").
+- **What it is:** `useLitSurface` draws a section's background as a matte surface in three.js, with a point light hanging just above it at the light's position. The renderer works out how light falls off with distance and angle, so it brightens the pattern it falls on instead of covering it, and parts far from the light keep their own look. It uses the same art the glass lens already paints (no screen reading), so it works in the apps, not only Storybook.
+- **Looks the same everywhere:** light surfaces already reflect most light, so the lamp is scaled to how light the surface is, and dark and light backgrounds look equally lit. Its color follows D57: 75% white, 25% the area's lightest color; on plain pages, the theme's plain light (pure white, or Fireside's warm white).
+- **Where it falls short today:** without 3D, or behind art the system doesn't paint (photos, people's content), nothing is drawn and the CSS glow is used. The glass button's lens still bends the unlit background; lighting what the lens sees is the next step.
+- **The default (Sharon: "I like the rendered version better"):** everywhere the orb lights glass (Try it out windows, the Glass playground, glass stories, the Orb's page and its test cards), the background is lit by the renderer through `LitBackground`, and the orb's CSS glow stays only as a faint glare at the ball. The CSS glow alone is what shows without 3D. A test page compares the two (Components/Orb, Lit by the renderer). Moving light (D58: Sunrise's time of day, Illuminate) will draw it live with the same hook.
+- **Known gap:** on glass stories the orb lights the page around the story, not a panel under it (like a marble panel), so over a panel the ball reads flat.
+
+</details>
+
+<details>
+<summary><b>D58 · Oct 15, 2026:</b> The light may move on real pages; staying still is a choice</summary>
+
+- **Decided by:** Sharon ("Let's move that way. I can always tell you to stay still in the future, but if I change my mind and move again, that's fine too.")
+- **Replaces part of D45 and D57:** a full page's light no longer has to stay still at `light-from-right` and `light-top`. Those tokens are where it rests, and staying still remains a choice Sharon can switch back to.
+- **How it moves depends on the theme (Sharon):** Sunrise's light follows the time of day. Spotlight's and Fireside's stay still at the light tokens for now.
+- **Illuminate, a setting:** people can turn on Illuminate, which makes the cursor the light source. It's off by default everywhere, works only in dark mode, and is a setting rather than a theme choice.
+- **Still true:** one light for every glass part; Reduce motion keeps the light still; text stays readable wherever the light lands, so contrast is checked along its whole path; a moving light is drawn live and pauses when nothing moves or the page is hidden.
+
+</details>
+
+<details>
 <summary><b>D57 · Oct 15, 2026:</b> The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass</summary>
 
 - **Decided by:** Sharon, after three first directions ("not a big fan of any of these"): "take the primary color of an area and apply it as a light source with lots and lots of glowing"; "the stroke seems to be even all the way around… that would never happen"; "a little brighter"; "these orbs should go into my design library… the color will change based on the theme."
@@ -87,6 +130,14 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Its color is the theme's:** Spotlight's red, Fireside's peach copper, and in Sunrise the area's own color family (Dashboard's Earth Moss by default; `palette` sets another, like `seagull` for Time). Tokens: `orb.color.*` in each theme; size, glow and shine in the base (`orb.*`).
 - **Still true (D45):** orb only, no rays; it starts on the right of its section, two thirds down (Sharon: "bottom right, but not all the way at the bottom, like 2/3 down"); drag it or use the arrow keys (Shift moves farther); its button is 44px; nothing moves on its own, so there's no motion to reduce. Full pages (the page shell) never get an orb: their light stays still at `light-from-right` and `light-top`.
 - **On its own page, centered (Sharon):** the Orb's page shows it in the middle of its examples, like any other component. Everywhere else it starts on the right, two thirds down. `defaultPosition` sets where an orb that keeps its own place starts.
+- **Only one orb on its page (Sharon):** the Orb's Try it out windows don't add their own light, even in dark mode or on header art, so the centered Orb is the only one.
+- **Three sizes on the 8px grid (Sharon):** small 16px, the height of body text, used in Try it out windows; medium 32px, the usual one, in glass stories and the Glass playground; large 48px. The glow scales with the size. The button is 44px for small and medium, 56px for large. Tokens: `orb.size.*`, `orb.target.*`.
+- **Drawn by a real renderer (Sharon: "I love the little bubbles"):** the glass is drawn with three.js, a free 3D library, as a glass ball (refractive index 1.5) with a glowing core, reflecting a plain studio: a soft sky, light above and dark below, and a round softbox up and to the right. No walls or furniture (Sharon: the first room's reflections looked like a bedroom). The renderer works out what CSS gradients only faked: the bright edges, the bent and enlarged core, the sharp highlight. Each orb is drawn once into a picture, at twice its size so edges and reflections stay sharp, with perfectly smooth glass, and cached, with one shared renderer, so the page never holds more than one 3D view. three.js loads only when an orb is on screen. Where a browser can't draw 3D (and in tests), the CSS glass shows instead. Came after a study of how light behaves in real glass balls (Fresnel edges, two highlights, the flipped view inside, light gathering at the far side).
+- **Its page opens in dark mode (Sharon):** the light shows best there, so the Orb's page and its examples start dark; picking a Mode on the page keeps that pick.
+- **Plain pages get the theme's plain light; colored ones show through (Sharon):** when what's behind the orb is the theme's own page color (a plain light or dark page), there's no color to blend with, so the light and the whole ball are the theme's plain light (`--orb-color-plain`): pure white in Spotlight and Sunrise, and in Fireside a warm white, its lightest peach, like a warm bulb next to a white one, never yellow (Sharon). Fireside's light also warms as it fades, like a lantern on a wall: near white by the ball, warming to its second-lightest peach farther out (`--orb-color-plain-far`; transparent in the other themes). The renderer adds a wider, softer peach lamp, and a faint peach haze glows in the air, since the dark teal page alone reflects almost no warmth. Inside the ball, the renderer draws the same fade: a white center warming to peach at the glass, one smooth glow with no edge, like a lantern's flame (Sharon: "a little bit of work inside the ball"). On a background with color of its own (a marble, header art), the light is the page's color mix and brightens what it falls on (screen blend) at full strength, so it's easy to see; the brightest spot right at the ball covers the pattern, and it shows through everywhere else, even a marble under its dark night layer. The light is its own layer beside the ball so it can blend.
+- **The glow ball is see-through (Sharon: "it's looking pretty solid"):** like clear, it's drawn over the real background behind it, with a bright core inside clear glass, so the page shows through around its light. Brighter from inside (Sharon): a bigger core, glass that glows more in its light, and stronger light right at the ball.
+- **Every glow looks equally bright (Sharon: "the way they look is all the same, not the math"):** the orb measures how light the background behind it is. On lighter backgrounds its light leans gently toward the page's color (toward the 200 step, never below half white) and spreads stronger, because white light vanishes on a light page; on dark ones it stays half white, half the lightest step.
+- **Three looks (Sharon):** `glow`, the default, has the light inside the ball shining out; its light is very bright right around the ball and spreads over the whole section, fading the way real light does (soft at the ball, Sharon: "a lot more subtle and extend a lot further", reaching 90 ball sizes, `orb.glow.reach`), in one smooth curve of many small steps so no ring shows, starting at full strength at the glass so the ball blends into its light. Its color, and the core's, is 75% white and 25% the lightest step of the page's color (Sharon: half and half, the focus glow's rule from D45, was too saturated for light). `tinted` is glass in the page's primary color (or the area's on a Sunrise area page), with a small bright core and no glow. `clear` is completely clear, with no glow, drawn by the renderer alone (Sharon: "no hand math on top"; with glass you're always playing with the background). The real background behind the orb is one of the renderer's ingredients: the orb paints the patch behind itself from the same art its section gives the glass lens (`backdrop`), or the section's own color, and three.js bends it through colorless glass, so the bending, shading, uneven rim and highlights all come from the renderer. It redraws as the orb moves, since what's behind it changes. It reflects a brighter studio than the other looks, with no clear coat (one surface). All three in all three sizes.
 - **Storybook:** a page for Orb under Components, and a test story with the orb on every theme's real background. Try it out's hint now says "Drag the light to move it".
 
 </details>

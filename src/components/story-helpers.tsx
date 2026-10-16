@@ -5,6 +5,7 @@ import { LIGHT_CHANGE } from './glass-lens/lens';
 import { LitContext, type Appearance } from './material';
 import { storyPageArt } from './glass-lens/story-art';
 import { Orb, ORB_START } from './orb/orb';
+import { LitBackground } from './glass-light/lit-background';
 import themes from '../../build/themes.json';
 
 // Storybook-only helpers. Not exported from the component library.
@@ -313,7 +314,9 @@ export function LightScene({ children }: { children: ReactNode }) {
   }, [sun, show]);
 
   return (
-    <div ref={ref} style={{ position: 'relative', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
+    <div ref={ref} style={{ position: 'relative', isolation: 'isolate', paddingBlockStart: show ? 'var(--space-6)' : undefined }}>
+      {/* The page around the story, lit by the orb's light (D59). */}
+      {show && <LitBackground light={sun} />}
       {show && <Orb data-glass-light="" position={sun} onPositionChange={setSun} />}
       {children}
     </div>

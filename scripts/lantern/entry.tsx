@@ -6,6 +6,8 @@ import { createRoot } from 'react-dom/client';
 import * as library from '../../src/components';
 // Every part's page words, by name; build-lantern.mjs writes this module from the page files.
 import { pages } from 'lantern:pages';
+// Lights the cover from its orb (D60); cover.html calls it.
+import { lightCover } from '../../src/lantern/cover-light';
 
 // Lantern's theme ids, and the repo's theme and mode each one shows.
 const themes: Record<string, { theme: string; mode: 'light' | 'dark' }> = {
@@ -30,4 +32,4 @@ function mount(el: HTMLElement, name: string) {
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 }
 
-export default { ...library, mount };
+export default { ...library, mount, lightCover };

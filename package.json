@@ -38,6 +38,7 @@
     "@types/node": "^22.20.4",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
     "@vitejs/plugin-react": "^6.1.1",
     "axe-core": "^4.13.0",
     "esbuild": "^0.28.2",
@@ -60,7 +61,8 @@
     "wcag-contrast": "^3.0.0"
   },
   "dependencies": {
-    "react-aria-components": "^1.21.1"
+    "react-aria-components": "^1.21.1",
+    "three": "^0.186.1"
   },
   "exports": {
     ".": {

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { EmptyState } from '../../../.storybook/empty-state';
 import { Button } from './button';
 import { BothThemes, OnMarble, Row, WithReducedMotion, choice, hidden, marbles, onOff, setting, singleTheme, StatePictures, words } from '../story-helpers';
 import { buttonPage } from './button.page';
 import { PageShell } from '../page-shell/page-shell';
-import { Callout } from '../callout/callout';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
@@ -200,7 +200,7 @@ function OnHeaderArt() {
 function GlassOnArt({ theme }: { theme: unknown }) {
   const t = singleTheme(theme);
   // Fireside's glass and light recipe is still open (designer-toolkit wiki, Skin).
-  if (t === 'designer-toolkit') return <Callout tone="info">Fireside's glass hasn't been designed yet.</Callout>;
+  if (t === 'designer-toolkit') return <EmptyState title="Fireside's glass isn't designed yet" />;
   return t === 'life-hub' ? <OnMarble>{glassRow}</OnMarble> : <OnHeaderArt />;
 }
 
