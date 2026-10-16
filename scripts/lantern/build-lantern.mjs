@@ -148,6 +148,33 @@ for (const f of readdirSync(join(root, 'src/fonts'))) {
   }
 }
 
+// ---- Motion: Lantern has no motion section of its own, so durations and easings are two plain families.
+// The values are the shared base (the same in every theme), as built; each note says what it's for, from tokens/base/motion.json.
+const motionBase = json('tokens/base/motion.json').motion;
+const builtMotion = json('build/json/after-graduation.json');
+const mv = (name) => String(builtMotion[`motion-${name}`]);
+const note = (node) => (node?.$description ?? '').split(/ Material 3|\. Durations/)[0].trim();
+const moods = "Sunrise uses calm; Spotlight and Fireside use energetic.";
+const duration = [
+  ...['instant', 'fast', 'base', 'slow'].map((k) => ({ name: `duration-${k}`, value: mv(`duration-${k}`), usage: note(motionBase.duration[k]) })),
+  { name: 'duration-stagger', value: mv('stagger'), usage: note(motionBase.stagger) },
+  { name: 'duration-open', value: mv('open-duration'), usage: note(motionBase.open.duration) },
+  { name: 'duration-close', value: mv('close-duration'), usage: note(motionBase.close.duration) },
+  { name: 'duration-switch', value: mv('switch-duration'), usage: note(motionBase.switch.duration) },
+  { name: 'duration-spin', value: mv('spin-duration'), usage: note(motionBase.spin.duration) },
+  ...['calm', 'energetic'].flatMap((m) => [
+    { name: `duration-${m}-arrive`, value: mv(`mood-${m}-arrive-duration`), usage: `Something arriving, in the ${m} mood. ${moods}` },
+    { name: `duration-${m}-celebrate`, value: mv(`mood-${m}-celebrate-duration`), usage: `A win celebrating, in the ${m} mood. ${moods}` },
+  ]),
+];
+const easing = [
+  ...['out', 'in-out', 'in'].map((k) => ({ name: `easing-${k}`, value: mv(`easing-${k}`), usage: note(motionBase.easing[k]) })),
+  ...['calm', 'energetic'].flatMap((m) => [
+    { name: `easing-${m}-arrive`, value: mv(`mood-${m}-arrive-easing`), usage: `Something arriving, in the ${m} mood.${m === 'energetic' ? ' Overshoots its target a little, then settles back.' : ''} ${moods}` },
+    { name: `easing-${m}-celebrate`, value: mv(`mood-${m}-celebrate-easing`), usage: `A win celebrating, in the ${m} mood. ${moods}` },
+  ]),
+];
+
 const tokens = {
   name: 'Lantern',
   version: 1,
@@ -157,6 +184,8 @@ const tokens = {
   spacing: { tokens: spacing },
   radius: { tokens: radius },
   shadow: { tokens: shadow },
+  duration: { tokens: duration },
+  easing: { tokens: easing },
 };
 write('tokens.json', JSON.stringify(tokens, null, 2));
 
