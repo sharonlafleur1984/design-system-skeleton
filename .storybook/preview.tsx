@@ -80,6 +80,8 @@ const preview: Preview = {
     },
     // The component page's own Mode (the bar at its top): Light, Dark, Auto or System. The examples follow Mode in Controls.
     pageMode: { description: "The component page's light or dark mode" },
+    // The page whose Mode was last picked, so a page that opens in dark (the Orb's) keeps the pick once made.
+    pageModeFor: { description: 'The component page Mode was last picked on' },
     // Not in the toolbar: screenshot tests set picker:hide so the on-page picker stays out of the pictures.
     picker: { description: 'Show or hide the theme picker on the page' },
     // Set from the bar above the story: one of the theme's backgrounds (its theme.json), or empty for the plain page.

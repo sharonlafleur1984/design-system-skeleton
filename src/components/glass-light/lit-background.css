@@ -1,0 +1,13 @@
+/* The lit background: fills its container, behind the container's content. */
+.ds-lit-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: 100%;
+  pointer-events: none;
+}
+/* With the light drawn on the surface, an orb's own glow stays only as a faint glare at the ball. */
+:has(.ds-lit-background) > .ds-orb-light {
+  opacity: 0.35;
+}

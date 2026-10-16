@@ -24,8 +24,8 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      // The app brings its own copy of these, so there's only ever one React.
-      external: [/^react($|\/)/, /^react-dom($|\/)/, /^react-aria-components($|\/)/, /^@react-aria\//],
+      // The app brings its own copy of these, so there's only ever one React (and three.js, which draws the orb).
+      external: [/^react($|\/)/, /^react-dom($|\/)/, /^react-aria-components($|\/)/, /^@react-aria\//, /^three($|\/)/],
     },
   },
 });

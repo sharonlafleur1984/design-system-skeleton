@@ -1,5 +1,5 @@
 import type { Decorator } from '@storybook/react-vite';
-import { Callout } from './callout/callout';
+import { EmptyState } from '../../.storybook/empty-state';
 import { singleTheme, themeNames } from './story-helpers';
 
 // Storybook-only. Not exported from the component library.
@@ -15,8 +15,8 @@ export const afterGraduationOnly: Decorator = (Story, context) => {
   if (context.tags.includes('page')) return <Story />;
   if (theme !== 'after-graduation') {
     return (
-      <div style={{ padding: 'var(--space-4)' }}>
-        <Callout tone="info">This component hasn't been made for the {themeNames[theme]} theme yet.</Callout>
+      <div style={{ padding: 'var(--space-7) var(--space-4)' }}>
+        <EmptyState title={`Not made for ${themeNames[theme]} yet`} />
       </div>
     );
   }

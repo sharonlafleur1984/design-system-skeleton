@@ -2,11 +2,41 @@
   "orb": {
     "color": {
       "$description": "Sunrise's orb glows in its area's color. Dashboard's Earth Moss is the default; an area page sets these to its own color family.",
-      "light": { "$type": "color", "$value": "{palette.earth-moss.100}", "$description": "The brightest light inside the orb." },
-      "glow": { "$type": "color", "$value": "{palette.earth-moss.200}", "$description": "The glow nearest the orb, and its farthest bloom." },
-      "halo": { "$type": "color", "$value": "{palette.earth-moss.300}", "$description": "The middle of the glow." },
-      "body": { "$type": "color", "$value": "{palette.earth-moss.400}", "$description": "The color of the glass." },
-      "shade": { "$type": "color", "$value": "{palette.earth-moss.600}", "$description": "The deepest color, at the top of the glass." }
+      "light": {
+        "$type": "color",
+        "$value": "{palette.earth-moss.100}",
+        "$description": "The brightest light inside the orb."
+      },
+      "glow": {
+        "$type": "color",
+        "$value": "{palette.earth-moss.200}",
+        "$description": "The glow nearest the orb, and its farthest bloom."
+      },
+      "halo": {
+        "$type": "color",
+        "$value": "{palette.earth-moss.300}",
+        "$description": "The middle of the glow."
+      },
+      "body": {
+        "$type": "color",
+        "$value": "{palette.earth-moss.400}",
+        "$description": "The color of the glass."
+      },
+      "shade": {
+        "$type": "color",
+        "$value": "{palette.earth-moss.600}",
+        "$description": "The deepest color, at the top of the glass."
+      },
+      "plain": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$description": "The light on a plain page (the theme's own page color behind it). Pure white: a plain page has no color to blend with."
+      },
+      "plain-far": {
+        "$type": "color",
+        "$value": "transparent",
+        "$description": "Where the light on a plain page fades out, it warms to this. Transparent: Sunrise's light stays white all the way out."
+      }
     }
   }
 }

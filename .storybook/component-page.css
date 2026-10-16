@@ -14,7 +14,8 @@
   --sb-dont-line: #b3261e;
   --sb-codebar: #333333;
   --sb-code: #f5f5f5;
-  --sb-shadow: 2px 2px 8px 0 rgb(0 0 0 / 0.2);
+  /* Below only: no shadow on the sides (Sharon). */
+  --sb-shadow: 0 6px 8px -4px rgb(0 0 0 / 0.2);
   --sb-ease: cubic-bezier(0.2, 0, 0, 1);
   display: flex;
   flex-direction: column;
@@ -202,7 +203,9 @@
 /* The frame: the window, the code bar, then the table. */
 /* The outline is a ring outside the frame, not a border, so the dark code bar runs to the very edge. */
 .sb-page__frame {
-  overflow: hidden;
+  /* Clips to the card, but lets the code bar reach 1px out, over the card's outline. */
+  overflow: clip;
+  overflow-clip-margin: 1px;
   border-radius: 8px;
   background: var(--sb-cell);
   box-shadow: 0 0 0 1px var(--sb-line), var(--sb-shadow);
@@ -251,7 +254,8 @@
   isolation: isolate;
   flex: 1;
   overflow: clip;
-  padding: 56px 32px;
+  /* The same space on every side (Sharon). */
+  padding: 56px;
 }
 .sb-try__window--plain {
   background: var(--color-surface-page);
@@ -282,6 +286,13 @@
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
+}
+/* A stage for a part that places itself (the Orb): alone it fills the window, in a row each gets its own. */
+.sb-try__stage {
+  position: relative;
+  flex: 1 1 140px;
+  min-inline-size: 140px;
+  min-block-size: 140px;
 }
 .sb-try__row {
   display: flex;
@@ -345,35 +356,12 @@
   inset-block-end: 10px;
   inset-inline-start: 16px;
 }
-/* Nothing built yet: the words inside a dashed outline, centered, with a pencil drawing it. */
-.sb-try__empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--color-ink-tertiary, #6b6b6b);
-}
-.sb-try__empty-title {
-  margin: 0;
-  padding: 10px 24px;
-  border: 1.5px dashed currentColor;
-  border-radius: 999px;
-  color: var(--color-ink-primary);
-  font-size: 16px;
-  font-weight: 700;
-}
-.sb-try__pencil {
-  animation: sb-pencil 520ms var(--sb-ease) both;
-}
-@keyframes sb-pencil {
-  from {
-    opacity: 0;
-    transform: translate(10px, -8px);
-  }
-}
 
 /* Show code and Copy code: white text on a bar dark enough to pass 4.5:1. */
 .sb-try__codebar {
+  /* The black runs edge to edge, breaking the card's 1px outline instead of sitting inside it (Sharon). */
+  position: relative;
+  margin-inline: -1px;
   display: flex;
   justify-content: space-between;
   gap: 4px;
@@ -608,12 +596,10 @@
 
 /* Reduce motion keeps only color fades. */
 @media (prefers-reduced-motion: reduce) {
-  .sb-try__pencil,
   .sb-try__code {
     animation: none;
   }
 }
-:root[data-reduce-motion] .sb-try__pencil,
 :root[data-reduce-motion] .sb-try__code {
   animation: none;
 }
@@ -625,8 +611,4 @@
 /* On the header art, the All labels use the theme's text-on-art color. */
 .sb-try__window--header .sb-try__label {
   color: var(--color-ink-on-art);
-}
-.sb-try__not-here {
-  margin: 0;
-  font-size: 14px;
 }

@@ -1,11 +1,13 @@
 import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { Button } from '../button/button';
 import { useGlassLight } from '../glass-light/glass-light';
+import { LitBackground } from '../glass-light/lit-background';
 import { LIGHT_CHANGE } from '../glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../glass-lens/lens-art';
 import { firesideArt } from '../glass-lens/story-art';
 import { LitContext } from '../material';
-import { Orb, ORB_START } from './orb';
+import { Orb, ORB_START, type OrbSize } from './orb';
+import type { OrbLook } from './orb-render';
 
 // Storybook only: a section with glass in it, lit by an orb you can drag. Used on the Orb's page and
 // in its test stories. Not exported from the component library.
@@ -13,9 +15,18 @@ import { Orb, ORB_START } from './orb';
 export type OrbBackdrop = 'header' | 'marble' | 'fireside' | 'light';
 
 /** Spotlight's header red, lightest at the light, as Try it out paints it. The glass bends the same paint. */
-function headerArt(sun: { x: number; y: number }): GlassArt {
-  return {
+function headerArt(start: { x: number; y: number }): { art: GlassArt; move: (sun: { x: number; y: number }) => void } {
+  let at = start;
+  let repaint: (() => void) | undefined;
+  const art: GlassArt = {
+    subscribe(r) {
+      repaint = r;
+      return () => {
+        repaint = undefined;
+      };
+    },
     paint(ctx, { width, height }, container) {
+      const sun = at;
       const color = (css: string) => {
         const c = resolveColor(css, container) ?? [0, 0, 0, 0];
         return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3]})`;
@@ -32,6 +43,12 @@ function headerArt(sun: { x: number; y: number }): GlassArt {
       return true;
     },
   };
+  // Moving the light repaints the same art, so the glass never has to be rebuilt.
+  const move = (sun: { x: number; y: number }) => {
+    at = sun;
+    repaint?.();
+  };
+  return { art, move };
 }
 
 export interface OrbSectionProps {
@@ -42,22 +59,35 @@ export interface OrbSectionProps {
   palette?: string;
   /** Where the orb starts. Defaults to the right, two thirds down, like every orb; the Orb's own page centers it. */
   start?: { x: number; y: number };
+  /** The orb's size. Defaults to medium. */
+  size?: OrbSize;
+  /** The orb's look. Defaults to glow, like every orb. */
+  look?: OrbLook;
+  /**
+   * Light the background with the renderer (D59, the default): the section becomes a surface lit by the
+   * orb. False shows the orb's CSS glow alone, for comparing.
+   */
+  lit?: boolean;
   /** A name for the section, for screen readers. */
   label: string;
 }
 
-export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, start = ORB_START, label }: OrbSectionProps) {
+export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sage-cream.jpg', palette, start = ORB_START, size, look, lit = true, label }: OrbSectionProps) {
   const ref = useRef<HTMLElement>(null);
   const [sun, setSun] = useState(start);
+  // The header art follows the light. It stays one art that's told where the light is and asks the glass
+  // to repaint, because a new art would rebuild the glass, flashing its plain box.
+  const [header] = useState(() => headerArt(start));
   const night = `var(--color-area-${area}-night)`;
   const lens = useMemo(
-    () => ({ art: backdrop === 'header' ? headerArt(sun) : backdrop === 'marble' ? imageArt({ src: texture, overlay: night }) : backdrop === 'fireside' ? firesideArt : clearArt() }),
-    [backdrop, texture, night, sun],
+    () => ({ art: backdrop === 'header' ? header.art : backdrop === 'marble' ? imageArt({ src: texture, overlay: night }) : backdrop === 'fireside' ? firesideArt : clearArt() }),
+    [backdrop, texture, night, header],
   );
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: '[data-sun]' });
   useLayoutEffect(() => {
+    header.move(sun);
     window.dispatchEvent(new Event(LIGHT_CHANGE));
-  }, [sun]);
+  }, [sun, header]);
 
   // Spotlight's header and Fireside are their own themes; the marble and the light page are Sunrise's
   // (its glass text follows the page's text, so it reads on a light page).
@@ -82,7 +112,8 @@ export function OrbSection({ backdrop, area = 'dashboard', texture = 'texture-sa
   };
   return (
     <section ref={ref} aria-label={label} data-theme={theme} data-mode={backdrop === 'fireside' ? 'dark' : backdrop === 'light' ? 'light' : undefined} style={style}>
-      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} />
+      {lit && look !== 'clear' && look !== 'tinted' && <LitBackground art={lens.art} light={sun} palette={palette} />}
+      <Orb data-sun="" position={sun} onPositionChange={setSun} palette={palette} size={size} look={look} backdrop={lens.art} />
       <LitContext.Provider value>
         <Button appearance="glass">Button</Button>
       </LitContext.Provider>

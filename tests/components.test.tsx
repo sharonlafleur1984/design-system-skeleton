@@ -258,6 +258,15 @@ describe('Orb', () => {
     expect(orb.style.top).toBe('65%');
   });
 
+  it('comes in small, medium and large, medium by default, and glows by default', () => {
+    const { rerender } = render(<Orb />);
+    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--glow');
+    rerender(<Orb size="small" />);
+    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--small ds-orb--glow');
+    rerender(<Orb size="large" look="tinted" />);
+    expect(screen.getByRole('button').className).toBe('ds-orb ds-orb--large');
+  });
+
   it("glows in an area's color family when given one", () => {
     render(<Orb position={ORB_START} onPositionChange={() => {}} palette="seagull" />);
     expect(screen.getByRole('button').style.getPropertyValue('--orb-color-body')).toBe('var(--palette-seagull-400)');
