@@ -10,7 +10,8 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
-| D61 | Oct 15, 2026 | Fireside's light mode changes only the work area |
+| D62 | Oct 16, 2026 | Fireside gets a full light look, built from the toolkit's light work area |
+| D61 | Oct 15, 2026 | Fireside's light mode changes only the work area (replaced by D62) |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
@@ -69,7 +70,18 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 ## Decisions
 
 <details>
-<summary><b>D61 · Oct 15, 2026:</b> Fireside's light mode changes only the work area</summary>
+<summary><b>D62 · Oct 16, 2026:</b> Fireside gets a full light look, built from the toolkit's light work area</summary>
+
+- **Decided by:** Sharon, who asked for the full light mode: the toolkit doesn't have to use it, but other projects should have it.
+- **Decision:** Fireside has a full light look, like Spotlight and Sunrise: light values for every color, status, link, card border, glass and shadow. It starts from the toolkit's light work area (pale blue-gray page #dfeaed, dark teal text #14262b), with white cards and a deeper copper primary (rust 600, #8b4e33) so it passes 4.5:1 on light. Every value comes from Fireside's own palette. The dark values are unchanged and now live in `tokens/themes/designer-toolkit/dark/`.
+- **Why:** other projects may want Fireside in light mode. The designer toolkit can keep its dark chrome by using dark mode with the light work area.
+- **Other options:** a warm cream page (#f8f0e8) with copper rust 500; it was set aside to match the light work area the toolkit already has.
+- **Replaces:** D61.
+
+</details>
+
+<details>
+<summary><b>D61 · Oct 15, 2026:</b> Fireside's light mode changes only the work area (replaced by D62)</summary>
 
 - **Decided by:** Sharon
 - **Decision:** Fireside has a light mode, but the shell and most components stay dark in both modes. Light mode changes only the work area: the background behind the prototype and the wiki, the text on it (it turns dark), the wiki's lines, and the selected page in the wiki's side nav, which shows the primary color. These are five Fireside-only tokens, `shell-work-*`, with the toolkit's own values from its shell (designer-toolkit-code `src/styles/shell.css`). Checkboxes on the wiki stay gray in both modes.

@@ -15,7 +15,7 @@
       "$type": "dimension"
     },
     "border": {
-      "$value": "rgba(246, 242, 225, 0.08)",
+      "$value": "rgba(20, 38, 43, 0.08)",
       "$type": "color"
     },
     "shadow": {

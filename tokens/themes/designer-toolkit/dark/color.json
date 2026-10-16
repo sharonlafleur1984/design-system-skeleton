@@ -1,0 +1,124 @@
+{
+  "color": {
+    "ink": {
+      "primary": {
+        "$type": "color",
+        "$value": "#f6f2e1"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#e2d8a5"
+      },
+      "tertiary": {
+        "$type": "color",
+        "$value": "#bebbad"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "#8a9a9e"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "#4f646b"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "#051013"
+      }
+    },
+    "surface": {
+      "page": {
+        "$type": "color",
+        "$value": "#08161a"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "#1a2c31"
+      },
+      "raised": {
+        "$type": "color",
+        "$value": "#2b4148"
+      },
+      "sunken": {
+        "$type": "color",
+        "$value": "#051013"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "#2b4148"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "#2b4148"
+      },
+      "inverse": {
+        "$type": "color",
+        "$value": "#f6f2e1"
+      },
+      "scrim": {
+        "$type": "color",
+        "$value": "rgba(5, 16, 19, 0.6)"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$type": "color",
+        "$value": "rgba(246, 242, 225, 0.08)"
+      },
+      "default": {
+        "$type": "color",
+        "$value": "rgba(246, 242, 225, 0.1)"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "#677f86"
+      },
+      "focus": {
+        "$type": "color",
+        "$value": "#f3c097"
+      },
+      "focus-glow": {
+        "$type": "color",
+        "$value": "#fcf8f4"
+      }
+    },
+    "accent": {
+      "base": {
+        "$type": "color",
+        "$value": "#e1a36f"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "#f2b37e"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "#3f2b1b"
+      },
+      "soft": {
+        "$type": "color",
+        "$value": "#5c3d24"
+      },
+      "ink": {
+        "$type": "color",
+        "$value": "#051013"
+      },
+      "text": {
+        "$type": "color",
+        "$value": "#f3c097"
+      },
+      "text-hover": {
+        "$type": "color",
+        "$value": "#f8d6b8"
+      },
+      "contrast": {
+        "$type": "color",
+        "$value": "#f8d6b8"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#e2d8a5"
+      }
+    }
+  }
+}

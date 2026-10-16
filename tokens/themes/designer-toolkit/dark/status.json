@@ -1,0 +1,96 @@
+{
+  "color": {
+    "status": {
+      "error": {
+        "surface": {
+          "$type": "color",
+          "$value": "#4e2521"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#e89f8e"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#bf2b07"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#f1d3cf"
+        }
+      },
+      "warning": {
+        "surface": {
+          "$type": "color",
+          "$value": "#473c1e"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#d2b050"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#e1c167"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#f0e0ba"
+        }
+      },
+      "success": {
+        "surface": {
+          "$type": "color",
+          "$value": "#1b3f3d"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#8d9897"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#aeb6b5"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#cbe4e2"
+        }
+      },
+      "info": {
+        "surface": {
+          "$type": "color",
+          "$value": "#173e48"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#a5917f"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#c7af9a"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#cee2e8"
+        }
+      },
+      "neutral": {
+        "surface": {
+          "$type": "color",
+          "$value": "#2b4148"
+        },
+        "accent": {
+          "$type": "color",
+          "$value": "#677f86"
+        },
+        "accent-strong": {
+          "$type": "color",
+          "$value": "#8a9a9e"
+        },
+        "ink": {
+          "$type": "color",
+          "$value": "#dbd8c9"
+        }
+      }
+    }
+  }
+}

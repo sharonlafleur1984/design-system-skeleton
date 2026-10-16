@@ -1,0 +1,8 @@
+{
+  "card": {
+    "border": {
+      "$type": "color",
+      "$value": "rgba(246, 242, 225, 0.08)"
+    }
+  }
+}
