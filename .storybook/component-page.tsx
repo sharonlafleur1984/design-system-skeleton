@@ -134,7 +134,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
       { plain: 'Plain page', header: 'Header art', landscape: 'Landscape lanes', marble: 'Marble' },
       { if: { global: 'theme', neq: 'designer-toolkit' } },
     ),
-    sbLight: radioNoAll('Light', 'light', 'Shows the light source, the orb, so you can see how the part responds to it. Drag it to move it. Dark only, the default, shows it in dark mode; On shows it in light mode too; Off hides it.', { dark: 'Dark only', on: 'On', off: 'Off' }),
+    sbLight: radioNoAll('Light', 'light', "Shows the light source, the orb, so you can see how the part responds to it. Drag it to move it. Dark only, the default, shows it in dark mode; On shows it in light mode too; Off hides it. Spotlight's light mode never shows it: its light comes from the center of the wheel.", { dark: 'Dark only', on: 'On', off: 'Off' }),
     sbMarble: radioNoAll('Marble color', 'marble', 'Matches the color picked in Sunrise', Object.fromEntries(marbles.map((m) => [m.texture, m.name])), { if: { arg: 'sbBackground', eq: 'marble' } }),
     sbMotion: radioNoAll('Motion', 'data-reduce-motion', 'Full plays every animation. Reduced keeps only color fades. System follows your device.', { full: 'Full', reduced: 'Reduced', system: 'System' }),
     sbContrast: radioNoAll('Contrast', 'data-contrast', 'More makes borders and text stronger. System follows your device.', { standard: 'Standard', more: 'More', system: 'System' }),
@@ -409,8 +409,11 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   // header art, in light windows too when Light is On, and nowhere when it's Off. It starts on the right,
   // two thirds down, like every light, small (the height of the text), and the window's glass is lit
   // from it. The Orb's own page shows only the Orb, in the middle, so its windows add none.
+  // Spotlight's light mode never shows an orb (Sharon, Oct 16): its light is implied, coming from the
+  // center of the page's wheel (the light-from-right and light-top tokens), so glass is lit from there.
+  const wheelLit = theme === 'after-graduation' && mode === 'light';
   const light = args.sbLight ?? 'dark';
-  const showSun = !isLight && (light === 'on' || (light === 'dark' && (mode === 'dark' || bg === 'header')));
+  const showSun = !isLight && !wheelLit && (light === 'on' || (light === 'dark' && (mode === 'dark' || bg === 'header')));
   const [sun, setSun] = useState(SUN_START);
   // One header art for the window's life: it's told where the light is and asks the glass to repaint,
   // because a new art would rebuild the glass and flash its plain box.
@@ -418,9 +421,16 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   const lens = useMemo(() => ({ art: bg === 'header' ? header.art : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, header]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
   useLayoutEffect(() => {
-    header.move(sun);
+    // Without an orb in Spotlight's light mode, the header art's bright spot sits at the wheel's center.
+    const el = ref.current;
+    if (wheelLit && el) {
+      const cs = getComputedStyle(el);
+      const fromRight = parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
+      const top = parseFloat(cs.getPropertyValue('--light-top')) || 0;
+      header.move({ x: 1 - fromRight / 100, y: el.clientHeight ? top / el.clientHeight : 0 });
+    } else header.move(sun);
     window.dispatchEvent(new Event(LIGHT_CHANGE));
-  }, [sun, bg, mode, header]);
+  }, [sun, bg, mode, header, wheelLit]);
 
   const style = {
     // The header art's bright spot sits at the orb.
