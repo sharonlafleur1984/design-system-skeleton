@@ -34,12 +34,13 @@ for (const t of repoThemes) {
   const slug = t.name.toLowerCase();
   if (t.alwaysDark) lanternThemes.push({ id: slug, name: t.name, repo: t.id, file: `build/json/${t.id}.json` });
   else {
-    lanternThemes.push({ id: slug, name: t.name, repo: t.id, file: `build/json/${t.id}.json` });
+    lanternThemes.push({ id: slug, name: `${t.name} light`, repo: t.id, file: `build/json/${t.id}.json` });
     lanternThemes.push({ id: `${slug}-dark`, name: `${t.name} dark`, repo: t.id, file: `build/json-dark/${t.id}.json` });
   }
 }
-// Light looks and Fireside first, so Lantern never opens on Spotlight dark; that look waits for the glass parts.
-const order = ['spotlight', 'sunrise', 'fireside', 'sunrise-dark', 'spotlight-dark'];
+// Each theme's light and dark side by side. Fireside's dark look is its standard (its light look only changes the
+// page behind), so Fireside lists dark first. Spotlight light comes first, so Lantern never opens on Spotlight dark.
+const order = ['spotlight', 'spotlight-dark', 'sunrise', 'sunrise-dark', 'fireside-dark', 'fireside'];
 lanternThemes.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
 const values = Object.fromEntries(lanternThemes.map((t) => [t.id, json(t.file)]));
 
