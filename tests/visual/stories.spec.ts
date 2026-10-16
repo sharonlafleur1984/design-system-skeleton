@@ -35,17 +35,31 @@ async function imagesReady() {
   await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
 }
 
+// True once every orb on the page shows its 3D picture. The screenshot machines have no graphics card,
+// so the browser draws 3D in software: setting up the orb's renderer freezes the page for 8 to 17
+// seconds there (a few milliseconds on a real screen). Waiting for it keeps the half-drawn CSS orb out
+// of the screenshots.
+function orbsDrawn() {
+  return Array.from(document.querySelectorAll('.ds-orb'))
+    .filter((orb) => orb.getBoundingClientRect().width > 0)
+    .every((orb) => orb.classList.contains('ds-orb--rendered'));
+}
+
 for (const story of stories) {
   for (const theme of themesFor(story)) {
     for (const [screen, width] of Object.entries(screens)) {
       const name = `${story.id}--${theme}--${screen}`;
       test(name, async ({ page }) => {
+        // Pages with an orb freeze while it's drawn (see orbsDrawn), and two tests share each machine,
+        // so the usual 30 seconds isn't enough for them.
+        test.slow();
         await page.setViewportSize({ width, height: 800 });
         await page.clock.setFixedTime(screenshotTime);
         await page.goto(`/iframe.html?id=${story.id}&globals=theme:${theme};picker:hide&viewMode=story`);
         await page.locator('#storybook-root').waitFor();
         await page.evaluate(() => document.fonts.ready);
         await page.evaluate(imagesReady);
+        await page.waitForFunction(orbsDrawn, null, { timeout: 60_000 });
         // Tall stories full of images (the sky header on every marble) take over the default 5s.
         await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true, timeout: 20_000 });
       });
