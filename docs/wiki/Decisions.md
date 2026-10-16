@@ -10,6 +10,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 | ID | Date | Decision |
 |---|---|---|
+| D63 | Oct 16, 2026 | The light comes from the theme's center; Light: On makes the pointer the light |
 | D61 | Oct 15, 2026 | Fireside's light mode changes only the work area |
 | D60 | Oct 15, 2026 | Lantern's cover is lit by its own orb: the drawing stays, the renderer adds the glass, the light on the copper and the shadow |
 | D59 | Oct 15, 2026 | The page's light is drawn by the renderer: the surface is lit, not covered; the default everywhere the orb lights glass |
@@ -70,6 +71,16 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | D1 | Sep 26, 2026 | Structure taken from the Life Hub Library |
 
 ## Decisions
+
+<details>
+<summary><b>D63 · Oct 16, 2026:</b> The light comes from the theme's center; Light: On makes the pointer the light</summary>
+
+- **Decided by:** Sharon, reviewing the Button page: "the light source and brightness should come from the center of the wheel graphic without a physical light source… it's implied", and the same in Sunrise "from the sun and milky way center… the default, and only changes when someone turns on the light source."
+- **By default, nothing is drawn:** every part is lit from its theme's center, at the light tokens (`light-from-right`, `light-top`): Spotlight's wheel, Sunrise's sun in light mode and milky way in dark mode. Spotlight's light mode never shows an orb.
+- **Light, a Page settings control (Off or On, Off by default):** On makes the pointer the light while it's over an example, as Illuminate does on the website (D58); when it leaves, the light goes back to the center. The component pages no longer show a draggable orb. The Orb's own page still shows the Orb.
+- **Replaces part of D57:** the orb is no longer the light you drag on every component page.
+
+</details>
 
 <details>
 <summary><b>D61 · Oct 15, 2026:</b> Fireside's light mode changes only the work area</summary>

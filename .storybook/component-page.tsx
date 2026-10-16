@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { ToggleButton, ToggleButtonGroup } from 'react-aria-components';
 import { addons } from 'storybook/preview-api';
 import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
@@ -8,7 +8,6 @@ import { useGlassLight } from '../src/components/glass-light/glass-light';
 import { LIGHT_CHANGE } from '../src/components/glass-lens/lens';
 import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/components/glass-lens/lens-art';
 import { LitContext } from '../src/components/material';
-import { Orb } from '../src/components/orb/orb';
 import { EmptyState } from './empty-state';
 import { LitBackground } from '../src/components/glass-light/lit-background';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
@@ -134,7 +133,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
       { plain: 'Plain page', header: 'Header art', landscape: 'Landscape lanes', marble: 'Marble' },
       { if: { global: 'theme', neq: 'designer-toolkit' } },
     ),
-    sbLight: radioNoAll('Light', 'light', "Shows the light source, the orb, so you can see how the part responds to it. Drag it to move it. Dark only, the default, shows it in dark mode; On shows it in light mode too; Off hides it. Spotlight's light mode never shows it: its light comes from the center of the wheel.", { dark: 'Dark only', on: 'On', off: 'Off' }),
+    sbLight: radioNoAll('Light', 'light', "Off, the default, lights every part from the theme's center: Spotlight's wheel, Sunrise's sun or milky way. On makes your pointer the light, as on the website, so you can see how the part responds to it.", { off: 'Off', on: 'On' }),
     sbMarble: radioNoAll('Marble color', 'marble', 'Matches the color picked in Sunrise', Object.fromEntries(marbles.map((m) => [m.texture, m.name])), { if: { arg: 'sbBackground', eq: 'marble' } }),
     sbMotion: radioNoAll('Motion', 'data-reduce-motion', 'Full plays every animation. Reduced keeps only color fades. System follows your device.', { full: 'Full', reduced: 'Reduced', system: 'System' }),
     sbContrast: radioNoAll('Contrast', 'data-contrast', 'More makes borders and text stronger. System follows your device.', { standard: 'Standard', more: 'More', system: 'System' }),
@@ -143,7 +142,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
   if (states?.length) rows.sbState = radio('State', 'data-state', 'Shows it at rest, or as it looks hovered, pressed, focused, disabled or loading', Object.fromEntries(states.map((s) => [s, stateLabels[s]])));
   return rows;
 }
-export const pageArgs = { sbMode: 'light', sbLight: 'dark', sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
+export const pageArgs = { sbMode: 'light', sbLight: 'off', sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
 
 const isPageArg = (key: string) => key.startsWith('sb');
 
@@ -405,50 +404,71 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   const bg = theme === 'after-graduation' && (picked === 'header' || picked === 'landscape') ? picked : theme === 'life-hub' && picked === 'marble' ? 'marble' : 'plain';
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  // The light shows as the orb you can move: by default (Light: Dark only) in dark windows and on the
-  // header art, in light windows too when Light is On, and nowhere when it's Off. It starts on the right,
-  // two thirds down, like every light, small (the height of the text), and the window's glass is lit
-  // from it. The Orb's own page shows only the Orb, in the middle, so its windows add none.
-  // Spotlight's light mode never shows an orb (Sharon, Oct 16): its light is implied, coming from the
-  // center of the page's wheel (the light-from-right and light-top tokens), so glass is lit from there.
-  const wheelLit = theme === 'after-graduation' && mode === 'light';
-  const light = args.sbLight ?? 'dark';
-  const showSun = !isLight && !wheelLit && (light === 'on' || (light === 'dark' && (mode === 'dark' || bg === 'header')));
-  const [sun, setSun] = useState(SUN_START);
+  // The light comes from the theme's own center, with nothing drawn there (Sharon, Oct 16): Spotlight's
+  // wheel, Sunrise's sun (light mode) or milky way (dark mode), at the light-from-right and light-top
+  // tokens. Light: On makes the pointer the light, as on the website, while it's over the window; when
+  // it leaves, the light goes back to the center. No orb is drawn either way. The Orb's own page shows
+  // only the Orb, in the middle, so its windows follow no pointer.
+  const lightOn = !isLight && args.sbLight === 'on';
+  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
+  const cursor = lightOn ? pointer : null;
+  const [center, setCenter] = useState(SUN_START);
   // One header art for the window's life: it's told where the light is and asks the glass to repaint,
   // because a new art would rebuild the glass and flash its plain box.
   const [header] = useState(() => headerArt(SUN_START));
   const lens = useMemo(() => ({ art: bg === 'header' ? header.art : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, header]);
-  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
+  // With Light off, glass is lit from the light tokens: the theme's center. With it on, from a marker
+  // that follows the pointer, so the glass reads the light's place without being rebuilt on every move.
+  useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: lightOn ? '[data-sb-light]' : undefined });
   useLayoutEffect(() => {
-    // Without an orb in Spotlight's light mode, the header art's bright spot sits at the wheel's center.
     const el = ref.current;
-    if (wheelLit && el) {
-      const cs = getComputedStyle(el);
-      const fromRight = parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
-      const top = parseFloat(cs.getPropertyValue('--light-top')) || 0;
-      header.move({ x: 1 - fromRight / 100, y: el.clientHeight ? top / el.clientHeight : 0 });
-    } else header.move(sun);
+    if (!el) return;
+    const cs = getComputedStyle(el);
+    const fromRight = parseFloat(cs.getPropertyValue('--light-from-right')) || 0;
+    const top = parseFloat(cs.getPropertyValue('--light-top')) || 0;
+    setCenter({ x: 1 - fromRight / 100, y: el.clientHeight ? Math.min(1, top / el.clientHeight) : 0 });
+  }, [theme, mode, bg]);
+  const at = cursor ?? center;
+  useLayoutEffect(() => {
+    header.move(at);
     window.dispatchEvent(new Event(LIGHT_CHANGE));
-  }, [sun, bg, mode, header, wheelLit]);
+  }, [at, bg, mode, header]);
 
+  const follow = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    setPointer({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height });
+  };
   const style = {
-    // The header art's bright spot sits at the orb.
-    '--sb-sun-x': `${sun.x * 100}%`,
-    '--sb-sun-y': `${sun.y * 100}%`,
+    // The header art's bright spot sits at the light.
+    '--sb-sun-x': `${at.x * 100}%`,
+    '--sb-sun-y': `${at.y * 100}%`,
     ...(bg === 'marble' ? { background: `linear-gradient(${night}, ${night}), url('${marble.texture}') center / cover` } : {}),
   } as CSSProperties;
   return (
-    <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
-      {showSun && (
+    <div
+      ref={ref}
+      className={`sb-try__window sb-try__window--${bg}`}
+      data-theme={theme}
+      data-mode={mode}
+      style={style}
+      onPointerMove={lightOn ? follow : undefined}
+      onPointerLeave={lightOn ? () => setPointer(null) : undefined}
+    >
+      {/* The renderer's lit surface stays mounted while Light is on, so it's sized before the pointer
+          arrives, and only shows while the pointer is the light. */}
+      {lightOn && (
+        <div className="sb-try__lit" style={{ opacity: cursor ? 1 : 0 }}>
+          <LitBackground art={lens.art} light={at} palette={bg === 'marble' ? marble.palette : undefined} />
+        </div>
+      )}
+      {lightOn && (
         <>
-          <LitBackground art={lens.art} light={sun} palette={bg === 'marble' ? marble.palette : undefined} />
-          <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} backdrop={lens.art} />
-          <span className="sb-try__hint">Drag the light to move it</span>
+          <span data-sb-light="" className="sb-try__pointer" style={{ left: `${at.x * 100}%`, top: `${at.y * 100}%` }} aria-hidden="true" />
+          <span className="sb-try__hint">Move your pointer to move the light</span>
         </>
       )}
       {bg === 'landscape' && <span className="sb-try__standin">Stand-in for the landscape lanes</span>}
-      <LitContext.Provider value={bg !== 'plain' || showSun}>
+      <LitContext.Provider value={bg !== 'plain' || !!cursor}>
         <div className="sb-try__content">{children}</div>
       </LitContext.Provider>
     </div>
