@@ -134,7 +134,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
       { plain: 'Plain page', header: 'Header art', landscape: 'Landscape lanes', marble: 'Marble' },
       { if: { global: 'theme', neq: 'designer-toolkit' } },
     ),
-    sbLight: radioNoAll('Light', 'light', 'On shows the light source, the orb, in light and dark mode, so you can see how the part responds to it. Drag it to move it. Off hides it.', { on: 'On', off: 'Off' }),
+    sbLight: radioNoAll('Light', 'light', 'Shows the light source, the orb, so you can see how the part responds to it. Drag it to move it. Dark only, the default, shows it in dark mode; On shows it in light mode too; Off hides it.', { dark: 'Dark only', on: 'On', off: 'Off' }),
     sbMarble: radioNoAll('Marble color', 'marble', 'Matches the color picked in Sunrise', Object.fromEntries(marbles.map((m) => [m.texture, m.name])), { if: { arg: 'sbBackground', eq: 'marble' } }),
     sbMotion: radioNoAll('Motion', 'data-reduce-motion', 'Full plays every animation. Reduced keeps only color fades. System follows your device.', { full: 'Full', reduced: 'Reduced', system: 'System' }),
     sbContrast: radioNoAll('Contrast', 'data-contrast', 'More makes borders and text stronger. System follows your device.', { standard: 'Standard', more: 'More', system: 'System' }),
@@ -143,7 +143,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
   if (states?.length) rows.sbState = radio('State', 'data-state', 'Shows it at rest, or as it looks hovered, pressed, focused, disabled or loading', Object.fromEntries(states.map((s) => [s, stateLabels[s]])));
   return rows;
 }
-export const pageArgs = { sbMode: 'light', sbLight: 'on', sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
+export const pageArgs = { sbMode: 'light', sbLight: 'dark', sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
 
 const isPageArg = (key: string) => key.startsWith('sb');
 
@@ -405,11 +405,12 @@ function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mo
   const bg = theme === 'after-graduation' && (picked === 'header' || picked === 'landscape') ? picked : theme === 'life-hub' && picked === 'marble' ? 'marble' : 'plain';
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
-  // While Light is on (the default), every window, light or dark, shows the light as the orb you can
-  // move. It starts on the right, two thirds down, like every light, small (the height of the text), and
-  // the window's glass is lit from it. Off hides it. The Orb's own page shows only the Orb, in the
-  // middle, so its windows add none.
-  const showSun = !isLight && args.sbLight !== 'off';
+  // The light shows as the orb you can move: by default (Light: Dark only) in dark windows and on the
+  // header art, in light windows too when Light is On, and nowhere when it's Off. It starts on the right,
+  // two thirds down, like every light, small (the height of the text), and the window's glass is lit
+  // from it. The Orb's own page shows only the Orb, in the middle, so its windows add none.
+  const light = args.sbLight ?? 'dark';
+  const showSun = !isLight && (light === 'on' || (light === 'dark' && (mode === 'dark' || bg === 'header')));
   const [sun, setSun] = useState(SUN_START);
   // One header art for the window's life: it's told where the light is and asks the glass to repaint,
   // because a new art would rebuild the glass and flash its plain box.
