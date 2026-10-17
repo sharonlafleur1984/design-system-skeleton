@@ -10,7 +10,7 @@ const updated = '2026-10-15';
 const ra = (reactAria: string) => ({ reactAria });
 const ours = {};
 const issue = (n: number) => (
-  <a href={`https://github.com/sharonlafleur1984/design-system-skeleton/issues/${n}`} target="_blank" rel="noreferrer">
+  <a href={`https://github.com/sharonlafleur1984/lantern-design-system/issues/${n}`} target="_blank" rel="noreferrer">
     The plan, in issue {n}
   </a>
 );

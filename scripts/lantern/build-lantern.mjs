@@ -178,7 +178,7 @@ const easing = [
 const tokens = {
   name: 'Lantern',
   version: 1,
-  meta: { source: 'github', repo: 'sharonlafleur1984/design-system-skeleton', ref: `${branch}@${sha}`, paths: { tokens: ['build/json', 'build/json-dark', 'build/css'], fonts: ['src/fonts'] }, synced: now.slice(0, 10) },
+  meta: { source: 'github', repo: 'sharonlafleur1984/lantern-design-system', ref: `${branch}@${sha}`, paths: { tokens: ['build/json', 'build/json-dark', 'build/css'], fonts: ['src/fonts'] }, synced: now.slice(0, 10) },
   color: { themes: lanternThemes.map(({ id, name }) => ({ id, name })), tokens: colorTokens },
   type: { fonts, families, groups },
   spacing: { tokens: spacing },
@@ -316,7 +316,7 @@ write(
       assetGroups: {},
       blobs: {},
       docs: { sections: [] },
-      lastChange: { by: 'Sharon', at: now, via: `GitHub · sharonlafleur1984/design-system-skeleton@${sha}`, note: `Built from ${branch}@${sha}` },
+      lastChange: { by: 'Sharon', at: now, via: `GitHub · sharonlafleur1984/lantern-design-system@${sha}`, note: `Built from ${branch}@${sha}` },
     },
     null,
     2,

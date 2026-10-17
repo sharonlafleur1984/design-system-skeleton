@@ -280,7 +280,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **How:** a version tag (`v0.4.0`) runs `.github/workflows/release.yml`. It runs the tests, packs the package with `npm pack` and attaches the file to a GitHub Release. Apps install that file's link.
 - **First release file:** v0.4.0. A workflow only runs from the tagged commit, so v0.3.0 and earlier keep installing from their tag.
 - **CHANGELOG.md** lists what changed in each version. Every release pull request moves the Unreleased notes under its version.
-- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)). They may change in any version.
+- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60)). They may change in any version.
 - **Not yet:** fonts as separate files. The package build inlines font files into the font CSS; changing that could break how After Graduation loads its fonts, so it waits for its own pull request.
 
 </details>
@@ -320,7 +320,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Starting looks stay the same:** action tiles, glass buttons and the page shell start as Glass; cards, tags and toggle button groups start as Default. Nothing changes until someone switches.
 - **Where it shows:** Glass only shows on artwork the system controls (a theme's header art, Life Hub's marble). On a plain page both look the same.
 - **Why:** "lens" and "classic glass" were confusing names, and Glass doesn't read as glass as much as hoped. Clear names now; a deeper look later.
-- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)).
+- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60)).
 - **Details:** `src/components/material.ts`; stories "Glass on artwork" and "Default on artwork" under Button and Action tile.
 
 </details>
@@ -464,7 +464,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** app-wide settings open in a full-size dialog, modeled on Claude's, from a Settings button at the top right of the header on every screen size. Eight sections: Account, Appearance, Accessibility, Plan, Family, Notifications, Privacy and data, Help and legal. On phones the section list comes first and each section opens with a Back button. Changes apply right away, with no Save button. Anything the device can tell us defaults to Match device; if the device asks for reduced motion, motion stays reduced.
 - **Why:** top right is where people look for app-wide settings; on the page it would read as settings for that page. The Motion setting also gives people a way to stop the header wheel.
 - **Research:** Settings research in the After Graduation wiki (sections, defaults, and the research behind each accessibility setting).
-- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42).
+- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/lantern-design-system/issues/42).
 
 </details>
 
@@ -516,7 +516,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 - **Decided by:** Sharon
 - **Decision:** Home is now Morning Latte and Office is now Gold Sand. Each area's marble, glass tuning and dark layer moved with its colors.
-- **Details:** [#33](https://github.com/sharonlafleur1984/design-system-skeleton/pull/33)
+- **Details:** [#33](https://github.com/sharonlafleur1984/lantern-design-system/pull/33)
 
 </details>
 
@@ -527,7 +527,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** After Graduation's dark mode uses warm charcoal surfaces. The deep red stays on buttons and the header, so it is the one thing that stands out, and the header's red glows faintly down from the top right. Text is the theme's light page color (#fcf9f8). Red links and text use a lighter red so they pass on charcoal. Cards are glass in dark mode, lit from the header's light; light mode cards stay solid.
 - **Why:** neutral dark keeps the red meaningful. Using the light page color for text keeps every dark color in the palette.
 - **Other options:** deep wine surfaces that carry the header's red down the page (B in the review).
-- **Details:** [#29](https://github.com/sharonlafleur1984/design-system-skeleton/pull/29)
+- **Details:** [#29](https://github.com/sharonlafleur1984/lantern-design-system/pull/29)
 
 </details>
 
@@ -539,7 +539,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Why:** glass on marble is Life Hub's signature. Area-colored buttons borrowed status meanings (berry read as Delete, gold as a warning), and a green button fought half the marbles. The serif-on-cream look felt like every AI product; Fraunces's soft endings feel poured, like marbling.
 - **Replaces:** Sep 27, "Life Hub glass is for controls only." Buttons inside a glass card have no blur of their own, so it is still never glass on glass.
 - **Other options:** solid cards with glass controls (the old rule); area-colored or gold buttons; Newsreader and Archivo; a monospace data font.
-- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28), exploration in [#27](https://github.com/sharonlafleur1984/design-system-skeleton/pull/27). Per-area values are estimates from the Oct 6 to 7 review.
+- **Details:** [#28](https://github.com/sharonlafleur1984/lantern-design-system/pull/28), exploration in [#27](https://github.com/sharonlafleur1984/lantern-design-system/pull/27). Per-area values are estimates from the Oct 6 to 7 review.
 
 </details>
 
@@ -550,7 +550,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review.
 - **Why:** four looks (two themes, light and dark) without new names for components to learn. Following the device is what people expect and needs nothing to build.
 - **Other options:** a switch in each product; one shared dark palette for every theme; neutral charcoal surfaces (lost each area's marble).
-- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28)
+- **Details:** [#28](https://github.com/sharonlafleur1984/lantern-design-system/pull/28)
 
 </details>
 
@@ -572,7 +572,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** each theme sets a size, line height and weight for Small, Medium and Large controls. For now both themes use the same values: 12 on 16, 14 on 20 and 16 on 24, medium weight. Large buttons are 40px tall instead of 48. Checkbox and Switch labels use Medium.
 - **Why:** the fonts already make each product's buttons look different, so different sizes or weights would add difference for its own sake. 48px is a call-to-action size and felt too big as a regular option. 14px button labels with 16px body text is the standard pairing.
 - **Other options:** bigger, semibold After Graduation buttons (14 / 16 / 20); a third font just for buttons (breaks the two-families rule); keeping Large at 48.
-- **Details:** [#23](https://github.com/sharonlafleur1984/design-system-skeleton/pull/23)
+- **Details:** [#23](https://github.com/sharonlafleur1984/lantern-design-system/pull/23)
 - **Sources:** [Material 3 type scale tokens](https://m3.material.io/styles/typography/type-scale-tokens), [WCAG 2.5.8 target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), [Apple accessibility guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 
 </details>
@@ -596,7 +596,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** interactive components in the After Graduation rebuild (accordion rows, tabs, bottom navigation, dialogs, date pickers) are built on React Aria Components and styled with our tokens. One library everywhere; no mixing.
 - **Why:** the planner is built around dates, and some students have an IEP or 504 plan. React Aria handles focus, keyboard and screen reader behavior and tests it with real screen readers every release, including date pickers. AI can write UI fast, but it often misses these basics, and automated tests catch only part of them.
 - **Other options:** Base UI (newest, strongest shadcn and AI-prototyping ecosystem, but no date components and focus is left to us); Base UI plus React Aria only for dates (two styles of code); Base UI with dates built ourselves (most code to own, highest accessibility risk). Radix was ruled out: updates slowed after WorkOS bought it.
-- **Also decided (Oct 4):** this design system's own components (Button, Checkbox, Switch and Link) move onto React Aria too, so After Graduation uses one library. Life Hub keeps using the tokens; it picks up these components if its dashboard is ever built in React. The solid-glass fallback from [#4](https://github.com/sharonlafleur1984/design-system-skeleton/pull/4) is built into the new versions.
+- **Also decided (Oct 4):** this design system's own components (Button, Checkbox, Switch and Link) move onto React Aria too, so After Graduation uses one library. Life Hub keeps using the tokens; it picks up these components if its dashboard is ever built in React. The solid-glass fallback from [#4](https://github.com/sharonlafleur1984/lantern-design-system/pull/4) is built into the new versions.
 - **Details:** [After Graduation #34](https://github.com/sharonlafleur1984/after-graduation/issues/34)
 - **Sources:** [Untitled UI, Base UI vs React Aria](https://www.untitledui.com/blog/base-ui-vs-react-aria), [React Aria AI tools](https://react-aria.adobe.com/ai), [Web4All 2025 on AI-generated UI](https://dl.acm.org/doi/10.1145/3800424.3800430)
 
