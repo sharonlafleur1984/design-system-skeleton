@@ -205,7 +205,6 @@ function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
   }, [theme]);
 
   const selectTheme = (next: string) => {
-    previousTheme.current = next;
     const mode = defaultModeForTheme(next, themeList);
     update({ theme: next, mode, pageMode: mode });
   };
