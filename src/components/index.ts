@@ -37,7 +37,8 @@ export type { ActionTileFill, ActionTileProps, ActionTileGroupProps, ActionTileS
 export type { Appearance, Material } from './material';
 export { useGlassLight, PAGE_LIGHT } from './glass-light/glass-light';
 export { Orb, ORB_START } from './orb/orb';
-export type { OrbProps, OrbPosition } from './orb/orb';
+export type { OrbProps, OrbPosition, OrbSize } from './orb/orb';
+export type { OrbLook } from './orb/orb-render';
 export { LIGHT_CHANGE } from './glass-lens/lens';
 export type { GlassLightOptions } from './glass-light/glass-light';
 export { clearArt, imageArt, shellArt } from './glass-lens/lens-art';

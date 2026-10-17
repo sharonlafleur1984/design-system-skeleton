@@ -8,11 +8,12 @@ const center = { x: 0.5, y: 0.5 };
 // Storybook only: what the Orb's page says (the component page template).
 export const orbPage: ComponentPageInfo = {
   updated: '2026-10-15',
-  summary: 'Shows where the light comes from while you explore glass, as a glowing glass marble you can drag.',
+  summary: 'Shows where the light comes from while you explore glass, as a glowing glass ball you can drag.',
   status: 'ready',
   builtWith: { source: 'src/components/orb/orb.tsx' },
+  isLight: true,
   useFor: ['Exploring light on glass, one component at a time: drag the orb, and every rim, highlight and shadow follows.'],
-  useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family."],
+  useForNotes: ["It glows in the theme's color. On a Sunrise area, set palette to the area's color family.", 'Glow, the default, is lit from inside, and its light spreads over the whole section. Tinted is glass in the page\'s color, and clear is colorless glass that bends the real background behind it (pass the section\'s art as backdrop); neither glows.'],
   useElse: [{ job: 'A full page: its light stays still where it was placed (the light tokens)', instead: { name: 'Page shell', title: 'Components/Page shell' } }],
   do: {
     example: <OrbSection {...marble} start={center} label="One orb, lighting the glass beside it" />,
@@ -29,11 +30,12 @@ export const orbPage: ComponentPageInfo = {
   ],
   screenReader: { pattern: 'name, button', example: 'Light. Drag it, or use the arrow keys to move it., button' },
   accessibility: [
-    'The button is 44 by 44 pixels, larger than the marble, so it is easy to grab.',
+    'The button is at least 44 by 44 pixels (56 for large), larger than the marble, so it is easy to grab.',
     "Nothing moves on its own, so there's no motion to reduce.",
+    "The glass is a picture drawn once by three.js; where a browser can't draw 3D, a CSS version shows instead.",
   ],
   imports: ['Orb', 'ORB_START'],
-  tokens: ['--orb-color-[part]', '--orb-size', '--orb-target', '--orb-glow-[size]', '--orb-shine-[part]'],
+  tokens: ['--orb-color-[part]', '--orb-size-[size]', '--orb-target-[size]', '--orb-glow-falloff', '--orb-glow-reach', '--orb-shine-[part]'],
   related: [
     { name: 'Glass', title: 'Foundations/Glass' },
     { name: 'Page shell', title: 'Components/Page shell' },

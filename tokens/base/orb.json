@@ -2,29 +2,70 @@
   "orb": {
     "$description": "The orb: the light you drag when exploring glass in Storybook. A small glass marble that glows in its theme's color. The glow is wide on purpose: it's the light itself. Full pages never show one; their light stays at light-from-right and light-top.",
     "size": {
-      "$type": "dimension",
-      "$value": "34px",
-      "$description": "The marble. Its button is always 44px, so it's easy to grab."
+      "$description": "The marble, in three sizes on the 8px grid: 16, 32 and 48. Medium is the usual one.",
+      "small": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "The height of body text, so it sits beside words. Try it out windows use it."
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "The usual orb: glass stories and the Glass playground."
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "48px"
+      }
     },
     "target": {
-      "$type": "dimension",
-      "$value": "44px",
-      "$description": "The button around the marble: the touch target."
+      "$description": "The button around the marble: the touch target, never under 44px.",
+      "small": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "medium": {
+        "$type": "dimension",
+        "$value": "44px"
+      },
+      "large": {
+        "$type": "dimension",
+        "$value": "56px"
+      }
     },
     "glow": {
-      "near-blur": { "$type": "dimension", "$value": "14px" },
-      "near-spread": { "$type": "dimension", "$value": "5px" },
-      "mid-blur": { "$type": "dimension", "$value": "44px" },
-      "mid-spread": { "$type": "dimension", "$value": "18px" },
-      "far-blur": { "$type": "dimension", "$value": "120px", "$description": "How far the light spills around the orb." },
-      "far-spread": { "$type": "dimension", "$value": "50px" }
+      "$description": "The light from a glowing orb (look glow). Clear orbs have none.",
+      "reach": {
+        "$type": "number",
+        "$value": 90,
+        "$description": "How far the light reaches, in ball sizes, before it's gone: far enough to cover the whole section with no visible edge."
+      }
     },
     "shine": {
-      "highlight": { "$type": "color", "$value": "rgba(255, 255, 255, 0.95)", "$description": "The crescent where light catches the top of the glass." },
-      "pool": { "$type": "color", "$value": "#ffffff", "$description": "Light pooling at the bottom, after passing through the glass." },
-      "rim-thick": { "$type": "color", "$value": "rgba(255, 255, 255, 0.85)", "$description": "The rim along the bottom, where the glass is thickest." },
-      "rim-side": { "$type": "color", "$value": "rgba(255, 255, 255, 0.45)" },
-      "rim-thin": { "$type": "color", "$value": "rgba(255, 255, 255, 0.3)", "$description": "The rim at the top, where the glass is thinnest." }
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.95)",
+        "$description": "The crescent where light catches the top of the glass."
+      },
+      "pool": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$description": "Light pooling at the bottom, after passing through the glass."
+      },
+      "rim-thick": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.85)",
+        "$description": "The rim along the bottom, where the glass is thickest."
+      },
+      "rim-side": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.45)"
+      },
+      "rim-thin": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.3)",
+        "$description": "The rim at the top, where the glass is thinnest."
+      }
     }
   }
 }

@@ -283,6 +283,13 @@
   justify-content: flex-start;
   gap: 12px;
 }
+/* A stage for a part that places itself (the Orb): alone it fills the window, in a row each gets its own. */
+.sb-try__stage {
+  position: relative;
+  flex: 1 1 140px;
+  min-inline-size: 140px;
+  min-block-size: 140px;
+}
 .sb-try__row {
   display: flex;
   flex-wrap: wrap;

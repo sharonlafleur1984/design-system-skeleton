@@ -65,6 +65,8 @@ export interface ComponentPageInfo {
   states?: Partial<Record<StateName, Record<string, unknown>>>;
   /** The name to write in Show code. Defaults to the component's own name. */
   codeName?: string;
+  /** The part is the light itself (the Orb), so its windows don't add a second orb, and each example gets its own stage to sit in the middle of. */
+  isLight?: boolean;
   /** The themes it's made for, when not all of them. Try it out says so in the others. */
   onlyIn?: string[];
 }
@@ -276,6 +278,14 @@ function Demo({ component: C, args, info }: { component: ComponentType<Record<st
       </div>
     );
   }
+  // The Orb places itself in its section, so each one gets its own stage; alone, the stage fills the window.
+  if (info.isLight) {
+    return (
+      <div className="sb-try__stage">
+        <C {...propsFor(args, info)} />
+      </div>
+    );
+  }
   return <C {...propsFor(args, info)} />;
 }
 
@@ -368,7 +378,7 @@ function headerArt(sun: { x: number; y: number }): GlassArt {
 }
 
 /** One example window: the theme, the mode and the background picked, with its glass lit. */
-function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'light' | 'dark'; args: Record<string, unknown>; children: ReactNode }) {
+function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mode: 'light' | 'dark'; args: Record<string, unknown>; isLight?: boolean; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const picked = String(args.sbBackground ?? 'plain');
   // A background only shows in the theme it belongs to; any other theme shows its plain page.
@@ -376,8 +386,10 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const marble = marbles.find((m) => m.texture === args.sbMarble) ?? marbles[0];
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   // Every dark window, and the header art, shows the light as the orb you can move. It starts on the
-  // right, two thirds down, like every light, and the window's glass is lit from it.
-  const showSun = bg === 'header' || mode === 'dark';
+  // right, two thirds down, like every light, small (the height of the text), and the window's glass is
+  // lit from it. The Orb's own
+  // page shows only the Orb, in the middle, so its windows add none.
+  const showSun = !isLight && (bg === 'header' || mode === 'dark');
   const [sun, setSun] = useState(SUN_START);
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
@@ -395,7 +407,7 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
     <div ref={ref} className={`sb-try__window sb-try__window--${bg}`} data-theme={theme} data-mode={mode} style={style}>
       {showSun && (
         <>
-          <Orb data-sb-sun="" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} />
+          <Orb data-sb-sun="" size="small" position={sun} onPositionChange={setSun} palette={bg === 'marble' ? marble.palette : undefined} backdrop={lens.art} />
           <span className="sb-try__hint">Drag the light to move it</span>
         </>
       )}
@@ -561,7 +573,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
                 <span className={`sb-try__mode-pill sb-try__mode-pill--${m}`}>{m === 'dark' ? 'Dark' : 'Light'}</span>
               </p>
             )}
-            <TryWindow theme={t} mode={m} args={args}>
+            <TryWindow theme={t} mode={m} args={args} isLight={info.isLight}>
               {info.onlyIn && !info.onlyIn.includes(t) ? (
                 <p className="sb-try__not-here">This component hasn&apos;t been made for the {themeNames[t]} theme yet.</p>
               ) : (

@@ -11,6 +11,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 | ID | Date | Decision |
 |---|---|---|
 | D61 | Oct 15, 2026 | Fireside's light mode changes only the work area |
+| D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
@@ -79,6 +80,17 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
+<summary><b>D58 · Oct 15, 2026:</b> The light may move on real pages; staying still is a choice</summary>
+
+- **Decided by:** Sharon ("Let's move that way. I can always tell you to stay still in the future, but if I change my mind and move again, that's fine too.")
+- **Replaces part of D45 and D57:** a full page's light no longer has to stay still at `light-from-right` and `light-top`. Those tokens are where it rests, and staying still remains a choice Sharon can switch back to.
+- **How it moves depends on the theme (Sharon):** Sunrise's light follows the time of day. Spotlight's and Fireside's stay still at the light tokens for now.
+- **Illuminate, a setting:** people can turn on Illuminate, which makes the cursor the light source. It's off by default everywhere, works only in dark mode, and is a setting rather than a theme choice.
+- **Still true:** one light for every glass part; Reduce motion keeps the light still; text stays readable wherever the light lands, so contrast is checked along its whole path; a moving light is drawn live and pauses when nothing moves or the page is hidden.
+
+</details>
+
+<details>
 <summary><b>D57 · Oct 15, 2026:</b> The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass</summary>
 
 - **Decided by:** Sharon, after three first directions ("not a big fan of any of these"): "take the primary color of an area and apply it as a light source with lots and lots of glowing"; "the stroke seems to be even all the way around… that would never happen"; "a little brighter"; "these orbs should go into my design library… the color will change based on the theme."
@@ -87,6 +99,13 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Its color is the theme's:** Spotlight's red, Fireside's peach copper, and in Sunrise the area's own color family (Dashboard's Earth Moss by default; `palette` sets another, like `seagull` for Time). Tokens: `orb.color.*` in each theme; size, glow and shine in the base (`orb.*`).
 - **Still true (D45):** orb only, no rays; it starts on the right of its section, two thirds down (Sharon: "bottom right, but not all the way at the bottom, like 2/3 down"); drag it or use the arrow keys (Shift moves farther); its button is 44px; nothing moves on its own, so there's no motion to reduce. Full pages (the page shell) never get an orb: their light stays still at `light-from-right` and `light-top`.
 - **On its own page, centered (Sharon):** the Orb's page shows it in the middle of its examples, like any other component. Everywhere else it starts on the right, two thirds down. `defaultPosition` sets where an orb that keeps its own place starts.
+- **Only one orb on its page (Sharon):** the Orb's Try it out windows don't add their own light, even in dark mode or on header art, so the centered Orb is the only one.
+- **Three sizes on the 8px grid (Sharon):** small 16px, the height of body text, used in Try it out windows; medium 32px, the usual one, in glass stories and the Glass playground; large 48px. The glow scales with the size. The button is 44px for small and medium, 56px for large. Tokens: `orb.size.*`, `orb.target.*`.
+- **Drawn by a real renderer (Sharon: "I love the little bubbles"):** the glass is drawn with three.js, a free 3D library, as a glass ball (refractive index 1.5) with a glowing core, reflecting a plain studio: a soft sky, light above and dark below, and a round softbox up and to the right. No walls or furniture (Sharon: the first room's reflections looked like a bedroom). The renderer works out what CSS gradients only faked: the bright edges, the bent and enlarged core, the sharp highlight. Each orb is drawn once into a picture, at twice its size so edges and reflections stay sharp, with perfectly smooth glass, and cached, with one shared renderer, so the page never holds more than one 3D view. three.js loads only when an orb is on screen. Where a browser can't draw 3D (and in tests), the CSS glass shows instead. Came after a study of how light behaves in real glass balls (Fresnel edges, two highlights, the flipped view inside, light gathering at the far side).
+- **Plain pages get white light; colored ones show through (Sharon):** when what's behind the orb is the theme's own page color (a plain light or dark page), there's no color to blend with, so the light and the whole ball are pure white. On a background with color of its own (a marble, header art), the light is the page's color mix and brightens what it falls on (screen blend) at full strength, so it's easy to see; the brightest spot right at the ball covers the pattern, and it shows through everywhere else, even a marble under its dark night layer. The light is its own layer beside the ball so it can blend.
+- **The glow ball is see-through (Sharon: "it's looking pretty solid"):** like clear, it's drawn over the real background behind it, with a bright core inside clear glass, so the page shows through around its light. Brighter from inside (Sharon): a bigger core, glass that glows more in its light, and stronger light right at the ball.
+- **Every glow looks equally bright (Sharon: "the way they look is all the same, not the math"):** the orb measures how light the background behind it is. On lighter backgrounds its light leans gently toward the page's color (toward the 200 step, never below half white) and spreads stronger, because white light vanishes on a light page; on dark ones it stays half white, half the lightest step.
+- **Three looks (Sharon):** `glow`, the default, has the light inside the ball shining out; its light is very bright right around the ball and spreads over the whole section, fading the way real light does (soft at the ball, Sharon: "a lot more subtle and extend a lot further", reaching 90 ball sizes, `orb.glow.reach`), in one smooth curve of many small steps so no ring shows, starting at full strength at the glass so the ball blends into its light. Its color, and the core's, is 75% white and 25% the lightest step of the page's color (Sharon: half and half, the focus glow's rule from D45, was too saturated for light). `tinted` is glass in the page's primary color (or the area's on a Sunrise area page), with a small bright core and no glow. `clear` is completely clear, with no glow, drawn by the renderer alone (Sharon: "no hand math on top"; with glass you're always playing with the background). The real background behind the orb is one of the renderer's ingredients: the orb paints the patch behind itself from the same art its section gives the glass lens (`backdrop`), or the section's own color, and three.js bends it through colorless glass, so the bending, shading, uneven rim and highlights all come from the renderer. It redraws as the orb moves, since what's behind it changes. It reflects a brighter studio than the other looks, with no clear coat (one surface). All three in all three sizes.
 - **Storybook:** a page for Orb under Components, and a test story with the orb on every theme's real background. Try it out's hint now says "Drag the light to move it".
 
 </details>
