@@ -46,6 +46,8 @@ export interface ComponentPageInfo {
   useForNotes?: ReactNode[];
   /** When don't I use it: a job that looks similar, and what to use instead. */
   useElse?: { job: ReactNode; instead?: { name: string; title: string } }[];
+  /** The component is the light itself (the Orb), so its examples don't add the orb you can move. */
+  isLight?: boolean;
   /** Usage rules: an example and what to do, then an example and what to avoid. */
   do?: { example: ReactNode; rules: ReactNode[] };
   dont?: { example: ReactNode; rules: ReactNode[] };
@@ -368,7 +370,7 @@ function headerArt(sun: { x: number; y: number }): GlassArt {
 }
 
 /** One example window: the theme, the mode and the background picked, with its glass lit. */
-function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'light' | 'dark'; args: Record<string, unknown>; children: ReactNode }) {
+function TryWindow({ theme, mode, args, isLight, children }: { theme: string; mode: 'light' | 'dark'; args: Record<string, unknown>; isLight?: boolean; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const picked = String(args.sbBackground ?? 'plain');
   // A background only shows in the theme it belongs to; any other theme shows its plain page.
@@ -377,7 +379,7 @@ function TryWindow({ theme, mode, args, children }: { theme: string; mode: 'ligh
   const night = marble.area ? `var(--color-area-${marble.area}-night)` : 'var(--color-area-dashboard-night)';
   // Every dark window, and the header art, shows the light as the orb you can move. It starts on the
   // right, two thirds down, like every light, and the window's glass is lit from it.
-  const showSun = bg === 'header' || mode === 'dark';
+  const showSun = !isLight && (bg === 'header' || mode === 'dark');
   const [sun, setSun] = useState(SUN_START);
   const lens = useMemo(() => ({ art: bg === 'header' ? headerArt(sun) : bg === 'marble' ? imageArt({ src: marble.texture, overlay: night }) : clearArt() }), [bg, marble.texture, night, sun]);
   useGlassLight(ref, { selector: '.ds-glass', lens, reach: 6, source: showSun ? '[data-sb-sun]' : undefined });
@@ -561,7 +563,7 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
                 <span className={`sb-try__mode-pill sb-try__mode-pill--${m}`}>{m === 'dark' ? 'Dark' : 'Light'}</span>
               </p>
             )}
-            <TryWindow theme={t} mode={m} args={args}>
+            <TryWindow theme={t} mode={m} args={args} isLight={info.isLight}>
               {info.onlyIn && !info.onlyIn.includes(t) ? (
                 <p className="sb-try__not-here">This component hasn&apos;t been made for the {themeNames[t]} theme yet.</p>
               ) : (

@@ -1,9 +1,15 @@
-import { useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type ButtonHTMLAttributes, type KeyboardEvent, type PointerEvent } from 'react';
+import { resolveColor } from '../glass-lens/lens-art';
+import { createMarble, type MarbleColors, type OrbLook } from './orb-marble';
 import './orb.css';
 
 // The orb: the light you drag when exploring glass, one component at a time. It sits inside a
 // positioned section and moves within it; whatever lights glass from it (useGlassLight's source)
-// follows. Full pages never show an orb: their light stays still at the light tokens.
+// follows. Full pages never show an orb: their light stays still at the light tokens. The marble is
+// drawn by three.js on a canvas; without WebGL, a CSS marble stands in.
+
+export type { OrbLook };
+export type OrbSize = 'small' | 'medium' | 'large';
 
 /** Where the orb is, as a share of its section: 0 is the left or top edge, 1 the right or bottom. */
 export interface OrbPosition {
@@ -26,11 +32,15 @@ export interface OrbProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
    * Leave it out to use the theme's orb color.
    */
   palette?: string;
+  /** glow: a lit marble with light spilling around it (default). clear: see-through glass with no bloom. */
+  look?: OrbLook;
+  /** How big the marble is. The button around it grows only when the marble outgrows 44 pixels. */
+  size?: OrbSize;
 }
 
 const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
-export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, palette, className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
+export function Orb({ position: controlled, defaultPosition = ORB_START, onPositionChange, palette, look = 'glow', size = 'medium', className, style, 'aria-label': ariaLabel = 'Light. Drag it, or use the arrow keys to move it.', ...rest }: OrbProps) {
   const [own, setOwn] = useState(defaultPosition);
   const position = controlled ?? own;
   const move = (p: OrbPosition) => {
@@ -53,11 +63,42 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
   const tint = palette
     ? Object.fromEntries(Object.entries({ light: 100, glow: 200, halo: 300, body: 400, shade: 600 }).map(([part, shade]) => [`--orb-color-${part}`, `var(--palette-${palette}-${shade})`]))
     : undefined;
+  const button = useRef<HTMLButtonElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const [drawn, setDrawn] = useState(false);
+  useEffect(() => {
+    const el = button.current;
+    const c = canvas.current;
+    if (!el || !c) return;
+    const marble = createMarble(c);
+    if (!marble) return;
+    const draw = () => {
+      const color = (part: string): [number, number, number] => {
+        const v = resolveColor(`var(--orb-color-${part})`, el) ?? [255, 255, 255, 1];
+        return [v[0], v[1], v[2]];
+      };
+      const colors: MarbleColors = { light: color('light'), glow: color('glow'), halo: color('halo'), body: color('body'), shade: color('shade') };
+      const px = Number.parseFloat(getComputedStyle(c).inlineSize) || 34;
+      marble.update({ size: px, look, colors });
+    };
+    draw();
+    setDrawn(true);
+    // The tokens change with the theme and mode, which are set as attributes further up the page.
+    const watch = new MutationObserver(draw);
+    watch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-mode'], subtree: true });
+    return () => {
+      watch.disconnect();
+      marble.dispose();
+      setDrawn(false);
+    };
+  }, [look, size, palette]);
   return (
     <button
+      ref={button}
       type="button"
       aria-label={ariaLabel}
-      className={className ? `ds-orb ${className}` : 'ds-orb'}
+      className={['ds-orb', `ds-orb--${look}`, `ds-orb--${size}`, className].filter(Boolean).join(' ')}
+      data-drawn={drawn || undefined}
       style={{ ...tint, ...style, left: `${position.x * 100}%`, top: `${position.y * 100}%` }}
       onPointerDown={(e) => {
         e.currentTarget.setPointerCapture(e.pointerId);
@@ -68,6 +109,7 @@ export function Orb({ position: controlled, defaultPosition = ORB_START, onPosit
       {...rest}
     >
       <span className="ds-orb__glass" aria-hidden="true" />
+      <canvas key={`${look}-${size}-${palette ?? ''}`} ref={canvas} className="ds-orb__canvas" aria-hidden="true" />
     </button>
   );
 }

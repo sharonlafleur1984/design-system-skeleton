@@ -4,7 +4,22 @@
     "size": {
       "$type": "dimension",
       "$value": "34px",
-      "$description": "The marble. Its button is always 44px, so it's easy to grab."
+      "$description": "The marble. Its button is at least 44px, so it's easy to grab."
+    },
+    "size-small": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "The small marble."
+    },
+    "size-large": {
+      "$type": "dimension",
+      "$value": "52px",
+      "$description": "The large marble. Its button is target-large."
+    },
+    "target-large": {
+      "$type": "dimension",
+      "$value": "60px",
+      "$description": "The button around the large marble: the touch target."
     },
     "target": {
       "$type": "dimension",

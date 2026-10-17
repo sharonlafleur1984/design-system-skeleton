@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Orb } from './orb';
 import { OrbSection } from './orb-example';
-import { hidden, marbles, setting } from '../story-helpers';
+import { choice, hidden, marbles, setting } from '../story-helpers';
 import { orbPage } from './orb.page';
 import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
@@ -9,17 +9,21 @@ const meta: Meta<typeof Orb> = {
   title: 'Components/Orb',
   component: Orb,
   // On its own page the orb starts in the middle, like every component's example.
-  args: { defaultPosition: { x: 0.5, y: 0.5 }, ...pageArgs } as Meta<typeof Orb>['args'],
+  // Dark by default, so the glow is easy to see.
+  args: { defaultPosition: { x: 0.5, y: 0.5 }, look: 'glow', size: 'medium', ...pageArgs, sbMode: 'dark' } as Meta<typeof Orb>['args'],
   argTypes: {
     position: setting('Position', 'Where it is in its section, from 0 to 1 across and down. Leave out and it keeps its own, starting on the right, two thirds down (ORB_START)\n\n`position`', { control: false }),
     defaultPosition: setting('Starts at', 'Where it starts when it keeps its own place. Leave out for the right, two thirds down\n\n`defaultPosition`', { control: false }),
     onPositionChange: setting('On position change', 'Called while it is dragged or moved with the arrow keys\n\n`onPositionChange`', { control: false }),
     palette: setting('Color family', "A color family from the theme's palette, for an area's own color. Leave out for the theme's\n\n`palette`", { control: false }),
+    look: choice('Look', 'Glow is a lit marble with light spilling around it. Clear is see-through glass with no bloom\n\n`look`', ['glow', 'clear']),
+    size: choice('Size', 'How big the marble is\n\n`size`', ['small', 'medium', 'large']),
     ...pageArgTypes(),
     className: hidden,
     style: hidden,
   },
   parameters: { componentPage: orbPage, compareAll: false },
+  globals: { pageMode: 'dark' },
 };
 export default meta;
 type Story = StoryObj<typeof Orb>;

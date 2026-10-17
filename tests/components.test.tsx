@@ -263,6 +263,15 @@ describe('Orb', () => {
     expect(screen.getByRole('button').style.getPropertyValue('--orb-color-body')).toBe('var(--palette-seagull-400)');
   });
 
+  it('is a medium glow by default, and takes a clear look and other sizes', () => {
+    const { rerender } = render(<Orb />);
+    expect(screen.getByRole('button').className).toContain('ds-orb--glow');
+    expect(screen.getByRole('button').className).toContain('ds-orb--medium');
+    rerender(<Orb look="clear" size="large" />);
+    expect(screen.getByRole('button').className).toContain('ds-orb--clear');
+    expect(screen.getByRole('button').className).toContain('ds-orb--large');
+  });
+
   it('has no accessibility problems', async () => {
     const { container } = render(<Orb position={ORB_START} onPositionChange={() => {}} />);
     await expectNoAxeViolations(container);

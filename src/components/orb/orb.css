@@ -2,7 +2,9 @@
    theme's color (--orb-color-*). The marble is darker at the top, with a bright crescent where light
    catches its top edge and light pooling at the bottom. Its rim isn't even, as real glass never is:
    thick and bright along the bottom, thin at the top. Its light spills out as a wide bloom of its own
-   color. Nothing moves on its own, so there's no motion to reduce. */
+   color. Look: glow keeps that bloom; clear drops the bloom and the marble's body, leaving only its rim,
+   highlight and pooled light. Size: small, medium or large. The marble is drawn by three.js on the canvas
+   (orb-marble.ts); the CSS marble below it shows only where WebGL isn't there. Nothing moves on its own, so there's no motion to reduce. */
 .ds-orb {
   position: absolute;
   z-index: 5;
@@ -15,6 +17,16 @@
   background: transparent;
   cursor: grab;
   touch-action: none;
+  --orb-scale: 1;
+}
+.ds-orb--small {
+  --orb-size: var(--orb-size-small);
+  --orb-scale: 0.7;
+}
+.ds-orb--large {
+  --orb-size: var(--orb-size-large);
+  --orb-scale: 1.5;
+  --orb-target: var(--orb-target-large);
 }
 .ds-orb:active {
   cursor: grabbing;
@@ -36,12 +48,38 @@
     radial-gradient(ellipse 82% 48% at 50% 88%, var(--orb-shine-pool), color-mix(in srgb, var(--orb-color-light) 80%, transparent) 45%, transparent 100%),
     linear-gradient(to bottom, color-mix(in srgb, var(--orb-color-shade) 45%, transparent), transparent 60%),
     radial-gradient(circle at 50% 42%, var(--orb-color-body) 0, var(--orb-color-halo) 40%, var(--orb-color-glow) 75%, var(--orb-color-light) 100%);
-  box-shadow:
+  box-shadow: var(--_rim), var(--_bloom);
+  --_rim:
     inset 0 -2px 2px -1px var(--orb-shine-rim-thick),
     inset 2px -1px 2px -1px var(--orb-shine-rim-side),
     inset 1px 1px 1px 0 var(--orb-shine-rim-thin),
-    inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent),
-    0 0 var(--orb-glow-near-blur) var(--orb-glow-near-spread) var(--orb-color-glow),
-    0 0 var(--orb-glow-mid-blur) var(--orb-glow-mid-spread) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
-    0 0 var(--orb-glow-far-blur) var(--orb-glow-far-spread) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+    inset -1px 2px 2px -1px color-mix(in srgb, var(--orb-color-shade) 40%, transparent);
+  --_bloom:
+    0 0 calc(var(--orb-glow-near-blur) * var(--orb-scale)) calc(var(--orb-glow-near-spread) * var(--orb-scale)) var(--orb-color-glow),
+    0 0 calc(var(--orb-glow-mid-blur) * var(--orb-scale)) calc(var(--orb-glow-mid-spread) * var(--orb-scale)) color-mix(in srgb, var(--orb-color-halo) 78%, transparent),
+    0 0 calc(var(--orb-glow-far-blur) * var(--orb-scale)) calc(var(--orb-glow-far-spread) * var(--orb-scale)) color-mix(in srgb, var(--orb-color-glow) 55%, transparent);
+}
+.ds-orb__canvas {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  inline-size: var(--orb-size);
+  block-size: var(--orb-size);
+  pointer-events: none;
+  display: none;
+}
+/* Drawn by three.js: the canvas is the marble, so the CSS one keeps only its bloom. */
+.ds-orb[data-drawn] .ds-orb__canvas {
+  display: block;
+}
+.ds-orb[data-drawn] .ds-orb__glass {
+  background: none;
+  --_rim: 0 0 transparent;
+}
+/* Clear: glass with no bloom. */
+.ds-orb--clear .ds-orb__glass {
+  --_bloom: 0 0 transparent;
+}
+.ds-orb--clear:not([data-drawn]) .ds-orb__glass {
+  background: radial-gradient(ellipse 36% 18% at 64% 19%, var(--orb-shine-highlight), transparent 100%);
 }
