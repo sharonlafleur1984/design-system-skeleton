@@ -12,6 +12,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 |---|---|---|
 | D62 | Oct 16, 2026 | Fireside gets a full light look, built from the toolkit's light work area |
 | D61 | Oct 15, 2026 | Fireside's light mode changes only the work area (replaced by D62) |
+| D58 | Oct 15, 2026 | The light may move on real pages; staying still is a choice |
 | D57 | Oct 15, 2026 | The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass |
 | D56 | Oct 15, 2026 | The component page is a story; every planned part has a page and a status |
 | D55 | Oct 15, 2026 | Glass works on plain backgrounds too; never glass on glass |
@@ -91,6 +92,17 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 </details>
 
 <details>
+<summary><b>D58 · Oct 15, 2026:</b> The light may move on real pages; staying still is a choice</summary>
+
+- **Decided by:** Sharon ("Let's move that way. I can always tell you to stay still in the future, but if I change my mind and move again, that's fine too.")
+- **Replaces part of D45 and D57:** a full page's light no longer has to stay still at `light-from-right` and `light-top`. Those tokens are where it rests, and staying still remains a choice Sharon can switch back to.
+- **How it moves depends on the theme (Sharon):** Sunrise's light follows the time of day. Spotlight's and Fireside's stay still at the light tokens for now.
+- **Illuminate, a setting:** people can turn on Illuminate, which makes the cursor the light source. It's off by default everywhere, works only in dark mode, and is a setting rather than a theme choice.
+- **Still true:** one light for every glass part; Reduce motion keeps the light still; text stays readable wherever the light lands, so contrast is checked along its whole path; a moving light is drawn live and pauses when nothing moves or the page is hidden.
+
+</details>
+
+<details>
 <summary><b>D57 · Oct 15, 2026:</b> The orb: one glowing glass marble in the theme's color, the light you drag when exploring glass</summary>
 
 - **Decided by:** Sharon, after three first directions ("not a big fan of any of these"): "take the primary color of an area and apply it as a light source with lots and lots of glowing"; "the stroke seems to be even all the way around… that would never happen"; "a little brighter"; "these orbs should go into my design library… the color will change based on the theme."
@@ -99,6 +111,13 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Its color is the theme's:** Spotlight's red, Fireside's peach copper, and in Sunrise the area's own color family (Dashboard's Earth Moss by default; `palette` sets another, like `seagull` for Time). Tokens: `orb.color.*` in each theme; size, glow and shine in the base (`orb.*`).
 - **Still true (D45):** orb only, no rays; it starts on the right of its section, two thirds down (Sharon: "bottom right, but not all the way at the bottom, like 2/3 down"); drag it or use the arrow keys (Shift moves farther); its button is 44px; nothing moves on its own, so there's no motion to reduce. Full pages (the page shell) never get an orb: their light stays still at `light-from-right` and `light-top`.
 - **On its own page, centered (Sharon):** the Orb's page shows it in the middle of its examples, like any other component. Everywhere else it starts on the right, two thirds down. `defaultPosition` sets where an orb that keeps its own place starts.
+- **Only one orb on its page (Sharon):** the Orb's Try it out windows don't add their own light, even in dark mode or on header art, so the centered Orb is the only one.
+- **Three sizes on the 8px grid (Sharon):** small 16px, the height of body text, used in Try it out windows; medium 32px, the usual one, in glass stories and the Glass playground; large 48px. The glow scales with the size. The button is 44px for small and medium, 56px for large. Tokens: `orb.size.*`, `orb.target.*`.
+- **Drawn by a real renderer (Sharon: "I love the little bubbles"):** the glass is drawn with three.js, a free 3D library, as a glass ball (refractive index 1.5) with a glowing core, reflecting a plain studio: a soft sky, light above and dark below, and a round softbox up and to the right. No walls or furniture (Sharon: the first room's reflections looked like a bedroom). The renderer works out what CSS gradients only faked: the bright edges, the bent and enlarged core, the sharp highlight. Each orb is drawn once into a picture, at twice its size so edges and reflections stay sharp, with perfectly smooth glass, and cached, with one shared renderer, so the page never holds more than one 3D view. three.js loads only when an orb is on screen. Where a browser can't draw 3D (and in tests), the CSS glass shows instead. Came after a study of how light behaves in real glass balls (Fresnel edges, two highlights, the flipped view inside, light gathering at the far side).
+- **Plain pages get white light; colored ones show through (Sharon):** when what's behind the orb is the theme's own page color (a plain light or dark page), there's no color to blend with, so the light and the whole ball are pure white. On a background with color of its own (a marble, header art), the light is the page's color mix and brightens what it falls on (screen blend) at full strength, so it's easy to see; the brightest spot right at the ball covers the pattern, and it shows through everywhere else, even a marble under its dark night layer. The light is its own layer beside the ball so it can blend.
+- **The glow ball is see-through (Sharon: "it's looking pretty solid"):** like clear, it's drawn over the real background behind it, with a bright core inside clear glass, so the page shows through around its light. Brighter from inside (Sharon): a bigger core, glass that glows more in its light, and stronger light right at the ball.
+- **Every glow looks equally bright (Sharon: "the way they look is all the same, not the math"):** the orb measures how light the background behind it is. On lighter backgrounds its light leans gently toward the page's color (toward the 200 step, never below half white) and spreads stronger, because white light vanishes on a light page; on dark ones it stays half white, half the lightest step.
+- **Three looks (Sharon):** `glow`, the default, has the light inside the ball shining out; its light is very bright right around the ball and spreads over the whole section, fading the way real light does (soft at the ball, Sharon: "a lot more subtle and extend a lot further", reaching 90 ball sizes, `orb.glow.reach`), in one smooth curve of many small steps so no ring shows, starting at full strength at the glass so the ball blends into its light. Its color, and the core's, is 75% white and 25% the lightest step of the page's color (Sharon: half and half, the focus glow's rule from D45, was too saturated for light). `tinted` is glass in the page's primary color (or the area's on a Sunrise area page), with a small bright core and no glow. `clear` is completely clear, with no glow, drawn by the renderer alone (Sharon: "no hand math on top"; with glass you're always playing with the background). The real background behind the orb is one of the renderer's ingredients: the orb paints the patch behind itself from the same art its section gives the glass lens (`backdrop`), or the section's own color, and three.js bends it through colorless glass, so the bending, shading, uneven rim and highlights all come from the renderer. It redraws as the orb moves, since what's behind it changes. It reflects a brighter studio than the other looks, with no clear coat (one surface). All three in all three sizes.
 - **Storybook:** a page for Orb under Components, and a test story with the orb on every theme's real background. Try it out's hint now says "Drag the light to move it".
 
 </details>
@@ -292,7 +311,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **How:** a version tag (`v0.4.0`) runs `.github/workflows/release.yml`. It runs the tests, packs the package with `npm pack` and attaches the file to a GitHub Release. Apps install that file's link.
 - **First release file:** v0.4.0. A workflow only runs from the tagged commit, so v0.3.0 and earlier keep installing from their tag.
 - **CHANGELOG.md** lists what changed in each version. Every release pull request moves the Unreleased notes under its version.
-- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)). They may change in any version.
+- **Experimental:** `useGlassLight`, `imageArt`, `shellArt` and `LensOptions` are marked `@experimental` until the glass review ([issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60)). They may change in any version.
 - **Not yet:** fonts as separate files. The package build inlines font files into the font CSS; changing that could break how After Graduation loads its fonts, so it waits for its own pull request.
 
 </details>
@@ -332,7 +351,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Starting looks stay the same:** action tiles, glass buttons and the page shell start as Glass; cards, tags and toggle button groups start as Default. Nothing changes until someone switches.
 - **Where it shows:** Glass only shows on artwork the system controls (a theme's header art, Life Hub's marble). On a plain page both look the same.
 - **Why:** "lens" and "classic glass" were confusing names, and Glass doesn't read as glass as much as hoped. Clear names now; a deeper look later.
-- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/design-system-skeleton/issues/60)).
+- **Open:** review the glass build ([issue #60](https://github.com/sharonlafleur1984/lantern-design-system/issues/60)).
 - **Details:** `src/components/material.ts`; stories "Glass on artwork" and "Default on artwork" under Button and Action tile.
 
 </details>
@@ -476,7 +495,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** app-wide settings open in a full-size dialog, modeled on Claude's, from a Settings button at the top right of the header on every screen size. Eight sections: Account, Appearance, Accessibility, Plan, Family, Notifications, Privacy and data, Help and legal. On phones the section list comes first and each section opens with a Back button. Changes apply right away, with no Save button. Anything the device can tell us defaults to Match device; if the device asks for reduced motion, motion stays reduced.
 - **Why:** top right is where people look for app-wide settings; on the page it would read as settings for that page. The Motion setting also gives people a way to stop the header wheel.
 - **Research:** Settings research in the After Graduation wiki (sections, defaults, and the research behind each accessibility setting).
-- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42).
+- **Details:** Patterns, Settings in Storybook; [#42](https://github.com/sharonlafleur1984/lantern-design-system/issues/42).
 
 </details>
 
@@ -528,7 +547,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 
 - **Decided by:** Sharon
 - **Decision:** Home is now Morning Latte and Office is now Gold Sand. Each area's marble, glass tuning and dark layer moved with its colors.
-- **Details:** [#33](https://github.com/sharonlafleur1984/design-system-skeleton/pull/33)
+- **Details:** [#33](https://github.com/sharonlafleur1984/lantern-design-system/pull/33)
 
 </details>
 
@@ -539,7 +558,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** After Graduation's dark mode uses warm charcoal surfaces. The deep red stays on buttons and the header, so it is the one thing that stands out, and the header's red glows faintly down from the top right. Text is the theme's light page color (#fcf9f8). Red links and text use a lighter red so they pass on charcoal. Cards are glass in dark mode, lit from the header's light; light mode cards stay solid.
 - **Why:** neutral dark keeps the red meaningful. Using the light page color for text keeps every dark color in the palette.
 - **Other options:** deep wine surfaces that carry the header's red down the page (B in the review).
-- **Details:** [#29](https://github.com/sharonlafleur1984/design-system-skeleton/pull/29)
+- **Details:** [#29](https://github.com/sharonlafleur1984/lantern-design-system/pull/29)
 
 </details>
 
@@ -551,7 +570,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Why:** glass on marble is Life Hub's signature. Area-colored buttons borrowed status meanings (berry read as Delete, gold as a warning), and a green button fought half the marbles. The serif-on-cream look felt like every AI product; Fraunces's soft endings feel poured, like marbling.
 - **Replaces:** Sep 27, "Life Hub glass is for controls only." Buttons inside a glass card have no blur of their own, so it is still never glass on glass.
 - **Other options:** solid cards with glass controls (the old rule); area-colored or gold buttons; Newsreader and Archivo; a monospace data font.
-- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28), exploration in [#27](https://github.com/sharonlafleur1984/design-system-skeleton/pull/27). Per-area values are estimates from the Oct 6 to 7 review.
+- **Details:** [#28](https://github.com/sharonlafleur1984/lantern-design-system/pull/28), exploration in [#27](https://github.com/sharonlafleur1984/lantern-design-system/pull/27). Per-area values are estimates from the Oct 6 to 7 review.
 
 </details>
 
@@ -562,7 +581,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** dark mode switches on with the device setting, with no switch in the products. Each theme has its own dark version, kept in `tokens/themes/<theme>/dark`, which may only change values of tokens the theme already has. Life Hub's dark mode lays each area's own night layer (half its 900, half ink) over its marble, matched so every area's swirl shows about the same. Storybook has a Light/Dark switch for review.
 - **Why:** four looks (two themes, light and dark) without new names for components to learn. Following the device is what people expect and needs nothing to build.
 - **Other options:** a switch in each product; one shared dark palette for every theme; neutral charcoal surfaces (lost each area's marble).
-- **Details:** [#28](https://github.com/sharonlafleur1984/design-system-skeleton/pull/28)
+- **Details:** [#28](https://github.com/sharonlafleur1984/lantern-design-system/pull/28)
 
 </details>
 
@@ -584,7 +603,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** each theme sets a size, line height and weight for Small, Medium and Large controls. For now both themes use the same values: 12 on 16, 14 on 20 and 16 on 24, medium weight. Large buttons are 40px tall instead of 48. Checkbox and Switch labels use Medium.
 - **Why:** the fonts already make each product's buttons look different, so different sizes or weights would add difference for its own sake. 48px is a call-to-action size and felt too big as a regular option. 14px button labels with 16px body text is the standard pairing.
 - **Other options:** bigger, semibold After Graduation buttons (14 / 16 / 20); a third font just for buttons (breaks the two-families rule); keeping Large at 48.
-- **Details:** [#23](https://github.com/sharonlafleur1984/design-system-skeleton/pull/23)
+- **Details:** [#23](https://github.com/sharonlafleur1984/lantern-design-system/pull/23)
 - **Sources:** [Material 3 type scale tokens](https://m3.material.io/styles/typography/type-scale-tokens), [WCAG 2.5.8 target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), [Apple accessibility guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility)
 
 </details>
@@ -608,7 +627,7 @@ Each decision has an ID (D1 is the oldest), so a pull request or another documen
 - **Decision:** interactive components in the After Graduation rebuild (accordion rows, tabs, bottom navigation, dialogs, date pickers) are built on React Aria Components and styled with our tokens. One library everywhere; no mixing.
 - **Why:** the planner is built around dates, and some students have an IEP or 504 plan. React Aria handles focus, keyboard and screen reader behavior and tests it with real screen readers every release, including date pickers. AI can write UI fast, but it often misses these basics, and automated tests catch only part of them.
 - **Other options:** Base UI (newest, strongest shadcn and AI-prototyping ecosystem, but no date components and focus is left to us); Base UI plus React Aria only for dates (two styles of code); Base UI with dates built ourselves (most code to own, highest accessibility risk). Radix was ruled out: updates slowed after WorkOS bought it.
-- **Also decided (Oct 4):** this design system's own components (Button, Checkbox, Switch and Link) move onto React Aria too, so After Graduation uses one library. Life Hub keeps using the tokens; it picks up these components if its dashboard is ever built in React. The solid-glass fallback from [#4](https://github.com/sharonlafleur1984/design-system-skeleton/pull/4) is built into the new versions.
+- **Also decided (Oct 4):** this design system's own components (Button, Checkbox, Switch and Link) move onto React Aria too, so After Graduation uses one library. Life Hub keeps using the tokens; it picks up these components if its dashboard is ever built in React. The solid-glass fallback from [#4](https://github.com/sharonlafleur1984/lantern-design-system/pull/4) is built into the new versions.
 - **Details:** [After Graduation #34](https://github.com/sharonlafleur1984/after-graduation/issues/34)
 - **Sources:** [Untitled UI, Base UI vs React Aria](https://www.untitledui.com/blog/base-ui-vs-react-aria), [React Aria AI tools](https://react-aria.adobe.com/ai), [Web4All 2025 on AI-generated UI](https://dl.acm.org/doi/10.1145/3800424.3800430)
 

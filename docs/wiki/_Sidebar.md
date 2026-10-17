@@ -2,7 +2,7 @@
 
 **Plan**
 - [Roadmap](Roadmap)
-- [Tasks](https://github.com/sharonlafleur1984/design-system-skeleton/issues)
+- [Tasks](https://github.com/sharonlafleur1984/lantern-design-system/issues)
 
 **Reference**
 - [Themes](Themes)

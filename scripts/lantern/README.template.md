@@ -82,4 +82,4 @@ Lantern wasn't created in Figma. It was built straight from the code.
 
 Interact with the entire component library in [Storybook](https://designsystemskeleton.netlify.app).
 
-The full story behind the journey can be found in the [design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton/wiki) wiki page.
+The full story behind the journey can be found in the [lantern-design-system](https://github.com/sharonlafleur1984/lantern-design-system/wiki) wiki page.

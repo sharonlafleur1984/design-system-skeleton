@@ -1,7 +1,7 @@
 # Design system
 
 - **[See it live in Storybook](https://designsystemskeleton.netlify.app/)**, and switch themes with the picker above every story.
-- **[Read the project wiki](https://github.com/sharonlafleur1984/design-system-skeleton/wiki)**: the dashboard, roadmap and decisions.
+- **[Read the project wiki](https://github.com/sharonlafleur1984/lantern-design-system/wiki)**: the dashboard, roadmap and decisions.
 
 > **This is a work in progress.** In this day of AI design, things are moving fast, and I'm moving a million miles a minute to get relevant design experience for this new age as I look for my next career opportunity. I'd love to share what I'm learning with whoever I end up with next. You can see the whole thing in all its messy glory, but don't expect it to be polished.
 
@@ -40,13 +40,13 @@ npm run build-storybook && npm run test:visual   # visual tests
 
 ## Use it in an app
 
-Apps install one version's package file from its [GitHub Release](https://github.com/sharonlafleur1984/design-system-skeleton/releases), so an update only arrives when the app chooses it. The file holds only the built components, theme CSS and fonts, not the whole repo:
+Apps install one version's package file from its [GitHub Release](https://github.com/sharonlafleur1984/lantern-design-system/releases), so an update only arrives when the app chooses it. The file holds only the built components, theme CSS and fonts, not the whole repo:
 
 ```bash
-npm install https://github.com/sharonlafleur1984/design-system-skeleton/releases/download/v0.4.0/design-system-skeleton-0.4.0.tgz
+npm install https://github.com/sharonlafleur1984/lantern-design-system/releases/download/v0.4.0/design-system-skeleton-0.4.0.tgz
 ```
 
-Release files start at v0.4.0. Earlier versions install from their tag instead (`github:sharonlafleur1984/design-system-skeleton#v0.3.0`). What changed in each version: [CHANGELOG.md](CHANGELOG.md).
+Release files start at v0.4.0. Earlier versions install from their tag instead (`github:sharonlafleur1984/lantern-design-system#v0.3.0`). What changed in each version: [CHANGELOG.md](CHANGELOG.md).
 
 Then load the theme, its fonts, the base page styles and the component styles once, set the theme on the page, and import components:
 

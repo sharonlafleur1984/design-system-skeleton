@@ -93,7 +93,7 @@ function GlassPlayground({ theme, bend, edgeDepth, colorSplit, edgeLight, shadow
 
   return (
     <div ref={ref} style={tuning}>
-      {!spotlight && <Orb data-sun="" position={sun} onPositionChange={setSun} />}
+      {!spotlight && <Orb data-sun="" position={sun} onPositionChange={setSun} backdrop={theme === 'life-hub' ? sunriseArt : firesideArt} />}
       {spotlight ? (
         <PageShell title="Spotlight" navigation={set}>
           <p style={{ margin: 0, maxInlineSize: '60ch' }}>{intro} This is a full page, so the light stays where it sits on the real page.</p>

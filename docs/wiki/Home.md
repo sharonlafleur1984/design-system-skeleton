@@ -16,9 +16,9 @@ One design system for all of Sharon's products: a shared base, with a theme for 
 |---|---|
 | **Where we are** | [Storybook is live](https://designsystemskeleton.netlify.app/) with 14 components (Select is new; four now use React Aria's names) and a Settings pattern, built on React Aria. After Graduation uses the system ([pinned to v0.2.0](https://github.com/sharonlafleur1984/after-graduation/blob/main/package.json)). Life Hub doesn't use it yet. From v0.4.0, apps install a small release file instead of the whole repo. |
 | **Themes** | Spotlight (After Graduation), Sunrise (Life Hub) and Fireside (the designer toolkit, always dark). What makes each one: [Themes](Themes). |
-| **Next up** | What After Graduation's pages need next: a [phone bottom bar](https://github.com/sharonlafleur1984/design-system-skeleton/issues/41), an [icon set](https://github.com/sharonlafleur1984/design-system-skeleton/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/design-system-skeleton/issues/42). No dates set. |
+| **Next up** | What After Graduation's pages need next: a [phone bottom bar](https://github.com/sharonlafleur1984/lantern-design-system/issues/41), an [icon set](https://github.com/sharonlafleur1984/lantern-design-system/issues/40) and a [settings menu](https://github.com/sharonlafleur1984/lantern-design-system/issues/42). No dates set. |
 
-Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Decisions). Every task: [Issues](https://github.com/sharonlafleur1984/design-system-skeleton/issues).
+Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Decisions). Every task: [Issues](https://github.com/sharonlafleur1984/lantern-design-system/issues).
 
 ## Needs your decision
 
@@ -30,6 +30,6 @@ Where we're going: [Roadmap](Roadmap). Why things were decided: [Decisions](Deci
 
 | What | Link |
 |---|---|
-| Code repository | [sharonlafleur1984/design-system-skeleton](https://github.com/sharonlafleur1984/design-system-skeleton) |
+| Code repository | [sharonlafleur1984/lantern-design-system](https://github.com/sharonlafleur1984/lantern-design-system) |
 | Life Hub's original design (private) | [Figma, Life Hub Library](https://www.figma.com/design/gVTJl0ARMijPyuMpeprg5c/Life-Hub-Library) |
 | Storybook | [designsystemskeleton.netlify.app](https://designsystemskeleton.netlify.app/) |
