@@ -13,7 +13,8 @@ const themes: Record<string, { theme: string; mode: 'light' | 'dark' }> = {
   'spotlight-dark': { theme: 'after-graduation', mode: 'dark' },
   sunrise: { theme: 'life-hub', mode: 'light' },
   'sunrise-dark': { theme: 'life-hub', mode: 'dark' },
-  fireside: { theme: 'designer-toolkit', mode: 'dark' },
+  'fireside-dark': { theme: 'designer-toolkit', mode: 'dark' },
+  fireside: { theme: 'designer-toolkit', mode: 'light' },
 };
 
 /** Shows a part's example (its "Use it for this" example from Storybook) in the theme Lantern has picked. */
