@@ -4,21 +4,21 @@
     "inline": {
       "color": {
         "$type": "color",
-        "$value": "#f6f2e1"
+        "$value": "#14262b"
       },
       "color-hover": {
         "$type": "color",
-        "$value": "#f3c097"
+        "$value": "#8b4e33"
       }
     },
     "quiet": {
       "color": {
         "$type": "color",
-        "$value": "#bebbad"
+        "$value": "#4a5b60"
       },
       "color-hover": {
         "$type": "color",
-        "$value": "#f3c097"
+        "$value": "#8b4e33"
       },
       "size": {
         "$type": "dimension",

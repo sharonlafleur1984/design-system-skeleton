@@ -1,0 +1,60 @@
+{
+  "color": {
+    "surface": {
+      "glass": {
+        "$type": "color",
+        "$value": "rgba(246, 242, 225, 0.06)"
+      },
+      "glass-strong": {
+        "$type": "color",
+        "$value": "#2b4148"
+      }
+    }
+  },
+  "glass": {
+    "rim": {
+      "color": {
+        "$type": "color",
+        "$value": "rgba(246, 242, 225, 0.12)"
+      },
+      "faint": {
+        "$type": "color",
+        "$value": "rgba(246, 242, 225, 0.04)"
+      }
+    },
+    "highlight": {
+      "$type": "color",
+      "$value": "rgba(246, 242, 225, 0.08)"
+    },
+    "shade": {
+      "$type": "color",
+      "$value": "rgba(5, 16, 19, 0.4)"
+    },
+    "cast": {
+      "$type": "color",
+      "$value": "rgba(5, 16, 19, 0.45)"
+    },
+    "contact": {
+      "$type": "color",
+      "$value": "rgba(5, 16, 19, 0.3)"
+    },
+    "lens": {
+      "body": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.02)"
+      },
+      "rim-lit": {
+        "$type": "color",
+        "$value": "rgba(255, 244, 222, 1)"
+      },
+      "highlight": {
+        "$type": "color",
+        "$value": "rgba(255, 244, 222, 0.5)"
+      },
+      "shadow-color": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0.32)"
+      }
+    }
+  }
+}

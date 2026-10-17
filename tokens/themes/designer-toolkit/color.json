@@ -278,27 +278,27 @@
   "color": {
     "ink": {
       "primary": {
-        "$value": "#f6f2e1",
+        "$value": "#14262b",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#e2d8a5",
+        "$value": "#304341",
         "$type": "color"
       },
       "tertiary": {
-        "$value": "#bebbad",
+        "$value": "#4a5b60",
         "$type": "color"
       },
       "muted": {
-        "$value": "#8a9a9e",
+        "$value": "#546462",
         "$type": "color"
       },
       "disabled": {
-        "$value": "#4f646b",
+        "$value": "#8d9897",
         "$type": "color"
       },
       "inverse": {
-        "$value": "#051013",
+        "$value": "#f6f2e1",
         "$type": "color"
       },
       "on-art": {
@@ -312,36 +312,36 @@
     },
     "surface": {
       "page": {
-        "$value": "#08161a",
+        "$value": "#dfeaed",
         "$type": "color"
       },
       "card": {
-        "$value": "#1a2c31",
+        "$value": "#ffffff",
         "$type": "color"
       },
       "raised": {
-        "$value": "#2b4148",
+        "$value": "#f4f8f9",
         "$type": "color"
       },
       "sunken": {
-        "$value": "#051013",
+        "$value": "#d1dfe3",
         "$type": "color"
       },
       "hover": {
-        "$value": "#2b4148",
+        "$value": "#eaf1f3",
         "$type": "color"
       },
       "overlay": {
-        "$value": "#2b4148",
+        "$value": "#ffffff",
         "$type": "color"
       },
       "inverse": {
-        "$value": "#f6f2e1",
+        "$value": "#14262b",
         "$type": "color"
       },
       "scrim": {
         "$type": "color",
-        "$value": "rgba(5, 16, 19, 0.6)"
+        "$value": "rgba(20, 38, 43, 0.4)"
       },
       "glass-on-art-solid": {
         "$type": "color",
@@ -350,24 +350,24 @@
     },
     "border": {
       "subtle": {
-        "$value": "rgba(246, 242, 225, 0.08)",
+        "$value": "rgba(20, 38, 43, 0.08)",
         "$type": "color"
       },
       "default": {
-        "$value": "rgba(246, 242, 225, 0.1)",
+        "$value": "rgba(20, 38, 43, 0.12)",
         "$type": "color"
       },
       "strong": {
-        "$value": "#677f86",
+        "$value": "#6d7b79",
         "$type": "color"
       },
       "focus": {
-        "$value": "#f3c097",
+        "$value": "#8b4e33",
         "$type": "color"
       },
       "focus-glow": {
         "$type": "color",
-        "$value": "#fcf8f4",
+        "$value": "#ffffff",
         "$description": "The keyboard focus glow on dark or colored backgrounds: half white, half palette.peach.100, the lightest step on the theme's primary color line (Sharon, Oct 14)."
       },
       "focus-glow-on-dark": {
@@ -378,40 +378,40 @@
     },
     "accent": {
       "base": {
-        "$value": "#e1a36f",
+        "$value": "#8b4e33",
         "$type": "color",
         "$description": "Peach copper, the primary color (Retro): the main button, focus and the selected item. Near-black text on it."
       },
       "hover": {
-        "$value": "#f2b37e",
+        "$value": "#683924",
         "$type": "color"
       },
       "surface": {
-        "$value": "#3f2b1b",
+        "$value": "#f8f0ec",
         "$type": "color"
       },
       "soft": {
-        "$value": "#5c3d24",
+        "$value": "#e7cec3",
         "$type": "color"
       },
       "ink": {
-        "$value": "#051013",
+        "$value": "#ffffff",
         "$type": "color"
       },
       "text": {
-        "$value": "#f3c097",
+        "$value": "#8b4e33",
         "$type": "color"
       },
       "text-hover": {
-        "$value": "#f8d6b8",
+        "$value": "#683924",
         "$type": "color"
       },
       "contrast": {
-        "$value": "#f8d6b8",
+        "$value": "#683924",
         "$type": "color"
       },
       "secondary": {
-        "$value": "#e2d8a5",
+        "$value": "#765d01",
         "$type": "color"
       }
     }

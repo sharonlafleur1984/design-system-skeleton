@@ -16,7 +16,7 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(0,0,0,0.25)",
+          "color": "rgba(20,38,43,0.08)",
           "offsetX": "0px",
           "offsetY": "1px",
           "blur": "2px",
@@ -28,7 +28,7 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(0,0,0,0.3)",
+          "color": "rgba(20,38,43,0.1)",
           "offsetX": "0px",
           "offsetY": "2px",
           "blur": "6px",
@@ -40,7 +40,7 @@
       "$type": "shadow",
       "$value": [
         {
-          "color": "rgba(0,0,0,0.45)",
+          "color": "rgba(20,38,43,0.16)",
           "offsetX": "0px",
           "offsetY": "16px",
           "blur": "40px",

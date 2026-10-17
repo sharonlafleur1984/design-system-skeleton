@@ -10,7 +10,7 @@ Every theme is a kind of light. To see one, pick it in the **Theme** picker abov
 |---|---|---|---|
 | [Spotlight](#spotlight) | After Graduation | `tokens/themes/after-graduation` | Light and dark |
 | [Sunrise](#sunrise) | Life Hub | `tokens/themes/life-hub` | Light and dark |
-| [Fireside](#fireside) | Designer toolkit | `tokens/themes/designer-toolkit` | Dark, with a light work area |
+| [Fireside](#fireside) | Designer toolkit | `tokens/themes/designer-toolkit` | Light and dark; dark is its standard |
 
 Adding one? See [Add a theme](Add-a-theme).
 
@@ -39,7 +39,7 @@ Life Hub: one place for every part of Sharon's life, in eight areas.
 The designer toolkit: a shell that frames other prototypes, so it stays out of their way.
 
 - **Color:** Retro. **Peach copper (#E1A36F) is the primary color**, used rarely: the main button, focus and the selected item. Behind it: a deep teal-black page (#08161A), teal panels, cream text and soft yellow for supporting text.
-- **Dark, so the prototype it frames is the brightest thing on screen.** The shell and its components stay dark in both modes. In light mode only the work area changes: the background behind the prototype and the wiki, the text on it, and the selected page in the wiki's side nav (`shell-work-*`, [D61](Decisions.md)).
+- **Dark is its standard, so the prototype it frames is the brightest thing on screen.** It also has a full light look for other projects: a pale blue-gray page (#DFEAED), white cards, dark teal text and a deeper copper primary (#8B4E33) that reads on light ([D62](Decisions.md)). The toolkit keeps its dark chrome; its work area (`shell-work-*`) switches with the mode.
 - **Type:** not chosen yet. It borrows Spotlight's fonts and type for now.
 - **Motion:** borrows Spotlight's for now.
 - **Glass:** not designed yet.

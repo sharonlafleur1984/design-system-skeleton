@@ -1,7 +1,7 @@
 {
   "shell": {
     "work": {
-      "$description": "The work area: the space behind the prototype and beside the wiki. It's the only part of Fireside that changes with light and dark mode; the toolkit's chrome and components stay dark. Values from the toolkit's shell (designer-toolkit-code src/styles/shell.css, --work).",
+      "$description": "The work area: the space behind the prototype and beside the wiki. Values from the toolkit's shell (designer-toolkit-code src/styles/shell.css, --work). Fireside's light look is built from it (D62).",
       "background": {
         "$type": "color",
         "$value": "#dfeaed",
