@@ -19,7 +19,7 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 export interface ButtonProps extends Omit<AriaButtonProps, 'children' | 'className' | 'style'> {
   /** Figma "Style". One primary button per screen, for the main action. Glass is never on glass. */
   variant?: ButtonVariant;
-  /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass, the clear glass button for any background except glass, lit from the page's light. */
+  /** Solid (the default: primary, secondary or tertiary as set by variant) or Glass. A glass primary keeps its accent color. */
   appearance?: Appearance;
   /** Figma "Size". */
   size?: ButtonSize;
@@ -63,6 +63,7 @@ export function Button({
   const classes = ['ds-button', `ds-button--${glass ? 'glass' : variant}`, `ds-button--${size}`];
   // The old material="default" still gives the frosted look without the lens.
   if (glass) classes.push('ds-glass', ...[lensClass(material === 'default' ? 'solid' : 'glass')].filter((c): c is string => !!c));
+  if (glass && variant === 'primary' && !destructive) classes.push('ds-button--glass-primary');
   if (destructive) classes.push('ds-button--destructive');
   if (className) classes.push(className);
   return (

@@ -3,7 +3,6 @@ import { Button } from './button';
 import { BothThemes, OnMarble, Row, WithReducedMotion, choice, hidden, marbles, onOff, setting, singleTheme, StatePictures, words } from '../story-helpers';
 import { buttonPage } from './button.page';
 import { PageShell } from '../page-shell/page-shell';
-import { Callout } from '../callout/callout';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { pageArgTypes, pageArgs, pageStory } from '../../../.storybook/component-page';
 
@@ -37,7 +36,7 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     children: words('Label', 'The words on the button\n\n`children`'),
     variant: choice('Variant', 'How important the action is\n\n`variant`', ['primary', 'secondary', 'tertiary']),
-    appearance: choice('Style', 'Solid, or clear glass for any background except glass\n\n`appearance`', ['solid', 'glass']),
+    appearance: choice('Style', 'Solid, or Glass. A glass primary keeps its accent color.\n\n`appearance`', ['solid', 'glass']),
     size: choice('Size', 'How big it is\n\n`size`', ['small', 'medium', 'large']),
     destructive: onOff('Destructive', 'For actions that remove something\n\n`destructive`'),
     isDisabled: onOff('Disabled', "Turns it off, so it can't be pressed\n\n`isDisabled`"),
@@ -199,8 +198,7 @@ function OnHeaderArt() {
 
 function GlassOnArt({ theme }: { theme: unknown }) {
   const t = singleTheme(theme);
-  // Fireside's glass and light recipe is still open (designer-toolkit wiki, Skin).
-  if (t === 'designer-toolkit') return <Callout tone="info">Fireside's glass hasn't been designed yet.</Callout>;
+  if (t === 'designer-toolkit') return <Button appearance="glass">Button</Button>;
   return t === 'life-hub' ? <OnMarble>{glassRow}</OnMarble> : <OnHeaderArt />;
 }
 

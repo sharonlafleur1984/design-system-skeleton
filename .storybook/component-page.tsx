@@ -10,6 +10,7 @@ import { clearArt, imageArt, resolveColor, type GlassArt } from '../src/componen
 import { LitContext } from '../src/components/material';
 import { Orb } from '../src/components/orb/orb';
 import { marbles, SUN_START, themeNames } from '../src/components/story-helpers';
+import { defaultModeForTheme } from './theme-mode';
 import './component-page.css';
 
 // Storybook only: the one page every component gets (Sharon's template, Oct 15). It's a story, not a
@@ -136,7 +137,7 @@ export function pageArgTypes({ states, glass }: { states?: StateName[]; glass?: 
   if (states?.length) rows.sbState = radio('State', 'data-state', 'Shows it at rest, or as it looks hovered, pressed, focused, disabled or loading', Object.fromEntries(states.map((s) => [s, stateLabels[s]])));
   return rows;
 }
-export const pageArgs = { sbMode: 'light', sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
+export const pageArgs = { sbBackground: 'plain', sbMarble: marbles[0].texture, sbMotion: 'system', sbContrast: 'system', sbTransparency: 'system', sbState: 'rest' };
 
 const isPageArg = (key: string) => key.startsWith('sb');
 
@@ -165,7 +166,7 @@ function jsx(name: string, props: Record<string, unknown>, defaults: Record<stri
 // ---------------------------------------------------------------------------------------------------
 // The page's own bar: Theme and Mode. Mode here is the page's; Mode in Controls is the examples'.
 
-const themeList = themes as { id: string; name: string; alwaysDark?: boolean }[];
+const themeList = themes as { id: string; name: string; alwaysDark?: boolean; defaultMode?: 'light' | 'dark' }[];
 const alwaysDark = (id: string) => !!themeList.find((t) => t.id === id)?.alwaysDark;
 const update = (globals: Record<string, string>) => addons.getChannel().emit(UPDATE_GLOBALS, { globals });
 
@@ -195,6 +196,19 @@ export function resolveMode(mode: unknown): 'light' | 'dark' {
 }
 
 function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
+  const previousTheme = useRef(theme);
+  useEffect(() => {
+    if (previousTheme.current === theme) return;
+    previousTheme.current = theme;
+    const mode = defaultModeForTheme(theme, themeList);
+    update({ mode, pageMode: mode });
+  }, [theme]);
+
+  const selectTheme = (next: string) => {
+    previousTheme.current = next;
+    const mode = defaultModeForTheme(next, themeList);
+    update({ theme: next, mode, pageMode: mode });
+  };
   const field = (id: string, label: string, value: string, choices: { id: string; name: string; hint?: string }[], onPick: (v: string) => void) => (
     <div className="sb-page__field">
       <span className="sb-page__field-label" id={id}>
@@ -222,7 +236,7 @@ function PageBar({ theme, pageMode }: { theme: string; pageMode: string }) {
   );
   return (
     <div className="sb-page__bar">
-      {field('sb-page-theme', 'Theme', theme, [...themeList.map((t) => ({ id: t.id, name: t.name })), { id: 'both', name: 'All', hint: 'every theme side by side' }], (v) => update({ theme: v }))}
+      {field('sb-page-theme', 'Theme', theme, [...themeList.map((t) => ({ id: t.id, name: t.name })), { id: 'both', name: 'All', hint: 'every theme side by side' }], selectTheme)}
       {field(
         'sb-page-mode',
         'Mode',
@@ -525,7 +539,8 @@ export function ComponentPage({ info, name, component, args, argTypes, initialAr
   useClock();
   const built = !!component && (info.status === 'ready' || info.status === 'pending');
   const shownThemes = theme === 'both' ? themeList.map((t) => t.id) : [theme];
-  const modes: ('light' | 'dark')[] = args.sbMode === 'all' ? ['light', 'dark'] : [resolveMode(args.sbMode ?? 'light')];
+  const sbMode = args.sbMode ?? defaultModeForTheme(theme, themeList);
+  const modes: ('light' | 'dark')[] = sbMode === 'all' ? ['light', 'dark'] : [resolveMode(sbMode)];
   const rows = allRows(args, argTypes);
   const codeName = info.codeName ?? (component as { displayName?: string } | undefined)?.displayName ?? component?.name ?? name.replace(/\s/g, '');
 

@@ -2,5 +2,6 @@
   "name": "Fireside",
   "product": "Designer toolkit",
   "order": 3,
-  "alwaysDark": false
+  "alwaysDark": false,
+  "defaultMode": "dark"
 }

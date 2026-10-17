@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ToggleButton, ToggleButtonGroup } from 'react-aria-components';
 import { addons } from 'storybook/preview-api';
 import { UPDATE_GLOBALS } from 'storybook/internal/core-events';
 import themes from '../build/themes.json';
+import { defaultModeForTheme } from './theme-mode';
 import './theme-picker.css';
 
 // Storybook only: the bar shown on the page, above the stories. It changes the same settings as the
 // toolbar (theme, light or dark mode, and the background), so the two always agree. It's styled as
 // Storybook's own chrome, not in any theme, so it never reads as part of the component being shown.
 
-type ThemeMeta = { id: string; name: string; alwaysDark?: boolean; backgrounds?: { name: string; file: string }[] };
+type ThemeMeta = { id: string; name: string; alwaysDark?: boolean; defaultMode?: 'light' | 'dark'; backgrounds?: { name: string; file: string }[] };
 const themeList = themes as ThemeMeta[];
 const choices = [...themeList.map((t) => ({ id: t.id, name: t.name })), { id: 'both', name: 'Compare all' }];
 
@@ -39,6 +40,17 @@ export function DocsThemePicker() {
 }
 
 export function ThemePicker({ theme, mode, background }: PickerState) {
+  const previousTheme = useRef(theme);
+  useEffect(() => {
+    if (previousTheme.current === theme) return;
+    previousTheme.current = theme;
+    update({ mode: defaultModeForTheme(theme, themeList) });
+  }, [theme]);
+
+  const selectTheme = (next: string) => {
+    previousTheme.current = next;
+    update({ theme: next, mode: defaultModeForTheme(next, themeList) });
+  };
   const shown = theme === 'both' ? themeList : themeList.filter((t) => t.id === theme);
   // Only what applies: no Mode for a theme that's always dark, no Background for a theme without any.
   const hasMode = shown.some((t) => !t.alwaysDark);
@@ -56,7 +68,7 @@ export function ThemePicker({ theme, mode, background }: PickerState) {
           selectedKeys={[theme]}
           onSelectionChange={(keys) => {
             const [next] = [...keys];
-            if (next) update({ theme: String(next) });
+            if (next) selectTheme(String(next));
           }}
           className="sb-theme-picker__group"
         >

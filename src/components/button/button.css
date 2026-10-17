@@ -154,6 +154,17 @@
   -webkit-backdrop-filter: blur(var(--material-blur-on-art));
   backdrop-filter: var(--glass-bend, none) blur(var(--material-blur-on-art));
 }
+.ds-button--glass-primary {
+  --_bg: var(--color-accent-base);
+  --_ink: var(--color-accent-ink);
+  --glass-lens: off;
+}
+.ds-button--glass-primary[data-hovered],
+.ds-button--glass-primary[data-state='hover'],
+.ds-button--glass-primary[data-pressed],
+.ds-button--glass-primary[data-state='pressed'] {
+  --_bg: var(--color-accent-hover);
+}
 .ds-button--glass[data-hovered],
 .ds-button--glass[data-state='hover'] {
   --light-k: 1;

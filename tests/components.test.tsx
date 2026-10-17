@@ -57,6 +57,17 @@ describe('Button', () => {
     expect(screen.getByRole('button').getAttribute('data-state')).toBe('hover');
   });
 
+  it('keeps the primary accent color on glass, without changing other glass variants', () => {
+    render(
+      <>
+        <Button appearance="glass">Primary</Button>
+        <Button variant="secondary" appearance="glass">Secondary</Button>
+      </>,
+    );
+    expect(screen.getByRole('button', { name: 'Primary' }).className).toContain('ds-button--glass-primary');
+    expect(screen.getByRole('button', { name: 'Secondary' }).className).not.toContain('ds-button--glass-primary');
+  });
+
   it('defaults to type="button" so it never submits a form by accident', () => {
     render(<Button>Save</Button>);
     expect(screen.getByRole('button').getAttribute('type')).toBe('button');

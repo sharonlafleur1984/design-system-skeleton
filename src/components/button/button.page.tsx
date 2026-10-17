@@ -3,7 +3,7 @@ import { Button } from './button';
 
 // Storybook only: what Button's page says (the component page template).
 export const buttonPage: ComponentPageInfo = {
-  updated: '2026-10-15',
+  updated: '2026-10-17',
   summary: 'Starts an action, like saving or sending.',
   status: 'ready',
   builtWith: { reactAria: 'Button' },
@@ -21,7 +21,7 @@ export const buttonPage: ComponentPageInfo = {
         <Button>Save changes</Button>
       </>
     ),
-    rules: ['One primary button per screen.', 'A label that says what happens, like Save changes.'],
+    rules: ['One primary button per screen.', 'A glass primary keeps its accent color and glass highlights.', 'A label that says what happens, like Save changes.'],
   },
   dont: {
     example: (
